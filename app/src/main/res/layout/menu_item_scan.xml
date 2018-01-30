@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/menu_item_progress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:indeterminateTint="@android:color/white"
+        android:indeterminateTintMode="src_atop"/>
+    <ToggleButton
+        android:id="@+id/menu_item_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:button="@null"
+        android:textOff="@string/scan_scan"
+        android:textOn="@string/scan_stop"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"/>
+</LinearLayout>

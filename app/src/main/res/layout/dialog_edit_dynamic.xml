@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:orientation="vertical"
+        android:background="@color/colorWindowBackgroud">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="1."
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="24sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/dialog_dynamic_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx:xx"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="28sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  -  "
+                android:textColor="@color/colorTextSecond"
+                android:textSize="28sp"/>
+
+            <TextView
+                android:id="@+id/dialog_dynamic_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx:xx"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="28sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="2."
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="24sp"/>
+
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/colorTransparent"-->
+                <!--android:src="@drawable/ic_date_range_white_36dp"-->
+                <!--android:visibility="gone"/>-->
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_sun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_sun"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_mon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_mon"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_tue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_tue"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_wed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_wed"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_thu"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_fri"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <CheckBox
+                android:id="@+id/dialog_dynamic_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@null"
+                android:text="@string/weekday_sat"
+                android:textColor="@color/selector_dynamic_textcolor"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="3."
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="24sp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/colorTransparent"-->
+                <!--android:src="@drawable/ic_ac_unit_white_36dp"-->
+                <!--android:visibility="gone"/>-->
+
+            <GridView
+                android:id="@+id/item_dynamic_gv_show"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:numColumns="6"
+                android:stretchMode="columnWidth"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/enable"
+                android:textColor="@color/colorTextPrimary"/>
+
+            <Switch
+                android:id="@+id/dialog_dynamic_enable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumbTint="@color/selector_switch_thumb"
+                android:trackTint="@color/selector_switch_track"/>
+
+            <!--<Switch-->
+                <!--android:id="@+id/dialog_dynamic_enable"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:switchTextAppearance="@style/SwitchTextAppearance"-->
+                <!--android:showText="true"-->
+                <!--android:textOff="Disable"-->
+                <!--android:textOn="Enable"-->
+                <!--android:thumb="@drawable/switch_rectangle_thumb_selector"-->
+                <!--android:track="@drawable/switch_rectangle_track"/>-->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/dialog_dynamic_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTransparent"
+                android:text="@string/cancel"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/dialog_dynamic_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTransparent"
+                android:text="@string/save"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,12 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">150dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="seekbar_thumb_height">12dp</dimen>
+    <dimen name="seekbar_thumb_width">20dp</dimen>
+    <dimen name="seekbar_thumb_radius">4dp</dimen>
+</resources>

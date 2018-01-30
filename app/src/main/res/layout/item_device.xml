@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/item_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:background="@color/colorWindowBackgroud">
+
+    <ImageView
+        android:id="@+id/item_device_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@color/colorTransparent"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_bluetooth_white_48dp"/>
+
+    <TextView
+        android:id="@+id/item_device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_device_icon"
+        android:layout_toRightOf="@id/item_device_icon"
+        android:layout_marginLeft="16dp"
+        android:text="@string/item_device_name"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/item_device_tank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_device_icon"
+        android:layout_toRightOf="@id/item_device_icon"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/colorTextSecond"
+        android:textSize="12sp"/>
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.6dp"-->
+        <!--android:layout_below="@id/item_device_icon"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginRight="16dp"-->
+        <!--android:background="@color/colorDivider"/>-->
+</RelativeLayout>

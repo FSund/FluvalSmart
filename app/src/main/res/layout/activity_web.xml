@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_web"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.inledco.fluvalsmart.activity.WebActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/web_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:navigationIcon="@drawable/ic_chevron_left_white_36dp"
+        app:titleTextColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark" >
+    </android.support.v7.widget.Toolbar>
+    <ProgressBar
+        android:id="@+id/web_loading"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:max="100"
+        android:progress="0"
+        style="@android:style/Widget.ProgressBar.Horizontal"/>
+    <WebView
+        android:id="@+id/web_show"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">FluvalSmart</string>
+    <string name="main_device">Devices</string>
+    <string name="main_news">Web</string>
+    <string name="main_setting">Settings</string>
+    <string name="ble_no_support">This device does not support BLE 4.x.</string>
+    <string name="scan_devices">Devices</string>
+    <string name="scan_scan">Scan</string>
+    <string name="scan_stop">Stop</string>
+    <string name="item_device_name" translatable="false">device_name</string>
+    <string name="item_device_type" translatable="false">device_type</string>
+
+    <string name="mode_auto">Auto</string>
+    <string name="mode_manual">Manual</string>
+    <string name="light_channel_name" translatable="false">CHx</string>
+    <string name="light_channel_percent" translatable="false">xxx%</string>
+    <string name="light_auto_export">Export</string>
+    <string name="light_auto_save">Save as</string>
+    <string name="item_morning">Sunrise</string>
+    <string name="item_sunrise" translatable="false">Sunrise</string>
+    <string name="item_evening">Sunset</string>
+    <string name="item_sunset" translatable="false">Sunset</string>
+    <string name="item_midday">Midday</string>
+    <string name="item_night">Night</string>
+    <string name="timepicker_start">Start</string>
+    <string name="timepicker_end">End</string>
+    <string name="light_auto_preview">Preview</string>
+    <string name="light_auto_stop">Stop</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="rename_device">Rename Device</string>
+    <string name="rename">Rename</string>
+    <string name="input_newname">Please input a new device name.</string>
+    <string name="save_profile">Save profile as</string>
+    <string name="export_profile">Export profile</string>
+    <string name="input_profile_name">Please input the profile name.</string>
+    <string name="error_input_empty">Input can\'t be empty.</string>
+    <string name="setting_auth_ble">Allow auto open Bluetooth</string>
+    <string name="setting_exit_close_ble">Turn off Bluetooth when exiting</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_lang_english" translatable="false">English</string>
+    <string name="setting_lang_germany" translatable="false">Deutsch</string>
+    <string name="setting_lang_french" translatable="false">Français</string>
+    <string name="setting_profile">Profiles</string>
+    <string name="setting_about">About us</string>
+    <string name="setting_um">User Manual</string>
+    <string name="dialog_ok">OK</string>
+    <string name="setting_lang_chinese" translatable="false">中文</string>
+    <string name="load_success">Load Success</string>
+    <string name="remove_device">Remove device</string>
+    <string name="remove">Remove</string>
+    <string name="chn_name_red">Red</string>
+    <string name="chn_name_green">Green</string>
+    <string name="chn_name_blue">Blue</string>
+    <string name="chn_name_white">White</string>
+    <string name="chn_name_purple">Purple</string>
+    <string name="chn_name_deepblue">Deep Blue</string>
+    <string name="chn_name_Warmwhite">Warm White</string>
+    <string name="chn_name_coldwhite">Cold White</string>
+    <string name="chn_name_pink">Pink</string>
+    <string name="chn_name_purewhite">Pure White</string>
+    <string name="exit_app_tips">Click again to exit application.</string>
+    <string name="chn_name_cyan">Cyan</string>
+    <string name="snackbar_bluetooth_denied">Open bluetooth failed, try to open bluetooth in settings mode.</string>
+    <string name="snackbar_coarselocation_denied">Not allow to scan nearby bluetooth device when you forbid location services.</string>
+
+    <string name="msg_get_data_failed">Failed to up-load device data,click to try again.</string>
+    <string name="msg_connecting_device">Connecting device...</string>
+    <string name="msg_get_device_data">Connection succuss, up-loading device data...</string>
+    <string name="msg_get_data_success">Data up-load success.</string>
+    <string name="msg_disconnected">Device disconnected,click to connect device.</string>
+    <string name="item_action_upgrade">Upgrade</string>
+    <string name="setting_lang_spanish" translatable="false">Español</string>
+    <string name="light_auto_dynamic_disabled">Dynamic Effect Disabled</string>
+    <string name="weekday_sun">Sun</string>
+    <string name="weekday_mon">Mon</string>
+    <string name="weekday_tue">Tue</string>
+    <string name="weekday_wed">Wed</string>
+    <string name="weekday_thu">Thu</string>
+    <string name="weekday_fri">Fri</string>
+    <string name="weekday_sat">Sat</string>
+    <string name="light_auto_preset" translatable="false">Preset</string>
+    <string name="profile_deep_sea_glo" translatable="false">Deep Sea Glo</string>
+    <string name="profile_sunny_reef" translatable="false">Sunny Reef</string>
+    <string name="profile_color_boost" translatable="false">Color Boost</string>
+    <string name="profile_tropical_river" translatable="false">Tropical River</string>
+    <string name="profile_lake_malawi" translatable="false">Lake Malawi</string>
+    <string name="profile_planted" translatable="false">Planted</string>
+    <string name="profile_plant_boost" translatable="false">Plant Boost</string>
+    <string name="setting_version">Version</string>
+    <string name="device_press_to_scan">Press + to scan for new devices</string>
+    <string name="user_about_msg" translatable="false">Rolf C Hagen Inc. -- FluvalSmart App</string>
+    <string name="enable">Enable</string>
+</resources>

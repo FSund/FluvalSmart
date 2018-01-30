@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_light"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.inledco.fluvalsmart.activity.LightActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/light_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/ToolbarTheme"
+        android:fitsSystemWindows="true"
+        app:navigationIcon="@drawable/ic_chevron_left_white_36dp"
+        app:titleTextColor="@color/colorWhite" >
+    </android.support.v7.widget.Toolbar>
+    <android.support.design.widget.CheckableImageButton
+        android:id="@+id/light_sw_auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:visibility="gone"
+        android:src="@drawable/selector_enable"
+        android:background="@drawable/ripple_theme"/>
+    <FrameLayout
+        android:id="@+id/light_fl_show"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

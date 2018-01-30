@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="64dp"
+              tools:context="com.inledco.fluvalsmart.fragment.DataInvalidFragment">
+
+    <TextView
+        android:id="@+id/data_invalid_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:background="@drawable/ripple_theme"
+        android:drawableTop="@drawable/ic_bluetooth_disabled_grey_500_48dp"
+        android:text="@string/msg_connecting_device"/>
+
+</LinearLayout>

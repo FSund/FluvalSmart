@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/item_expan_chn_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="30"
+        android:paddingLeft="4dp"
+        android:textSize="14sp"
+        android:text="@string/light_channel_name"/>
+    <SeekBar
+        android:id="@+id/item_expan_chn_slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="100"
+        android:maxHeight="6dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/custom_seekebar_red"
+        android:thumb="@drawable/shape_thumb_red"/>
+    <TextView
+        android:id="@+id/item_expan_chn_percent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="15"
+        android:textSize="12sp"
+        android:text="@string/light_channel_percent"/>
+</LinearLayout>

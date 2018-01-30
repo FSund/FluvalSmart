@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#D50000</color>
+    <!--<color name="colorAccent">@color/colorTeal</color>-->
+    <!--<color name="colorAccent">#ff4081</color>-->
+    <!--<color name="colorAccent">#C51162</color>-->
+
+    <color name="colorRed">#D50000</color>
+    <color name="colorGreen">#00C853</color>
+    <color name="colorBlue">#2962FF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorGray">#FF9E9E9E</color>
+    <color name="colorDarkGray">#424242</color>
+    <color name="colorOrange">#FF6020</color>
+    <color name="colorPink">#C51162</color>
+    <color name="colorPurple">#AA00FF</color>
+    <color name="colorCyan">#00B8D4</color>
+    <color name="colorTeal">#00BFA5</color>
+    <color name="colorWarmWhite">#FFFFB969</color>
+    <color name="colorColdWhite">#FFC3C9FF</color>
+    <color name="colorPureWhite">#FFFFFFFF</color>
+
+    <color name="colorSkyBlue">#118BDF</color>
+    <color name="colorDarkGreen">#7F008080</color>
+
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorBackground">#29366A</color>
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecond">#E0E0E0</color>
+    <color name="colorWindowBackgroud">#2B386D</color>
+    <color name="colorToolbarBackgroud">#3F51B5</color>
+    <color name="colorNavigationBackground">#3F51B5</color>
+</resources>
