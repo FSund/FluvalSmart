@@ -24,7 +24,7 @@
         android:layout_marginRight="4dp"
         android:max="100"
         android:progress="0"
-        android:progressDrawable="@drawable/custom_seekebar_red"
+        android:progressDrawable="@drawable/custom_seekbar_red"
         android:thumb="@drawable/shape_thumb_red"/>
     <TextView
         android:id="@+id/item_expan_chn_percent"

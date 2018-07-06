@@ -195,7 +195,10 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
 
     public void refresh( String mac )
     {
-        mBleService.refresh( mac );
+        if ( mBleService != null )
+        {
+            mBleService.refresh( mac );
+        }
     }
 
     /**
@@ -292,7 +295,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
                 listener.onStartScan();
             }
         }
-
         BluetoothAdapter.getDefaultAdapter()
                         .startLeScan( this );
         mScanning = true;
@@ -414,7 +416,26 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      */
     public void readMfr ( @NonNull String mac )
     {
-        mBleService.readReg( mac, BleRegConstants.REG_ADV_MFR_SPC );
+        if ( mBleService != null )
+        {
+            mBleService.readReg( mac, BleRegConstants.REG_ADV_MFR_SPC );
+        }
+    }
+
+    public void readPassword ( @NonNull String mac )
+    {
+        if ( mBleService != null )
+        {
+            mBleService.readReg( mac, BleRegConstants.REG_PASSWORD );
+        }
+    }
+
+    public void setPassword ( @NonNull String mac, int psw )
+    {
+        if ( mBleService != null )
+        {
+            mBleService.setReg( mac, BleRegConstants.REG_PASSWORD, psw );
+        }
     }
 
     /**
@@ -425,7 +446,10 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      */
     public void setSlaverName ( @NonNull String mac, @NonNull String name )
     {
-        mBleService.setSlaverName( mac, name );
+        if ( mBleService != null )
+        {
+            mBleService.setSlaverName( mac, name );
+        }
     }
 
     /**
@@ -436,6 +460,10 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      */
     public void sendBytes ( @NonNull final String mac, @NonNull final byte[] bytes )
     {
+        if ( mac == null || bytes == null || mBleService == null )
+        {
+            return;
+        }
         if ( bytes.length <= DATA_MAX_LENGTH )
         {
             mBleService.send( mac, bytes, true );
@@ -446,7 +474,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
             public void run ()
             {
                 int idx = 0;
-                LogUtil.d( TAG, "sendBytes: " + DataUtil.byteArrayToHex( bytes ) );
                 while ( idx < bytes.length )
                 {
                     int size = Math.min( bytes.length - idx, DATA_MAX_LENGTH );
@@ -459,7 +486,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
                     int count = 0;
                     while ( !mBleService.send( mac, bts, true ) )
                     {
-                        LogUtil.d( TAG, "sendBytes: false" );
                         count++;
                         if ( count > 8 )
                         {
@@ -474,7 +500,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
                             e.printStackTrace();
                         }
                     }
-                    LogUtil.d( TAG, "sendBytes: true" );
                     try
                     {
                         Thread.sleep( 8 );
@@ -714,6 +739,21 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
                 for ( BleCommunicateListener listener : mBleCommunicateListeners )
                 {
                     listener.onReadMfr( s, s1 );
+                }
+            }
+        } else if ( i == BleRegConstants.REG_PASSWORD )
+        {
+            if ( mBleCommunicateListeners != null )
+            {
+                byte[] bytes = DataUtil.hexToByteArray( s1 );
+                if ( bytes != null && bytes.length == 4 )
+                {
+                    int psw = ( ( bytes[0] & 0xFF ) << 24 ) | ( ( bytes[1] & 0xFF ) << 16 ) | ( ( bytes[2] & 0xFF ) << 8 ) | ( bytes[3] & 0xFF );
+                    LogUtil.d( TAG, "onRegRead: " + psw );
+                    for ( BleCommunicateListener listener : mBleCommunicateListeners )
+                    {
+                        listener.onReadPassword( s, psw );
+                    }
                 }
             }
         }

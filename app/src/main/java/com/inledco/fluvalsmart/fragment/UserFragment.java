@@ -40,7 +40,7 @@ public class UserFragment extends BaseFragment
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
-        View view = inflater.inflate( R.layout.fragment_user, null );
+        View view = inflater.inflate( R.layout.fragment_user, container, false );
 
         initView( view );
         initData();
@@ -51,14 +51,14 @@ public class UserFragment extends BaseFragment
     @Override
     protected void initView ( View view )
     {
-        setting_about = (TextView) view.findViewById( R.id.setting_about );
-        setting_version = (TextView) view.findViewById( R.id.setting_version );
-        setting_um = (TextView) view.findViewById( R.id.setting_um );
-        setting_profile = (TextView) view.findViewById( R.id.setting_profile );
-        setting_item_lang = (LinearLayout) view.findViewById( R.id.setting_item_lang );
-        setting_lang = (TextView) view.findViewById( R.id.setting_lang );
-        setting_exit_close_ble = (SwitchCompat) view.findViewById( R.id.setting_exit_close_ble );
-        setting_auth_ble = (SwitchCompat) view.findViewById( R.id.setting_auth_ble );
+        setting_about = view.findViewById( R.id.setting_about );
+        setting_version = view.findViewById( R.id.setting_version );
+        setting_um = view.findViewById( R.id.setting_um );
+        setting_profile = view.findViewById( R.id.setting_profile );
+        setting_item_lang = view.findViewById( R.id.setting_item_lang );
+        setting_lang = view.findViewById( R.id.setting_lang );
+        setting_exit_close_ble = view.findViewById( R.id.setting_exit_close_ble );
+        setting_auth_ble = view.findViewById( R.id.setting_auth_ble );
     }
 
     @Override

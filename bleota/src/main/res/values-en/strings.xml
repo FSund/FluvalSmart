@@ -5,11 +5,11 @@
     <string name="ota_firmware_damaged">Firmware may be damaged, please re-download.</string>
     <string name="ota_analysis_success">Analysis firmware success.</string>
     <string name="ota_outof_range">Upgrade firmware failed,address out of range.</string>
-    <string name="ota_erasefirmware">Erase firmware success.\r\nUpgrading firmware...</string>
+    <string name="ota_erasefirmware">Erase firmware success.\nUpgrading firmware...</string>
     <string name="ota_erase_failed">Erase firmware failed, address out of range.</string>
     <string name="ota_check_failed">Verification failed, address out of range.</string>
     <string name="ota_check_success">Verification successful.</string>
-    <string name="ota_download_success">100%\r\nDownload success.</string>
+    <string name="ota_download_success">100%\nDownload success.</string>
     <string name="ota_enter_bootloader">Download success.</string>
     <string name="ota_reset_tobootloader">Rebooting to enter bootloader.r</string>
     <string name="ota_invalid_command">Invalid command.</string>
@@ -24,13 +24,13 @@
     <string name="ota_msg_unsupport_version">This device is unable to upgrade,Requires firmware version V1.02. or higher</string>
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware does not exist.</string>
-    <string name="ota_warning">Warning:\r\n\t\tPlease don\'t exit app, close bluetooth and power off device during upgrading\r\n\t\tPlease keep good communication between device and mobile phone</string>
+    <string name="ota_warning">Warning:\n\t\tPlease don\'t exit app, close bluetooth and power off device during upgrading\n\t\tPlease keep good communication between device and mobile phone</string>
     <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
     <string name="ota_warning_title">Warning</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_continue">Continue</string>
     <string name="ota_connecting">Connecting device...</string>
-    <string name="ota_upgrade_success">100%\r\nUpgrade success,device rebooting...</string>
+    <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
     <string name="ota_cancel">Cancel</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
 </resources>

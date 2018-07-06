@@ -24,10 +24,10 @@ public class ExpanSliderAdapter extends BaseAdapter
 {
     private Context mContext;
     private short devid;
-    private ArrayList<Channel> mChannels;
+    private ArrayList< Channel > mChannels;
     private ItemChangeListener mItemChangeListener;
 
-    public ExpanSliderAdapter ( Context context, short id, ArrayList< Channel > channels, @NonNull ItemChangeListener listener )
+    public ExpanSliderAdapter( Context context, short id, ArrayList< Channel > channels, @NonNull ItemChangeListener listener )
     {
         mContext = context;
         devid = id;
@@ -36,36 +36,38 @@ public class ExpanSliderAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount ()
+    public int getCount()
     {
         return mChannels == null ? 0 : mChannels.size();
     }
 
     @Override
-    public Object getItem ( int position )
+    public Object getItem( int position )
     {
         return mChannels == null ? null : mChannels.get( position );
     }
 
     @Override
-    public long getItemId ( int position )
+    public long getItemId( int position )
     {
         return position;
     }
 
     @Override
-    public View getView ( final int position, View convertView, ViewGroup parent )
+    public View getView( final int position, View convertView, ViewGroup parent )
     {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if ( convertView == null )
         {
-            convertView = LayoutInflater.from( mContext ).inflate( R.layout.item_daynight_expan_slider, null );
+            convertView = LayoutInflater.from( mContext )
+                                        .inflate( R.layout.item_daynight_expan_slider, parent, false );
             holder = new ViewHolder();
-            holder.tv_name = (TextView) convertView.findViewById( R.id.item_expan_chn_name );
-            holder.slider = (SeekBar) convertView.findViewById( R.id.item_expan_chn_slider );
-            holder.tv_percent = (TextView) convertView.findViewById( R.id.item_expan_chn_percent );
+            holder.tv_name = convertView.findViewById( R.id.item_expan_chn_name );
+            holder.slider = convertView.findViewById( R.id.item_expan_chn_slider );
+            holder.tv_percent = convertView.findViewById( R.id.item_expan_chn_percent );
             convertView.setTag( holder );
         }
+        else
         {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -76,19 +78,22 @@ public class ExpanSliderAdapter extends BaseAdapter
         int[] seekBars = DeviceUtil.getSeekbar( devid );
         if ( seekBars != null && position < seekBars.length )
         {
-            Drawable progressDrawable = mContext.getResources().getDrawable( seekBars[position] );
+            Drawable progressDrawable = mContext.getResources()
+                                                .getDrawable( seekBars[position] );
             holder.slider.setProgressDrawable( progressDrawable );
         }
         if ( thumbs != null && position < thumbs.length )
         {
-            Drawable thumb = mContext.getResources().getDrawable( thumbs[position] );
+            Drawable thumb = mContext.getResources()
+                                     .getDrawable( thumbs[position] );
             holder.slider.setThumb( thumb );
         }
         holder.slider.setProgress( channel.getValue() );
         percent.setText( channel.getValue() + "%" );
-        holder.slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+        holder.slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener()
+        {
             @Override
-            public void onProgressChanged ( SeekBar seekBar, int progress, boolean fromUser )
+            public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser )
             {
                 if ( fromUser )
                 {
@@ -102,13 +107,13 @@ public class ExpanSliderAdapter extends BaseAdapter
             }
 
             @Override
-            public void onStartTrackingTouch ( SeekBar seekBar )
+            public void onStartTrackingTouch( SeekBar seekBar )
             {
 
             }
 
             @Override
-            public void onStopTrackingTouch ( SeekBar seekBar )
+            public void onStopTrackingTouch( SeekBar seekBar )
             {
 
             }

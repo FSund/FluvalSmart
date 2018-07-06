@@ -6,11 +6,11 @@
     <string name="ota_firmware_damaged">El firmware puede estar dañado, por favor vuelva a descargarlo.</string>
     <string name="ota_analysis_success">Se ha realizado el análisis del firmware correctamente.</string>
     <string name="ota_outof_range">Actualización fallida del firmware, dirección fuera de rango.</string>
-    <string name="ota_erasefirmware">El firmware se ha borrado correctamente. Actualizando firmware...</string>
+    <string name="ota_erasefirmware">El firmware se ha borrado correctamente.\nActualizando firmware...</string>
     <string name="ota_erase_failed">El firmware no se ha borrado correctamente, dirección fuera de rango.</string>
     <string name="ota_check_failed">Verificación fallida, dirección fuera de rango.</string>
     <string name="ota_check_success">Verificación correcta.</string>
-    <string name="ota_download_success">100% Éxito en la descarga.</string>
+    <string name="ota_download_success">100%\nÉxito en la descarga.</string>
     <string name="ota_enter_bootloader">Entrando en modo de inicialización.</string>
     <string name="ota_reset_tobootloader">Inicializando para entrar al bootloader. La actualización continuará después de 30 segundos, por favor espere...</string>
     <string name="ota_invalid_command">Comando inválido.</string>
@@ -27,10 +27,11 @@
     <string name="ota_msg_remote_not_exists">No existe firmware remoto.</string>
     <string name="ota_warning_msg">La actualización tiene riesgos, la actualización fallida puede causar que el dispositivo no funcione.</string>
     <string name="ota_warning_title">Advertencia</string>
-    <string name="ota_warning">Advertencia: Por favor no salga de la aplicación, cierre el Bluetooth o apague el dispositivo durante la actualización. Por favor mantenga una buena comunicación entre el dispositivo y el móvil.</string>
+    <string name="ota_warning">Advertencia:\n\t\tPor favor no salga de la aplicación, cierre el Bluetooth o apague el dispositivo durante la
+        actualización.\n\t\tPor favor mantenga una buena comunicación entre el dispositivo y el móvil.</string>
     <string name="ota_msg_reupgrade">Por favor conecte el dispositivo manualmente y actualice después de haberlo conectado.</string>
     <string name="ota_continue">Continuar</string>
-    <string name="ota_upgrade_success">100% Éxito en la actualización, dispositivo inicializando...</string>
+    <string name="ota_upgrade_success">100%\nÉxito en la actualización, dispositivo inicializando...</string>
     <string name="ota_cancel">Cancelar</string>
     <string name="ota_msg_check_version">Por favor revisar actualización.</string>
 </resources>

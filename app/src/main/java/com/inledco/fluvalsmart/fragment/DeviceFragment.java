@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
@@ -16,9 +19,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
 import com.inledco.bleota.BleOTAActivity;
 import com.inledco.fluvalsmart.R;
@@ -51,7 +58,7 @@ public class DeviceFragment extends BaseFragment
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
-        View view = inflater.inflate( R.layout.fragment_device, null );
+        View view = inflater.inflate( R.layout.fragment_device, container, false );
         initView( view );
         initEvent();
         return view;
@@ -96,9 +103,9 @@ public class DeviceFragment extends BaseFragment
     @Override
     protected void initView ( View view )
     {
-        device_iv_add = (ImageView) view.findViewById( R.id.device_iv_add );
-        device_tv_add = (TextView) view.findViewById( R.id.device_tv_add );
-        device_rv_show = (RecyclerView) view.findViewById( R.id.device_rv_show );
+        device_iv_add = view.findViewById( R.id.device_iv_add );
+        device_tv_add = view.findViewById( R.id.device_tv_add );
+        device_rv_show = view.findViewById( R.id.device_rv_show );
         device_rv_show.setLayoutManager( new LinearLayoutManager( getContext(), LinearLayoutManager.VERTICAL, false ) );
         device_rv_show.addItemDecoration( new DividerItemDecoration( getContext(), OrientationHelper.VERTICAL ) );
     }
@@ -148,6 +155,9 @@ public class DeviceFragment extends BaseFragment
                 {
                     case R.id.item_action_remove:
                         showRemoveDeviceDialog( position );
+                        break;
+                    case R.id.item_action_reset_psw:
+                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
                         break;
                     case R.id.item_action_upgrade:
                         Intent intent = new Intent( getContext(), BleOTAActivity.class );
@@ -215,5 +225,130 @@ public class DeviceFragment extends BaseFragment
 //                setFlag();
             }
         } );
+    }
+
+    private void showResetPasswordDialog ( @NonNull final String address )
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        final AlertDialog dialog = builder.create();
+        View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_reset_password, null, false );
+        final EditText reset_key = (EditText) view.findViewById( R.id.reset_psw_key );
+        Button btn_cancel = (Button) view.findViewById( R.id.reset_psw_cancel );
+        Button btn_reset = (Button) view.findViewById( R.id.reset_psw_reset );
+        final CountDownTimer tmr = new CountDownTimer( 4000, 4000 ) {
+            @Override
+            public void onTick ( long millisUntilFinished )
+            {
+
+            }
+
+            @Override
+            public void onFinish ()
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                Toast.makeText( getContext(), R.string.reset_password_fail, Toast.LENGTH_SHORT )
+                     .show();
+            }
+        };
+        final BleCommunicateListener mListener = new BleCommunicateListener() {
+            @Override
+            public void onDataValid ( final String mac )
+            {
+                if ( mac.equals( address ) )
+                {
+                    BleManager.getInstance().setPassword( mac, 0 );
+                    new Handler().postDelayed( new Runnable() {
+                        @Override
+                        public void run ()
+                        {
+                            BleManager.getInstance().readPassword( mac );
+                        }
+                    }, 200 );
+                }
+            }
+
+            @Override
+            public void onDataInvalid ( String mac )
+            {
+
+            }
+
+            @Override
+            public void onReadMfr ( String mac, String s )
+            {
+
+            }
+
+            @Override
+            public void onReadPassword ( String mac, final int psw )
+            {
+                if ( mac.equals( address ) )
+                {
+                    tmr.cancel();
+                    getActivity().runOnUiThread( new Runnable() {
+                        @Override
+                        public void run ()
+                        {
+                            if ( psw == 0 )
+                            {
+                                dialog.dismiss();
+                                Toast.makeText( getContext(), R.string.reset_password_success, Toast.LENGTH_SHORT )
+                                     .show();
+                            }
+                            else
+                            {
+                                Toast.makeText( getContext(), R.string.reset_password_fail, Toast.LENGTH_SHORT )
+                                     .show();
+                            }
+                        }
+                    } );
+                    BleManager.getInstance().disconnectDevice( mac );
+                }
+            }
+
+            @Override
+            public void onDataReceived ( String mac, ArrayList< Byte > list )
+            {
+
+            }
+        };
+        btn_cancel.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View v )
+            {
+                dialog.dismiss();
+            }
+        } );
+        btn_reset.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View v )
+            {
+                String key = reset_key.getText().toString();
+                if ( key.equals( "*#reset password#*" ) )
+                {
+                    BleManager.getInstance().connectDevice( address );
+                    tmr.start();
+                }
+                else
+                {
+                    Toast.makeText( getContext(), "", Toast.LENGTH_SHORT )
+                         .show();
+                    reset_key.setError( getString( R.string.error_reset_key_wrong ) );
+                }
+            }
+        } );
+        dialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss ( DialogInterface dialog )
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                BleManager.getInstance().removeBleCommunicateListener( mListener );
+            }
+        } );
+        dialog.setTitle( R.string.reset_password );
+        dialog.setCanceledOnTouchOutside( false );
+        dialog.setView( view );
+        dialog.show();
+        BleManager.getInstance().addBleCommunicateListener( mListener );
     }
 }

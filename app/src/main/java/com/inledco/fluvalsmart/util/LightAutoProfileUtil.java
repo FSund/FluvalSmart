@@ -42,7 +42,7 @@ public class LightAutoProfileUtil
     {
         SharedPreferences sp = context.getSharedPreferences( LIGHT_AUTO_PROFILE_FILENAME + devid,
                                                              Context.MODE_PRIVATE );
-        Map<String, LightAuto> map = DeviceUtil.getPresetProfiles( devid, hasAutoDynamic );
+        Map<String, LightAuto> map = DeviceUtil.getPresetProfiles( context, devid, hasAutoDynamic );
         if ( map == null )
         {
             map = new HashMap<>();

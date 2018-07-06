@@ -28,14 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#55000000"
-            android:gravity="center_vertical|right"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/dialog_daynight_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorTransparent"
+                android:background="@color/colorGray"
+                android:layout_marginRight="16dp"
                 android:text="@string/cancel"
                 android:textAllCaps="false"/>
 
@@ -43,7 +44,8 @@
                 android:id="@+id/dialog_daynight_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorTransparent"
+                android:background="@color/colorPrimary"
+                android:layout_marginLeft="16dp"
                 android:text="@string/save"
                 android:textAllCaps="false"/>
         </android.support.v7.widget.ButtonBarLayout>

@@ -51,7 +51,7 @@ public class ScanActivity extends BaseActivity
 
     private ArrayList<SelectDevice> mDevices;
     private ScanAdapter mScanAdapter;
-    private Handler mHandler;
+    private static Handler mHandler;
 
     private BleScanListener mScanListener;
     private BleCommunicateListener mCommunicateListener;
@@ -110,11 +110,11 @@ public class ScanActivity extends BaseActivity
     @Override
     protected void initView ()
     {
-        scan_toolbar = (Toolbar) findViewById( R.id.scan_toolbar );
+        scan_toolbar = findViewById( R.id.scan_toolbar );
         scan_toolbar.setTitle( "" );
         setSupportActionBar( scan_toolbar );
-        scan_rv_show = (RecyclerView) findViewById( R.id.scan_rv_show );
-        scan_fab_confirm = (FloatingActionButton) findViewById( R.id.scasn_fab_confirm );
+        scan_rv_show = findViewById( R.id.scan_rv_show );
+        scan_fab_confirm = findViewById( R.id.scasn_fab_confirm );
 
         scan_rv_show.setLayoutManager( new LinearLayoutManager( ScanActivity.this,
                                                                 LinearLayoutManager.VERTICAL,
@@ -234,6 +234,12 @@ public class ScanActivity extends BaseActivity
             {
                 BleManager.getInstance().disconnectDevice( mac );
                 decodeMfrData( mac, s );
+            }
+
+            @Override
+            public void onReadPassword ( String mac, int psw )
+            {
+
             }
 
             @Override

@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity
         initEvent();
         initData();
 
+
 //        Setting.initSetting( this );
 
 //        if ( BleManager.getInstance().checkBleSupported( this ) )
@@ -125,8 +126,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initView ()
     {
-        main_bottom_navigation = (BottomNavigationView) findViewById( R.id.main_bottom_navigation );
-        toolbar = (Toolbar) findViewById( R.id.toolbar );
+        main_bottom_navigation = findViewById( R.id.main_bottom_navigation );
+        toolbar = findViewById( R.id.toolbar );
         toolbar.setTitle( "" );
         setSupportActionBar( toolbar );
     }

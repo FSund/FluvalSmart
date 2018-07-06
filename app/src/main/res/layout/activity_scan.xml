@@ -44,7 +44,6 @@
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_confirm"
         android:visibility="gone"
-        android:clickable="true"
         android:background="?attr/selectableItemBackground"
         app:elevation="8dp"
         app:fabSize="normal"/>

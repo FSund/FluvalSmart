@@ -64,11 +64,11 @@ public class SliderAdapter extends BaseAdapter
         if ( convertView == null )
         {
             convertView = LayoutInflater.from( mContext )
-                                        .inflate( R.layout.item_slider, null );
+                                        .inflate( R.layout.item_slider, parent, false );
             holder = new ViewHolder();
-            holder.tv_name = (TextView) convertView.findViewById( R.id.slider_chn_name );
-            holder.slider = (SeekBar) convertView.findViewById( R.id.item_chn_slider );
-            holder.tv_percent = (TextView) convertView.findViewById( R.id.item_chn_percent );
+            holder.tv_name = convertView.findViewById( R.id.slider_chn_name );
+            holder.slider = convertView.findViewById( R.id.item_chn_slider );
+            holder.tv_percent = convertView.findViewById( R.id.item_chn_percent );
             convertView.setTag( holder );
         }
         else

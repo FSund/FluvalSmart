@@ -14,5 +14,7 @@ public interface BleCommunicateListener
 
     void onReadMfr ( String mac, String s );
 
+    void onReadPassword ( String mac, int psw );
+
     void onDataReceived ( String mac, ArrayList< Byte > list );
 }

@@ -71,7 +71,7 @@ public class DataInvalidFragment extends BaseFragment
     @Override
     protected void initView ( View view )
     {
-        data_invalid_msg = (TextView) view.findViewById( R.id.data_invalid_msg );
+        data_invalid_msg = view.findViewById( R.id.data_invalid_msg );
     }
 
     @Override

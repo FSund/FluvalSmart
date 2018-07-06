@@ -1,5 +1,6 @@
 package com.inledco.fluvalsmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CheckableImageButton;
@@ -138,38 +139,38 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
     @Override
     protected void initView( View view )
     {
-        rgbw_preset1 = (ImageButton) view.findViewById( R.id.rgbw_preset1 );
-        rgbw_preset2 = (ImageButton) view.findViewById( R.id.rgbw_preset2 );
-        rgbw_preset3 = (ImageButton) view.findViewById( R.id.rgbw_preset3 );
-        rgbw_preset4 = (ImageButton) view.findViewById( R.id.rgbw_preset4 );
-        rgbw_preset5 = (ImageButton) view.findViewById( R.id.rgbw_preset5 );
-        rgbw_preset6 = (ImageButton) view.findViewById( R.id.rgbw_preset6 );
-        rgbw_onoff = (CheckableImageButton) view.findViewById( R.id.rgbw_onoff );
-        rgbw_pause = (CheckableImageButton) view.findViewById( R.id.rgbw_pause );
-        rgbw_inc_red = (ImageButton) view.findViewById( R.id.rgbw_inc_red);
-        rgbw_inc_green = (ImageButton) view.findViewById( R.id.rgbw_inc_green);
-        rgbw_inc_blue = (ImageButton) view.findViewById( R.id.rgbw_inc_blue);
-        rgbw_inc_white = (ImageButton) view.findViewById( R.id.rgbw_inc_white);
-        rgbw_dec_red = (ImageButton) view.findViewById( R.id.rgbw_dec_red);
-        rgbw_dec_green = (ImageButton) view.findViewById( R.id.rgbw_dec_green);
-        rgbw_dec_blue = (ImageButton) view.findViewById( R.id.rgbw_dec_blue);
-        rgbw_dec_white = (ImageButton) view.findViewById( R.id.rgbw_dec_white);
-        rgbw_p1 = (ArcProgressStackView) view.findViewById( R.id.rgbw_p1 );
-        rgbw_p2 = (ArcProgressStackView) view.findViewById( R.id.rgbw_p2 );
-        rgbw_p3 = (ArcProgressStackView) view.findViewById( R.id.rgbw_p3 );
-        rgbw_p4 = (ArcProgressStackView) view.findViewById( R.id.rgbw_p4 );
-        rgbw_moon1 = (ImageButton) view.findViewById( R.id.rgbw_moon1);
-        rgbw_moon2 = (ImageButton) view.findViewById( R.id.rgbw_moon2);
-        rgbw_moon3 = (ImageButton) view.findViewById( R.id.rgbw_moon3);
-        rgbw_sunrs = (ImageButton) view.findViewById( R.id.rgbw_sunrs);
-        rgbw_cloud1 = (ImageButton) view.findViewById( R.id.rgbw_cloud1);
-        rgbw_cloud2 = (ImageButton) view.findViewById( R.id.rgbw_cloud2);
-        rgbw_cloud3 = (ImageButton) view.findViewById( R.id.rgbw_cloud3);
-        rgbw_cloud4 = (ImageButton) view.findViewById( R.id.rgbw_cloud4);
-        rgbw_thunder1 = (ImageButton) view.findViewById( R.id.rgbw_thunder1);
-        rgbw_thunder2 = (ImageButton) view.findViewById( R.id.rgbw_thunder2);
-        rgbw_thunder3 = (ImageButton) view.findViewById( R.id.rgbw_thunder3);
-        rgbw_allcolor = (ImageButton) view.findViewById( R.id.rgbw_allcolor);
+        rgbw_preset1 = view.findViewById( R.id.rgbw_preset1 );
+        rgbw_preset2 = view.findViewById( R.id.rgbw_preset2 );
+        rgbw_preset3 = view.findViewById( R.id.rgbw_preset3 );
+        rgbw_preset4 = view.findViewById( R.id.rgbw_preset4 );
+        rgbw_preset5 = view.findViewById( R.id.rgbw_preset5 );
+        rgbw_preset6 = view.findViewById( R.id.rgbw_preset6 );
+        rgbw_onoff = view.findViewById( R.id.rgbw_onoff );
+        rgbw_pause = view.findViewById( R.id.rgbw_pause );
+        rgbw_inc_red = view.findViewById( R.id.rgbw_inc_red );
+        rgbw_inc_green = view.findViewById( R.id.rgbw_inc_green );
+        rgbw_inc_blue = view.findViewById( R.id.rgbw_inc_blue );
+        rgbw_inc_white = view.findViewById( R.id.rgbw_inc_white );
+        rgbw_dec_red = view.findViewById( R.id.rgbw_dec_red );
+        rgbw_dec_green = view.findViewById( R.id.rgbw_dec_green );
+        rgbw_dec_blue = view.findViewById( R.id.rgbw_dec_blue );
+        rgbw_dec_white = view.findViewById( R.id.rgbw_dec_white );
+        rgbw_p1 = view.findViewById( R.id.rgbw_p1 );
+        rgbw_p2 = view.findViewById( R.id.rgbw_p2 );
+        rgbw_p3 = view.findViewById( R.id.rgbw_p3 );
+        rgbw_p4 = view.findViewById( R.id.rgbw_p4 );
+        rgbw_moon1 = view.findViewById( R.id.rgbw_moon1 );
+        rgbw_moon2 = view.findViewById( R.id.rgbw_moon2 );
+        rgbw_moon3 = view.findViewById( R.id.rgbw_moon3 );
+        rgbw_sunrs = view.findViewById( R.id.rgbw_sunrs );
+        rgbw_cloud1 = view.findViewById( R.id.rgbw_cloud1 );
+        rgbw_cloud2 = view.findViewById( R.id.rgbw_cloud2 );
+        rgbw_cloud3 = view.findViewById( R.id.rgbw_cloud3 );
+        rgbw_cloud4 = view.findViewById( R.id.rgbw_cloud4 );
+        rgbw_thunder1 = view.findViewById( R.id.rgbw_thunder1 );
+        rgbw_thunder2 = view.findViewById( R.id.rgbw_thunder2 );
+        rgbw_thunder3 = view.findViewById( R.id.rgbw_thunder3 );
+        rgbw_allcolor = view.findViewById( R.id.rgbw_allcolor );
         ArrayList<ArcProgressStackView.Model> models1 = new ArrayList<>();
         ArrayList<ArcProgressStackView.Model> models2 = new ArrayList<>();
         ArrayList<ArcProgressStackView.Model> models3 = new ArrayList<>();
@@ -268,6 +269,12 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
             }
 
             @Override
+            public void onReadPassword ( String mac, int psw )
+            {
+
+            }
+
+            @Override
             public void onDataReceived ( String mac, ArrayList< Byte > list )
             {
                 if ( mac.equals( mAddress ) )
@@ -292,6 +299,7 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         refreshData();
     }
 
+    @SuppressLint ( "RestrictedApi" )
     private void refreshData()
     {
         rgbw_onoff.setChecked( mLightManual.isOn() );
@@ -337,6 +345,7 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         return chn;
     }
 
+    @SuppressLint ( "RestrictedApi" )
     @Override
     public void onClick ( View view )
     {

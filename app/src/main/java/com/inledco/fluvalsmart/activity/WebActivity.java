@@ -32,9 +32,9 @@ public class WebActivity extends BaseActivity
     @Override
     protected void initView ()
     {
-        web_toolbar = (Toolbar) findViewById( R.id.web_toolbar );
-        web_loading = (ProgressBar) findViewById( R.id.web_loading );
-        web_show = (WebView) findViewById( R.id.web_show );
+        web_toolbar = findViewById( R.id.web_toolbar );
+        web_loading = findViewById( R.id.web_loading );
+        web_show = findViewById( R.id.web_show );
 
         setSupportActionBar( web_toolbar );
     }
@@ -55,9 +55,27 @@ public class WebActivity extends BaseActivity
             @Override
             public void onClick ( View view )
             {
-                finish();
+                if ( web_show.canGoBack() )
+                {
+                    web_show.goBack();
+                }
+                else
+                {
+                    finish();
+                }
             }
         } );
+    }
+
+    @Override
+    public void onBackPressed ()
+    {
+        if ( web_show.canGoBack() )
+        {
+            web_show.goBack();
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void showWebView ( final WebView web, String url )

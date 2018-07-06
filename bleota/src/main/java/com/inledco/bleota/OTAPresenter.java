@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static com.inledco.bleota.OTAConstants.OTA_CMD_ERASE_FLASH;
-import static com.inledco.bleota.OTAConstants.OTA_CMD_WRITE_FLASH;
-
 /**
  * Created by liruya on 2017/5/8.
  */
@@ -146,6 +143,12 @@ public class OTAPresenter implements OTAContract.Presenter
                 {
                     decodeMfrData( s );
                 }
+            }
+
+            @Override
+            public void onReadPassword ( String mac, int psw )
+            {
+
             }
 
             @Override
@@ -407,7 +410,7 @@ public class OTAPresenter implements OTAContract.Presenter
             {
                 byte[] bytes = new byte[frame.getData_length() + 4];
                 int addr = frame.getAddress();
-                bytes[0] = OTA_CMD_WRITE_FLASH;
+                bytes[0] = OTAConstants.OTA_CMD_WRITE_FLASH;
                 bytes[1] = (byte) frame.getData_length();
                 bytes[2] = (byte) ( addr & 0x00FF );
                 bytes[3] = (byte) ( ( addr & 0xFF00 ) >> 8 );
@@ -416,7 +419,7 @@ public class OTAPresenter implements OTAContract.Presenter
                     bytes[4 + i] = frame.getData_list()
                                         .get( i );
                 }
-                mCurrentCommand = OTA_CMD_WRITE_FLASH;
+                mCurrentCommand = OTAConstants.OTA_CMD_WRITE_FLASH;
                 BleManager.getInstance()
                           .sendBytes( mAddress, bytes );
                 mCountDownTimer.start();
@@ -525,7 +528,7 @@ public class OTAPresenter implements OTAContract.Presenter
 //                BleManager.getInstance().clearReceiveBuffer();
                 break;
 
-            case OTA_CMD_ERASE_FLASH:
+            case OTAConstants.OTA_CMD_ERASE_FLASH:
                 if ( length == 1 )
                 {
                     result = list.get( 4 );

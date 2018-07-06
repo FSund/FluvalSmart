@@ -6,18 +6,18 @@
     <string name="ota_analysis_success">Analysis firmware success.</string>
     <string name="ota_bootloader_version" translatable="false">Bootloader Version: V</string>
     <string name="ota_outof_range">Upgrade firmware failed,address out of range.</string>
-    <string name="ota_erasefirmware">Erase firmware success.\r\nUpgrading firmware...</string>
+    <string name="ota_erasefirmware">Erase firmware success.\nUpgrading firmware...</string>
     <string name="ota_erase_failed">Erase firmware faile,address out of range.</string>
     <string name="ota_check_failed">Verification failed, address out of range.</string>
     <string name="ota_check_success">Verification success.</string>
-    <string name="ota_upgrade_success">100%\r\nUpgrade success,device rebooting...</string>
+    <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
     <string name="ota_enter_bootloader">Enter bootloader mode.</string>
-    <string name="ota_reset_tobootloader">Rebooting to enter bootloader.\r\nUpgrade will continue after 30 seconds,please wait...</string>
+    <string name="ota_reset_tobootloader">Rebooting to enter bootloader.\nUpgrade will continue after 30 seconds,please wait...</string>
     <string name="ota_invalid_command">Invalid command.</string>
     <string name="ota_connect_success">Device connection successful.</string>
     <string name="ota_disconnect">Device disconnected.</string>
     <string name="ota_download_failed">Download failed.</string>
-    <string name="ota_download_success">100%\r\nDownload success.</string>
+    <string name="ota_download_success">100%\nDownload success.</string>
     <string name="ota_download">Download</string>
     <string name="ota_redownload">Re-Download</string>
     <string name="ota_title">Device Firmware Upgrade</string>
@@ -27,7 +27,7 @@
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
-    <string name="ota_warning">Warning:\r\n\t\tPlease don\'t exit app, close bluetooth and power off device during upgrading\r\n\t\tPlease keep good
+    <string name="ota_warning">Warning:\n\t\tPlease don\'t exit app, close bluetooth and power off device during upgrading\n\t\tPlease keep good
         communication between device and mobile phone</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_warning_title">Warning</string>

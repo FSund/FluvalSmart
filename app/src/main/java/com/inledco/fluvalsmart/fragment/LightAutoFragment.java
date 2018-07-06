@@ -1,7 +1,9 @@
 package com.inledco.fluvalsmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
@@ -121,7 +123,7 @@ public class LightAutoFragment extends BaseFragment
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
-        View view = inflater.inflate( R.layout.fragment_light_auto, null );
+        View view = inflater.inflate( R.layout.fragment_light_auto, container, false );
         initView( view );
         initData();
         initEvent();
@@ -154,17 +156,17 @@ public class LightAutoFragment extends BaseFragment
     @Override
     protected void initView ( View view )
     {
-        auto_sunrs_time = (TextView) view.findViewById( R.id.auto_sunrs_time );
-        auto_midday_brt = (TextView) view.findViewById( R.id.auto_midday_brt );
-        auto_sunset_time = (TextView) view.findViewById( R.id.auto_sunset_time );
-        auto_night_brt = (TextView) view.findViewById( R.id.auto_night_brt );
-        light_auto_preview = (ToggleButton) view.findViewById( R.id.light_auto_preview );
-        lightautoexport = (Button) view.findViewById( R.id.light_auto_export );
-        lightautoimport = (Button) view.findViewById( R.id.light_auto_import );
-        lightautochart = (LineChart) view.findViewById( R.id.light_auto_chart );
-        light_auto_dynamic_show = (LinearLayout) view.findViewById( R.id.light_auto_dynamic_show );
-        light_auto_dynamic_icon = (ImageView) view.findViewById( R.id.light_auto_dynamic_icon );
-        light_auto_dynamic = (TextView) view.findViewById( R.id.light_auto_dynamic );
+        auto_sunrs_time = view.findViewById( R.id.auto_sunrs_time );
+        auto_midday_brt = view.findViewById( R.id.auto_midday_brt );
+        auto_sunset_time = view.findViewById( R.id.auto_sunset_time );
+        auto_night_brt = view.findViewById( R.id.auto_night_brt );
+        light_auto_preview = view.findViewById( R.id.light_auto_preview );
+        lightautoexport = view.findViewById( R.id.light_auto_export );
+        lightautoimport = view.findViewById( R.id.light_auto_import );
+        lightautochart = view.findViewById( R.id.light_auto_chart );
+        light_auto_dynamic_show = view.findViewById( R.id.light_auto_dynamic_show );
+        light_auto_dynamic_icon = view.findViewById( R.id.light_auto_dynamic_icon );
+        light_auto_dynamic = view.findViewById( R.id.light_auto_dynamic );
 
         XAxis xAxis = lightautochart.getXAxis();
         YAxis axisLeft = lightautochart.getAxisLeft();
@@ -246,6 +248,12 @@ public class LightAutoFragment extends BaseFragment
 
             @Override
             public void onReadMfr ( String mac, String s )
+            {
+
+            }
+
+            @Override
+            public void onReadPassword ( String mac, int psw )
             {
 
             }
@@ -338,9 +346,15 @@ public class LightAutoFragment extends BaseFragment
         mDataSets.clear();
         int dlen = mLightAuto.getDayBright().length;
         int nlen = mLightAuto.getNightBright().length;
+        Context context = getContext();
+        if ( context == null )
+        {
+            return;
+        }
+        Channel[] channels = DeviceUtil.getLightChannel( context, devid );
         if ( dlen == nlen )
         {
-            Channel[] channels = DeviceUtil.getLightChannel( getContext(), devid );
+
             for ( int i = 0; i < dlen; i++ )
             {
                 List< Entry > entry = new ArrayList<>();
@@ -363,7 +377,6 @@ public class LightAutoFragment extends BaseFragment
             lightautochart.invalidate();
         }
 
-        Channel[] channels = DeviceUtil.getLightChannel( getContext(), devid );
         DecimalFormat df = new DecimalFormat( "00" );
         auto_sunrs_time.setText( df.format( sunrise_starthour ) + ":" + df.format( sunrise_startminute ) +
                               " - " + df.format( sunrise_endhour ) + ":" + df.format( sunrise_endminute ) );
@@ -666,7 +679,7 @@ public class LightAutoFragment extends BaseFragment
                 dialogInterface.dismiss();
             }
         } );
-        builder.setPositiveButton( R.string.light_auto_export, new DialogInterface.OnClickListener()
+        builder.setPositiveButton( R.string.dialog_export_use, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick ( DialogInterface dialogInterface, int i )
@@ -677,7 +690,7 @@ public class LightAutoFragment extends BaseFragment
                 dialogInterface.dismiss();
             }
         } );
-        builder.setNeutralButton( R.string.remove, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton( R.string.dialog_export_remove, new DialogInterface.OnClickListener() {
             @Override
             public void onClick ( DialogInterface dialog, int which )
             {
@@ -1137,6 +1150,7 @@ public class LightAutoFragment extends BaseFragment
             return position;
         }
 
+        @SuppressLint ( "RestrictedApi" )
         @Override
         public View getView ( final int position, View convertView, ViewGroup parent )
         {

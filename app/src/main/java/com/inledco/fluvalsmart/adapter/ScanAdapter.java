@@ -95,10 +95,10 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
         public ScanViewHolder ( View itemView )
         {
             super( itemView );
-            iv_icon = (ImageView) itemView.findViewById( R.id.item_scan_iv_icon );
-            tv_name = (TextView) itemView.findViewById( R.id.item_scan_tv_name );
-            tv_type = (TextView) itemView.findViewById( R.id.item_scan_tv_type );
-            cb_sel = (CheckBox) itemView.findViewById( R.id.item_scan_cb_sel );
+            iv_icon = itemView.findViewById( R.id.item_scan_iv_icon );
+            tv_name = itemView.findViewById( R.id.item_scan_tv_name );
+            tv_type = itemView.findViewById( R.id.item_scan_tv_type );
+            cb_sel = itemView.findViewById( R.id.item_scan_cb_sel );
         }
     }
 }

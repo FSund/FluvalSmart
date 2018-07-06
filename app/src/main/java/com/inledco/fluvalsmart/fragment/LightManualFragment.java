@@ -1,5 +1,6 @@
 package com.inledco.fluvalsmart.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CheckableImageButton;
@@ -71,7 +72,7 @@ public class LightManualFragment extends BaseFragment
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
-        View view = inflater.inflate( R.layout.fragment_light_manual, null );
+        View view = inflater.inflate( R.layout.fragment_light_manual, container, false );
 
         initView( view );
         initData();
@@ -101,12 +102,12 @@ public class LightManualFragment extends BaseFragment
     @Override
     protected void initView ( View view )
     {
-        lightmanuallv = (ListView) view.findViewById( R.id.light_manual_lv );
-        lightmanualonoff = (CheckableImageButton) view.findViewById( R.id.light_manual_onoff );
-        apsv_p1 = (ArcProgressStackView) view.findViewById( R.id.manual_custom_p1 );
-        apsv_p2 = (ArcProgressStackView) view.findViewById( R.id.manual_custom_p2 );
-        apsv_p3 = (ArcProgressStackView) view.findViewById( R.id.manual_custom_p3 );
-        apsv_p4 = (ArcProgressStackView) view.findViewById( R.id.manual_custom_p4 );
+        lightmanuallv = view.findViewById( R.id.light_manual_lv );
+        lightmanualonoff = view.findViewById( R.id.light_manual_onoff );
+        apsv_p1 = view.findViewById( R.id.manual_custom_p1 );
+        apsv_p2 = view.findViewById( R.id.manual_custom_p2 );
+        apsv_p3 = view.findViewById( R.id.manual_custom_p3 );
+        apsv_p4 = view.findViewById( R.id.manual_custom_p4 );
         ArrayList< ArcProgressStackView.Model > models1 = new ArrayList<>();
         ArrayList< ArcProgressStackView.Model > models2 = new ArrayList<>();
         ArrayList< ArcProgressStackView.Model > models3 = new ArrayList<>();
@@ -152,6 +153,12 @@ public class LightManualFragment extends BaseFragment
             }
 
             @Override
+            public void onReadPassword ( String mac, int psw )
+            {
+
+            }
+
+            @Override
             public void onDataReceived ( String mac, ArrayList< Byte > list )
             {
                 if ( mac.equals( mAddress ) )
@@ -176,6 +183,7 @@ public class LightManualFragment extends BaseFragment
         refreshData();
     }
 
+    @SuppressLint ( "RestrictedApi" )
     private void refreshData()
     {
         mChannels = new ArrayList<>();
@@ -218,6 +226,7 @@ public class LightManualFragment extends BaseFragment
     {
         lightmanualonoff.setOnClickListener( new View.OnClickListener()
         {
+            @SuppressLint ( "RestrictedApi" )
             @Override
             public void onClick ( View view )
             {
