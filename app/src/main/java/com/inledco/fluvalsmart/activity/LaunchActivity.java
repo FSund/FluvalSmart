@@ -79,7 +79,6 @@ public class LaunchActivity extends BaseActivity
     protected void initData ()
     {
         Setting.initSetting( this );
-        LogUtil.d( TAG, Setting.mHasSelect + ", " + Setting.mCountry + ", " + Setting.mLang );
         iv_logo.setVisibility( Setting.mHasSelect ? View.GONE : View.VISIBLE );
         iv_logo_center.setVisibility( Setting.mHasSelect ? View.VISIBLE : View.GONE );
         tv_country.setVisibility( Setting.mHasSelect ? View.GONE : View.VISIBLE );

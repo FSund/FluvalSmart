@@ -15,6 +15,12 @@ public class LightAuto implements Serializable
     private byte[] mDayBright;
     private RampTime mSunset;
     private byte[] mNightBright;
+
+    private boolean mHasTurnoff;
+    private boolean mTurnoffEnable;
+    private byte mTurnoffHour;
+    private byte mTurnoffMinute;
+
     private boolean mHasDynamic;
     private boolean mDynamicEnable;
     private boolean mSat;
@@ -35,7 +41,19 @@ public class LightAuto implements Serializable
         mNightBright = nightBright;
     }
 
-    public LightAuto ( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, byte week, RampTime dynamicPeriod, byte dynamicMode )
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, boolean turnoffEnable, byte turnoffHour, byte turnoffMinute )
+    {
+        mSunrise = sunrise;
+        mDayBright = dayBright;
+        mSunset = sunset;
+        mNightBright = nightBright;
+        mHasTurnoff = true;
+        mTurnoffEnable = turnoffEnable;
+        mTurnoffHour = turnoffHour;
+        mTurnoffMinute = turnoffMinute;
+    }
+
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, byte week, RampTime dynamicPeriod, byte dynamicMode )
     {
         mSunrise = sunrise;
         mDayBright = dayBright;
@@ -132,7 +150,47 @@ public class LightAuto implements Serializable
         mNightBright = nightBright;
     }
 
-    public void setHasDynamic ( boolean hasDynamic )
+    public boolean isHasTurnoff()
+    {
+        return mHasTurnoff;
+    }
+
+    public void setHasTurnoff( boolean hasTurnoff )
+    {
+        mHasTurnoff = hasTurnoff;
+    }
+
+    public boolean isTurnoffEnable()
+    {
+        return mTurnoffEnable;
+    }
+
+    public void setTurnoffEnable( boolean turnoffEnable )
+    {
+        mTurnoffEnable = turnoffEnable;
+    }
+
+    public byte getTurnoffHour()
+    {
+        return mTurnoffHour;
+    }
+
+    public void setTurnoffHour( byte turnoffHour )
+    {
+        mTurnoffHour = turnoffHour;
+    }
+
+    public byte getTurnoffMinute()
+    {
+        return mTurnoffMinute;
+    }
+
+    public void setTurnoffMinute( byte turnoffMinute )
+    {
+        mTurnoffMinute = turnoffMinute;
+    }
+
+    public void setHasDynamic( boolean hasDynamic )
     {
         mHasDynamic = hasDynamic;
     }

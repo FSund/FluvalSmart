@@ -1,8 +1,5 @@
 package com.inledco.fluvalsmart.util;
 
-import android.util.Log;
-
-import com.ble.api.DataUtil;
 import com.inledco.blemanager.BleManager;
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightManual;
@@ -145,7 +142,6 @@ public class CommUtil
             txs[3+2*i] = (byte) ( value[i] & 0xFF );
         }
         txs[txs.length-1] = getCRC( txs, txs.length-1);
-        Log.e( TAG, "previewAuto: " + DataUtil.byteArrayToHex( txs ));
         BleManager.getInstance().sendBytes( mac, txs );
     }
 
@@ -193,8 +189,8 @@ public class CommUtil
 
     public static Object decodeLight ( ArrayList<Byte> bytes, short devid )
     {
-        LightManual lightManual = null;
-        LightAuto lightAuto = null;
+        LightManual lightManual;
+        LightAuto lightAuto;
         int chns = DeviceUtil.getChannelCount( devid );
         int len = bytes.size();
         if ( bytes.get( 1 ) == CMD_READ && getCRC( bytes, len ) == 0x00 )
@@ -217,6 +213,25 @@ public class CommUtil
                         nbrt[i] = bytes.get( 11+chns+i );
                     }
                     lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt );
+                    return lightAuto;
+                }
+                else if(len == 2*chns+15)
+                {
+                    RampTime sunrise = new RampTime( bytes.get( 3 ), bytes.get( 4 ),
+                                                     bytes.get( 5 ), bytes.get( 6 ));
+                    RampTime sunset = new RampTime( bytes.get( 7+chns ), bytes.get( 8+chns ),
+                                                    bytes.get( 9+chns ), bytes.get( 10+chns ));
+                    byte[] dbrt = new byte[chns];
+                    byte[] nbrt = new byte[chns];
+                    for ( int i = 0; i < chns; i++ )
+                    {
+                        dbrt[i] = bytes.get( 7+i );
+                        nbrt[i] = bytes.get( 11+chns+i );
+                    }
+                    boolean turnoff_enable = (bytes.get( 11+2*chns ) == 0 ? false : true);
+                    byte hour = bytes.get( 12+2*chns );
+                    byte minute = bytes.get( 13+2*chns );
+                    lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute );
                     return lightAuto;
                 }
                 else if ( len == 2*chns+18 )
@@ -310,6 +325,10 @@ public class CommUtil
         int dlen = lightAuto.getDayBright().length;
         int nlen = lightAuto.getNightBright().length;
         int len = 11 + dlen + nlen;
+        if ( lightAuto.isHasTurnoff() )
+        {
+            len += 3;
+        }
         if ( lightAuto.isHasDynamic() )
         {
             len += 6;
@@ -334,6 +353,12 @@ public class CommUtil
         for ( int i = 0; i < nlen; i++ )
         {
             datas[10+dlen+i] = lightAuto.getNightBright()[i];
+        }
+        if ( lightAuto.isHasTurnoff() )
+        {
+            datas[10+dlen+nlen] = (byte) ( lightAuto.isTurnoffEnable() ? 0x01 : 0x00);
+            datas[11+dlen+nlen] = lightAuto.getTurnoffHour();
+            datas[12+dlen+nlen] = lightAuto.getTurnoffMinute();
         }
         if ( lightAuto.isHasDynamic() )
         {

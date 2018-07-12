@@ -44,7 +44,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:background="#55000000"
-                    android:text="HH:mm - HH:mm"
+                    android:text="HH:mm\n|\nHH:mm"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>
@@ -100,7 +100,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:background="#55000000"
-                    android:text="HH:mm - HH:mm"
+                    android:text="HH:mm\n|\nHH:mm"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>
@@ -129,6 +129,36 @@
                     android:gravity="center"
                     android:background="#55000000"
                     android:text="xx: "
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/light_auto_turnoff_show"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="5"
+                android:visibility="gone"
+                android:background="@mipmap/ic_turnoff"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="#55000000"
+                    android:text="@string/item_turnoff"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/auto_turnoff_tmr"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:background="#55000000"
+                    android:text="@string/disabled"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>

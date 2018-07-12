@@ -169,18 +169,18 @@ public class DeviceUtil
         {
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_COLD, (short) 0 ) };
+                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
+                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
+                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
+                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_white ) };
                 break;
 
             case LIGHT_ID_EGG:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, (short) 0 ) };
+                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
+                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
+                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
+                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ),
+                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite ) };
                 break;
 
             case LIGHT_ID_MARINE_500:
@@ -188,11 +188,11 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
             case LIGHT_ID_NANO_MARINE:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_cyan ), CustomColor.COLOR_CYAN_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_purple ), CustomColor.COLOR_PURPLE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, (short) 0 ), };
+                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
+                                          new Channel( context.getString( R.string.chn_name_cyan ), CustomColor.COLOR_CYAN_A700, R.drawable.ic_cyan ),
+                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
+                                          new Channel( context.getString( R.string.chn_name_purple ), CustomColor.COLOR_PURPLE_A700, R.drawable.ic_purple ),
+                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ) };
                 break;
 
             case LIGHT_ID_FRESH_500:
@@ -200,11 +200,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_purewhite ), CustomColor.COLOR_WHITE_PURE, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, (short) 0 ) };
+                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
+                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
+                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ),
+                                          new Channel( context.getString( R.string.chn_name_purewhite ), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_purewhite ),
+                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite ) };
                 break;
 
             case LIGHT_ID_AQUASKY_600:
@@ -217,10 +217,10 @@ public class DeviceUtil
             case LIGHT_ID_AQUASKY_750:
             case LIGHT_ID_AQUASKY_1150:
             case LIGHT_ID_AQUASKY_910:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, (short) 0 ),
-                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_PURE, (short) 0 ) };
+                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
+                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
+                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
+                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_white ) };
                 break;
         }
         return channels;

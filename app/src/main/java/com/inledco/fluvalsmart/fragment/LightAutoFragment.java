@@ -13,7 +13,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CheckableImageButton;
 import android.support.v4.app.Fragment;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.adapter.ExpanSliderAdapter;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -86,6 +90,8 @@ public class LightAutoFragment extends BaseFragment
     private TextView auto_midday_brt;
     private TextView auto_sunset_time;
     private TextView auto_night_brt;
+    private LinearLayout light_auto_turnoff_show;
+    private TextView auto_turnoff_tmr;
     private LinearLayout light_auto_dynamic_show;
     private ImageView light_auto_dynamic_icon;
     private TextView light_auto_dynamic;
@@ -164,6 +170,8 @@ public class LightAutoFragment extends BaseFragment
         lightautoexport = view.findViewById( R.id.light_auto_export );
         lightautoimport = view.findViewById( R.id.light_auto_import );
         lightautochart = view.findViewById( R.id.light_auto_chart );
+        light_auto_turnoff_show = view.findViewById( R.id.light_auto_turnoff_show );
+        auto_turnoff_tmr = view.findViewById( R.id.auto_turnoff_tmr );
         light_auto_dynamic_show = view.findViewById( R.id.light_auto_dynamic_show );
         light_auto_dynamic_icon = view.findViewById( R.id.light_auto_dynamic_icon );
         light_auto_dynamic = view.findViewById( R.id.light_auto_dynamic );
@@ -330,6 +338,7 @@ public class LightAutoFragment extends BaseFragment
 
     private void refreshData()
     {
+        DecimalFormat df = new DecimalFormat( "00" );
         int sunrise_starthour = mLightAuto.getSunrise().getStartHour();
         int sunrise_startminute = mLightAuto.getSunrise().getStartMinute();
         int sunrise_endhour = mLightAuto.getSunrise().getEndHour();
@@ -338,6 +347,14 @@ public class LightAutoFragment extends BaseFragment
         int sunset_startminute = mLightAuto.getSunset().getStartMinute();
         int sunset_endhour = mLightAuto.getSunset().getEndHour();
         int sunset_endminute = mLightAuto.getSunset().getEndMinute();
+        boolean turnoff_enabled = mLightAuto.isTurnoffEnable();
+        int turnoff_hour = mLightAuto.getTurnoffHour();
+        int turnoff_minute = mLightAuto.getTurnoffMinute();
+        int sunrise_start = sunrise_starthour * 60 + sunrise_startminute;
+        int sunrise_end = sunrise_endhour * 60 + sunrise_endminute;
+        int sunset_start = sunset_starthour * 60 + sunset_endminute;
+        int sunset_end = sunset_endhour * 60 + sunset_endminute;
+        int turnoff_time = turnoff_hour * 60 + turnoff_minute;
 
         if ( mDataSets == null )
         {
@@ -346,6 +363,8 @@ public class LightAutoFragment extends BaseFragment
         mDataSets.clear();
         int dlen = mLightAuto.getDayBright().length;
         int nlen = mLightAuto.getNightBright().length;
+        int[] time;
+        int[][] brights;
         Context context = getContext();
         if ( context == null )
         {
@@ -354,16 +373,88 @@ public class LightAutoFragment extends BaseFragment
         Channel[] channels = DeviceUtil.getLightChannel( context, devid );
         if ( dlen == nlen )
         {
+            if ( mLightAuto.isHasTurnoff() && turnoff_enabled )
+            {
+                time = new int[]{sunrise_start, sunrise_end, sunset_start, sunset_end, turnoff_time, turnoff_time };
+                brights = new int[6][dlen];
+                for ( int i = 0; i < dlen; i++ )
+                {
+                    brights[0][i] = 0;
+                    brights[1][i] = mLightAuto.getDayBright()[i];
+                    brights[2][i] = mLightAuto.getDayBright()[i];
+                    brights[3][i] = mLightAuto.getNightBright()[i];
+                    brights[4][i] = mLightAuto.getNightBright()[i];
+                    brights[5][i] = 0;
+                }
+            }
+            else
+            {
+                time = new int[]{sunrise_start, sunrise_end, sunset_start, sunset_end };
+                brights = new int[4][dlen];
+                for ( int i = 0; i < dlen; i++ )
+                {
+                    brights[0][i] = mLightAuto.getNightBright()[i];
+                    brights[1][i] = mLightAuto.getDayBright()[i];
+                    brights[2][i] = mLightAuto.getDayBright()[i];
+                    brights[3][i] = mLightAuto.getNightBright()[i];
+                }
+            }
+
+            /* sort time && check time is valid or not */
+            int[] index = new int[time.length];
+            for ( int i = 0; i < index.length; i++ )
+            {
+                index[i] = i;
+            }
+            for ( int i = index.length - 1; i > 0; i-- )
+            {
+                for ( int j = 0; j < i; j++ )
+                {
+                    if ( time[index[j]] > time[index[j+1]] )
+                    {
+                        int tmp = index[j];
+                        index[j] = index[j+1];
+                        index[j+1] = tmp;
+                    }
+                }
+            }
+            boolean valid = true;
+            for ( int i = 0; i < index.length; i++ )
+            {
+                int j = (i+1)%index.length;
+                if ( (index[i]+1)%index.length != index[j]%index.length )
+                {
+                    valid = false;
+                    break;
+                }
+            }
 
             for ( int i = 0; i < dlen; i++ )
             {
                 List< Entry > entry = new ArrayList<>();
-                entry.add( new Entry( 0, mLightAuto.getNightBright()[i] & 0xFF ) );
-                entry.add( new Entry( ( sunrise_starthour & 0xFF ) * 60 + ( sunrise_startminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
-                entry.add( new Entry( ( sunrise_endhour & 0xFF ) * 60 + ( sunrise_endminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
-                entry.add( new Entry( ( sunset_starthour & 0xFF ) * 60 + ( sunset_startminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
-                entry.add( new Entry( ( sunset_endhour & 0xFF ) * 60 + ( sunset_endminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
-                entry.add( new Entry( 24 * 60, mLightAuto.getNightBright()[i] & 0xFF ) );
+                if ( valid )
+                {
+                    int ts = time[index[0]];
+                    int te = time[index[index.length - 1]];
+                    int bs = brights[index[0]][i];
+                    int be = brights[index[index.length - 1]][i];
+                    int duration = 1440 - te + ts;
+                    int dbrt = bs - be;
+                    float b0 = be + dbrt * ( 1440 - te ) / (float) duration;
+                    entry.add( new Entry( 0, b0 ) );
+                    for ( int j = 0; j < index.length; j++ )
+                    {
+                        int idx = index[j];
+                        entry.add( new Entry( time[idx], brights[idx][i] ) );
+                    }
+                    entry.add( new Entry( 1440, b0 ) );
+                }
+//                    entry.add( new Entry( 0, mLightAuto.getNightBright()[i] & 0xFF ) );
+//                    entry.add( new Entry( ( sunrise_starthour & 0xFF ) * 60 + ( sunrise_startminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
+//                    entry.add( new Entry( ( sunrise_endhour & 0xFF ) * 60 + ( sunrise_endminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
+//                    entry.add( new Entry( ( sunset_starthour & 0xFF ) * 60 + ( sunset_startminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
+//                    entry.add( new Entry( ( sunset_endhour & 0xFF ) * 60 + ( sunset_endminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
+//                    entry.add( new Entry( 24 * 60, mLightAuto.getNightBright()[i] & 0xFF ) );
                 LineDataSet lineDataSet = new LineDataSet( entry, channels[i].getName() );
                 lineDataSet.setColor( channels[i].getColor() );
                 lineDataSet.setCircleRadius( 3.0f );
@@ -377,20 +468,48 @@ public class LightAutoFragment extends BaseFragment
             lightautochart.invalidate();
         }
 
-        DecimalFormat df = new DecimalFormat( "00" );
         auto_sunrs_time.setText( df.format( sunrise_starthour ) + ":" + df.format( sunrise_startminute ) +
-                              " - " + df.format( sunrise_endhour ) + ":" + df.format( sunrise_endminute ) );
+                              "\n|\n" + df.format( sunrise_endhour ) + ":" + df.format( sunrise_endminute ) );
         auto_sunset_time.setText( df.format( sunset_starthour ) + ":" + df.format( sunset_startminute ) +
-                             " - " + df.format( sunset_endhour ) + ":" + df.format( sunset_endminute ) );
-        String txtd = "";
-        String txtn = "";
+                             "\n|\n" + df.format( sunset_endhour ) + ":" + df.format( sunset_endminute ) );
+        SpannableStringBuilder spbd = new SpannableStringBuilder();
+        SpannableStringBuilder spbn = new SpannableStringBuilder();
         for ( int i = 0; i < channels.length; i++ )
         {
-            txtd = txtd + channels[i].getName() + ": " + mLightAuto.getDayBright()[i] + "%\n";
-            txtn = txtn + channels[i].getName() + ": " + mLightAuto.getNightBright()[i] + "%\n";
+            spbd.append( " " );
+            spbn.append( " " );
+            spbd.setSpan( new ImageSpan( getContext(), channels[i].getIcon() ), spbd.length()-1, spbd.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+            spbn.setSpan( new ImageSpan( getContext(), channels[i].getIcon() ), spbn.length()-1, spbn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+            spbd.append( "  " + mLightAuto.getDayBright()[i] + " %\n" );
+            spbn.append( "  " + mLightAuto.getNightBright()[i] + " %\n" );
         }
-        auto_midday_brt.setText( txtd.substring( 0, txtd.lastIndexOf( "\n" ) ) );
-        auto_night_brt.setText( txtn.substring( 0, txtn.lastIndexOf( "\n" ) ) );
+        auto_midday_brt.setText( spbd, TextView.BufferType.SPANNABLE );
+        auto_night_brt.setText( spbn, TextView.BufferType.SPANNABLE );
+//        String txtd = "";
+//        String txtn = "";
+//        for ( int i = 0; i < channels.length; i++ )
+//        {
+//            txtd = txtd + channels[i].getName() + ": " + mLightAuto.getDayBright()[i] + "%\n";
+//            txtn = txtn + channels[i].getName() + ": " + mLightAuto.getNightBright()[i] + "%\n";
+//        }
+//        auto_midday_brt.setText( txtd.substring( 0, txtd.lastIndexOf( "\n" ) ) );
+//        auto_night_brt.setText( txtn.substring( 0, txtn.lastIndexOf( "\n" ) ) );
+        if ( mLightAuto.isHasTurnoff() )
+        {
+            light_auto_turnoff_show.setVisibility( View.VISIBLE );
+            if ( mLightAuto.isTurnoffEnable() )
+            {
+                auto_turnoff_tmr.setText( df.format( mLightAuto.getTurnoffHour() ) + ":" + df.format( mLightAuto.getTurnoffMinute() ) );
+            }
+            else
+            {
+                auto_turnoff_tmr.setText( R.string.disabled );
+            }
+        }
+        else
+        {
+            light_auto_turnoff_show.setVisibility( View.GONE );
+        }
         if ( mLightAuto.isHasDynamic() )
         {
             light_auto_dynamic_show.setVisibility( View.VISIBLE );
@@ -449,31 +568,47 @@ public class LightAutoFragment extends BaseFragment
         }
     }
 
-    private short[] getBright ( int ct )
+    private short[] getBright ( final int ct )
     {
-        int chns = DeviceUtil.getLightChannel( getContext(), devid ).length;
+        final int chns = DeviceUtil.getLightChannel( getContext(), devid ).length;
+        final int count = (mLightAuto.isHasTurnoff() && mLightAuto.isTurnoffEnable()) ? 6 : 4;
         short[] values = new short[chns];
+        int[][] vals = new int[count][chns];
         RampTime sunrise = mLightAuto.getSunrise();
         RampTime sunset = mLightAuto.getSunset();
-        int[] tms = new int[]{ ( sunrise.getStartHour() & 0xFF ) * 60 + ( sunrise.getStartMinute() & 0xFF ),
-                               ( sunrise.getEndHour() & 0xFF ) * 60 + ( sunrise.getEndMinute() & 0xFF ),
-                               ( sunset.getStartHour() & 0xFF ) * 60 + ( sunset.getStartMinute() & 0xFF ),
-                               ( sunset.getEndHour() & 0xFF ) * 60 + ( sunset.getEndMinute() & 0xFF ) };
-        byte[][] vals = new byte[4][];
-        vals[0] = new byte[chns];
-        vals[1] = new byte[chns];
-        vals[2] = new byte[chns];
-        vals[3] = new byte[chns];
-        for ( int i = 0; i < chns; i++ )
+        int[] tms = new int[count];
+        tms[0] = ( sunrise.getStartHour() & 0xFF ) * 60 + ( sunrise.getStartMinute() & 0xFF );
+        tms[1] = ( sunrise.getEndHour() & 0xFF ) * 60 + ( sunrise.getEndMinute() & 0xFF );
+        tms[2] = ( sunset.getStartHour() & 0xFF ) * 60 + ( sunset.getStartMinute() & 0xFF );
+        tms[3] = ( sunset.getEndHour() & 0xFF ) * 60 + ( sunset.getEndMinute() & 0xFF );
+        if ( count == 6 )
         {
-            vals[0][i] = mLightAuto.getNightBright()[i];
-            vals[1][i] = mLightAuto.getDayBright()[i];
-            vals[2][i] = mLightAuto.getDayBright()[i];
-            vals[3][i] = mLightAuto.getNightBright()[i];
+            tms[4] = (mLightAuto.getTurnoffHour()&0xFF)*60 + (mLightAuto.getTurnoffMinute()&0xFF);
+            tms[5] = tms[4];
+            for ( int i = 0; i < chns; i++ )
+            {
+                vals[0][i] = 0;
+                vals[1][i] = mLightAuto.getDayBright()[i];
+                vals[2][i] = mLightAuto.getDayBright()[i];
+                vals[3][i] = mLightAuto.getNightBright()[i];
+                vals[4][i] = mLightAuto.getNightBright()[i];
+                vals[5][i] = 0;
+            }
         }
-        for ( int i = 0; i < 4; i++ )
+        else
         {
-            int j = ( i + 1 ) % 4;
+
+            for ( int i = 0; i < chns; i++ )
+            {
+                vals[0][i] = mLightAuto.getNightBright()[i];
+                vals[1][i] = mLightAuto.getDayBright()[i];
+                vals[2][i] = mLightAuto.getDayBright()[i];
+                vals[3][i] = mLightAuto.getNightBright()[i];
+            }
+        }
+        for ( int i = 0; i < count; i++ )
+        {
+            int j = ( i + 1 ) % count;
             int st = tms[i];
             int et = tms[j];
             int duration;
@@ -512,17 +647,17 @@ public class LightAutoFragment extends BaseFragment
             }
             for ( int k = 0; k < chns; k++ )
             {
-                byte sbrt = vals[i][k];
-                byte ebrt = vals[j][k];
+                int sbrt = vals[i][k];
+                int ebrt = vals[j][k];
                 if ( ebrt >= sbrt )
                 {
                     dbrt = ebrt - sbrt;
-                    values[k] = (short) ( ( sbrt & 0xFF ) * 10 + dbrt * 10 * dt / duration );
+                    values[k] = (short) ( sbrt * 10 + dbrt * 10 * dt / duration );
                 }
                 else
                 {
                     dbrt = sbrt - ebrt;
-                    values[k] = (short) ( ( sbrt & 0xFF ) * 10 - dbrt * 10 * dt / duration );
+                    values[k] = (short) ( sbrt * 10 - dbrt * 10 * dt / duration );
                 }
             }
         }
@@ -558,6 +693,13 @@ public class LightAutoFragment extends BaseFragment
             public void onClick ( View v )
             {
                 showEditDayNightDialog( EDIT_ITEM_NIGHT );
+            }
+        } );
+        auto_turnoff_tmr.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View v )
+            {
+                showEditTurnoffDialog();
             }
         } );
         //快速预览自动模式
@@ -990,6 +1132,81 @@ public class LightAutoFragment extends BaseFragment
         dialog.show();
     }
 
+    private void showEditTurnoffDialog()
+    {
+        final boolean enable = mLightAuto.isTurnoffEnable();
+        final byte hour = mLightAuto.getTurnoffHour();
+        final byte minute = mLightAuto.getTurnoffMinute();
+        LogUtil.e( TAG, "showEditTurnoffDialog: " + hour + "  " + minute );
+        final BottomSheetDialog dialog = new BottomSheetDialog( getContext() );
+        View dialogView = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_edit_turnoff, null );
+        Switch sw_enable = dialogView.findViewById( R.id.dialog_turnoff_enable );
+        TimePicker tp = dialogView.findViewById( R.id.dialog_turnoff_tmr );
+        Button btn_cancel = dialogView.findViewById( R.id.dialog_turnoff_cancel );
+        Button btn_save = dialogView.findViewById( R.id.dialog_turnoff_save );
+        sw_enable.setChecked( enable );
+        tp.setIs24HourView( true );
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M )
+        {
+            tp.setHour( hour );
+            tp.setMinute( minute );
+        }
+        else
+        {
+            tp.setCurrentHour( (int) hour );
+            tp.setCurrentMinute( (int) minute );
+        }
+        sw_enable.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked )
+            {
+                mLightAuto.setTurnoffEnable( isChecked );
+                refreshData();
+            }
+        } );
+        tp.setOnTimeChangedListener( new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged ( TimePicker view, int hourOfDay, int min )
+            {
+                mLightAuto.setTurnoffHour( (byte) hourOfDay );
+                mLightAuto.setTurnoffMinute( (byte) min );
+                refreshData();
+            }
+        } );
+        btn_cancel.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View v )
+            {
+                mLightAuto.setTurnoffEnable( enable );
+                mLightAuto.setTurnoffHour( hour );
+                mLightAuto.setTurnoffMinute( minute );
+                refreshData();
+                dialog.dismiss();
+            }
+        } );
+        btn_save.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick ( View v )
+            {
+                CommUtil.setLedAuto( mAddress, mLightAuto );
+                dialog.dismiss();
+            }
+        } );
+        dialog.setContentView( dialogView );
+        dialog.setCanceledOnTouchOutside( false );
+        dialog.setOnCancelListener( new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel ( DialogInterface dialog )
+            {
+                mLightAuto.setTurnoffEnable( enable );
+                mLightAuto.setTurnoffHour( hour );
+                mLightAuto.setTurnoffMinute( minute );
+                refreshData();
+            }
+        } );
+        dialog.show();
+    }
+
     private void showDynamicDialog()
     {
         boolean[] bval = new boolean[8];
@@ -1009,19 +1226,19 @@ public class LightAutoFragment extends BaseFragment
         ival[4] = mLightAuto.getDynamicMode();
         final BottomSheetDialog dialog = new BottomSheetDialog( getContext() );
         View dialogView = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_edit_dynamic, null );
-        final TextView tv_start = (TextView) dialogView.findViewById( R.id.dialog_dynamic_start );
-        final TextView tv_end = (TextView) dialogView.findViewById( R.id.dialog_dynamic_end );
-        final Switch sw_enable = (Switch) dialogView.findViewById( R.id.dialog_dynamic_enable );
-        final CheckBox cb_sun = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_sun );
-        final CheckBox cb_mon = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_mon );
-        final CheckBox cb_tue = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_tue );
-        final CheckBox cb_wed = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_wed );
-        final CheckBox cb_thu = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_thu );
-        final CheckBox cb_fri = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_fri );
-        final CheckBox cb_sat = (CheckBox) dialogView.findViewById( R.id.dialog_dynamic_sat );
-        GridView gv_show = (GridView) dialogView.findViewById( R.id.item_dynamic_gv_show );
-        Button btn_cancel = (Button) dialogView.findViewById( R.id.dialog_dynamic_cancel );
-        Button btn_save = (Button) dialogView.findViewById( R.id.dialog_dynamic_save );
+        final TextView tv_start = dialogView.findViewById( R.id.dialog_dynamic_start );
+        final TextView tv_end = dialogView.findViewById( R.id.dialog_dynamic_end );
+        final Switch sw_enable = dialogView.findViewById( R.id.dialog_dynamic_enable );
+        final CheckBox cb_sun = dialogView.findViewById( R.id.dialog_dynamic_sun );
+        final CheckBox cb_mon = dialogView.findViewById( R.id.dialog_dynamic_mon );
+        final CheckBox cb_tue = dialogView.findViewById( R.id.dialog_dynamic_tue );
+        final CheckBox cb_wed = dialogView.findViewById( R.id.dialog_dynamic_wed );
+        final CheckBox cb_thu = dialogView.findViewById( R.id.dialog_dynamic_thu );
+        final CheckBox cb_fri = dialogView.findViewById( R.id.dialog_dynamic_fri );
+        final CheckBox cb_sat = dialogView.findViewById( R.id.dialog_dynamic_sat );
+        GridView gv_show = dialogView.findViewById( R.id.item_dynamic_gv_show );
+        Button btn_cancel = dialogView.findViewById( R.id.dialog_dynamic_cancel );
+        Button btn_save = dialogView.findViewById( R.id.dialog_dynamic_save );
         //initialize data
         final DecimalFormat df = new DecimalFormat( "00" );
         tv_start.setText( df.format( ival[0] ) + ":" + df.format( ival[1] ) );

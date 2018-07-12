@@ -108,6 +108,7 @@ public class LightManualFragment extends BaseFragment
         apsv_p2 = view.findViewById( R.id.manual_custom_p2 );
         apsv_p3 = view.findViewById( R.id.manual_custom_p3 );
         apsv_p4 = view.findViewById( R.id.manual_custom_p4 );
+
         ArrayList< ArcProgressStackView.Model > models1 = new ArrayList<>();
         ArrayList< ArcProgressStackView.Model > models2 = new ArrayList<>();
         ArrayList< ArcProgressStackView.Model > models3 = new ArrayList<>();

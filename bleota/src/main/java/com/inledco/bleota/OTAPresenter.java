@@ -59,7 +59,7 @@ public class OTAPresenter implements OTAContract.Presenter
     private File mFirmwareFile;
     private ArrayList<Frame> mFrames;
     private int mCurrent;
-    private int moTotal;
+    private int mTotal;
 
     //auto connect after exit application to bootloader
     private boolean mAutoConnect;
@@ -286,7 +286,7 @@ public class OTAPresenter implements OTAContract.Presenter
             return;
         }
         mCurrent = 0;
-        moTotal = 0;
+        mTotal = 0;
         mFirmwareFile = new File( mView.getMvpContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ),
                                   mRemoteFirmware.getFile_name() );
         if ( mFirmwareFile == null || !mFirmwareFile.exists() || (!mFirmwareFile.getName().endsWith( ".txt" ) && !mFirmwareFile.getName().endsWith( ".hex" )) )
@@ -337,7 +337,7 @@ public class OTAPresenter implements OTAContract.Presenter
                             mFrames.add( frame );
                         }
                     }
-                    moTotal = mFrames.size();
+                    mTotal = mFrames.size();
                     enterBootloader();
                     mView.showMessage( mView.getMvpContext().getString( R.string.ota_analysis_success ) );
 //                    mView.onConvertFirmwareSuccess();
@@ -504,7 +504,7 @@ public class OTAPresenter implements OTAContract.Presenter
                         if ( mFrames.get( 0 ).getAddress() == ((adrh<<8)|adrl) )
                         {
                             DecimalFormat df = new DecimalFormat( "0.0" );
-                            mView.showUpgradeProgress( df.format((float) (mCurrent + 1) * 100 / moTotal) + "%" );
+                            mView.showUpgradeProgress( df.format((float) (mCurrent + 1) * 100 / mTotal ) + "%" );
                             mFrames.remove( 0 );
                             mCurrent++;
                             mHandler.postDelayed( new Runnable() {
