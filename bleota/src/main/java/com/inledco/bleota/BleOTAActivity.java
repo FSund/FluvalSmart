@@ -91,14 +91,14 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
 
     private void initView ()
     {
-        ota_toolbar = (Toolbar) findViewById( R.id.ota_toolbar );
-        ota_tv_device_name = (TextView) findViewById( R.id.ota_tv_device_name );
-        ota_tv_device_version = (TextView) findViewById( R.id.ota_tv_device_version );
-        ota_tv_remote_version = (TextView) findViewById( R.id.ota_tv_remote_version );
-        ota_tv_msg = (TextView) findViewById( R.id.ota_tv_msg );
-        ota_upgrade = (Button) findViewById( R.id.ota_upgrade );
-        ota_download = (Button) findViewById( R.id.ota_download );
-        ota_check_upgrade = (Button) findViewById( R.id.ota_check_upgrade );
+        ota_toolbar = findViewById( R.id.ota_toolbar );
+        ota_tv_device_name = findViewById( R.id.ota_tv_device_name );
+        ota_tv_device_version = findViewById( R.id.ota_tv_device_version );
+        ota_tv_remote_version = findViewById( R.id.ota_tv_remote_version );
+        ota_tv_msg = findViewById( R.id.ota_tv_msg );
+        ota_upgrade = findViewById( R.id.ota_upgrade );
+        ota_download = findViewById( R.id.ota_download );
+        ota_check_upgrade = findViewById( R.id.ota_check_upgrade );
 
         setSupportActionBar( ota_toolbar );
         ota_tv_msg.setKeepScreenOn( true );

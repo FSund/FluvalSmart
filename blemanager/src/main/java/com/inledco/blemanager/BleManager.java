@@ -609,9 +609,13 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      */
     public void removeBleCommunicateListener ( @NonNull BleCommunicateListener listener )
     {
-        if ( mBleCommunicateListeners != null && mBleCommunicateListeners.contains( listener ) )
+        if ( mBleCommunicateListeners != null )
         {
-            mBleCommunicateListeners.remove( listener );
+            int idx = mBleCommunicateListeners.indexOf( listener );
+            if ( idx >= 0 )
+            {
+                mBleCommunicateListeners.remove( idx );
+            }
         }
     }
 

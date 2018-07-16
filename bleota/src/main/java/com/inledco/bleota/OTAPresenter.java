@@ -33,6 +33,10 @@ public class OTAPresenter implements OTAContract.Presenter
     private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
     private static final String OTA_FIRMWARE_LINK = "http://47.88.12.183:8080";
 
+    private boolean mConnected;
+    private boolean mReadDeviceVersion;
+    private boolean mReadRemoteVersion;
+
     private OTAContract.View mView;
     private String mAddress;
     private short mDevid;
@@ -166,6 +170,21 @@ public class OTAPresenter implements OTAContract.Presenter
         BleManager.getInstance()
                   .connectDevice( mAddress );
         mView.showMessage( mView.getMvpContext().getString( R.string.ota_connecting ) );
+
+
+        long st = System.currentTimeMillis();
+        if ( BleManager.getInstance().isConnected( mAddress ) == false )
+        {
+            BleManager.getInstance().connectDevice( mAddress );
+        }
+        while( BleManager.getInstance().isConnected( mAddress ) == false )
+        {
+            if ( System.currentTimeMillis() - st > 3000 )
+            {
+                return;
+            }
+        }
+        BleManager.getInstance().readMfr( mAddress );
     }
 
     @Override
@@ -176,6 +195,44 @@ public class OTAPresenter implements OTAContract.Presenter
                   .removeBleCommunicateListener( mCommunicateListener );
         BleManager.getInstance()
                   .disconnectDevice( mAddress );
+    }
+
+    public void checkUpdate()
+    {
+        mDeviceMajorVersion = 0;
+        mDeviceMinorVersion = 0;
+        mRemoteFirmware = null;
+
+        BleManager.getInstance().readMfr( mAddress );
+        OkHttpManager.get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
+        {
+            @Override
+            public void onError ( int code, String msg )
+            {
+                mView.onCheckRemoteFailure();
+                if ( msg == null )
+                {
+                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_remote_not_exists ) );
+                }
+                else
+                {
+                    mView.showMessage( msg );
+                }
+                mReadRemoteVersion = true;
+            }
+
+            @Override
+            public void onSuccess ( RemoteFirmware result )
+            {
+                mReadRemoteVersion = true;
+                LogUtil.d( TAG, "onSuccess: " + result.toString() );
+                mRemoteFirmware = result;
+                mFirmwareFile = new File( mView.getMvpContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ),
+                                          mRemoteFirmware.getFile_name() );
+                mView.onCheckRemoteSuccess( result.getMajor_version(), result.getMinor_version() );
+                mView.onFirmwareExists( mFirmwareFile.exists() );
+            }
+        } );
     }
 
     @Override
@@ -437,6 +494,66 @@ public class OTAPresenter implements OTAContract.Presenter
         mCountDownTimer.start();
     }
 
+    private void getDeviceInfo()
+    {
+        final boolean[] result = new boolean[]{false};
+        BleCommunicateListener listener = new BleCommunicateListener() {
+            @Override
+            public void onDataValid( String mac )
+            {
+
+            }
+
+            @Override
+            public void onDataInvalid( String mac )
+            {
+
+            }
+
+            @Override
+            public void onReadMfr( String mac, String s )
+            {
+                if ( mac.equals( mAddress ) )
+                {
+                    byte[] mfr = DataUtil.hexToByteArray( s.replace( " ", "" ) );
+                    short devid;
+                    if ( mfr == null || mfr.length < 4 )
+                    {
+
+                    }
+                    else
+                    {
+                        devid = (short) ( ( ( mfr[0] & 0xFF ) << 8 ) | ( mfr[1] & 0xFF ) );
+                        mDevid = devid;
+                        mDeviceMajorVersion = mfr[2] & 0xFF;
+                        mDeviceMinorVersion = mfr[3] & 0xFF;
+                        result[0] = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onReadPassword( String mac, int psw )
+            {
+
+            }
+
+            @Override
+            public void onDataReceived( String mac, ArrayList< Byte > list )
+            {
+
+            }
+        };
+        long ct = System.currentTimeMillis();
+        while ( result[0] == false )
+        {
+            if ( System.currentTimeMillis() - ct > 1000 )
+            {
+                return;
+            }
+        }
+    }
+
     private void decodeMfrData ( String s )
     {
         byte[] mfr = DataUtil.hexToByteArray( s.replace( " ", "" ) );
@@ -453,6 +570,7 @@ public class OTAPresenter implements OTAContract.Presenter
             mDeviceMinorVersion = mfr[3] & 0xFF;
             mView.onCheckDeviceSuccess( mDeviceMajorVersion, mDeviceMinorVersion );
         }
+        mReadDeviceVersion = true;
     }
 
     private void decodeReceiveData ( ArrayList< Byte > list )
