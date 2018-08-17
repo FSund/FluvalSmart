@@ -40,6 +40,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activity.EditproActivity">
+        </activity>
     </application>
 
 </manifest>

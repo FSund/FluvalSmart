@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ota_response_timeout">Upgrade will continue after 30 seconds,please wait...</string>
+    <string name="ota_response_timeout">Operation response timeout.</string>
     <string name="ota_firmware_invalid">Firmware does not exists or invalid format.</string>
     <string name="ota_firmware_damaged">Firmware may be damaged, please re-download.</string>
     <string name="ota_analysis_success">Analysis firmware success.</string>
@@ -10,8 +10,8 @@
     <string name="ota_check_failed">Verification failed, address out of range.</string>
     <string name="ota_check_success">Verification successful.</string>
     <string name="ota_download_success">100%\nDownload success.</string>
-    <string name="ota_enter_bootloader">Download success.</string>
-    <string name="ota_reset_tobootloader">Rebooting to enter bootloader.r</string>
+    <string name="ota_enter_bootloader">Enter bootloader mode.</string>
+    <string name="ota_reset_tobootloader">Rebooting to enter bootloader.</string>
     <string name="ota_invalid_command">Invalid command.</string>
     <string name="ota_connect_success">Device connection successful.</string>
     <string name="ota_disconnect">Device disconnected.</string>
@@ -20,11 +20,14 @@
     <string name="ota_redownload">Re-Download</string>
     <string name="ota_title">Device Firmware Upgrade</string>
     <string name="ota_upgrade">Upgrade</string>
-    <string name="ota_check_upgrade">Check Upgrade</string>
+    <string name="ota_check_upgrade">Check for updates</string>
     <string name="ota_msg_unsupport_version">This device is unable to upgrade,Requires firmware version V1.02. or higher</string>
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware does not exist.</string>
-    <string name="ota_warning">Warning:\n\t\tPlease don\'t exit app, close bluetooth and power off device during upgrading\n\t\tPlease keep good communication between device and mobile phone</string>
+    <string name="ota_warning">Upgrade Warning:\n\t\tUnder update process, please do keep your phone or pad as much close to your light device as
+        possible.\n\t\tPlease Do Not:\n\t\t\t- Exit APP\n\t\t\t- Close Bluetooth\n\t\tUpdates may not remain light parameters you set up before.\n\t\tThe old
+        APP version may not control the devices properly once firmware updated,make sure to use up to date APP version It’s required to upgrade the
+        APP to the latest version.\n\t\tIf upgrade fails, please try again.</string>
     <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
     <string name="ota_warning_title">Warning</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
@@ -33,4 +36,12 @@
     <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
     <string name="ota_cancel">Cancel</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
+    <string name="ota_upgradable">Upgradable</string>
+    <string name="ota_firmware_newest">Device firmware is up to date.</string>
+    <string name="ota_repower_title">Re-power</string>
+    <string name="next">Next</string>
+    <string name="confirm_repower">Please re-power the device and then click the button.</string>
+    <string name="ota_device_firmware_upgradable">The device can update to Vxx,confirm update?</string>
+    <string name="downloading_firmware">Downloading firmware...</string>
+    <string name="ota_network_unavailable">Network is not available,please check settings.</string>
 </resources>

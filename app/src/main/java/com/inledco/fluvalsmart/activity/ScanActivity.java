@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -32,29 +33,35 @@ import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class ScanActivity extends BaseActivity
 {
+    private final int SCAN_CODE = 3;
     private Toolbar scan_toolbar;
     private ToggleButton scan_tb_scan;
     private ProgressBar scan_pb_scanning;
     private RecyclerView scan_rv_show;
     private FloatingActionButton scan_fab_confirm;
 
-    private Set<String> scannedAddress;
-//    private Map<String, Boolean> scannedAddress;
-//    private Map<String, String > macNames;
     private Map<String, DevicePrefer> storedAddress;
 
+    private Set<String> mDeviceMacs;
     private ArrayList<SelectDevice> mDevices;
+    private Comparator<SelectDevice> mComparator;
     private ScanAdapter mScanAdapter;
     private static Handler mHandler;
 
     private BleScanListener mScanListener;
     private BleCommunicateListener mCommunicateListener;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled( true );
+    }
 
     @Override
     protected void onCreate ( Bundle savedInstanceState )
@@ -87,8 +94,8 @@ public class ScanActivity extends BaseActivity
     {
         getMenuInflater().inflate( R.menu.menu_scan, menu );
         MenuItem menuItem = menu.findItem( R.id.scan_menu_scan );
-        scan_pb_scanning = (ProgressBar) menuItem.getActionView().findViewById( R.id.menu_item_progress );
-        scan_tb_scan = (ToggleButton) menuItem.getActionView().findViewById( R.id.menu_item_scan );
+        scan_pb_scanning =  menuItem.getActionView().findViewById( R.id.menu_item_progress );
+        scan_tb_scan = menuItem.getActionView().findViewById( R.id.menu_item_scan );
         scan_tb_scan.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged ( CompoundButton buttonView, boolean isChecked )
@@ -136,12 +143,10 @@ public class ScanActivity extends BaseActivity
                 switch ( msg.what )
                 {
                     case 0:
-//                        scan_fab_confirm.setVisibility( View.GONE );
                         for ( SelectDevice dev : mDevices )
                         {
                             if ( dev.isSelectable() && dev.isSelected() )
                             {
-//                                scan_fab_confirm.setVisibility( View.VISIBLE );
                                 show = true;
                                 break;
                             }
@@ -171,9 +176,8 @@ public class ScanActivity extends BaseActivity
             public void onStartScan ()
             {
                 LogUtil.d( TAG, "onStartScan: " );
-                scannedAddress = new HashSet<>();
                 storedAddress = PreferenceUtil.getAllObjectMapFromPrefer( ScanActivity.this, ConstVal.DEV_PREFER_FILENAME );
-//                macNames = new HashMap<>();
+                mDeviceMacs.clear();
                 mDevices.clear();
                 runOnUiThread( new Runnable() {
                     @Override
@@ -196,29 +200,15 @@ public class ScanActivity extends BaseActivity
             }
 
             @Override
-            public void onDeviceScanned ( String mac, String name, byte[] bytes )
+            public void onDeviceScanned ( String mac, String name, int rssi, byte[] bytes )
             {
-                decodeScanData( mac, name, bytes );
+                decodeScanData( mac, name, rssi, bytes );
             }
         };
         mCommunicateListener = new BleCommunicateListener() {
             @Override
             public void onDataValid ( String mac )
             {
-//                if ( !scannedAddress.contains( mac ) )
-//                {
-//                    scannedAddress.add( mac );
-//                    mDevices.add( new SelectDevice( false, false, new DevicePrefer( mac, macNames.get( mac ) ) ) );
-//                    runOnUiThread( new Runnable() {
-//                        @Override
-//                        public void run ()
-//                        {
-//                            mScanAdapter.notifyItemInserted( mDevices.size() - 1 );
-//                        }
-//                    } );
-//                    BleManager.getInstance()
-//                              .readMfr( mac );
-//                }
                 BleManager.getInstance()
                           .readMfr( mac );
             }
@@ -251,8 +241,29 @@ public class ScanActivity extends BaseActivity
         BleManager.getInstance().addBleScanListener( mScanListener );
         BleManager.getInstance().addBleCommunicateListener( mCommunicateListener );
 
+        mComparator = new Comparator< SelectDevice >() {
+            @Override
+            public int compare( SelectDevice o1, SelectDevice o2 )
+            {
+                if ( o1 == null || o2 == null )
+                {
+                    return 0;
+                }
+                if ( o1.getRssi() > o2.getRssi() )
+                {
+                    return -1;
+                }
+                if ( o1.getRssi() < o2.getRssi() )
+                {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+        mDeviceMacs = new HashSet<>();
         mDevices = new ArrayList<>();
         mScanAdapter = new ScanAdapter( ScanActivity.this, mHandler, mDevices );
+//        mScanAdapter.setShowRssi( true );
         scan_rv_show.setAdapter( mScanAdapter );
     }
 
@@ -282,88 +293,88 @@ public class ScanActivity extends BaseActivity
                                                           dev.getPrefer().getDeviceMac());
                     }
                 }
-                setResult( 1 );
+                setResult( SCAN_CODE );
                 finish();
             }
         } );
     }
 
-    private void decodeScanData ( final String mac, String name, byte[] bytes )
+
+    private void decodeScanData( final String mac, String name, int rssi, byte[] bytes )
     {
-//        macNames.put( mac, name );
-        if ( scannedAddress.contains( mac ) )
+        if ( mDeviceMacs.contains( mac ) )
         {
-            return;
-        }
-        if ( storedAddress != null && storedAddress.containsKey( mac ) )
-        {
-            mDevices.add( new SelectDevice( false, true, storedAddress.get( mac )) );
-            scannedAddress.add( mac );
-            runOnUiThread( new Runnable() {
-                @Override
-                public void run ()
-                {
-                    mScanAdapter.notifyItemInserted( mDevices.size() - 1 );
-                }
-            } );
-            return;
-        }
-        short devid = 0;
-        //no mfr data
-        if ( bytes == null )
-        {
-            mDevices.add( new SelectDevice( false, false, new DevicePrefer( devid, mac, name ) ) );
-            scannedAddress.add( mac );
-            runOnUiThread( new Runnable() {
-                @Override
-                public void run ()
-                {
-                    mScanAdapter.notifyItemInserted( mDevices.size() - 1 );
-                    BleManager.getInstance().connectDevice( mac );
-                }
-            } );
-            return;
-        }
-//        if ( bytes != null && bytes.length > 3 )
-//        {
-            for ( int i = 0; i < 4 && i < bytes.length; i++ )
+            for ( int i = 0; i < mDevices.size(); i++ )
             {
-                if ( bytes[i] >= 0x30 && bytes[i] <= 0x39 )
+                if ( mDevices.get( i ).getPrefer().getDeviceMac().equals( mac ) )
                 {
-                    devid = (short) ( ( devid << 4 ) | ( bytes[i] - 0x30 ) );
+                    mDevices.get( i ).setRssi( rssi );
+                }
+            }
+        }
+        else
+        {
+            boolean flag = false;
+            if ( storedAddress != null && storedAddress.containsKey( mac ) )
+            {
+                mDeviceMacs.add( mac );
+                SelectDevice device = new SelectDevice( false, true, rssi, storedAddress.get( mac ) );
+                mDevices.add( device );
+                flag = true;
+            }
+            else
+            {
+                if ( bytes == null || bytes.length == 0 )
+                {
+                    mDeviceMacs.add( mac );
+                    SelectDevice device = new SelectDevice( false, false, rssi, new DevicePrefer( (short) 0, mac, name ) );
+                    mDevices.add( device );
+                    flag = true;
+                    BleManager.getInstance().connectDevice( mac );
                 }
                 else
                 {
-                    break;
+                    short devid = 0;
+                    for ( int i = 0; i < 4 && i < bytes.length; i++ )
+                    {
+                        if ( bytes[i] >= 0x30 && bytes[i] <= 0x39 )
+                        {
+                            devid = (short) ( ( devid << 4 ) | ( bytes[i] - 0x30 ) );
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    boolean selectable = DeviceUtil.isCorrectDevType( devid );
+                    mDeviceMacs.add( mac );
+                    SelectDevice device = new SelectDevice( selectable, false, rssi, new DevicePrefer( devid, mac, name ) );
+                    mDevices.add( device );
+                    flag = true;
                 }
-//                else
-//                {
-//                    devid = 0;
-//                    BleManager.getInstance()
-//                              .connectDevice( mac );
-//                    return;
-//                }
             }
-            boolean selectable = DeviceUtil.isCorrectDevType( devid );
-//            if ( selectable )
-//            {
-                mDevices.add( new SelectDevice( selectable, false, new DevicePrefer( devid, mac, name ) ) );
-                scannedAddress.add( mac );
+            if ( flag && mScanAdapter.isShowRssi() == false )
+            {
                 runOnUiThread( new Runnable() {
                     @Override
-                    public void run ()
+                    public void run()
                     {
                         mScanAdapter.notifyItemInserted( mDevices.size() - 1 );
                     }
                 } );
-//                return;
-//            }
-//        }
-//        else
-//        {
-//            mDevices.add( new SelectDevice( false, false, new DevicePrefer( devid, mac, name ) ) );
-//        }
-//        BleManager.getInstance().connectDevice( mac );
+            }
+        }
+        if ( mScanAdapter.isShowRssi() )
+        {
+            Collections.sort( mDevices, mComparator );
+            runOnUiThread( new Runnable() {
+                @Override
+                public void run()
+                {
+                    mScanAdapter.notifyDataSetChanged();
+                }
+            } );
+        }
     }
 
     private void decodeMfrData( String mac, String s )

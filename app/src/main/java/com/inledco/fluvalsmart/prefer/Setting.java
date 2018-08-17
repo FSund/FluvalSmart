@@ -17,40 +17,138 @@ import java.util.Locale;
 
 public class Setting
 {
-    public static final String SET_BLE_ENABLED = "BLE_ENABLED";
-    public static final String SET_EXIT_TURNOFF_BLE = "EXIT_TURNOFF_BLE";
-    public static final String SET_EXIT_TIP = "EXIT_TIP";
-    public static final String SET_COUNTRY_LANGUAGE_SELECTED = "IS_COUNTRY_LANGUAGE_SELECTED";
-    public static final String SET_COUNTRY = "COUNTRY";
-    public static final String SET_LANGUAGE = "LANGUAGE";
-    public static final String LANGUAGE_AUTO = "auto";
-    public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_GERMANY = "de";
-    public static final String LANGUAGE_FRENCH = "fr";
-    public static final String LANGUAGE_SPANISH = "es";
-    public static final String LANGUAGE_CHINESE = "zh";
+    public static final String KEY_AUTO_TURNON_BLE = "AUTO_TURNON_BLE";
+    public static final String KEY_EXIT_TURNOFF_BLE = "EXIT_TURNOFF_BLE";
+//    public static final String KEY_EXIT_TIP = "EXIT_TIP";
+    public static final String KEY_COUNTRY_LANGUAGE_SELECTED = "IS_COUNTRY_LANGUAGE_SELECTED";
+    public static final String KEY_COUNTRY = "COUNTRY";
+    public static final String KEY_LANGUAGE = "LANGUAGE";
+    public static final String KEY_LANGUAGE_AUTO = "auto";
+    public static final String KEY_LANGUAGE_ENGLISH = "en";
+    public static final String KEY_LANGUAGE_GERMANY = "de";
+    public static final String KEY_LANGUAGE_FRENCH = "fr";
+    public static final String KEY_LANGUAGE_SPANISH = "es";
+    public static final String KEY_LANGUAGE_CHINESE = "zh";
+    public static final String KEY_SCAN_TIP = "scan_tip";
 
-    public static boolean mBleEnabled;
-    public static boolean mExitTurnOffBle;
-    public static boolean mExitTip;
-    public static boolean mHasSelect;
-    public static String mCountry;
-    public static String mLang;
-
-    /**
-     * 初始化ble设置
-     *
-     * @param context
-     */
-    public static void initSetting ( Context context )
+    public static boolean isAutoTurnonBle(Context context)
     {
-        SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences( context );
-        mBleEnabled = defaultSet.getBoolean( SET_BLE_ENABLED, false );
-        mExitTurnOffBle = defaultSet.getBoolean( SET_EXIT_TURNOFF_BLE, false );
-        mExitTip = defaultSet.getBoolean( SET_EXIT_TIP, true );
-        mHasSelect = defaultSet.getBoolean( SET_COUNTRY_LANGUAGE_SELECTED, false );
-        mCountry = defaultSet.getString( SET_COUNTRY, "" );
-        mLang = defaultSet.getString( SET_LANGUAGE, LANGUAGE_AUTO );
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getBoolean( KEY_AUTO_TURNON_BLE, false );
+        }
+        return false;
+    }
+
+    public static void setAutoTurnonBle( Context context, boolean b )
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_AUTO_TURNON_BLE, b );
+            editor.commit();
+        }
+    }
+
+    public static boolean isExitTurnoffBle(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getBoolean( KEY_EXIT_TURNOFF_BLE, false );
+        }
+        return false;
+    }
+
+    public static void setExitTurnoffBle( Context context, boolean b )
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_EXIT_TURNOFF_BLE, b );
+            editor.commit();
+        }
+    }
+
+    public static boolean hasSelectCountryLanguage(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getBoolean( KEY_COUNTRY_LANGUAGE_SELECTED, false );
+        }
+        return false;
+    }
+
+    public static void setSelectCountryLanguage( Context context )
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_COUNTRY_LANGUAGE_SELECTED, true );
+            editor.commit();
+        }
+    }
+
+    public static boolean hasScanTip(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getBoolean( KEY_SCAN_TIP, false );
+        }
+        return false;
+    }
+
+    public static void setScanTip( Context context )
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_SCAN_TIP, true );
+            editor.commit();
+        }
+    }
+
+    public static String getCountry(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getString( KEY_COUNTRY, "" );
+        }
+        return "";
+    }
+
+    public static void setCountry( Context context, String c )
+    {
+        if ( context != null && !TextUtils.isEmpty( c ) )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putString( KEY_COUNTRY, c );
+            editor.commit();
+        }
+    }
+
+    public static String getLanguage(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getString( KEY_LANGUAGE, KEY_LANGUAGE_AUTO );
+        }
+        return KEY_LANGUAGE_AUTO;
+    }
+
+    public static void setLanguage( Context context, String c )
+    {
+        if ( context != null && !TextUtils.isEmpty( c ) )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putString( KEY_LANGUAGE, c );
+            editor.commit();
+        }
     }
 
     public static void changeAppLanguage ( Context context )
@@ -58,29 +156,30 @@ public class Setting
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
-        if ( TextUtils.isEmpty( mLang ) )
+        String lang = getLanguage( context );
+        if ( TextUtils.isEmpty( lang ) )
         {
-            mLang = LANGUAGE_AUTO;
+            lang = KEY_LANGUAGE_AUTO;
         }
-        switch ( mLang )
+        switch ( lang )
         {
-            case LANGUAGE_AUTO:
+            case KEY_LANGUAGE_AUTO:
                 config.setLocale( Resources.getSystem()
                                            .getConfiguration().locale );
                 break;
-            case LANGUAGE_ENGLISH:
+            case KEY_LANGUAGE_ENGLISH:
                 config.setLocale( Locale.ENGLISH );
                 break;
-            case LANGUAGE_GERMANY:
+            case KEY_LANGUAGE_GERMANY:
                 config.setLocale( Locale.GERMANY );
                 break;
-            case LANGUAGE_FRENCH:
+            case KEY_LANGUAGE_FRENCH:
                 config.setLocale( Locale.FRENCH );
                 break;
-            case LANGUAGE_SPANISH:
+            case KEY_LANGUAGE_SPANISH:
                 config.setLocale( new Locale( "es", "ES" ) );
                 break;
-            case LANGUAGE_CHINESE:
+            case KEY_LANGUAGE_CHINESE:
                 config.setLocale( Locale.SIMPLIFIED_CHINESE );
                 break;
             default:

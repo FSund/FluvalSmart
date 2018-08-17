@@ -37,13 +37,14 @@
                     android:text="@string/item_morning"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/auto_sunrs_time"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
-                    android:gravity="center"
                     android:background="#55000000"
+                    android:gravity="center"
                     android:text="HH:mm\n|\nHH:mm"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
@@ -65,13 +66,15 @@
                     android:text="@string/item_midday"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/auto_midday_brt"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
-                    android:gravity="center"
+                    android:paddingLeft="4dp"
                     android:background="#55000000"
+                    android:gravity="center_vertical|left"
                     android:text="xx: "
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
@@ -121,13 +124,15 @@
                     android:text="@string/item_night"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"/>
+
                 <TextView
                     android:id="@+id/auto_night_brt"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
-                    android:gravity="center"
                     android:background="#55000000"
+                    android:paddingLeft="4dp"
+                    android:gravity="center_vertical|left"
                     android:text="xx: "
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>

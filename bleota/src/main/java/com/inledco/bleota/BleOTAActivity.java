@@ -1,23 +1,25 @@
 package com.inledco.bleota;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.inledco.blemanager.BleManager;
 
-import java.text.DecimalFormat;
-
-public class BleOTAActivity extends AppCompatActivity implements OTAContract.View
+public class BleOTAActivity extends AppCompatActivity implements IOTAView
 {
     private static final String TAG = "BleOTAActivity";
 
@@ -25,9 +27,8 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
     private TextView ota_tv_device_name;
     private TextView ota_tv_device_version;
     private TextView ota_tv_remote_version;
+    private NestedScrollView ota_nsv;
     private TextView ota_tv_msg;
-    private Button ota_upgrade;
-    private Button ota_download;
     private Button ota_check_upgrade;
     private MenuItem menu_connect_status;
 
@@ -74,18 +75,16 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
     {
         getMenuInflater().inflate( R.menu.menu_ota, menu );
         menu_connect_status = menu.findItem( R.id.menu_connect_status );
-        menu_connect_status.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick ( MenuItem item )
-            {
-                if ( !item.isChecked() )
-                {
-                    BleManager.getInstance().connectDevice( mAddress );
-                    showMessage( getString( R.string.ota_connecting ) );
-                }
-                return false;
-            }
-        } );
+        if ( BleManager.getInstance().isConnected( mAddress ) )
+        {
+            menu_connect_status.setIcon( R.drawable.ic_bluetooth_connected_white_36dp );
+            menu_connect_status.setChecked( true );
+        }
+        else
+        {
+            menu_connect_status.setIcon( R.drawable.ic_bluetooth_disabled_grey_500_36dp );
+            menu_connect_status.setChecked( false );
+        }
         return true;
     }
 
@@ -95,9 +94,8 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
         ota_tv_device_name = findViewById( R.id.ota_tv_device_name );
         ota_tv_device_version = findViewById( R.id.ota_tv_device_version );
         ota_tv_remote_version = findViewById( R.id.ota_tv_remote_version );
+        ota_nsv = findViewById( R.id.ota_nsv );
         ota_tv_msg = findViewById( R.id.ota_tv_msg );
-        ota_upgrade = findViewById( R.id.ota_upgrade );
-        ota_download = findViewById( R.id.ota_download );
         ota_check_upgrade = findViewById( R.id.ota_check_upgrade );
 
         setSupportActionBar( ota_toolbar );
@@ -110,7 +108,7 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
             @Override
             public void onClick ( View v )
             {
-                if ( !mPresenter.isUpgrading() )
+                if ( !mPresenter.isProcessing() )
                 {
                     finish();
                 }
@@ -120,34 +118,21 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
             @Override
             public void onClick ( View v )
             {
-                if ( !mPresenter.isUpgrading() )
+                if ( !mPresenter.isProcessing() )
                 {
-                    ota_tv_device_version.setText( "Device Firmware Version: " );
-                    ota_tv_remote_version.setText( "Remote Firmware Version: " );
-                    mPresenter.checkRemoteVersion();
-                    mPresenter.checkDeviceVersion();
-                }
-            }
-        } );
-
-        ota_download.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick ( View v )
-            {
-                if ( !mPresenter.isUpgrading() )
-                {
-                    mPresenter.downloadFirmware();
-                }
-            }
-        } );
-
-        ota_upgrade.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick ( View v )
-            {
-                if ( !mPresenter.isUpgrading() )
-                {
-                    showUpgradeWarning();
+                    if ( NetUtil.isNetworkAvailable( BleOTAActivity.this ) )
+                    {
+                        ota_tv_device_version.setText( "Device Firmware Version: " );
+                        ota_tv_remote_version.setText( "Remote Firmware Version: " );
+                        mMessage = new StringBuffer();
+                        ota_tv_msg.setText( "" );
+                        mPresenter.checkUpdate();
+                    }
+                    else
+                    {
+                        mMessage = new StringBuffer();
+                        ota_tv_msg.setText( R.string.ota_network_unavailable );
+                    }
                 }
             }
         } );
@@ -157,191 +142,44 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
     {
         ota_tv_device_name.setText( mName );
         mMessage = new StringBuffer();
-        setPresenter( new OTAPresenter( this, mDevid, mAddress, "" ) );
+        mPresenter = new OTAPresenter( this, this, mDevid, mAddress, "" );
         mPresenter.start();
+        if ( NetUtil.isNetworkAvailable( this ) )
+        {
+            mPresenter.checkUpdate();
+        }
+        else
+        {
+            ota_tv_msg.setText( R.string.ota_network_unavailable );
+        }
     }
 
-    @Override
-    public void setPresenter ( OTAContract.Presenter presenter )
+    public void showDeviceVersion(String version)
     {
-        mPresenter = (OTAPresenter) presenter;
+        ota_tv_device_version.setText( "Device Firmware Version: " + version );
     }
 
-    @Override
-    public Context getMvpContext ()
+    public void showRemoteVersion(String version)
     {
-        return this;
+        ota_tv_remote_version.setText( "Remote Firmware Version: " + version );
     }
 
-    @Override
-    public void onDataValid ()
+    public void showDeviceConnected ()
     {
-        menu_connect_status.setIcon( R.drawable.ic_bluetooth_connected_white_36dp );
-        menu_connect_status.setChecked( true );
-        showMessage( getString( R.string.ota_connect_success ) );
+        if ( menu_connect_status != null )
+        {
+            menu_connect_status.setIcon( R.drawable.ic_bluetooth_connected_white_36dp );
+            menu_connect_status.setChecked( true );
+        }
     }
 
-    @Override
-    public void onDataInvalid ()
+    public void showDeviceDisconnected ()
     {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                menu_connect_status.setIcon( R.drawable.ic_bluetooth_disabled_grey_500_36dp );
-                menu_connect_status.setChecked( false );
-                showMessage( getString( R.string.ota_disconnect ) );
-            }
-        } );
-    }
-
-    @Override
-    public void onCheckRemoteSuccess ( final int major_version, final int minor_version )
-    {
-        final DecimalFormat df = new DecimalFormat( "00" );
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_remote_version.setText( "Remote Firmware Version: " + major_version + "." + df.format( minor_version ) );
-            }
-        } );
-    }
-
-    @Override
-    public void onCheckRemoteFailure ()
-    {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_remote_version.setText( "Remote Firmware Version: Failed" );
-            }
-        } );
-    }
-
-    @Override
-    public void onCheckDeviceSuccess ( final int major_version, final int minor_version )
-    {
-        final DecimalFormat df = new DecimalFormat( "00" );
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_device_version.setText( "Device Firmware Version: " + major_version + "." + df.format( minor_version ) );
-            }
-        } );
-    }
-
-    @Override
-    public void onCheckDeviceFailure ()
-    {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_device_version.setText( "Device Firmware Version: Failed" );
-            }
-        } );
-    }
-
-    @Override
-    public void onFirmwareExists ( final boolean exist )
-    {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                if ( exist )
-                {
-                    ota_download.setText( getString( R.string.ota_redownload )  );
-                }
-                else
-                {
-                    ota_download.setText( getString( R.string.ota_download )  );
-                }
-                ota_download.setClickable( true );
-            }
-        } );
-    }
-
-    @Override
-    public void onDownloadError ()
-    {
-        showMessage( getString( R.string.ota_download_failed ) );
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_download.setEnabled( true );
-            }
-        } );
-    }
-
-    @Override
-    public void onDownloadProgress ( long total, long current )
-    {
-        float percent = (float) current/total;
-        DecimalFormat df = new DecimalFormat( "0.0%" );
-        showUpgradeProgress( df.format( percent ) + "\r\n" );
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_download.setEnabled( false );
-            }
-        } );
-
-    }
-
-    @Override
-    public void onDownloadSuccess ()
-    {
-        showMessage( getString( R.string.ota_download_success ) );
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_download.setEnabled( true );
-                ota_download.setText( getString( R.string.ota_redownload ) );
-            }
-        } );
-    }
-
-    @Override
-    public void onConvertFirmwareSuccess ()
-    {
-
-    }
-
-    @Override
-    public void onConvertFirmwareError ( String msg )
-    {
-
-    }
-
-    @Override
-    public void onEnterBootloader ()
-    {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_msg.setText( getString( R.string.ota_enter_bootloader ) );
-            }
-        } );
-    }
-
-    @Override
-    public void onResetToBootloader ()
-    {
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run ()
-            {
-                ota_tv_msg.setText( getString( R.string.ota_reset_tobootloader )  );
-            }
-        } );
+        if ( menu_connect_status != null )
+        {
+            menu_connect_status.setIcon( R.drawable.ic_bluetooth_disabled_grey_500_36dp );
+            menu_connect_status.setChecked( false );
+        }
     }
 
     @Override
@@ -353,29 +191,40 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
             public void run ()
             {
                 ota_tv_msg.setText( mMessage );
+                ota_nsv.post( new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        ota_nsv.fullScroll( NestedScrollView.FOCUS_DOWN );
+                    }
+                } );
             }
         } );
     }
 
     @Override
-    public void showUpgradeWarning ()
+    public void showUpgradeConfirmDialog (String msg)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        builder.setTitle( R.string.ota_warning_title );
-        builder.setIcon( R.drawable.ic_warning_yellow_500_48dp );
-        builder.setMessage( R.string.ota_warning_msg );
-        builder.setNegativeButton( R.string.ota_cancel, null );
+        builder.setTitle( R.string.ota_upgradable );
+        builder.setMessage( msg );
+        builder.setNegativeButton( R.string.ota_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick( DialogInterface dialog, int which )
+            {
+                mPresenter.stopProcess();
+            }
+        } );
         builder.setPositiveButton( R.string.ota_continue, new DialogInterface.OnClickListener() {
             @Override
             public void onClick ( DialogInterface dialog, int which )
             {
-                mMessage = new StringBuffer();
-                ota_tv_msg.setText( "" );
-                mPresenter.isUpgradable();
+                mPresenter.downloadFirmware();
             }
         } );
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside( false );
+        dialog.setCancelable( false );
         dialog.show();
     }
 
@@ -388,17 +237,73 @@ public class BleOTAActivity extends AppCompatActivity implements OTAContract.Vie
             {
                 ota_tv_msg.setText( mMessage  );
                 ota_tv_msg.append( msg + "\r\n" );
+                ota_nsv.post( new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        ota_nsv.fullScroll( NestedScrollView.FOCUS_DOWN );
+                    }
+                } );
             }
         } );
     }
 
     @Override
+    public void showRepowerDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        final AlertDialog dialog = builder.create();
+        final int[] count = new int[]{ 5};
+        View view = LayoutInflater.from( this ).inflate( R.layout.dialog_repower, null, false );
+        final RadioButton rb = view.findViewById( R.id.dialog_repower_msg );
+        final Button btn = view.findViewById( R.id.dialog_repower_next );
+        btn.setText( getString( R.string.next ) + " ( 5 ) " );
+        rb.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked )
+            {
+                btn.setEnabled( isChecked );
+            }
+        } );
+        btn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View v )
+            {
+                dialog.dismiss();
+                mPresenter.checkUpdate();
+            }
+        } );
+        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick( long millisUntilFinished )
+            {
+                count[0]--;
+                btn.setText( getString( R.string.next ) + " ( " + count[0] + " ) " );
+            }
+
+            @Override
+            public void onFinish()
+            {
+                rb.setEnabled( true );
+                btn.setText( R.string.next );
+            }
+        };
+        dialog.setTitle( R.string.ota_repower_title );
+        dialog.setView( view );
+        dialog.setCanceledOnTouchOutside( false );
+        dialog.setCancelable( false );
+        dialog.show();
+        timer.start();
+    }
+
+    @Override
     public void onBackPressed ()
     {
-        if ( mPresenter.isUpgrading() )
+        if ( mPresenter.isProcessing() )
         {
             return;
         }
         super.onBackPressed();
     }
+
 }

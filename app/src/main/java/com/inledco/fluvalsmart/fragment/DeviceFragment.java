@@ -1,16 +1,20 @@
 package com.inledco.fluvalsmart.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.SharedPreferencesCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +40,7 @@ import com.inledco.fluvalsmart.bean.BaseDevice;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.impl.SwipeItemActionClickListener;
+import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperCallback;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperExtension;
@@ -48,6 +53,9 @@ import java.util.List;
  */
 public class DeviceFragment extends BaseFragment
 {
+    private final int PERMISSON_REQUEST_COARSE_CODE = 2;
+    private final int SCAN_CODE = 3;
+
     private ImageView device_iv_add;
     private TextView device_tv_add;
     private RecyclerView device_rv_show;
@@ -73,31 +81,9 @@ public class DeviceFragment extends BaseFragment
     }
 
     @Override
-    public void onPause ()
-    {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop ()
-    {
-        super.onStop();
-    }
-
-    @Override
     public void onDestroy ()
     {
         super.onDestroy();
-    }
-
-    @Override
-    public void onActivityResult ( int requestCode, int resultCode, Intent data )
-    {
-        super.onActivityResult( requestCode, resultCode, data );
-        if ( requestCode == 1 && resultCode == 1 )
-        {
-            setFlag();
-        }
     }
 
     @Override
@@ -121,7 +107,7 @@ public class DeviceFragment extends BaseFragment
             DevicePrefer prefer = (DevicePrefer) PreferenceUtil.getObjectFromPrefer( getContext(), ConstVal.DEV_PREFER_FILENAME, key );
             mDevices.add( new BaseDevice( prefer, false ) );
         }
-        if ( getFlag() || mDevices.size() > 0 )
+        if ( Setting.hasScanTip( getContext() ) || mDevices.size() > 0 )
         {
             device_iv_add.setVisibility( View.GONE );
             device_tv_add.setVisibility( View.GONE );
@@ -171,19 +157,6 @@ public class DeviceFragment extends BaseFragment
         } );
     }
 
-    private void setFlag ()
-    {
-        SharedPreferences sp = getContext().getSharedPreferences( "device_scan_flag", Context.MODE_PRIVATE );
-        SharedPreferences.Editor editor = sp.edit().putBoolean( "flag", true );
-        SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
-    }
-
-    private boolean getFlag ()
-    {
-        SharedPreferences sp = getContext().getSharedPreferences( "device_scan_flag", Context.MODE_PRIVATE );
-        return sp.getBoolean( "flag", false );
-    }
-
     private void showRemoveDeviceDialog ( final int position )
     {
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
@@ -220,11 +193,24 @@ public class DeviceFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
-                Intent intent = new Intent( getContext(), ScanActivity.class );
-                startActivityForResult( intent, 1 );
-//                setFlag();
+                if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                     ContextCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
+                {
+                    startScanActivity();
+                }
+                else
+                {
+                    ActivityCompat.requestPermissions( getActivity(), new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
+                                                       PERMISSON_REQUEST_COARSE_CODE );
+                }
             }
         } );
+    }
+
+    private void startScanActivity()
+    {
+        Intent intent = new Intent( getContext(), ScanActivity.class );
+        startActivityForResult( intent, SCAN_CODE );
     }
 
     private void showResetPasswordDialog ( @NonNull final String address )
@@ -232,9 +218,9 @@ public class DeviceFragment extends BaseFragment
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         final AlertDialog dialog = builder.create();
         View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_reset_password, null, false );
-        final EditText reset_key = (EditText) view.findViewById( R.id.reset_psw_key );
-        Button btn_cancel = (Button) view.findViewById( R.id.reset_psw_cancel );
-        Button btn_reset = (Button) view.findViewById( R.id.reset_psw_reset );
+        final EditText reset_key = view.findViewById( R.id.reset_psw_key );
+        Button btn_cancel = view.findViewById( R.id.reset_psw_cancel );
+        Button btn_reset = view.findViewById( R.id.reset_psw_reset );
         final CountDownTimer tmr = new CountDownTimer( 4000, 4000 ) {
             @Override
             public void onTick ( long millisUntilFinished )

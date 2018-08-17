@@ -12,7 +12,7 @@
     <string name="ota_check_success">校验成功.</string>
     <string name="ota_upgrade_success">100%\n升级成功,设备正在重启...</string>
     <string name="ota_enter_bootloader">进入bootloader模式.</string>
-    <string name="ota_reset_tobootloader">正在重启进入bootloader模式.\n升级将会在30秒后继续,请稍候...</string>
+    <string name="ota_reset_tobootloader">正在重启进入bootloader模式.</string>
     <string name="ota_invalid_command">无效的指令.</string>
     <string name="ota_connect_success">连接设备成功.</string>
     <string name="ota_disconnect">设备连接断开.</string>
@@ -27,10 +27,18 @@
     <string name="ota_msg_uptodate">固件已经是最新版本.</string>
     <string name="ota_msg_check_version">请检查更新.</string>
     <string name="ota_msg_remote_not_exists">远程固件不存在.</string>
-    <string name="ota_warning">警告:\n\t请勿在升级过程中退出APP,关闭蓝牙,对设备断电\n\t请使设备与手机保持良好通讯</string>
+    <string name="ota_warning">升级警告:\n\t\t在升级过程中手机尽量靠近设备,保持良好通讯,请不要:\n\t\t\t-   退出应用\n\t\t\t-   关闭蓝牙\n\t\t设备升级可能不会保留用户设置的参数.\n\t\t设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.\n\t\t如果升级失败,可以重新升级.</string>
     <string name="ota_msg_reupgrade">请重连设备并重新升级.</string>
     <string name="ota_warning_title">警告</string>
     <string name="ota_warning_msg">升级存在风险,升级失败可能会导致设备无法运行.</string>
     <string name="ota_cancel">取消</string>
     <string name="ota_continue">继续</string>
+    <string name="ota_upgradable">可用升级</string>
+    <string name="confirm_repower">请重新上电后点击按钮.</string>
+    <string name="next">下一步</string>
+    <string name="ota_repower_title">重新上电</string>
+    <string name="ota_firmware_newest">设备固件已经是最新版本.</string>
+    <string name="ota_device_firmware_upgradable">设备可以升级到Vxx,确认升级?</string>
+    <string name="downloading_firmware">正在下载固件...</string>
+    <string name="ota_network_unavailable">网络连接不可用,请检查网络连接.</string>
 </resources>

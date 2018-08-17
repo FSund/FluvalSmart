@@ -5,12 +5,12 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

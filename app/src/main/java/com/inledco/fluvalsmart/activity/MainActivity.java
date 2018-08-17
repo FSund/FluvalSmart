@@ -1,15 +1,18 @@
 package com.inledco.fluvalsmart.activity;
 
-import android.content.Context;
+import android.Manifest;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.SharedPreferencesCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -17,7 +20,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.BleStateListener;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.fragment.DeviceFragment;
 import com.inledco.fluvalsmart.fragment.NewsFragment;
@@ -26,14 +29,16 @@ import com.inledco.fluvalsmart.prefer.Setting;
 
 public class MainActivity extends BaseActivity
 {
+    private final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
+    private final int PERMISSON_REQUEST_COARSE_CODE = 2;
+    private final int SCAN_CODE = 3;
+
     private Toolbar toolbar;
     private MenuItem menuItemBleSearch;
     private BottomNavigationView main_bottom_navigation;
 
     //双击back退出标志位
     private boolean mExiting;
-
-    private BleStateListener mBleStateListener;
 
     @Override
     protected void onCreate ( Bundle savedInstanceState )
@@ -44,40 +49,6 @@ public class MainActivity extends BaseActivity
         initView();
         initEvent();
         initData();
-
-
-//        Setting.initSetting( this );
-
-//        if ( BleManager.getInstance().checkBleSupported( this ) )
-//        {
-//            if ( BleManager.getInstance().isBluetoothEnabled() || (Setting.mBleEnabled && BleManager.getInstance().autoOpenBluetooth()) )
-//            {
-//                BleManager.getInstance().bindService( this );
-//            }
-//            else
-//            {
-//                BleManager.getInstance().requestBluetoothEnable( this );
-//            }
-//        }
-//        else
-//        {
-//            Toast.makeText( this, R.string.ble_no_support, Toast.LENGTH_SHORT )
-//                 .show();
-//            finish();
-//        }
-//        initData();
-    }
-
-    @Override
-    protected void onResume ()
-    {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause ()
-    {
-        super.onPause();
     }
 
     @Override
@@ -92,10 +63,25 @@ public class MainActivity extends BaseActivity
     protected void onActivityResult ( int requestCode, int resultCode, Intent data )
     {
         super.onActivityResult( requestCode, resultCode, data );
-//        BleManager.getInstance().getResultForBluetoothEnable( requestCode, resultCode );
-        if ( requestCode == 1 && resultCode == 1 )
+        switch ( requestCode )
         {
-            setFlag();
+            case BLUETOOTH_REQUEST_ENABLE_CODE:
+                if ( resultCode == Activity.RESULT_OK )
+                {
+
+                }
+                else
+                {
+                    Toast.makeText( MainActivity.this, R.string.snackbar_bluetooth_denied, Toast.LENGTH_LONG )
+                         .show();
+                }
+                break;
+            case SCAN_CODE:
+                if ( resultCode == SCAN_CODE )
+                {
+                    Setting.setScanTip( MainActivity.this );
+                }
+                break;
         }
     }
 
@@ -103,7 +89,19 @@ public class MainActivity extends BaseActivity
     public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults )
     {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
-        BleManager.getInstance().getResultForCoarseLocation( requestCode, permissions[0], grantResults[0] );
+        if ( requestCode == PERMISSON_REQUEST_COARSE_CODE
+             && permissions[0].equals( Manifest.permission.ACCESS_COARSE_LOCATION) )
+        {
+            if ( grantResults[0] == PackageManager.PERMISSION_GRANTED )
+            {
+                startScanActivity();
+            }
+            else
+            {
+                Toast.makeText( MainActivity.this, R.string.snackbar_coarselocation_denied, Toast.LENGTH_SHORT )
+                     .show();
+            }
+        }
     }
 
     @Override
@@ -115,8 +113,17 @@ public class MainActivity extends BaseActivity
             @Override
             public boolean onMenuItemClick ( MenuItem item )
             {
-                startScanActivity();
-//                BleManager.getInstance().requestLocationPermison( MainActivity.this );
+                LogUtil.e( TAG, "onMenuItemClick: " + Build.VERSION.SDK_INT );
+                if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                     ContextCompat.checkSelfPermission( MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
+                {
+                    startScanActivity();
+                }
+                else
+                {
+                    ActivityCompat.requestPermissions( MainActivity.this, new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
+                                                       PERMISSON_REQUEST_COARSE_CODE );
+                }
                 return false;
             }
         } );
@@ -135,43 +142,25 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initData()
     {
-        mBleStateListener = new BleStateListener() {
-            @Override
-            public void onBluetoothEnabled ()
-            {
-            }
-
-            @Override
-            public void onBluetoothDisabled ()
-            {
-
-            }
-
-            @Override
-            public void onBluetoothDenied ()
-            {
-            }
-
-            @Override
-            public void onCoarseLocationGranted ()
-            {
-                startScanActivity();
-            }
-
-            @Override
-            public void onCoarseLocationDenied ()
-            {
-                Snackbar.make( main_bottom_navigation, R.string.snackbar_coarselocation_denied, Snackbar.LENGTH_LONG ).show();
-            }
-
-            @Override
-            public void onBleInitialized ()
-            {
-
-            }
-        };
-        BleManager.getInstance().setBleStateListener( mBleStateListener );
         BleManager.getInstance().bindService( this );
+        if ( BleManager.getInstance().checkBleSupported( this ) )
+        {
+            if ( BleManager.getInstance().isBluetoothEnabled() || ( Setting.isAutoTurnonBle( MainActivity.this ) && BleManager.getInstance().autoOpenBluetooth()) )
+            {
+            }
+            else
+            {
+                Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
+                startActivityForResult( intent, BLUETOOTH_REQUEST_ENABLE_CODE );
+            }
+        }
+        else
+        {
+            Toast.makeText( this, R.string.ble_no_support, Toast.LENGTH_SHORT )
+                 .show();
+            finish();
+            return;
+        }
         getSupportFragmentManager().beginTransaction().replace( R.id.main_fl_show, new DeviceFragment() ).commit();
     }
 
@@ -230,7 +219,7 @@ public class MainActivity extends BaseActivity
             else
             {
                 //如果退出时不提示 且设置为退出关闭BLE
-                if ( Setting.mExitTurnOffBle )
+                if ( Setting.isExitTurnoffBle( MainActivity.this ) )
                 {
                     BleManager.getInstance().closeBluetooth();
                 }
@@ -240,16 +229,9 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    private void setFlag ()
-    {
-        SharedPreferences sp = getSharedPreferences( "device_scan_flag", Context.MODE_PRIVATE );
-        SharedPreferences.Editor editor = sp.edit().putBoolean( "flag", true );
-        SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
-    }
-
     private void startScanActivity()
     {
         Intent intent = new Intent( this, ScanActivity.class );
-        startActivityForResult( intent, 1 );
+        startActivityForResult( intent, SCAN_CODE );
     }
 }

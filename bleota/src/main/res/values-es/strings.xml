@@ -12,7 +12,7 @@
     <string name="ota_check_success">Verificación correcta.</string>
     <string name="ota_download_success">100%\nÉxito en la descarga.</string>
     <string name="ota_enter_bootloader">Entrando en modo de inicialización.</string>
-    <string name="ota_reset_tobootloader">Inicializando para entrar al bootloader. La actualización continuará después de 30 segundos, por favor espere...</string>
+    <string name="ota_reset_tobootloader">Inicializando para entrar al bootloader.</string>
     <string name="ota_invalid_command">Comando inválido.</string>
     <string name="ota_connect_success">Se ha conectado al dispositivo correctamente.</string>
     <string name="ota_disconnect">Dispositivo desconectado.</string>

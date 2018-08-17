@@ -14,7 +14,7 @@
         android:gravity="center_horizontal"
         android:padding="8dp"
         android:background="@drawable/ripple_theme"
-        android:drawableTop="@drawable/ic_bluetooth_disabled_grey_500_48dp"
+        android:drawableTop="@mipmap/ic_bluetooth_disabled_grey_500"
         android:text="@string/msg_connecting_device"/>
 
 </LinearLayout>

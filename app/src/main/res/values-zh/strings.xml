@@ -102,4 +102,8 @@
     <string name="preset_plant_boost">Preset - Plant Boost</string>
     <string name="dialog_export_use">导出</string>
     <string name="dialog_export_remove">移除</string>
+    <string name="item_turnoff">关灯</string>
+    <string name="edit">编辑</string>
+    <string name="overview">概览</string>
+    <string name="disabled">禁用</string>
 </resources>

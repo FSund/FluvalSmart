@@ -10,5 +10,5 @@ public interface BleScanListener
 
     void onStopScan ();
 
-    void onDeviceScanned ( String mac, String name, byte[] bytes );
+    void onDeviceScanned ( String mac, String name, int rssi, byte[] bytes );
 }

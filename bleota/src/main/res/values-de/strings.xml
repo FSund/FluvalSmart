@@ -11,7 +11,7 @@
     <string name="ota_check_success">Überprüfung erfolgreich.</string>
     <string name="ota_download_success">100%\nDownload erfolgreich.</string>
     <string name="ota_enter_bootloader">Gehen Sie in den Bootloader-Modus.</string>
-    <string name="ota_reset_tobootloader">Neustart für Bootloader.\nUpgrade fährt nach 30 Sekunden fort. Bitte warten…</string>
+    <string name="ota_reset_tobootloader">Neustart für Bootloader.</string>
     <string name="ota_invalid_command">Ungültiger Befehl.</string>
     <string name="ota_connect_success">Die Verbindung des Gerätes war erfolgreich.</string>
     <string name="ota_disconnect">Das Gerät wurde getrennt.</string>

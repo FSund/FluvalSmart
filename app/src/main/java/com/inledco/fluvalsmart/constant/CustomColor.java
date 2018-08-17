@@ -24,5 +24,9 @@ public class CustomColor
     public static int COLOR_WHITE_WARM = 0xFFFFB969;
     public static int COLOR_WHITE_COLD = 0xFFC3C9FF;
     public static int COLOR_WHITE_PURE = 0xFFFFFFFF;
+    public static int COLOR_400nm = 0xFF8F85AF;
+    public static int COLOR_420nm = 0xFF718CC7;
+    public static int COLOR_440nm = 0xFF2E53A4;
+    public static int COLOR_460nm = 0xFF1D2088;
     public static int COLOR_ACCENT = 0xFFFF4081;
 }

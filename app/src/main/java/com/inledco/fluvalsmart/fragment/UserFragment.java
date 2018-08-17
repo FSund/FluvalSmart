@@ -3,13 +3,10 @@ package com.inledco.fluvalsmart.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -65,35 +62,35 @@ public class UserFragment extends BaseFragment
     protected void initData()
     {
         setting_version.setText( getVersion() );
-        setting_auth_ble.setChecked( Setting.mBleEnabled );
-        setting_exit_close_ble.setChecked( Setting.mExitTurnOffBle );
-        switch ( Setting.mLang )
+        setting_auth_ble.setChecked( Setting.isAutoTurnonBle( getContext() ) );
+        setting_exit_close_ble.setChecked( Setting.isExitTurnoffBle( getContext() ) );
+        String lang = Setting.getLanguage( getContext() );
+        switch ( lang )
         {
-            case Setting.LANGUAGE_AUTO:
+            case Setting.KEY_LANGUAGE_AUTO:
                 setting_lang.setText( R.string.mode_auto );
                 break;
-            case Setting.LANGUAGE_ENGLISH:
+            case Setting.KEY_LANGUAGE_ENGLISH:
                 setting_lang.setText( R.string.setting_lang_english );
                 break;
 
-            case Setting.LANGUAGE_GERMANY:
+            case Setting.KEY_LANGUAGE_GERMANY:
                 setting_lang.setText( R.string.setting_lang_germany );
                 break;
 
-            case Setting.LANGUAGE_FRENCH:
+            case Setting.KEY_LANGUAGE_FRENCH:
                 setting_lang.setText( R.string.setting_lang_french );
                 break;
 
-            case Setting.LANGUAGE_SPANISH:
+            case Setting.KEY_LANGUAGE_SPANISH:
                 setting_lang.setText( R.string.setting_lang_spanish );
                 break;
 
-            case Setting.LANGUAGE_CHINESE:
+            case Setting.KEY_LANGUAGE_CHINESE:
                 setting_lang.setText( R.string.setting_lang_chinese );
                 break;
 
             default:
-                Setting.mLang = Setting.LANGUAGE_AUTO;
                 setting_lang.setText( R.string.mode_auto );
                 break;
         }
@@ -120,11 +117,7 @@ public class UserFragment extends BaseFragment
             @Override
             public void onCheckedChanged ( CompoundButton compoundButton, boolean b )
             {
-                Setting.mBleEnabled = b;
-                SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences( getContext() );
-                SharedPreferences.Editor editor = defaultSet.edit();
-                editor.putBoolean( Setting.SET_BLE_ENABLED,  Setting.mBleEnabled);
-                SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+                Setting.setAutoTurnonBle( getContext(), b );
             }
         } );
 
@@ -132,11 +125,7 @@ public class UserFragment extends BaseFragment
             @Override
             public void onCheckedChanged ( CompoundButton compoundButton, boolean b )
             {
-                Setting.mExitTurnOffBle = b;
-                SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences( getContext() );
-                SharedPreferences.Editor editor = defaultSet.edit();
-                editor.putBoolean( Setting.SET_EXIT_TURNOFF_BLE,  Setting.mExitTurnOffBle);
-                SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+                Setting.setExitTurnoffBle( getContext(), b );
             }
         } );
         setting_about.setOnClickListener( new View.OnClickListener() {
@@ -174,13 +163,13 @@ public class UserFragment extends BaseFragment
     private void showLangDialog()
     {
         int idx = 0;
-        final String[] sl = new String[]{Setting.mLang};
-        final String[] ll = new String[]{ Setting.LANGUAGE_AUTO,
-                                          Setting.LANGUAGE_ENGLISH,
-                                          Setting.LANGUAGE_GERMANY,
-                                          Setting.LANGUAGE_FRENCH,
-                                          Setting.LANGUAGE_SPANISH,
-                                          Setting.LANGUAGE_CHINESE};
+        final String[] sl = new String[]{Setting.getLanguage( getContext() )};
+        final String[] ll = new String[]{ Setting.KEY_LANGUAGE_AUTO,
+                                          Setting.KEY_LANGUAGE_ENGLISH,
+                                          Setting.KEY_LANGUAGE_GERMANY,
+                                          Setting.KEY_LANGUAGE_FRENCH,
+                                          Setting.KEY_LANGUAGE_SPANISH,
+                                          Setting.KEY_LANGUAGE_CHINESE };
         final CharSequence[] langs = new CharSequence[]{ getString( R.string.mode_auto ),
                                                          getString( R.string.setting_lang_english ),
                                                          getString( R.string.setting_lang_germany ),
@@ -220,13 +209,9 @@ public class UserFragment extends BaseFragment
             @Override
             public void onClick ( DialogInterface dialogInterface, int i )
             {
-                if ( !Setting.mLang.equals( sl[0] ) )
+                if ( !Setting.getLanguage( getContext() ).equals( sl[0] ) )
                 {
-                    Setting.mLang = sl[0];
-                    SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences( getContext() );
-                    SharedPreferences.Editor editor = defaultSet.edit();
-                    editor.putString( Setting.SET_LANGUAGE, Setting.mLang );
-                    SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+                    Setting.setLanguage( getContext(), sl[0] );
                     Setting.changeAppLanguage( getContext() );
                     Intent intent = new Intent( getContext(), LaunchActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );

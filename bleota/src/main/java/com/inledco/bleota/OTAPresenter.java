@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Created by liruya on 2017/5/8.
  */
 
-public class OTAPresenter implements OTAContract.Presenter
+public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
 {
     private static final String TAG = "OTAPresenter";
 
@@ -33,11 +33,10 @@ public class OTAPresenter implements OTAContract.Presenter
     private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
     private static final String OTA_FIRMWARE_LINK = "http://47.88.12.183:8080";
 
-    private boolean mConnected;
-    private boolean mReadDeviceVersion;
     private boolean mReadRemoteVersion;
+    private boolean mProcessing;
 
-    private OTAContract.View mView;
+    private IOTAView mView;
     private String mAddress;
     private short mDevid;
     private int mDeviceMajorVersion;
@@ -65,14 +64,12 @@ public class OTAPresenter implements OTAContract.Presenter
     private int mCurrent;
     private int mTotal;
 
-    //auto connect after exit application to bootloader
-    private boolean mAutoConnect;
-    private boolean mUpgrading;
     private byte mCurrentCommand;
     private CountDownTimer mCountDownTimer;
 
-    public OTAPresenter ( OTAContract.View view, @NonNull short devid, @NonNull String address, @NonNull String remoteVersionUrl )
+    public OTAPresenter ( BleOTAActivity t, IOTAView view, @NonNull short devid, @NonNull String address, @NonNull String remoteVersionUrl )
     {
+        super(t);
         mView = view;
         mDevid = devid;
         mAddress = address;
@@ -89,18 +86,18 @@ public class OTAPresenter implements OTAContract.Presenter
             @Override
             public void onFinish ()
             {
-                mUpgrading = false;
-                mView.showMessage( mView.getMvpContext().getString( R.string.ota_response_timeout ) );
+                LogUtil.e( TAG, "onFinish: " + System.currentTimeMillis() );
+                mProcessing = false;
+                mView.showMessage( getString( R.string.ota_response_timeout ) );
             }
         };
     }
 
-    public boolean isUpgrading ()
+    public boolean isProcessing()
     {
-        return mUpgrading;
+        return mProcessing;
     }
 
-    @Override
     public void start ()
     {
         mCommunicateListener = new BleCommunicateListener()
@@ -110,18 +107,14 @@ public class OTAPresenter implements OTAContract.Presenter
             {
                 if ( mac.equals( mAddress ) )
                 {
-                    mView.onDataValid();
-                    if ( mAutoConnect )
-                    {
-                        mAutoConnect = false;
-                        mHandler.postDelayed( new Runnable() {
-                            @Override
-                            public void run ()
-                            {
-                                enterBootloader();
-                            }
-                        }, 128 );
-                    }
+                    runOnUiThread( new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            mView.showDeviceConnected();
+                            mView.showMessage( getString( R.string.ota_connect_success ) );
+                        }
+                    } );
                     LogUtil.d( TAG, "onDataValid: " );
                 }
             }
@@ -131,12 +124,14 @@ public class OTAPresenter implements OTAContract.Presenter
             {
                 if ( mac.equals( mAddress ) )
                 {
-                    mView.onDataInvalid();
-                    if ( mAutoConnect )
-                    {
-                        mAutoConnect = false;
-                        mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_reupgrade ) );
-                    }
+                    runOnUiThread( new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            mView.showDeviceDisconnected();
+                            mView.showMessage( getString( R.string.ota_disconnect ) );
+                        }
+                    } );
                 }
             }
 
@@ -160,34 +155,14 @@ public class OTAPresenter implements OTAContract.Presenter
             {
                 if ( mac.equals( mAddress ) && list.get( 0 ) == mCurrentCommand )
                 {
-                    mCountDownTimer.cancel();
                     decodeReceiveData( list );
                 }
             }
         };
         BleManager.getInstance()
                   .addBleCommunicateListener( mCommunicateListener );
-        BleManager.getInstance()
-                  .connectDevice( mAddress );
-        mView.showMessage( mView.getMvpContext().getString( R.string.ota_connecting ) );
-
-
-        long st = System.currentTimeMillis();
-        if ( BleManager.getInstance().isConnected( mAddress ) == false )
-        {
-            BleManager.getInstance().connectDevice( mAddress );
-        }
-        while( BleManager.getInstance().isConnected( mAddress ) == false )
-        {
-            if ( System.currentTimeMillis() - st > 3000 )
-            {
-                return;
-            }
-        }
-        BleManager.getInstance().readMfr( mAddress );
     }
 
-    @Override
     public void stop ()
     {
         mCountDownTimer.cancel();
@@ -197,160 +172,204 @@ public class OTAPresenter implements OTAContract.Presenter
                   .disconnectDevice( mAddress );
     }
 
+    public void stopProcess()
+    {
+        mProcessing = false;
+    }
+
     public void checkUpdate()
     {
-        mDeviceMajorVersion = 0;
-        mDeviceMinorVersion = 0;
-        mRemoteFirmware = null;
-
-        BleManager.getInstance().readMfr( mAddress );
-        OkHttpManager.get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
-        {
+        Runnable runnable = new Runnable() {
             @Override
-            public void onError ( int code, String msg )
+            public void run()
             {
-                mView.onCheckRemoteFailure();
-                if ( msg == null )
-                {
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_remote_not_exists ) );
-                }
-                else
-                {
-                    mView.showMessage( msg );
-                }
-                mReadRemoteVersion = true;
-            }
+                mProcessing = true;
+                long st = System.currentTimeMillis();
 
-            @Override
-            public void onSuccess ( RemoteFirmware result )
-            {
-                mReadRemoteVersion = true;
-                LogUtil.d( TAG, "onSuccess: " + result.toString() );
-                mRemoteFirmware = result;
-                mFirmwareFile = new File( mView.getMvpContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ),
-                                          mRemoteFirmware.getFile_name() );
-                mView.onCheckRemoteSuccess( result.getMajor_version(), result.getMinor_version() );
-                mView.onFirmwareExists( mFirmwareFile.exists() );
+                runOnUiThread( new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        mView.showMessage( getString( R.string.ota_connecting ) );
+                    }
+                } );
+                BleManager.getInstance().connectDevice( mAddress );
+                while( BleManager.getInstance().isDataValid( mAddress ) == false )
+                {
+                    if ( System.currentTimeMillis() - st > 3000 )
+                    {
+                        runOnUiThread( new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                mView.showMessage( getString( R.string.ota_disconnect ) );
+                            }
+                        } );
+                        mProcessing = false;
+                        return;
+                    }
+                }
+
+                mDeviceMajorVersion = 0;
+                mDeviceMinorVersion = 0;
+                mRemoteFirmware = null;
+                mReadRemoteVersion = false;
+                final DecimalFormat df = new DecimalFormat( "00" );
+
+                BleManager.getInstance().readMfr( mAddress );
+                OkHttpManager.get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
+                {
+                    @Override
+                    public void onError( int code, final String msg )
+                    {
+                        runOnUiThread( new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                if ( msg == null )
+                                {
+                                    mView.showMessage( getString( R.string.ota_msg_remote_not_exists ) );
+                                }
+                                else
+                                {
+                                    mView.showMessage( msg );
+                                }
+                            }
+                        } );
+                        mReadRemoteVersion = true;
+                    }
+
+                    @Override
+                    public void onSuccess( final RemoteFirmware result )
+                    {
+                        LogUtil.e( TAG, "onSuccess: " + result.toString() );
+                        mRemoteFirmware = result;
+                        runOnUiThread( new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                mView.showRemoteVersion( "" + result.getMajor_version() + "." + df.format( result.getMinor_version() ) );
+                            }
+                        } );
+                        mReadRemoteVersion = true;
+                    }
+                } );
+                long ct = System.currentTimeMillis();
+                while ( System.currentTimeMillis() - ct < 1000 || mReadRemoteVersion == false );
+                final int device_version = ( mDeviceMajorVersion << 8) | mDeviceMinorVersion;
+                if ( device_version == 0 || mRemoteFirmware == null )
+                {
+                    LogUtil.e( TAG, "run: " + device_version + "  " + (mRemoteFirmware == null) );
+                    mProcessing = false;
+                    return;
+                }
+                if ( device_version < OTA_SUPPORT_LOWEST_VERSION )
+                {
+                    mProcessing = false;
+                    runOnUiThread( new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            mView.showMessage( getString( R.string.ota_msg_unsupport_version ) );
+                        }
+                    } );
+                    return;
+                }
+                final int remote_version = ( mRemoteFirmware.getMajor_version() << 8) | mRemoteFirmware.getMinor_version();
+                runOnUiThread( new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        if ( device_version < remote_version )
+                        {
+                            String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format( mRemoteFirmware.getMinor_version() );
+                            String msg = getString( R.string.ota_device_firmware_upgradable ).replace( "Vxx", v );
+                            mView.showUpgradeConfirmDialog(msg);
+                        }
+                        else
+                        {
+                            mView.showMessage( getString( R.string.ota_firmware_newest ) );
+                            mProcessing = false;
+                        }
+                    }
+                } );
             }
-        } );
+        };
+        new Thread( runnable ).start();
     }
 
-    @Override
-    public void checkRemoteVersion ()
-    {
-        mRemoteFirmware = null;
-        OkHttpManager.get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
-        {
-            @Override
-            public void onError ( int code, String msg )
-            {
-                mView.onCheckRemoteFailure();
-                if ( msg == null )
-                {
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_remote_not_exists ) );
-                }
-                else
-                {
-                    mView.showMessage( msg );
-                }
-            }
-
-            @Override
-            public void onSuccess ( RemoteFirmware result )
-            {
-                LogUtil.d( TAG, "onSuccess: " + result.toString() );
-                mRemoteFirmware = result;
-                mFirmwareFile = new File( mView.getMvpContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ),
-                                          mRemoteFirmware.getFile_name() );
-                mView.onCheckRemoteSuccess( result.getMajor_version(), result.getMinor_version() );
-                mView.onFirmwareExists( mFirmwareFile.exists() );
-            }
-        } );
-    }
-
-    @Override
-    public void checkDeviceVersion ()
-    {
-        mDeviceMajorVersion = 0;
-        mDeviceMinorVersion = 0;
-        BleManager.getInstance()
-                  .readMfr( mAddress );
-    }
-
-    @Override
-    public void isUpgradable ()
-    {
-        int version = (mDeviceMajorVersion << 8) | mDeviceMinorVersion;
-        if ( version == 0 || mRemoteFirmware == null )
-        {
-            mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_check_version ) );
-            return;
-        }
-        if ( version < OTA_SUPPORT_LOWEST_VERSION )
-        {
-            mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_unsupport_version ) );
-            return;
-        }
-        int remote_version = (mRemoteFirmware.getMajor_version()<<8)|mRemoteFirmware.getMajor_version();
-//        if ( version >= remote_version )
-//        {
-//            mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_uptodate ) );
-//            return;
-//        }
-//        else
-//        {
-            convertFirmware();
-//        }
-    }
-
-    @Override
     public void downloadFirmware ()
     {
         if ( mRemoteFirmware == null || mRemoteFirmware.getFile_link() == null )
         {
-            mView.showMessage( mView.getMvpContext().getString( R.string.ota_msg_check_version) );
+            mProcessing = false;
+            mView.showMessage( getString( R.string.ota_msg_check_version) );
             return;
         }
-        OkHttpManager.download( OTA_FIRMWARE_LINK + mRemoteFirmware.getFile_link(), mFirmwareFile, new DownloadCallback()
+        if ( getContext() != null )
         {
-            @Override
-            public void onError ()
+            mFirmwareFile = new File( getContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ), mRemoteFirmware.getFile_name() );
+            if ( mFirmwareFile.exists() )
             {
-                mView.onDownloadError();
+                mFirmwareFile.delete();
             }
+            mView.showMessage( getString( R.string.downloading_firmware ) );
+            OkHttpManager.download( OTA_FIRMWARE_LINK + mRemoteFirmware.getFile_link(), mFirmwareFile, new DownloadCallback()
+            {
+                @Override
+                public void onError()
+                {
+                    mView.showMessage( getString( R.string.ota_download_failed ) );
+                    mProcessing = false;
+                }
 
-            @Override
-            public void onProgress ( long total, long current )
-            {
-                mView.onDownloadProgress( total, current );
-            }
+                @Override
+                public void onProgress( long total, long current )
+                {
+                    final float percent = (float) current / total;
+                    final DecimalFormat df = new DecimalFormat( "0.0%" );
+                    runOnUiThread( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            mView.showUpgradeProgress( df.format( percent ) + "\r\n" );
+                        }
+                    } );
+                }
 
-            @Override
-            public void onSuccess ( File file )
-            {
-                mFirmwareFile = file;
-                mView.onDownloadSuccess();
-            }
-        } );
+                @Override
+                public void onSuccess( File file )
+                {
+                    mFirmwareFile = file;
+                    runOnUiThread( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            mView.showMessage( getString( R.string.ota_download_success ) );
+                            if ( mFirmwareFile == null || !mFirmwareFile.exists() || (!mFirmwareFile.getName().endsWith( ".txt" ) && !mFirmwareFile.getName().endsWith( ".hex" )) )
+                            {
+                                mProcessing = false;
+                                mView.showMessage( getString( R.string.ota_firmware_invalid ) );
+                                return;
+                            }
+                            convertFirmware();
+                        }
+                    } );
+                }
+            } );
+        }
+        else
+        {
+            mProcessing = false;
+        }
     }
 
-    @Override
     public void convertFirmware ()
     {
-        if ( mRemoteFirmware == null || mRemoteFirmware.getFile_name() == null )
-        {
-            mView.showMessage( mView.getMvpContext().getString( R.string.ota_firmware_invalid ) );
-            return;
-        }
         mCurrent = 0;
         mTotal = 0;
-        mFirmwareFile = new File( mView.getMvpContext().getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ),
-                                  mRemoteFirmware.getFile_name() );
-        if ( mFirmwareFile == null || !mFirmwareFile.exists() || (!mFirmwareFile.getName().endsWith( ".txt" ) && !mFirmwareFile.getName().endsWith( ".hex" )) )
-        {
-            mView.showMessage( mView.getMvpContext().getString( R.string.ota_firmware_invalid ) );
-            return;
-        }
         mFrames = new ArrayList<>();
         new Thread( new Runnable() {
             @Override
@@ -368,7 +387,8 @@ public class OTAPresenter implements OTAContract.Presenter
                         if ( frame == null )
                         {
                             mFrames = null;
-                            mView.showMessage( mView.getMvpContext().getString( R.string.ota_firmware_damaged) );
+                            mProcessing = false;
+                            mView.showMessage( getString( R.string.ota_firmware_damaged) );
                             return;
                         }
                         if ( frame.getType() == 0x04 )
@@ -396,26 +416,26 @@ public class OTAPresenter implements OTAContract.Presenter
                     }
                     mTotal = mFrames.size();
                     enterBootloader();
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_analysis_success ) );
-//                    mView.onConvertFirmwareSuccess();
+                    mView.showMessage( getString( R.string.ota_analysis_success ) );
                 }
                 catch ( FileNotFoundException e )
                 {
                     e.printStackTrace();
                     mFrames = null;
+                    mProcessing = false;
                     mView.showMessage( e.toString() );
                 }
                 catch ( IOException e )
                 {
                     e.printStackTrace();
                     mFrames = null;
+                    mProcessing = false;
                     mView.showMessage( e.toString() );
                 }
             }
         } ).start();
     }
 
-    @Override
     public void enterBootloader ()
     {
         mCurrentCommand = OTAConstants.OTA_CMD_GET_STATUS;
@@ -425,7 +445,6 @@ public class OTAPresenter implements OTAContract.Presenter
         mCountDownTimer.start();
     }
 
-    @Override
     public void getBootloaderInfo ()
     {
         mCurrentCommand = OTAConstants.OTA_CMD_GET_VERSION;
@@ -435,7 +454,6 @@ public class OTAPresenter implements OTAContract.Presenter
         mCountDownTimer.start();
     }
 
-    @Override
     public void eraseFirmware ()
     {
         int length = 0;
@@ -453,7 +471,6 @@ public class OTAPresenter implements OTAContract.Presenter
         mCountDownTimer.start();
     }
 
-    @Override
     public void upgradeFirmware ()
     {
         if ( mFrames != null && mFrames.size() > 0 )
@@ -484,7 +501,6 @@ public class OTAPresenter implements OTAContract.Presenter
         }
     }
 
-    @Override
     public void resetDevice ()
     {
         byte[] bytes = new byte[]{OTAConstants.OTA_CMD_RESET_DEVICE, 0x00, 0x00, 0x00};
@@ -494,73 +510,19 @@ public class OTAPresenter implements OTAContract.Presenter
         mCountDownTimer.start();
     }
 
-    private void getDeviceInfo()
-    {
-        final boolean[] result = new boolean[]{false};
-        BleCommunicateListener listener = new BleCommunicateListener() {
-            @Override
-            public void onDataValid( String mac )
-            {
-
-            }
-
-            @Override
-            public void onDataInvalid( String mac )
-            {
-
-            }
-
-            @Override
-            public void onReadMfr( String mac, String s )
-            {
-                if ( mac.equals( mAddress ) )
-                {
-                    byte[] mfr = DataUtil.hexToByteArray( s.replace( " ", "" ) );
-                    short devid;
-                    if ( mfr == null || mfr.length < 4 )
-                    {
-
-                    }
-                    else
-                    {
-                        devid = (short) ( ( ( mfr[0] & 0xFF ) << 8 ) | ( mfr[1] & 0xFF ) );
-                        mDevid = devid;
-                        mDeviceMajorVersion = mfr[2] & 0xFF;
-                        mDeviceMinorVersion = mfr[3] & 0xFF;
-                        result[0] = true;
-                    }
-                }
-            }
-
-            @Override
-            public void onReadPassword( String mac, int psw )
-            {
-
-            }
-
-            @Override
-            public void onDataReceived( String mac, ArrayList< Byte > list )
-            {
-
-            }
-        };
-        long ct = System.currentTimeMillis();
-        while ( result[0] == false )
-        {
-            if ( System.currentTimeMillis() - ct > 1000 )
-            {
-                return;
-            }
-        }
-    }
-
     private void decodeMfrData ( String s )
     {
         byte[] mfr = DataUtil.hexToByteArray( s.replace( " ", "" ) );
         short devid;
         if ( mfr == null || mfr.length < 4 )
         {
-            mView.onCheckDeviceFailure();
+            runOnUiThread( new Runnable() {
+                @Override
+                public void run()
+                {
+                    mView.showDeviceVersion( "Failed" );
+                }
+            } );
         }
         else
         {
@@ -568,14 +530,20 @@ public class OTAPresenter implements OTAContract.Presenter
             mDevid = devid;
             mDeviceMajorVersion = mfr[2] & 0xFF;
             mDeviceMinorVersion = mfr[3] & 0xFF;
-            mView.onCheckDeviceSuccess( mDeviceMajorVersion, mDeviceMinorVersion );
+            runOnUiThread( new Runnable() {
+                @Override
+                public void run()
+                {
+                    DecimalFormat df = new DecimalFormat( "00" );
+                    mView.showDeviceVersion( "" + mDeviceMajorVersion + "." + df.format( mDeviceMinorVersion ) );
+                }
+            } );
         }
-        mReadDeviceVersion = true;
     }
 
     private void decodeReceiveData ( ArrayList< Byte > list )
     {
-        LogUtil.d( "BleManager", "decodeReceiveData: " + list.toString() );
+        LogUtil.e( TAG, "decodeReceiveData: " + list.toString() );
         if ( list == null || list.size() < 5 )
         {
             return;
@@ -588,6 +556,7 @@ public class OTAPresenter implements OTAContract.Presenter
             case OTAConstants.OTA_CMD_GET_VERSION:
                 if ( length == 8 && list.size() == 12 )
                 {
+                    mCountDownTimer.cancel();
                     mBootloaderMinorVersion = list.get( 4 ) & 0xFF;
                     mBootloaderMajorVersion = list.get( 5 ) & 0xFF;
                     mAppStartAddress = ( ((list.get( 7 ) & 0xFF) << 8) | (list.get( 6 )&0xFF) );
@@ -595,7 +564,7 @@ public class OTAPresenter implements OTAContract.Presenter
                     mEraseBlockSize = list.get( 10 ) & 0xFF;
                     mWriteBlockSize = list.get( 11 ) & 0xFF;
                     DecimalFormat df = new DecimalFormat( "00" );
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_bootloader_version )
+                    mView.showMessage( getString( R.string.ota_bootloader_version )
                                        + mBootloaderMajorVersion +"." + df.format( mBootloaderMinorVersion ) );
                     mHandler.postDelayed( new Runnable() {
                         @Override
@@ -621,6 +590,7 @@ public class OTAPresenter implements OTAContract.Presenter
                         int adrh = list.get( 3 ) & 0xFF;
                         if ( mFrames.get( 0 ).getAddress() == ((adrh<<8)|adrl) )
                         {
+                            mCountDownTimer.cancel();
                             DecimalFormat df = new DecimalFormat( "0.0" );
                             mView.showUpgradeProgress( df.format((float) (mCurrent + 1) * 100 / mTotal ) + "%" );
                             mFrames.remove( 0 );
@@ -638,12 +608,12 @@ public class OTAPresenter implements OTAContract.Presenter
                     {
                         if ( result == OTAConstants.OTA_REPONSE_OUTOF_RANGE )
                         {
-                            mUpgrading = false;
-                            mView.showMessage(mView.getMvpContext().getString( R.string.ota_outof_range ) );
+                            mCountDownTimer.cancel();
+                            mProcessing = false;
+                            mView.showMessage( getString( R.string.ota_outof_range ) );
                         }
                     }
                 }
-//                BleManager.getInstance().clearReceiveBuffer();
                 break;
 
             case OTAConstants.OTA_CMD_ERASE_FLASH:
@@ -652,6 +622,7 @@ public class OTAPresenter implements OTAContract.Presenter
                     result = list.get( 4 );
                     if ( result == OTAConstants.OTA_RESPONSE_SUCCESS )
                     {
+                        mCountDownTimer.cancel();
                         mHandler.postDelayed( new Runnable() {
                             @Override
                             public void run ()
@@ -660,14 +631,15 @@ public class OTAPresenter implements OTAContract.Presenter
                                 upgradeFirmware();
                             }
                         }, 256 );
-                        mView.showMessage( mView.getMvpContext().getString( R.string.ota_erasefirmware ) );
+                        mView.showMessage( getString( R.string.ota_erasefirmware ) );
                     }
                     else
                     {
                         if ( result == OTAConstants.OTA_REPONSE_OUTOF_RANGE )
                         {
-                            mUpgrading = false;
-                            mView.showMessage( mView.getMvpContext().getString( R.string.ota_erase_failed ) );
+                            mCountDownTimer.cancel();
+                            mProcessing = false;
+                            mView.showMessage( getString( R.string.ota_erase_failed ) );
                         }
                     }
                 }
@@ -676,15 +648,17 @@ public class OTAPresenter implements OTAContract.Presenter
             case OTAConstants.OTA_CMD_CALC_CHECKSUM:
                 if ( length == 1 && list.get( 4 ) == OTAConstants.OTA_REPONSE_OUTOF_RANGE )
                 {
-                    mUpgrading = false;
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_check_failed) );
+                    mCountDownTimer.cancel();
+                    mProcessing = false;
+                    mView.showMessage( getString( R.string.ota_check_failed) );
                 }
                 else if ( length == 4 )
                 {
+                    mCountDownTimer.cancel();
                     int start_addr = ( ( list.get( 3 ) & 0xFF ) << 8 ) | ( list.get( 2 ) & 0xFF );
                     int end_addr = ( ( list.get( 5 ) & 0xFF ) << 8 ) | ( list.get( 4 ) & 0xFF );
                     int checksum = ( ( list.get( 7 ) & 0xFF ) << 8 ) | ( list.get( 6 ) & 0xFF );
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_check_success ) );
+                    mView.showMessage( getString( R.string.ota_check_success ) );
                 }
                 break;
 
@@ -694,8 +668,9 @@ public class OTAPresenter implements OTAContract.Presenter
                     result = list.get( 4 );
                     if ( result == OTAConstants.OTA_RESPONSE_SUCCESS )
                     {
-                        mUpgrading = false;
-                        mView.showMessage( mView.getMvpContext().getString( R.string.ota_upgrade_success ) );
+                        mCountDownTimer.cancel();
+                        mProcessing = false;
+                        mView.showMessage( getString( R.string.ota_upgrade_success ) );
                         BleManager.getInstance().disconnectDevice( mAddress );
                         BleManager.getInstance().refresh( mAddress );
                     }
@@ -705,6 +680,7 @@ public class OTAPresenter implements OTAContract.Presenter
             case OTAConstants.OTA_CMD_GET_STATUS:
                 if ( length == 1 && list.get( 4 ) == OTAConstants.OTA_RESPONSE_SUCCESS )
                 {
+                    mCountDownTimer.cancel();
                     mHandler.postDelayed( new Runnable() {
                         @Override
                         public void run ()
@@ -712,26 +688,25 @@ public class OTAPresenter implements OTAContract.Presenter
                             getBootloaderInfo();
                         }
                     }, 96 );
-                    mUpgrading = true;
-                    mView.showMessage( mView.getMvpContext().getString( R.string.ota_enter_bootloader ) );
+                    mView.showMessage( getString( R.string.ota_enter_bootloader ) );
                 }
                 else
                 {
                     if ( length == 0 && list.get( 4 ) == ( OTAConstants.OTA_CMD_GET_STATUS ^ list.get( 2 ) ^ list.get( 3 ) ) )
                     {
-                        mView.showMessage( mView.getMvpContext().getString( R.string.ota_reset_tobootloader ) );
+                        LogUtil.e( TAG, "decodeReceiveData: " + System.currentTimeMillis() );
+                        mCountDownTimer.cancel();
+                        mView.showMessage( getString( R.string.ota_reset_tobootloader ) );
                         BleManager.getInstance()
                                   .disconnectDevice( mAddress );
                         BleManager.getInstance().refresh( mAddress );
-                        mHandler.postDelayed( new Runnable() {
+                        runOnUiThread( new Runnable() {
                             @Override
-                            public void run ()
+                            public void run()
                             {
-                                mAutoConnect = true;
-                                mView.showMessage( mView.getMvpContext().getString( R.string.ota_connecting) );
-                                BleManager.getInstance().connectDevice( mAddress );
+                                mView.showRepowerDialog();
                             }
-                        }, 30000 );
+                        } );
                     }
                 }
                 break;
@@ -742,8 +717,9 @@ public class OTAPresenter implements OTAContract.Presenter
                     result = list.get( 4 );
                     if ( result == OTAConstants.OTA_REPSONSE_INVALID_COMMAND )
                     {
-                        mUpgrading = false;
-                        mView.showMessage( mView.getMvpContext().getString( R.string.ota_invalid_command ) );
+                        mCountDownTimer.cancel();
+                        mProcessing = false;
+                        mView.showMessage( getString( R.string.ota_invalid_command ) );
                     }
                 }
                 break;

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.inledco.blemanager.BleManager;
@@ -29,12 +30,24 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
     private Context mContext;
     private Handler mHandler;
     private ArrayList< SelectDevice > mSelectDevices;
+    private boolean mShowRssi;
 
     public ScanAdapter ( Context context, @NonNull Handler handler, ArrayList< SelectDevice > selectDevices )
     {
         mContext = context;
         mHandler = handler;
         mSelectDevices = selectDevices;
+        mShowRssi = false;
+    }
+
+    public boolean isShowRssi()
+    {
+        return mShowRssi;
+    }
+
+    public void setShowRssi( boolean showRssi )
+    {
+        mShowRssi = showRssi;
     }
 
     @Override
@@ -55,6 +68,15 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
         holder.tv_type.setText( DeviceUtil.getDeviceType( devid ) );
         holder.cb_sel.setEnabled( device.isSelectable() );
         holder.cb_sel.setChecked( device.isSelected() );
+        if ( mShowRssi )
+        {
+            holder.pb_rssi.setVisibility( View.VISIBLE );
+            holder.pb_rssi.setProgress( device.getRssi() + 100 );
+        }
+        else
+        {
+            holder.pb_rssi.setVisibility( View.GONE );
+        }
         holder.itemView.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
@@ -91,6 +113,7 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
         private TextView tv_name;
         private TextView tv_type;
         private CheckBox cb_sel;
+        private ProgressBar pb_rssi;
 
         public ScanViewHolder ( View itemView )
         {
@@ -99,6 +122,7 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
             tv_name = itemView.findViewById( R.id.item_scan_tv_name );
             tv_type = itemView.findViewById( R.id.item_scan_tv_type );
             cb_sel = itemView.findViewById( R.id.item_scan_cb_sel );
+            pb_rssi = itemView.findViewById( R.id.item_scan_rssi );
         }
     }
 }

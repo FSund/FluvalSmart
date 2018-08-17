@@ -24,7 +24,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -49,7 +48,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.adapter.ExpanSliderAdapter;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -58,7 +56,7 @@ import com.inledco.fluvalsmart.bean.RampTime;
 import com.inledco.fluvalsmart.constant.CustomColor;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
-import com.inledco.fluvalsmart.util.LightAutoProfileUtil;
+import com.inledco.fluvalsmart.util.LightProfileUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -274,7 +272,6 @@ public class LightAutoFragment extends BaseFragment
                     Object object = CommUtil.decodeLight( list, devid );
                     if ( object != null && object instanceof LightAuto )
                     {
-                        final long t = System.currentTimeMillis();
                         mLightAuto = (LightAuto) object;
                         getActivity().runOnUiThread( new Runnable() {
                             @Override
@@ -457,7 +454,7 @@ public class LightAutoFragment extends BaseFragment
 //                    entry.add( new Entry( 24 * 60, mLightAuto.getNightBright()[i] & 0xFF ) );
                 LineDataSet lineDataSet = new LineDataSet( entry, channels[i].getName() );
                 lineDataSet.setColor( channels[i].getColor() );
-                lineDataSet.setCircleRadius( 3.0f );
+                lineDataSet.setCircleRadius( 4.0f );
                 lineDataSet.setCircleColor( channels[i].getColor() );
                 lineDataSet.setDrawCircleHole( false );
                 lineDataSet.setLineWidth( 2.0f );
@@ -480,8 +477,8 @@ public class LightAutoFragment extends BaseFragment
             spbn.append( " " );
             spbd.setSpan( new ImageSpan( getContext(), channels[i].getIcon() ), spbd.length()-1, spbd.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
             spbn.setSpan( new ImageSpan( getContext(), channels[i].getIcon() ), spbn.length()-1, spbn.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
-            spbd.append( "  " + mLightAuto.getDayBright()[i] + " %\n" );
-            spbn.append( "  " + mLightAuto.getNightBright()[i] + " %\n" );
+            spbd.append( "    " + mLightAuto.getDayBright()[i] + " %\n" );
+            spbn.append( "    " + mLightAuto.getNightBright()[i] + " %\n" );
         }
         auto_midday_brt.setText( spbd, TextView.BufferType.SPANNABLE );
         auto_night_brt.setText( spbn, TextView.BufferType.SPANNABLE );
@@ -746,7 +743,7 @@ public class LightAutoFragment extends BaseFragment
                             } );
                         }
                     } );
-                    tmr.schedule( tsk, 0, 40 );
+                    tmr.schedule( tsk, 0, 32 );
                 }
                 else
                 {
@@ -761,7 +758,7 @@ public class LightAutoFragment extends BaseFragment
                                           .removeAllLimitLines();
                             lightautochart.invalidate();
                         }
-                    }, 80 );
+                    }, 64 );
                 }
             }
         } );
@@ -794,7 +791,7 @@ public class LightAutoFragment extends BaseFragment
 
     private void showImportDialog ()
     {
-        final Map< String, LightAuto > localProfiles = LightAutoProfileUtil.getLocalProfiles( getContext(), devid, mLightAuto.isHasDynamic() );
+        final Map< String, LightAuto > localProfiles = LightProfileUtil.getLocalAutoProfiles( getContext(), devid, mLightAuto.isHasDynamic() );
         final String[] keys = new String[localProfiles.size()];
         final int[] index = { 0 };
         int i = 0;
@@ -805,40 +802,41 @@ public class LightAutoFragment extends BaseFragment
         }
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         builder.setTitle( R.string.export_profile );
-        builder.setSingleChoiceItems( keys, 0, new DialogInterface.OnClickListener()
+        if ( keys.length == 0 )
         {
-            @Override
-            public void onClick ( DialogInterface dialogInterface, int i )
-            {
-                index[0] = i;
-            }
-        } );
-        builder.setNegativeButton( R.string.cancel, new DialogInterface.OnClickListener()
+            builder.setMessage( "No Profile." );
+        }
+        else
         {
-            @Override
-            public void onClick ( DialogInterface dialogInterface, int i )
+            builder.setSingleChoiceItems( keys, 0, new DialogInterface.OnClickListener()
             {
-                dialogInterface.dismiss();
-            }
-        } );
-        builder.setPositiveButton( R.string.dialog_export_use, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick ( DialogInterface dialogInterface, int i )
+                @Override
+                public void onClick( DialogInterface dialogInterface, int i )
+                {
+                    index[0] = i;
+                }
+            } );
+            builder.setPositiveButton( R.string.dialog_export_use, new DialogInterface.OnClickListener()
             {
-                mLightAuto = localProfiles.get( keys[index[0]] );
-                refreshData();
-                CommUtil.setLedAuto( mAddress, mLightAuto );
-                dialogInterface.dismiss();
-            }
-        } );
-        builder.setNeutralButton( R.string.dialog_export_remove, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick ( DialogInterface dialog, int which )
+                @Override
+                public void onClick( DialogInterface dialogInterface, int i )
+                {
+                    mLightAuto = localProfiles.get( keys[index[0]] );
+                    refreshData();
+                    CommUtil.setLedAuto( mAddress, mLightAuto );
+                    dialogInterface.dismiss();
+                }
+            } );
+            builder.setNeutralButton( R.string.dialog_export_remove, new DialogInterface.OnClickListener()
             {
-                LightAutoProfileUtil.deleteProfile( getContext(), devid, keys[index[0]] );
-            }
-        } );
+                @Override
+                public void onClick( DialogInterface dialog, int which )
+                {
+                    LightProfileUtil.deleteAutoProfile( getContext(), devid, keys[index[0]] );
+                }
+            } );
+        }
+        builder.setNegativeButton( R.string.cancel, null );
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside( false );
         dialog.show();
@@ -850,9 +848,9 @@ public class LightAutoFragment extends BaseFragment
         final AlertDialog dialog = builder.create();
         View view = LayoutInflater.from( getContext() )
                                   .inflate( R.layout.dialog_export_profile, null );
-        final EditText name = (EditText) view.findViewById( R.id.export_name );
-        Button btn_cancel = (Button) view.findViewById( R.id.export_cancel );
-        Button btn_ok = (Button) view.findViewById( R.id.export_ok );
+        final EditText name = view.findViewById( R.id.export_name );
+        Button btn_cancel = view.findViewById( R.id.export_cancel );
+        Button btn_ok = view.findViewById( R.id.export_ok );
         btn_cancel.setOnClickListener( new View.OnClickListener()
         {
             @Override
@@ -873,7 +871,7 @@ public class LightAutoFragment extends BaseFragment
                 }
                 else
                 {
-                    LightAutoProfileUtil.saveProfile( getContext(),
+                    LightProfileUtil.saveAutoProfile( getContext(),
                                                       mLightAuto,
                                                       devid,
                                                       name.getText()
@@ -918,11 +916,10 @@ public class LightAutoFragment extends BaseFragment
         final BottomSheetDialog dialog = new BottomSheetDialog( getContext() );
         View dialogView = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_edit_sunrise_sunset, null );
         dialogView.findViewById( R.id.dialog_sunrs_bg ).setBackgroundResource( bgres );
-        TimePicker tp_start = (TimePicker) dialogView.findViewById( R.id.dialog_sunrs_start );
-        TimePicker tp_end = (TimePicker) dialogView.findViewById( R.id.dialog_sunrs_end );
-        Button btn_cancel = (Button) dialogView.findViewById( R.id.dialog_sunrs_cancel );
-        Button btn_save = (Button) dialogView.findViewById( R.id.dialog_sunrs_save );
-        DatePicker dp = new DatePicker( getContext() );
+        TimePicker tp_start = dialogView.findViewById( R.id.dialog_sunrs_start );
+        TimePicker tp_end = dialogView.findViewById( R.id.dialog_sunrs_end );
+        Button btn_cancel = dialogView.findViewById( R.id.dialog_sunrs_cancel );
+        Button btn_save = dialogView.findViewById( R.id.dialog_sunrs_save );
         tp_start.setIs24HourView( true );
         tp_end.setIs24HourView( true );
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M )
@@ -1137,7 +1134,6 @@ public class LightAutoFragment extends BaseFragment
         final boolean enable = mLightAuto.isTurnoffEnable();
         final byte hour = mLightAuto.getTurnoffHour();
         final byte minute = mLightAuto.getTurnoffMinute();
-        LogUtil.e( TAG, "showEditTurnoffDialog: " + hour + "  " + minute );
         final BottomSheetDialog dialog = new BottomSheetDialog( getContext() );
         View dialogView = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_edit_turnoff, null );
         Switch sw_enable = dialogView.findViewById( R.id.dialog_turnoff_enable );
@@ -1320,7 +1316,14 @@ public class LightAutoFragment extends BaseFragment
                 mLightAuto.getDynamicPeriod().setEndHour( (byte) ival[2] );
                 mLightAuto.getDynamicPeriod().setEndMinute( (byte) ival[3] );
                 mLightAuto.setDynamicMode( (byte) adapter.getSelectIndex() );
-                CommUtil.setLedAuto( mAddress, mLightAuto );
+                if ( mLightAuto.isHasTurnoff() )
+                {
+                    CommUtil.setLedDynamicPeriod( mAddress, mLightAuto.getWeek(), mLightAuto.getDynamicPeriod(), mLightAuto.getDynamicMode() );
+                }
+                else
+                {
+                    CommUtil.setLedAuto( mAddress, mLightAuto );
+                }
                 dialog.dismiss();
             }
         } );
@@ -1376,7 +1379,7 @@ public class LightAutoFragment extends BaseFragment
             {
                 convertView = LayoutInflater.from( getContext() ).inflate( R.layout.item_dynamic, parent, false );
             }
-            CheckableImageButton cib = (CheckableImageButton) convertView.findViewById( R.id.item_cib_dynamic );
+            CheckableImageButton cib = convertView.findViewById( R.id.item_cib_dynamic );
             cib.setImageResource( resid );
             cib.setChecked( false );
             if ( position == selectIndex )
@@ -1433,7 +1436,7 @@ public class LightAutoFragment extends BaseFragment
                     mListener.onUpdate( tm );
                 }
             }
-            CommUtil.previewAuto( mAddress, getBright( tm ) );
+            CommUtil.preview( mAddress, getBright( tm ) );
         }
     }
 

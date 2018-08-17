@@ -1,7 +1,5 @@
 package com.inledco.blemanager;
 
-import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -10,14 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
 
 import com.ble.api.DataUtil;
@@ -42,32 +37,22 @@ import java.util.UUID;
 
 public class BleManager extends BleCallBack implements ServiceConnection, BluetoothAdapter.LeScanCallback
 {
-    private static final String TAG = "BleManager";
-
-    /**
-     * request code for bluetooth enable
-     */
-    private static final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
-
-    /**
-     * request permisson code for coarse location
-     */
-    private static final int PERMISSON_REQUEST_COARSE_CODE = 1;
+    private final String TAG = "BleManager";
 
     /**
      * max lenght of data the bluetooth transfer
      */
-    private static final int DATA_MAX_LENGTH = 17;
+    private final int DATA_MAX_LENGTH = 17;
 
     /**
      * min interval between two receive data frames
      */
-    private static final int DATA_FRAME_INTERVAL = 64;
+    private final int DATA_FRAME_INTERVAL = 64;
 
     /**
      * min interval between two send data frames
      */
-    private static final int DATA_SEND_INTERVAL = 32;
+    private final int DATA_SEND_INTERVAL = 32;
 
     /**
      * bluetooth scan period, default 15000ms
@@ -92,7 +77,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
     private Runnable mScanRunnable;
     private Handler mHandler;
     private long msc;
-    private BleStateListener mBleStateListener;
     private List< BleScanListener > mBleScanListeners;
     private List< BleCommunicateListener > mBleCommunicateListeners;
 
@@ -206,11 +190,11 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      *
      * @param activity
      */
-    public void requestBluetoothEnable ( Activity activity )
-    {
-        Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
-        activity.startActivityForResult( intent, BLUETOOTH_REQUEST_ENABLE_CODE );
-    }
+//    public void requestBluetoothEnable ( Activity activity )
+//    {
+//        Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
+//        activity.startActivityForResult( intent, BLUETOOTH_REQUEST_ENABLE_CODE );
+//    }
 
     /**
      * get result of bluetooth authorization, call in method onActivityResult
@@ -218,44 +202,44 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param requestCode
      * @param resultCode
      */
-    public void getResultForBluetoothEnable ( int requestCode, int resultCode )
-    {
-        if ( mBleStateListener != null )
-        {
-            if ( requestCode == BLUETOOTH_REQUEST_ENABLE_CODE && resultCode == Activity.RESULT_OK )
-            {
-                mBleStateListener.onBluetoothEnabled();
-            }
-            else
-            {
-                mBleStateListener.onBluetoothDenied();
-            }
-        }
-    }
+//    public void getResultForBluetoothEnable ( int requestCode, int resultCode )
+//    {
+//        if ( mBleStateListener != null )
+//        {
+//            if ( requestCode == BLUETOOTH_REQUEST_ENABLE_CODE && resultCode == Activity.RESULT_OK )
+//            {
+//                mBleStateListener.onBluetoothEnabled();
+//            }
+//            else
+//            {
+//                mBleStateListener.onBluetoothDenied();
+//            }
+//        }
+//    }
 
     /**
      * request coarse location permisson in activity
      *
      * @param activity
      */
-    public void requestLocationPermison ( Activity activity )
-    {
-        //lower version does not need to running permisson
-        //highr version check if user has granted app
-
-        if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-             ContextCompat.checkSelfPermission( activity, Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
-        {
-            if ( mBleStateListener != null )
-            {
-                mBleStateListener.onCoarseLocationGranted();
-            }
-        }
-        else
-        {
-            ActivityCompat.requestPermissions( activity, new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, PERMISSON_REQUEST_COARSE_CODE );
-        }
-    }
+//    public void requestLocationPermison ( @NonNull Activity activity )
+//    {
+//        //lower version does not need to running permisson
+//        //highr version check if user has granted app
+//
+//        if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+//             ContextCompat.checkSelfPermission( activity, Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
+//        {
+//            if ( mBleStateListener != null )
+//            {
+//                mBleStateListener.onCoarseLocationGranted();
+//            }
+//        }
+//        else
+//        {
+//            ActivityCompat.requestPermissions( activity, new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, PERMISSON_REQUEST_COARSE_CODE );
+//        }
+//    }
 
     /**
      * get result of coarse location permisson, call in onRequestPermissionsResult
@@ -264,24 +248,24 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param permisson
      * @param grantCode
      */
-    public void getResultForCoarseLocation ( int requestCode, String permisson, int grantCode )
-    {
-        if ( requestCode == PERMISSON_REQUEST_COARSE_CODE
-             && permisson.equals( Manifest.permission.ACCESS_COARSE_LOCATION) )
-        {
-            if ( mBleStateListener != null )
-            {
-                if ( grantCode == PackageManager.PERMISSION_GRANTED )
-                {
-                    mBleStateListener.onCoarseLocationGranted();
-                }
-                else
-                {
-                    mBleStateListener.onCoarseLocationDenied();
-                }
-            }
-        }
-    }
+//    public void getResultForCoarseLocation ( int requestCode, String permisson, int grantCode )
+//    {
+//        if ( requestCode == PERMISSON_REQUEST_COARSE_CODE
+//             && permisson.equals( Manifest.permission.ACCESS_COARSE_LOCATION) )
+//        {
+//            if ( mBleStateListener != null )
+//            {
+//                if ( grantCode == PackageManager.PERMISSION_GRANTED )
+//                {
+//                    mBleStateListener.onCoarseLocationGranted();
+//                }
+//                else
+//                {
+//                    mBleStateListener.onCoarseLocationDenied();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * start scan bluetooth device
@@ -549,16 +533,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
             }
         }
         return false;
-    }
-
-    /**
-     * listen bluetooth state changed event,like initialized,enabled,disabled,coarse location permisson
-     *
-     * @param listener
-     */
-    public void setBleStateListener ( @NonNull BleStateListener listener )
-    {
-        mBleStateListener = listener;
     }
 
     /**
@@ -834,7 +808,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
         {
             for ( BleScanListener listener : mBleScanListeners )
             {
-                listener.onDeviceScanned( mac, name, rawData );
+                listener.onDeviceScanned( mac, name, rssi, rawData );
             }
         }
     }
@@ -846,10 +820,6 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
         mBleService.setDecode( true );
         //必须调用初始化方法
         mBleService.initialize();
-        if ( mBleStateListener != null )
-        {
-            mBleStateListener.onBleInitialized();
-        }
         LogUtil.d( TAG, "onServiceConnected: " );
     }
 

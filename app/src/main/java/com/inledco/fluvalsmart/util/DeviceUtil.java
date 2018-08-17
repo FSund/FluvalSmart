@@ -53,6 +53,12 @@ public class DeviceUtil
     public static final short LIGHT_ID_NANO_MARINE = 0x0151;
     public static final short LIGHT_ID_NANO_FRESH = 0x0152;
 
+    /* Strip III Blue */
+    public static final short LIGHT_ID_BLUE_500 = 0x0161;
+    public static final short LIGHT_ID_BLUE_800 = 0x0162;
+    public static final short LIGHT_ID_BLUE_1100 = 0x0163;
+    public static final short LIGHT_ID_BLUE_1000 = 0x0164;
+
     public static final String LIGHT_TYPE_RGBW = "RGBW Strip II";
     public static final String LIGHT_TYPE_STRIP_III = "Hagen Strip III";
     public static final String LIGHT_TYPE_EGG = "Egg Light";
@@ -61,6 +67,7 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_AQUASKY = "Aquasky";
     public static final String LIGHT_TYPE_NANO_MARINE = "Wing Nano Marine";
     public static final String LIGHT_TYPE_NANO_FRESH = "Wing Nano Fresh";
+    public static final String LIGHT_TYPE_BLUE = "Blue";
 
     private static Map< Short, String > mDeviceMap;
     private static Map< Short, Integer > mIconMap;
@@ -97,6 +104,11 @@ public class DeviceUtil
         /* Nano */
         mDeviceMap.put( LIGHT_ID_NANO_MARINE, LIGHT_TYPE_NANO_MARINE );
         mDeviceMap.put( LIGHT_ID_NANO_FRESH, LIGHT_TYPE_NANO_FRESH );
+        /* Strip III Blue */
+        mDeviceMap.put( LIGHT_ID_BLUE_500, LIGHT_TYPE_BLUE + " 500mm" );
+        mDeviceMap.put( LIGHT_ID_BLUE_800, LIGHT_TYPE_BLUE + " 800mm" );
+        mDeviceMap.put( LIGHT_ID_BLUE_1100, LIGHT_TYPE_BLUE + " 1100mm" );
+        mDeviceMap.put( LIGHT_ID_BLUE_1000, LIGHT_TYPE_BLUE + " 1000mm" );
 
         /* Test */
         mIconMap.put( LIGHT_ID_RGBW, R.mipmap.ic_light_rgbw_ii );
@@ -126,6 +138,11 @@ public class DeviceUtil
         /* Nano */
         mIconMap.put( LIGHT_ID_NANO_MARINE, R.mipmap.ic_light_nano_marine );
         mIconMap.put( LIGHT_ID_NANO_FRESH, R.mipmap.ic_light_nano_fresh );
+        /* Plant & Fresh */
+        mIconMap.put( LIGHT_ID_BLUE_500, R.mipmap.ic_light_blue );
+        mIconMap.put( LIGHT_ID_BLUE_800, R.mipmap.ic_light_blue );
+        mIconMap.put( LIGHT_ID_BLUE_1100, R.mipmap.ic_light_blue );
+        mIconMap.put( LIGHT_ID_BLUE_1000, R.mipmap.ic_light_blue );
     }
 
     public static boolean isCorrectDevType( short id )
@@ -222,6 +239,15 @@ public class DeviceUtil
                                           new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
                                           new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_white ) };
                 break;
+            case LIGHT_ID_BLUE_500:
+            case LIGHT_ID_BLUE_800:
+            case LIGHT_ID_BLUE_1100:
+            case LIGHT_ID_BLUE_1000:
+                channels = new Channel[]{ new Channel( "400nm", CustomColor.COLOR_400nm, R.drawable.ic_400nm ),
+                                          new Channel( "420nm", CustomColor.COLOR_420nm, R.drawable.ic_420nm ),
+                                          new Channel( "440nm", CustomColor.COLOR_440nm, R.drawable.ic_440nm ),
+                                          new Channel( "460nm", CustomColor.COLOR_460nm, R.drawable.ic_460nm ),};
+                break;
         }
         return channels;
     }
@@ -275,6 +301,12 @@ public class DeviceUtil
             case LIGHT_ID_AQUASKY_1150:
             case LIGHT_ID_AQUASKY_910:
                 thumbs = new int[]{ R.drawable.shape_thumb_red, R.drawable.shape_thumb_green, R.drawable.shape_thumb_blue, R.drawable.shape_thumb_purewhite };
+                break;
+            case LIGHT_ID_BLUE_500:
+            case LIGHT_ID_BLUE_800:
+            case LIGHT_ID_BLUE_1100:
+            case LIGHT_ID_BLUE_1000:
+                thumbs = new int[]{ R.drawable.shape_thumb_400nm, R.drawable.shape_thumb_420nm, R.drawable.shape_thumb_440nm, R.drawable.shape_thumb_460nm };
                 break;
         }
         return thumbs;
@@ -335,6 +367,12 @@ public class DeviceUtil
                                       R.drawable.custom_seekbar_green,
                                       R.drawable.custom_seekbar_blue,
                                       R.drawable.custom_seekbar_purewhite };
+                break;
+            case LIGHT_ID_BLUE_500:
+            case LIGHT_ID_BLUE_800:
+            case LIGHT_ID_BLUE_1100:
+            case LIGHT_ID_BLUE_1000:
+                seekBars = new int[]{ R.drawable.custom_seekbar_400nm, R.drawable.custom_seekbar_420nm, R.drawable.custom_seekbar_440nm, R.drawable.custom_seekbar_460nm };
                 break;
         }
         return seekBars;
@@ -459,6 +497,10 @@ public class DeviceUtil
             case LIGHT_ID_AQUASKY_750:
             case LIGHT_ID_AQUASKY_1150:
             case LIGHT_ID_AQUASKY_910:
+            case LIGHT_ID_BLUE_500:
+            case LIGHT_ID_BLUE_800:
+            case LIGHT_ID_BLUE_1100:
+            case LIGHT_ID_BLUE_1000:
                 chns = 4;
                 break;
             case LIGHT_ID_EGG:
@@ -476,5 +518,47 @@ public class DeviceUtil
                 break;
         }
         return chns;
+    }
+
+    public static int getDynamicRes( int index )
+    {
+        int res = 0;
+        switch ( index )
+        {
+            case 1:
+                res = R.mipmap.ic_thunder1;
+                break;
+            case 2:
+                res = R.mipmap.ic_thunder2;
+                break;
+            case 3:
+                res = R.mipmap.ic_thunder3;
+                break;
+            case 4:
+                res = R.mipmap.ic_allcolor;
+                break;
+            case 5:
+                res = R.mipmap.ic_cloud1;
+                break;
+            case 6:
+                res = R.mipmap.ic_cloud2;
+                break;
+            case 7:
+                res = R.mipmap.ic_cloud3;
+                break;
+            case 8:
+                res = R.mipmap.ic_cloud4;
+                break;
+            case 9:
+                res = R.mipmap.ic_moon1;
+                break;
+            case 10:
+                res = R.mipmap.ic_moon2;
+                break;
+            case 11:
+                res = R.mipmap.ic_moon3;
+                break;
+        }
+        return res;
     }
 }

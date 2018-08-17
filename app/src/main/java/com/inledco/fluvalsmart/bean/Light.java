@@ -9,43 +9,58 @@ import java.io.Serializable;
 public class Light extends BaseDevice implements Serializable
 {
     private static final long serialVersionUID = -4162709866411397526L;
-    private boolean mAuto;
+    private int mMode;
     private LightManual mLightManual;
     private LightAuto mLightAuto;
+    private LightPro mLightPro;
 
-    public Light ( DevicePrefer devicePrefer, boolean online, boolean auto, LightManual lightManual, LightAuto lightAuto )
+    public Light ( DevicePrefer devicePrefer, boolean online, int mode, LightManual lightManual, LightAuto lightAuto )
     {
         super( devicePrefer, online );
-        mAuto = auto;
+        mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
     }
 
-    public Light ( byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, boolean online, DeviceTime deviceTime, boolean auto,
+    public Light ( DevicePrefer devicePrefer, boolean online, int mode, LightManual lightManual, LightAuto lightAuto, LightPro lightPro )
+    {
+        super( devicePrefer, online );
+        mMode = mode;
+        mLightManual = lightManual;
+        mLightAuto = lightAuto;
+        mLightPro = lightPro;
+    }
+
+    public Light ( byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, boolean online, DeviceTime deviceTime, int mode,
                    LightManual lightManual, LightAuto lightAuto )
     {
         super( majorVersion, minorVersion, devicePrefer, online, deviceTime );
-        mAuto = auto;
+        mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
     }
 
-    public static long getSerialVersionUID ()
+    public int getMode()
     {
-        return serialVersionUID;
+        return mMode;
     }
 
-    public boolean isAuto ()
+    public void setMode( int mode )
     {
-        return mAuto;
+        mMode = mode;
     }
 
-    public void setAuto ( boolean auto )
+    public LightPro getLightPro()
     {
-        mAuto = auto;
+        return mLightPro;
     }
 
-    public LightManual getLightManual ()
+    public void setLightPro( LightPro lightPro )
+    {
+        mLightPro = lightPro;
+    }
+
+    public LightManual getLightManual()
     {
         return mLightManual;
     }

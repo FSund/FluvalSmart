@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CheckableImageButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.SharedPreferencesCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,20 +20,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
-import com.inledco.fluvalsmart.bean.Light;
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightManual;
+import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.fragment.DataInvalidFragment;
 import com.inledco.fluvalsmart.fragment.LightAutoFragment;
 import com.inledco.fluvalsmart.fragment.LightManualFragment;
+import com.inledco.fluvalsmart.fragment.LightProFragment;
 import com.inledco.fluvalsmart.fragment.RGBWManualFragment;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
@@ -43,12 +45,14 @@ import java.util.ArrayList;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener
 {
-    private CheckableImageButton light_sw_auto;
     private Toolbar light_toolbar;
     private ProgressDialog mProgressDialog;
+    private LinearLayout light_mode_show;
+    private CheckedTextView light_ctv_manual;
+    private CheckedTextView light_ctv_auto;
+    private CheckedTextView light_ctv_pro;
 
     private DevicePrefer mPrefer;
-    private Light mLight;
 
 //    private boolean mModifyPswFlag = false;
 //    private int mRemotePassword = -1;
@@ -56,6 +60,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     private CountDownTimer mCountDownTimer;
 
     private BleCommunicateListener mCommunicateListener;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled( true );
+    }
 
     @Override
     protected void onCreate ( Bundle savedInstanceState )
@@ -130,7 +138,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             @Override
             public boolean onMenuItemClick ( MenuItem menuItem )
             {
-                CommUtil.findDevice( mLight.getDevicePrefer().getDeviceMac() );
+                CommUtil.findDevice( mPrefer.getDeviceMac() );
                 return false;
             }
         } );
@@ -148,7 +156,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     @Override
     protected void initView ()
     {
-        light_sw_auto = findViewById( R.id.light_sw_auto );
+        light_mode_show = findViewById( R.id.light_mode_show );
+        light_ctv_manual = findViewById( R.id.light_ctv_manual );
+        light_ctv_auto = findViewById( R.id.light_ctv_auto );
+        light_ctv_pro = findViewById( R.id.light_ctv_pro );
         light_toolbar = findViewById( R.id.light_toolbar );
         light_toolbar.setTitle( mPrefer.getDeviceName() );
         setSupportActionBar( light_toolbar );
@@ -185,7 +196,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         {
                             mProgressDialog.dismiss();
                         }
-                        light_sw_auto.setVisibility( View.GONE );
+                        light_mode_show.setVisibility( View.GONE );
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace( R.id.light_fl_show, DataInvalidFragment.newInstance( mPrefer.getDeviceMac() ) )
                           .commitAllowingStateLoss();
@@ -235,7 +246,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                             {
                                 mProgressDialog.dismiss();
                             }
-                            light_sw_auto.setVisibility( View.GONE );
+                            light_mode_show.setVisibility( View.GONE );
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             ft.replace( R.id.light_fl_show, DataInvalidFragment.newInstance( mPrefer.getDeviceMac() ) )
                               .commitAllowingStateLoss();
@@ -291,9 +302,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             }
         };
         BleManager.getInstance().addBleCommunicateListener( mCommunicateListener );
-        mLight = new Light( mPrefer, false, false, null, null );
         light_toolbar.setTitle( mPrefer.getDeviceName() );
-        light_sw_auto.setVisibility( View.GONE );
+        light_mode_show.setVisibility( View.GONE );
         getSupportFragmentManager().beginTransaction()
                                    .replace( R.id.light_fl_show, DataInvalidFragment.newInstance( mPrefer.getDeviceMac() ) )
                                    .commit();
@@ -311,19 +321,38 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             }
         } );
 
-        light_sw_auto.setOnClickListener( new View.OnClickListener()
-        {
+        light_ctv_manual.setOnClickListener( new View.OnClickListener() {
             @SuppressLint ( "RestrictedApi" )
             @Override
-            public void onClick ( View view )
+            public void onClick( View v )
             {
-                if ( light_sw_auto.isChecked() )
+                if ( !light_ctv_manual.isChecked() )
                 {
-                    CommUtil.setManual( mLight.getDevicePrefer().getDeviceMac() );
+                    CommUtil.setModeManual( mPrefer.getDeviceMac() );
                 }
-                else
+            }
+        } );
+
+        light_ctv_auto.setOnClickListener( new View.OnClickListener() {
+            @SuppressLint ( "RestrictedApi" )
+            @Override
+            public void onClick( View v )
+            {
+                if ( !light_ctv_auto.isChecked() )
                 {
-                    CommUtil.setAuto( mLight.getDevicePrefer().getDeviceMac() );
+                    CommUtil.setModeAuto( mPrefer.getDeviceMac() );
+                }
+            }
+        } );
+
+        light_ctv_pro.setOnClickListener( new View.OnClickListener() {
+            @SuppressLint ( "RestrictedApi" )
+            @Override
+            public void onClick( View v )
+            {
+                if ( !light_ctv_pro.isChecked() )
+                {
+                    CommUtil.setModePro( mPrefer.getDeviceMac() );
                 }
             }
         } );
@@ -353,15 +382,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     private void decodeReceiveData ( final String mac, ArrayList< Byte > list )
     {
-        Object object = CommUtil.decodeLight( list, mPrefer.getDevId() );
+        final Object object = CommUtil.decodeLight( list, mPrefer.getDevId() );
         if ( object != null )
         {
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if ( object instanceof LightAuto )
             {
                 mCountDownTimer.cancel();
-                mLight.setAuto( true );
-                mLight.setLightAuto( (LightAuto) object );
                 runOnUiThread( new Runnable()
                 {
                     @SuppressLint ( "RestrictedApi" )
@@ -369,21 +396,42 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     public void run ()
                     {
                         mProgressDialog.dismiss();
-                        if ( light_sw_auto.getVisibility() != View.VISIBLE || !light_sw_auto.isChecked() )
+                        if ( light_mode_show.getVisibility() != View.VISIBLE || !light_ctv_auto.isChecked() )
                         {
-                            ft.replace( R.id.light_fl_show, LightAutoFragment.newInstance( mac, mPrefer.getDevId(), mLight.getLightAuto() ) )
+                            ft.replace( R.id.light_fl_show, LightAutoFragment.newInstance( mac, mPrefer.getDevId(), (LightAuto) object ) )
                               .commitAllowingStateLoss();
                         }
-                        light_sw_auto.setVisibility( View.VISIBLE );
-                        light_sw_auto.setChecked( true );
+                        light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_manual.setChecked( false );
+                        light_ctv_auto.setChecked( true );
+                        light_ctv_pro.setChecked( false );
+                    }
+                } );
+            }
+            else if ( object instanceof LightPro )
+            {
+                mCountDownTimer.cancel();
+                runOnUiThread( new Runnable() {
+                    @SuppressLint ( "RestrictedApi" )
+                    @Override
+                    public void run()
+                    {
+                        mProgressDialog.dismiss();
+                        if ( light_mode_show.getVisibility() != View.VISIBLE || !light_ctv_pro.isChecked() )
+                        {
+                            ft.replace( R.id.light_fl_show, LightProFragment.newInstance( mac, mPrefer.getDevId(), (LightPro) object ) )
+                              .commitAllowingStateLoss();
+                        }
+                        light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_manual.setChecked( false );
+                        light_ctv_auto.setChecked( false );
+                        light_ctv_pro.setChecked( true );
                     }
                 } );
             }
             else if ( object instanceof LightManual )
             {
                 mCountDownTimer.cancel();
-                mLight.setAuto( false );
-                mLight.setLightManual( (LightManual) object );
                 runOnUiThread( new Runnable()
                 {
                     @SuppressLint ( "RestrictedApi" )
@@ -391,7 +439,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     public void run ()
                     {
                         mProgressDialog.dismiss();
-                        if ( light_sw_auto.getVisibility() != View.VISIBLE || light_sw_auto.isChecked() )
+                        if ( light_mode_show.getVisibility() != View.VISIBLE || !light_ctv_manual.isChecked() )
                         {
                             if ( mPrefer.getDevId() == DeviceUtil.LIGHT_ID_RGBW
                                  || mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_600
@@ -405,17 +453,19 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                                  || mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_1150
                                  || mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_910 )
                             {
-                                ft.replace( R.id.light_fl_show, RGBWManualFragment.newInstance( mac, mPrefer.getDevId(), mLight.getLightManual() ) )
+                                ft.replace( R.id.light_fl_show, RGBWManualFragment.newInstance( mac, mPrefer.getDevId(), (LightManual) object ) )
                                   .commitAllowingStateLoss();
                             }
                             else
                             {
-                                ft.replace( R.id.light_fl_show, LightManualFragment.newInstance( mac, mPrefer.getDevId(), mLight.getLightManual() ) )
+                                ft.replace( R.id.light_fl_show, LightManualFragment.newInstance( mac, mPrefer.getDevId(), (LightManual) object ) )
                                   .commitAllowingStateLoss();
                             }
                         }
-                        light_sw_auto.setVisibility( View.VISIBLE );
-                        light_sw_auto.setChecked( false );
+                        light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_manual.setChecked( true );
+                        light_ctv_auto.setChecked( false );
+                        light_ctv_pro.setChecked( false );
                     }
                 } );
             }
@@ -428,9 +478,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         final AlertDialog dialog = builder.create();
         dialog.setTitle( R.string.rename_device );
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_rename, null );
-        Button btn_cancel = (Button) view.findViewById( R.id.rename_cancel );
-        Button btn_rename = (Button) view.findViewById( R.id.rename_confirm );
-        final EditText newname = (EditText) view.findViewById( R.id.rename_newname );
+        Button btn_cancel = view.findViewById( R.id.rename_cancel );
+        Button btn_rename = view.findViewById( R.id.rename_confirm );
+        final EditText newname = view.findViewById( R.id.rename_newname );
         newname.setText( prefer.getDeviceName() );
         btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -471,9 +521,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         final AlertDialog dialog = builder.create();
         dialog.setTitle( R.string.input_password );
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_password, null, false );
-        final EditText psw_password = (EditText) view.findViewById( R.id.psw_password );
-        Button btn_cancel = (Button) view.findViewById( R.id.psw_cancel );
-        Button btn_login = (Button) view.findViewById( R.id.psw_login );
+        final EditText psw_password = view.findViewById( R.id.psw_password );
+        Button btn_cancel = view.findViewById( R.id.psw_cancel );
+        Button btn_login = view.findViewById( R.id.psw_login );
         btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
@@ -581,10 +631,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         final AlertDialog dialog = builder.create();
         dialog.setTitle( getString( R.string.modify_password ) );
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_modify_password, null, false );
-        final EditText modify_new = (EditText) view.findViewById( R.id.modify_psw_new );
-        final EditText modify_confirm = (EditText) view.findViewById( R.id.modify_psw_confirm );
-        Button btn_cancel = (Button) view.findViewById( R.id.modify_psw_cancel );
-        Button btn_modify = (Button) view.findViewById( R.id.modify_psw_modify );
+        final EditText modify_new = view.findViewById( R.id.modify_psw_new );
+        final EditText modify_confirm = view.findViewById( R.id.modify_psw_confirm );
+        Button btn_cancel = view.findViewById( R.id.modify_psw_cancel );
+        Button btn_modify = view.findViewById( R.id.modify_psw_modify );
         btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
@@ -628,7 +678,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     @Override
     public void onRetryClick ()
     {
-        LogUtil.d( TAG, "onRetryClick: " );
         getDeviceData();
     }
 }

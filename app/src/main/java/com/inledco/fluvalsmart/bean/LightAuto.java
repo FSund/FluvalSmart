@@ -72,6 +72,30 @@ public class LightAuto implements Serializable
         mDynamicMode = dynamicMode;
     }
 
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, boolean turnoffEnable, byte turnoffHour, byte turnoffMinute, byte week, RampTime dynamicPeriod, byte dynamicMode )
+    {
+        mSunrise = sunrise;
+        mDayBright = dayBright;
+        mSunset = sunset;
+        mNightBright = nightBright;
+        mHasTurnoff = true;
+        mTurnoffEnable = turnoffEnable;
+        mTurnoffHour = turnoffHour;
+        mTurnoffMinute = turnoffMinute;
+        mHasDynamic = true;
+        mDynamicEnable = (week&0x80) == 0x80 ? true : false;
+        mSat = (week&0x40) == 0x40 ? true : false;
+        mFri = (week&0x20) == 0x20 ? true : false;
+        mThu = (week&0x10) == 0x10 ? true : false;
+        mWed = (week&0x08) == 0x08 ? true : false;
+        mTue = (week&0x04) == 0x04 ? true : false;
+        mMon = (week&0x02) == 0x02 ? true : false;
+        mSun = (week&0x01) == 0x01 ? true : false;
+        mDynamicPeriod = dynamicPeriod;
+        mDynamicMode = dynamicMode;
+    }
+
+
     public byte getWeek()
     {
         byte b = 0x00;

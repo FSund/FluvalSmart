@@ -17,7 +17,6 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onCreate( savedInstanceState );
         LogUtil.d( TAG, "onCreate: " );
 
-        Setting.initSetting( BaseActivity.this );
         Setting.changeAppLanguage( BaseActivity.this );
     }
 

@@ -104,6 +104,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:background="@drawable/ripple_theme"
-        android:src="@drawable/selector_power"/>
+        app:srcCompat="@drawable/selector_power"/>
 
 </LinearLayout>

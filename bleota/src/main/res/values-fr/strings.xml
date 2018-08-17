@@ -11,7 +11,7 @@
     <string name="ota_check_success">Vérification réussie</string>
     <string name="ota_download_success">100%\nTéléchargement réussi à</string>
     <string name="ota_enter_bootloader">Activer le chargeur d\'amorçage.</string>
-    <string name="ota_reset_tobootloader">Redémarrage en cours pour activer le chargeur d\'amorçage. La mise à jour se poursuivra après 30 secondes. Prière de patienter...</string>
+    <string name="ota_reset_tobootloader">Redémarrage en cours pour activer le chargeur d\'amorçage.</string>
     <string name="ota_invalid_command">Commande invalide</string>
     <string name="ota_connect_success">Appareil connecté avec succès</string>
     <string name="ota_disconnect">Appareil déconnecté</string>
