@@ -27,9 +27,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="#FFFFFF"
-            app:srcCompat="@drawable/ic_remote_upgrade"
-            android:padding="8dp"/>
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            app:srcCompat="@drawable/ic_update"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -38,27 +38,30 @@
             <TextView
                 android:id="@+id/ota_tv_device_name"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Space
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/ota_tv_device_version"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Device Firmware Version:"/>
+                android:layout_height="wrap_content"
+                android:text="@string/device_frimware_version"/>
             <TextView
                 android:id="@+id/ota_tv_remote_version"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Remote Firmware Version:"/>
+                android:layout_height="wrap_content"
+                android:text="@string/latest_firmware_version"/>
         </LinearLayout>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:textColor="#FFFF0000"
         android:text="@string/ota_warning"/>
     <android.support.v4.widget.NestedScrollView

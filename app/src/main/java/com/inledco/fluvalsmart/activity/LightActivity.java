@@ -11,7 +11,6 @@ import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -26,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.bleota.BleOTAActivity;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.LightAuto;
@@ -123,7 +123,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         getMenuInflater().inflate( R.menu.menu_device, menu );
         MenuItem menu_device_edit = menu.findItem( R.id.menu_device_edit );
         MenuItem menu_device_find = menu.findItem( R.id.menu_device_find );
-        MenuItem menu_device_modify_psw = menu.findItem( R.id.menu_device_modify_psw );
+        MenuItem menu_device_update = menu.findItem( R.id.menu_device_update );
         menu_device_edit.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener()
         {
             @Override
@@ -142,11 +142,18 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 return false;
             }
         } );
-        menu_device_modify_psw.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
+        menu_device_update.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick ( MenuItem item )
             {
-                showModifyPasswordDialog();
+                if (mPrefer != null)
+                {
+                    Intent intent = new Intent(LightActivity.this, BleOTAActivity.class);
+                    intent.putExtra("devid", mPrefer.getDevId());
+                    intent.putExtra("name", mPrefer.getDeviceName());
+                    intent.putExtra("address", mPrefer.getDeviceMac());
+                    startActivity(intent);
+                }
                 return false;
             }
         } );
@@ -577,7 +584,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences( this );
         SharedPreferences.Editor editor = defaultSet.edit();
         editor.putInt( mac + "-" + ConstVal.KEY_PASSWORD, password );
-        SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+        editor.apply();
     }
 
     private void modifyPassword ( final String mac, final int psw )

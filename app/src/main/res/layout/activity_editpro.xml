@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:background="@drawable/ripple_theme"
-            app:srcCompat="@mipmap/ic_delete_time"/>
+            android:src="@mipmap/ic_delete_time"/>
 
         <ImageButton
             android:id="@+id/editpro_ib_add"
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:background="@drawable/ripple_theme"
-            app:srcCompat="@mipmap/ic_add_time"/>
+            android:src="@mipmap/ic_add_time"/>
 
         <Space
             android:layout_width="0dp"

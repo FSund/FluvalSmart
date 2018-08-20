@@ -122,8 +122,8 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
                 {
                     if ( NetUtil.isNetworkAvailable( BleOTAActivity.this ) )
                     {
-                        ota_tv_device_version.setText( "Device Firmware Version: " );
-                        ota_tv_remote_version.setText( "Remote Firmware Version: " );
+                        ota_tv_device_version.setText( R.string.device_frimware_version );
+                        ota_tv_remote_version.setText( R.string.latest_firmware_version );
                         mMessage = new StringBuffer();
                         ota_tv_msg.setText( "" );
                         mPresenter.checkUpdate();
@@ -156,12 +156,12 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
 
     public void showDeviceVersion(String version)
     {
-        ota_tv_device_version.setText( "Device Firmware Version: " + version );
+        ota_tv_device_version.setText( getString(R.string.device_frimware_version) + version );
     }
 
     public void showRemoteVersion(String version)
     {
-        ota_tv_remote_version.setText( "Remote Firmware Version: " + version );
+        ota_tv_remote_version.setText( getString(R.string.latest_firmware_version) + version );
     }
 
     public void showDeviceConnected ()

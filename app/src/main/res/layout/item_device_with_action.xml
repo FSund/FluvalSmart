@@ -19,15 +19,15 @@
             android:padding="8dp"
             android:visibility="visible"
             android:text="@string/item_action_upgrade"/>
-        <TextView
-            android:id="@+id/item_action_reset_psw"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="@color/colorGray"
-            android:padding="8dp"
-            android:visibility="gone"
-            android:text="@string/reset_password"/>
+        <!--<TextView-->
+            <!--android:id="@+id/item_action_reset_psw"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@color/colorGray"-->
+            <!--android:padding="8dp"-->
+            <!--android:visibility="gone"-->
+            <!--android:text="@string/reset_password"/>-->
         <TextView
             android:id="@+id/item_action_remove"
             android:layout_width="80dp"

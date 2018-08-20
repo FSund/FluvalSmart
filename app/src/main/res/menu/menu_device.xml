@@ -12,10 +12,9 @@
         android:icon="@mipmap/ic_edit"
         android:title="@string/rename"
         app:showAsAction="ifRoom"/>
-    <item android:id="@+id/menu_device_modify_psw"
-          android:icon="@drawable/ic_modify_password"
-          android:title="@string/modify_password"
-          android:visible="false"
-          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/menu_device_update"
+          android:icon="@mipmap/ic_update_light"
+          android:title=""
+          app:showAsAction="always"/>
 
 </menu>

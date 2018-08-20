@@ -142,9 +142,9 @@ public class DeviceFragment extends BaseFragment
                     case R.id.item_action_remove:
                         showRemoveDeviceDialog( position );
                         break;
-                    case R.id.item_action_reset_psw:
-                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
-                        break;
+//                    case R.id.item_action_reset_psw:
+//                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
+//                        break;
                     case R.id.item_action_upgrade:
                         Intent intent = new Intent( getContext(), BleOTAActivity.class );
                         intent.putExtra( "devid", mDevices.get( position ).getDevicePrefer().getDevId() );

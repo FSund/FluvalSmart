@@ -41,4 +41,6 @@
     <string name="ota_device_firmware_upgradable">设备可以升级到Vxx,确认升级?</string>
     <string name="downloading_firmware">正在下载固件...</string>
     <string name="ota_network_unavailable">网络连接不可用,请检查网络连接.</string>
+    <string name="device_frimware_version">"设备固件版本: "</string>
+    <string name="latest_firmware_version">"最新固件版本: "</string>
 </resources>
