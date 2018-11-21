@@ -8,8 +8,7 @@ import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.RampTime;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -18,6 +17,8 @@ import java.util.Map;
 
 public class LightProfileUtil
 {
+    private static final String TAG = "LightProfileUtil";
+
     private static final String LIGHT_AUTO_PROFILE_FILENAME = "profile_";
     private static final String LIGHT_PRO_PROFILE_FILENAME = "pro_profile_";
     private static final RampTime DEFAULT_SUNRISE = new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 );
@@ -50,7 +51,7 @@ public class LightProfileUtil
         PreferenceUtil.deleteObjectFromPrefer( context, LIGHT_AUTO_PROFILE_FILENAME + devid, name );
     }
 
-    public static Map<String, LightAuto> getLocalAutoProfiles( Context context, short devid, boolean hasAutoDynamic )
+    public static Map<String, LightAuto> getLocalAutoProfiles( Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff )
     {
         if ( context == null )
         {
@@ -58,17 +59,38 @@ public class LightProfileUtil
         }
         SharedPreferences sp = context.getSharedPreferences( LIGHT_AUTO_PROFILE_FILENAME + devid,
                                                              Context.MODE_PRIVATE );
-        Map<String, LightAuto> map = DeviceUtil.getPresetProfiles( context, devid, hasAutoDynamic );
-        if ( map == null )
-        {
-            map = new HashMap<>();
-        }
+        Map<String, LightAuto> map = DeviceUtil.getAutoPresetProfiles( context, devid, hasAutoDynamic, hasTurnoff );
+//        if ( map == null )
+//        {
+//            map = new HashMap<>();
+//        }
 //        map.put( context.getResources().getString( R.string.custom_default ), getDefaultProfile( devid ) );
         for ( String key : sp.getAll().keySet() )
         {
             map.put( key, (LightAuto) PreferenceUtil.getObjectFromPrefer( context, LIGHT_AUTO_PROFILE_FILENAME + devid, key ) );
         }
         return map;
+    }
+
+    public static String getAutoProfileName( Context context, short devid, LightAuto a )
+    {
+        if ( a == null )
+        {
+            return "";
+        }
+        Map< String, LightAuto > profiles = getLocalAutoProfiles( context, devid, a.isHasDynamic(), a.isHasTurnoff() );
+        if ( profiles == null || profiles.size() == 0 )
+        {
+            return "";
+        }
+        for ( String key : profiles.keySet() )
+        {
+            if ( a.equal( profiles.get( key ) ) )
+            {
+                return key;
+            }
+        }
+        return "";
     }
 
     public static void saveProProfile( Context context, LightPro lightPro, short devid, String name)
@@ -95,14 +117,43 @@ public class LightProfileUtil
         {
             return null;
         }
-        SharedPreferences sp = context.getSharedPreferences( LIGHT_PRO_PROFILE_FILENAME+ devid,
+        SharedPreferences sp = context.getSharedPreferences( LIGHT_PRO_PROFILE_FILENAME + devid,
                                                              Context.MODE_PRIVATE );
-        Map<String, LightPro> map = new LinkedHashMap<>();
+        Map<String, LightPro> map = DeviceUtil.getProPresetProfiles( context, devid, hasDynamic );
+        LightPro.Builder builder = new LightPro.Builder();
         for ( String key : sp.getAll().keySet() )
         {
             byte[] array = PreferenceUtil.readByteArray( context, LIGHT_PRO_PROFILE_FILENAME + devid, key );
-            map.put( key, new LightPro.Builder().creatFromArray( array, DeviceUtil.getChannelCount( devid ) ) );
+            LightPro lightPro = builder.creatFromArray( array, DeviceUtil.getChannelCount( devid ) );
+            map.put( key, lightPro );
         }
         return map;
+    }
+
+    public static String getProProfileName( Context context, short devid, LightPro p )
+    {
+        if ( p == null )
+        {
+            return "";
+        }
+        Map< String, LightPro > profiles = getLocalProProfiles( context, devid, p.isHasDynamic() );
+        if ( profiles == null || profiles.size() == 0 )
+        {
+            return "";
+        }
+        byte[] array = p.toArray();
+        for ( String key : profiles.keySet() )
+        {
+            LightPro lp = profiles.get( key );
+            if ( lp == null )
+            {
+                continue;
+            }
+            if ( Arrays.equals( array, lp.toArray() ) )
+            {
+                return key;
+            }
+        }
+        return "";
     }
 }

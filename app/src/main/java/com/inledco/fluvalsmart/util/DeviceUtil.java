@@ -5,6 +5,7 @@ import android.content.Context;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.Channel;
 import com.inledco.fluvalsmart.bean.LightAuto;
+import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.RampTime;
 import com.inledco.fluvalsmart.constant.CustomColor;
 
@@ -69,6 +70,96 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_NANO_FRESH = "Wing Nano Fresh";
     public static final String LIGHT_TYPE_BLUE = "Blue";
 
+
+    private static final byte[] PRO_MARINE_PRESET_DEEP_SEA_GLO = new byte[]{ 10,
+                                                                             6, 0, 0, 0, 0, 0, 0,
+                                                                             7, 0, 16, 100, 100, 100, 0,
+                                                                             12, 0, 16, 100, 100, 100, 0,
+                                                                             12, 20, 10, 60, 60, 60, 0,
+                                                                             13, 40, 10, 60, 60, 60, 0,
+                                                                             14, 0, 16, 100, 100, 100, 0,
+                                                                             17, 0, 16, 100, 100, 100, 0,
+                                                                             18, 0, 0, 0, 5, 0, 0,
+                                                                             22, 0, 0, 0, 5, 0, 0,
+                                                                             22, 30, 0, 0, 0, 0, 0};
+    private static final byte[] PRO_MARINE_PRESET_SUNNY_REEF = new byte[]{ 10,
+                                                                           6, 0, 0, 0, 0, 0, 0,
+                                                                           7, 0, 100, 100, 100, 100, 100,
+                                                                           12, 0, 100, 100, 100, 100, 100,
+                                                                           12, 20, 60, 60, 60, 60, 60,
+                                                                           13, 40, 60, 60, 60, 60, 60,
+                                                                           14, 0, 100, 100, 100, 100, 100,
+                                                                           17, 0, 100, 100, 100, 100, 100,
+                                                                           18, 0, 0, 0, 5, 0, 0,
+                                                                           22, 0, 0, 0, 5, 0, 0,
+                                                                           22, 30, 0, 0, 0, 0, 0};
+    private static final byte[] PRO_MARINE_PRESET_COLOR_BOOST = new byte[]{ 10,
+                                                                            6, 0, 0, 0, 0, 0, 0,
+                                                                            7, 0, 68, 100, 100, 85, 90,
+                                                                            12, 0, 68, 100, 100, 85, 90,
+                                                                            12, 20, 40, 60, 60, 51, 54,
+                                                                            13, 40, 40, 60, 60, 51, 54,
+                                                                            14, 0, 68, 100, 100, 85, 90,
+                                                                            17, 0, 68, 100, 100, 85, 90,
+                                                                            18, 0, 0, 0, 5, 0, 0,
+                                                                            22, 0, 0, 0, 5, 0, 0,
+                                                                            22, 30, 0, 0, 0, 0, 0};
+    private static final byte[] PRO_FRESH_PRESET_TROPIC_RIVER = new byte[]{ 10,
+                                                                            6, 0, 0, 0, 0, 0, 0,
+                                                                            7, 0, 80, 0, 37, 100, 100,
+                                                                            12, 0, 80, 0, 37, 100, 100,
+                                                                            12, 20, 48, 0, 22, 60, 60,
+                                                                            13, 40, 48, 0, 22, 60, 60,
+                                                                            14, 0, 80, 0, 37, 100, 100,
+                                                                            17, 0, 80, 0, 37, 100, 100,
+                                                                            18, 0, 0, 5, 0, 0, 0,
+                                                                            22, 0, 0, 5, 0, 0, 0,
+                                                                            22, 30, 0, 0, 0, 0, 0};
+    private static final byte[] PRO_FRESH_PRESET_LAKE_MALAWI = new byte[]{ 10,
+                                                                           6, 0, 0, 0, 0, 0, 0,
+                                                                           7, 0, 50, 0, 37, 100, 0,
+                                                                           12, 0, 50, 0, 37, 100, 0,
+                                                                           12, 20, 30, 0, 22, 60, 0,
+                                                                           13, 40, 30, 0, 22, 60, 0,
+                                                                           14, 0, 50, 0, 37, 100, 0,
+                                                                           17, 0, 50, 0, 37, 100, 0,
+                                                                           18, 0, 0, 5, 0, 0, 0,
+                                                                           22, 0, 0, 5, 0, 0, 0,
+                                                                           22, 30, 0, 0, 0, 0, 0};
+    private static final byte[] PRO_FRESH_PRESET_PLANTED = new byte[]{ 10,
+                                                                       6, 0, 0, 0, 0, 0, 0,
+                                                                       7, 0, 84, 20, 73, 100, 80,
+                                                                       12, 0, 84, 20, 73, 100, 80,
+                                                                       12, 20, 50, 12, 44, 60, 48,
+                                                                       13, 40, 50, 12, 44, 60, 48,
+                                                                       14, 0, 84, 20, 73, 100, 80,
+                                                                       17, 0, 84, 20, 73, 100, 80,
+                                                                       18, 0, 0, 5, 0, 0, 0,
+                                                                       22, 0, 0, 5, 0, 0, 0,
+                                                                       22, 30, 0, 0, 0, 0, 0};
+
+    private static final byte[] PRO_AQUASKY_PRESET_COLOR_BOOST = new byte[]{ 10,
+                                                                             6, 0, 0, 0, 0, 0,
+                                                                             7, 0, 68, 100, 100, 90,
+                                                                             12, 0, 68, 100, 100, 90,
+                                                                             12, 20, 40, 60, 60, 54,
+                                                                             13, 40, 40, 60, 60, 54,
+                                                                             14, 0, 68, 100, 100, 90,
+                                                                             17, 0, 68, 100, 100, 90,
+                                                                             18, 0, 0, 0, 5, 0,
+                                                                             22, 0, 0, 0, 5, 0,
+                                                                             22, 30, 0, 0, 0, 0};
+    private static final byte[] PRO_AQUASKY_PRESET_PLANT_BOOST = new byte[]{ 10,
+                                                                             6, 0, 0, 0, 0, 0,
+                                                                             7, 0, 100, 100, 100, 100,
+                                                                             12, 0, 100, 100, 100, 100,
+                                                                             12, 20, 60, 60, 60, 60,
+                                                                             13, 40, 60, 60, 60, 60,
+                                                                             14, 0, 100, 100, 100, 100,
+                                                                             17, 0, 100, 100, 100, 100,
+                                                                             18, 0, 0, 0, 5, 0,
+                                                                             22, 0, 0, 0, 5, 0,
+                                                                             22, 30, 0, 0, 0, 0};
     private static Map< Short, String > mDeviceMap;
     private static Map< Short, Integer > mIconMap;
 
@@ -378,7 +469,7 @@ public class DeviceUtil
         return seekBars;
     }
 
-    public static Map< String, LightAuto > getPresetProfiles( Context context, short devid, boolean hasAutoDynamic )
+    public static Map< String, LightAuto > getAutoPresetProfiles( Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff )
     {
         Map< String, LightAuto > profiles = new LinkedHashMap<>();
         switch ( devid )
@@ -392,17 +483,20 @@ public class DeviceUtil
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 16, 100, 100, 100, 0 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 0, 5, 0, 0 } ) );
+                                             new byte[]{ 0, 0, 5, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 profiles.put( context.getString( R.string.preset_sunny_reef ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 100, 100, 100, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 0, 5, 0, 0 } ) );
+                                             new byte[]{ 0, 0, 5, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 profiles.put( context.getString( R.string.preset_color_boost ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 68, 100, 100, 85, 90 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 0, 5, 0, 0 } ) );
+                                             new byte[]{ 0, 0, 5, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 break;
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
@@ -413,17 +507,20 @@ public class DeviceUtil
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 80, 0, 37, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 5, 0, 0, 0 } ) );
+                                             new byte[]{ 0, 5, 0, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 profiles.put( context.getString( R.string.preset_lake_malawi ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 50, 0, 37, 100, 0 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 5, 0, 0, 0 } ) );
+                                             new byte[]{ 0, 5, 0, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 profiles.put( context.getString( R.string.preset_planted ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 84, 20, 73, 100, 80 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 5, 0, 0, 0 } ) );
+                                             new byte[]{ 0, 5, 0, 0, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 break;
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -441,12 +538,14 @@ public class DeviceUtil
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 68, 100, 100, 90 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 0, 5, 0 } ) );
+                                             new byte[]{ 0, 0, 5, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 profiles.put( context.getString( R.string.preset_plant_boost ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 100, 100, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
-                                             new byte[]{ 0, 0, 5, 0 } ) );
+                                             new byte[]{ 0, 0, 5, 0 },
+                                             true, (byte) 0x16, (byte) 0x00 ) );
                 break;
         }
         if ( hasAutoDynamic )
@@ -475,6 +574,94 @@ public class DeviceUtil
                         .setDynamicPeriod( new RampTime( (byte) 0, (byte) 0, (byte) 0, (byte) 0 ) );
                 profiles.get( key )
                         .setDynamicMode( (byte) 0 );
+            }
+        }
+        if ( !hasTurnoff )
+        {
+            for (String key : profiles.keySet())
+            {
+                profiles.get(key).setHasTurnoff(false);
+            }
+        }
+        return profiles;
+    }
+
+    public static Map< String, LightPro > getProPresetProfiles( Context context, short devid, boolean hasAutoDynamic )
+    {
+        int chn = DeviceUtil.getChannelCount( devid );
+        Map< String, LightPro > profiles = new LinkedHashMap<>();
+        switch ( devid )
+        {
+            case LIGHT_ID_MARINE_500:
+            case LIGHT_ID_MARINE_800:
+            case LIGHT_ID_MARINE_1100:
+            case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_NANO_MARINE:
+                profiles.put( context.getString( R.string.preset_deep_sea_glo ),
+                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_DEEP_SEA_GLO, chn ) );
+                profiles.put( context.getString( R.string.preset_sunny_reef ),
+                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_SUNNY_REEF, chn ) );
+                profiles.put( context.getString( R.string.preset_color_boost ),
+                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_COLOR_BOOST, chn ));
+                break;
+            case LIGHT_ID_FRESH_500:
+            case LIGHT_ID_FRESH_800:
+            case LIGHT_ID_FRESH_1100:
+            case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_NANO_FRESH:
+                profiles.put( context.getString( R.string.preset_tropic_river ),
+                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_TROPIC_RIVER, chn ) );
+                profiles.put( context.getString( R.string.preset_lake_malawi ),
+                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_LAKE_MALAWI, chn ) );
+                profiles.put( context.getString( R.string.preset_planted ),
+                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_PLANTED, chn ) );
+                break;
+            case LIGHT_ID_RGBW:
+            case LIGHT_ID_STRIP_III:
+            case LIGHT_ID_AQUASKY_600:
+            case LIGHT_ID_AQUASKY_900:
+            case LIGHT_ID_AQUASKY_1200:
+            case LIGHT_ID_AQUASKY_380:
+            case LIGHT_ID_AQUASKY_530:
+            case LIGHT_ID_AQUASKY_835:
+            case LIGHT_ID_AQUASKY_990:
+            case LIGHT_ID_AQUASKY_750:
+            case LIGHT_ID_AQUASKY_1150:
+            case LIGHT_ID_AQUASKY_910:
+                profiles.put( context.getString( R.string.preset_color_boost ),
+                              new LightPro.Builder().creatFromArray( PRO_AQUASKY_PRESET_COLOR_BOOST, chn ) );
+                profiles.put( context.getString( R.string.preset_plant_boost ),
+                              new LightPro.Builder().creatFromArray( PRO_AQUASKY_PRESET_PLANT_BOOST, chn ) );
+                break;
+        }
+        if ( hasAutoDynamic )
+        {
+            for ( String key : profiles.keySet() )
+            {
+                if ( profiles.get( key ) != null ) {
+                    profiles.get( key )
+                            .setHasDynamic( true );
+                    profiles.get( key )
+                            .setSun( false );
+                    profiles.get( key )
+                            .setMon( false );
+                    profiles.get( key )
+                            .setTue( false );
+                    profiles.get( key )
+                            .setWed( false );
+                    profiles.get( key )
+                            .setThu( false );
+                    profiles.get( key )
+                            .setFri( false );
+                    profiles.get( key )
+                            .setSat( false );
+                    profiles.get( key )
+                            .setDynamicEnable( false );
+                    profiles.get( key )
+                            .setDynamicPeriod( new RampTime( (byte) 0, (byte) 0, (byte) 0, (byte) 0 ) );
+                    profiles.get( key )
+                            .setDynamicMode( (byte) 0 );
+                }
             }
         }
         return profiles;

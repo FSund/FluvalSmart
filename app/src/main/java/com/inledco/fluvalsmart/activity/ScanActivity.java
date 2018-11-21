@@ -29,6 +29,7 @@ import com.inledco.fluvalsmart.adapter.ScanAdapter;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.SelectDevice;
 import com.inledco.fluvalsmart.constant.ConstVal;
+import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 
@@ -263,7 +264,7 @@ public class ScanActivity extends BaseActivity
         mDeviceMacs = new HashSet<>();
         mDevices = new ArrayList<>();
         mScanAdapter = new ScanAdapter( ScanActivity.this, mHandler, mDevices );
-//        mScanAdapter.setShowRssi( true );
+        mScanAdapter.setShowRssi( Setting.showRssi() );
         scan_rv_show.setAdapter( mScanAdapter );
     }
 

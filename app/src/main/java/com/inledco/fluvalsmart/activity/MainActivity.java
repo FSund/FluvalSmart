@@ -3,6 +3,7 @@ package com.inledco.fluvalsmart.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -68,7 +70,7 @@ public class MainActivity extends BaseActivity
             case BLUETOOTH_REQUEST_ENABLE_CODE:
                 if ( resultCode == Activity.RESULT_OK )
                 {
-
+//                    showUpgradeTip();
                 }
                 else
                 {
@@ -147,6 +149,7 @@ public class MainActivity extends BaseActivity
         {
             if ( BleManager.getInstance().isBluetoothEnabled() || ( Setting.isAutoTurnonBle( MainActivity.this ) && BleManager.getInstance().autoOpenBluetooth()) )
             {
+//                showUpgradeTip();
             }
             else
             {
@@ -233,5 +236,26 @@ public class MainActivity extends BaseActivity
     {
         Intent intent = new Intent( this, ScanActivity.class );
         startActivityForResult( intent, SCAN_CODE );
+    }
+
+    private void showUpgradeTip()
+    {
+        if (Setting.hasUpgradeTip(this))
+        {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Tip");
+        builder.setView(R.layout.dialog_tip_upgrade);
+        builder.setPositiveButton(R.string.dialog_ok, null);
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Setting.setUpgradeTip(MainActivity.this);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

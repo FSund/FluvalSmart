@@ -15,7 +15,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -33,6 +37,7 @@ import android.widget.ToggleButton;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -44,6 +49,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.activity.EditproActivity;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -79,6 +85,9 @@ public class LightProFragment extends BaseFragment
     private ToggleButton pro_tb_preview;
     private Button pro_btn_edit;
     private Button pro_btn_overview;
+    private LinearLayout pro_linearlayout;
+    private SeekBar pro_seekbar;
+    private TextView pro_textview;
 
     private BleCommunicateListener mCommunicateListener;
     private Timer mPreviewTimer;
@@ -116,6 +125,16 @@ public class LightProFragment extends BaseFragment
     public void onDestroyView()
     {
         super.onDestroyView();
+        if (mPreviewTask != null)
+        {
+            mPreviewTask.cancel();
+            mPreviewTask = null;
+        }
+        if (mPreviewTimer != null)
+        {
+            mPreviewTimer.cancel();
+            mPreviewTimer = null;
+        }
         BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
     }
 
@@ -130,6 +149,9 @@ public class LightProFragment extends BaseFragment
         pro_tb_preview = view.findViewById( R.id.pro_tb_preview );
         pro_btn_edit = view.findViewById( R.id.pro_btn_edit );
         pro_btn_overview = view.findViewById( R.id.pro_btn_overview );
+        pro_linearlayout = view.findViewById( R.id.pro_linearlayout );
+        pro_seekbar = view.findViewById( R.id.pro_seekbar );
+        pro_textview = view.findViewById( R.id.pro_textview );
 
         initLineChart( pro_line_chart );
     }
@@ -137,6 +159,31 @@ public class LightProFragment extends BaseFragment
     @Override
     protected void initEvent()
     {
+        final DecimalFormat df = new DecimalFormat( "00" );
+
+        pro_seekbar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser )
+            {
+                if ( fromUser )
+                {
+                    mPreviewCount = progress;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch( SeekBar seekBar )
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch( SeekBar seekBar )
+            {
+
+            }
+        } );
+
         pro_tv_dynamic.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v )
@@ -149,6 +196,10 @@ public class LightProFragment extends BaseFragment
             @Override
             public void onClick( View v )
             {
+                if ( pro_tb_preview.isChecked() )
+                {
+                    return;
+                }
                 showSaveDialog();
             }
         } );
@@ -157,6 +208,10 @@ public class LightProFragment extends BaseFragment
             @Override
             public void onClick( View v )
             {
+                if ( pro_tb_preview.isChecked() )
+                {
+                    return;
+                }
                 showExportDialog();
             }
         } );
@@ -165,8 +220,13 @@ public class LightProFragment extends BaseFragment
             @Override
             public void onCheckedChanged( CompoundButton buttonView, boolean isChecked )
             {
+                pro_seekbar.setProgress( 0 );
+                pro_textview.setText( "00:00" );
                 if ( isChecked )
                 {
+                    pro_tv_points.setVisibility( View.GONE );
+                    pro_tv_dynamic.setVisibility( View.GONE );
+                    pro_linearlayout.setVisibility( View.VISIBLE );
                     mPreviewCount = -1;
                     mPreviewTimer = new Timer();
                     mPreviewTask = new TimerTask() {
@@ -190,22 +250,27 @@ public class LightProFragment extends BaseFragment
                                 pro_line_chart.getXAxis().removeAllLimitLines();
                                 LimitLine limitLine = new LimitLine( mPreviewCount );
                                 limitLine.setLineWidth( 1 );
-                                limitLine.setLineColor( CustomColor.COLOR_ACCENT );
+                                limitLine.setLineColor( CustomColor.COLOR_GREEN_A700 );
                                 pro_line_chart.getXAxis().addLimitLine( limitLine );
                                 getActivity().runOnUiThread( new Runnable() {
                                     @Override
                                     public void run()
                                     {
+                                        pro_seekbar.setProgress( mPreviewCount );
+                                        pro_textview.setText( df.format( mPreviewCount/60 ) + ":" + df.format( mPreviewCount%60 ) );
                                         pro_line_chart.invalidate();
                                     }
                                 } );
                             }
                         }
                     };
-                    mPreviewTimer.schedule( mPreviewTask, 0, 32 );
+                    mPreviewTimer.schedule( mPreviewTask, 0, 40 );
                 }
                 else
                 {
+                    pro_tv_points.setVisibility( View.VISIBLE );
+                    pro_tv_dynamic.setVisibility( mLightPro.isHasDynamic() ? View.VISIBLE : View.GONE );
+                    pro_linearlayout.setVisibility( View.GONE );
                     mPreviewCount = -1;
                     mPreviewTask.cancel();
                     mPreviewTimer.cancel();
@@ -235,6 +300,10 @@ public class LightProFragment extends BaseFragment
             public void onClick( View v )
             {
 //                showEditDialog();
+                if ( pro_tb_preview.isChecked() )
+                {
+                    return;
+                }
                 Intent intent = new Intent( getContext(), EditproActivity.class );
                 intent.putExtra( "devid", devid );
                 intent.putExtra( "address", mAddress );
@@ -247,6 +316,10 @@ public class LightProFragment extends BaseFragment
             @Override
             public void onClick( View v )
             {
+                if ( pro_tb_preview.isChecked() )
+                {
+                    return;
+                }
                 showOverviewDialog();
             }
         } );
@@ -355,6 +428,9 @@ public class LightProFragment extends BaseFragment
         lineChart.setGridBackgroundColor( Color.TRANSPARENT );
         lineChart.setDescription( null );
         lineChart.setMaxVisibleValueCount( 0 );
+        lineChart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
+        lineChart.getLegend().setTextSize( 14 );
+        lineChart.getLegend().setFormSize( 12 );
         lineChart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
         IAxisValueFormatter formatter = new IAxisValueFormatter()
@@ -441,10 +517,10 @@ public class LightProFragment extends BaseFragment
         pro_line_chart.setData( lineData );
         pro_line_chart.invalidate();
 
-        pro_tv_points.setText( "" + mLightPro.getPointCount() + " Timer Points" );
+        pro_tv_points.setText( "" + mLightPro.getPointCount() + " Timepoints Set" );
         if ( mLightPro.isHasDynamic() )
         {
-            pro_tv_dynamic.setVisibility( View.VISIBLE );
+            pro_tv_dynamic.setVisibility( pro_tb_preview.isChecked() ? View.GONE : View.VISIBLE );
             int week = mLightPro.getWeek() & 0xFF;
             if ( week > 0x80 && mLightPro.getDynamicMode() > 0 && mLightPro.getDynamicMode() < 12 )
             {
@@ -503,21 +579,21 @@ public class LightProFragment extends BaseFragment
     private void showExportDialog()
     {
         final Map<String, LightPro> localProfiles = LightProfileUtil.getLocalProProfiles( getContext(), devid, mLightPro.isHasDynamic() );
-        final String[] keys = new String[localProfiles.size()];
-        int idx = 0;
-        for ( String s : localProfiles.keySet() )
-        {
-            keys[idx++] = s;
-        }
-        final int[] index = {0};
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         builder.setTitle( R.string.export_profile );
-        if ( keys.length == 0 )
+        if ( localProfiles == null || localProfiles.size() == 0 )
         {
-            builder.setMessage( "No Profile." );
+            builder.setMessage( R.string.msg_no_profile );
         }
         else
         {
+            final String[] keys = new String[localProfiles.size()];
+            int idx = 0;
+            for ( String s : localProfiles.keySet() )
+            {
+                keys[idx++] = s;
+            }
+            final int[] index = {0};
             builder.setSingleChoiceItems( keys, 0, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick( DialogInterface dialog, int which )
@@ -529,7 +605,7 @@ public class LightProFragment extends BaseFragment
                 @Override
                 public void onClick( DialogInterface dialog, int which )
                 {
-                    CommUtil.setLedPro( mAddress, mLightPro );
+                    CommUtil.setLedPro( mAddress, localProfiles.get( keys[index[0]] ) );
                 }
             } );
             builder.setNeutralButton( R.string.dialog_export_remove, new DialogInterface.OnClickListener() {
@@ -556,6 +632,38 @@ public class LightProFragment extends BaseFragment
         final EditText name = view.findViewById( R.id.export_name );
         Button btn_cancel = view.findViewById( R.id.export_cancel );
         Button btn_ok = view.findViewById( R.id.export_ok );
+        final boolean[] flag = new boolean[]{false};
+        name.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void beforeTextChanged( CharSequence s, int start, int count, int after )
+            {
+
+            }
+
+            @Override
+            public void onTextChanged( CharSequence s, int start, int before, int count )
+            {
+                if ( s.length() > 0 && start == 0 && flag[0] == false )
+                {
+                    flag[0] = true;
+                    String str = new StringBuilder().append( s.subSequence( 0, 1 ) ).toString().toUpperCase();
+                    str = new StringBuilder( str ).append( s.subSequence( 1, s.length() ) ).toString();
+                    name.setText( str );
+                    name.setSelection( start + count );
+                    LogUtil.e( TAG, "onTextChanged: " + str + " " + start + " " + before + " " + count );
+                }
+                else
+                {
+                    flag[0] = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged( Editable s )
+            {
+
+            }
+        } );
         btn_cancel.setOnClickListener( new View.OnClickListener()
         {
             @Override
@@ -581,6 +689,8 @@ public class LightProFragment extends BaseFragment
                                                       devid,
                                                       name.getText().toString() );
                     dialog.dismiss();
+                    Toast.makeText( getContext(), R.string.save_success, Toast.LENGTH_SHORT )
+                         .show();
                 }
             }
         } );

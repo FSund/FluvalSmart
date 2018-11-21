@@ -6,6 +6,8 @@ import java.util.Comparator;
 
 public class LightPro implements Serializable
 {
+    private static final String TAG = "LightPro";
+
     private static final long serialVersionUID = -9208889349220365301L;
     public static final int POINT_COUNT_MIN = 4;
     public static final int POINT_COUNT_MAX = 10;

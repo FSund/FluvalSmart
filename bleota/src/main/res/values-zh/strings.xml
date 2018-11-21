@@ -43,4 +43,6 @@
     <string name="ota_network_unavailable">网络连接不可用,请检查网络连接.</string>
     <string name="device_frimware_version">"设备固件版本: "</string>
     <string name="latest_firmware_version">"最新固件版本: "</string>
+    <string name="ota_wait_title">等待</string>
+    <string name="ota_wait_msg">请等待...</string>
 </resources>

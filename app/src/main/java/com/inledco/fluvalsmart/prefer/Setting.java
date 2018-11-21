@@ -30,6 +30,17 @@ public class Setting
     public static final String KEY_LANGUAGE_SPANISH = "es";
     public static final String KEY_LANGUAGE_CHINESE = "zh";
     public static final String KEY_SCAN_TIP = "scan_tip";
+    public static final String KEY_UPGRADE_TIP = "upgrade_tip";
+
+    public static boolean showRssi()
+    {
+        return false;
+    }
+
+    public static boolean forceUpdate()
+    {
+        return true;
+    }
 
     public static boolean isAutoTurnonBle(Context context)
     {
@@ -107,6 +118,26 @@ public class Setting
         {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
             SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_SCAN_TIP, true );
+            editor.commit();
+        }
+    }
+
+    public static boolean hasUpgradeTip(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            return sp.getBoolean( KEY_UPGRADE_TIP, false );
+        }
+        return false;
+    }
+
+    public static void setUpgradeTip(Context context)
+    {
+        if ( context != null )
+        {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences( context );
+            SharedPreferences.Editor editor = sp.edit().putBoolean( KEY_UPGRADE_TIP, true );
             editor.commit();
         }
     }

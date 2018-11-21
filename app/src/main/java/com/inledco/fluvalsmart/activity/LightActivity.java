@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,10 +25,17 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ble.api.DataUtil;
+import com.inledco.OkHttpManager.HttpCallback;
+import com.inledco.OkHttpManager.OkHttpManager;
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.bleota.BleOTAActivity;
+import com.inledco.bleota.RemoteFirmware;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.LightAuto;
@@ -37,27 +47,36 @@ import com.inledco.fluvalsmart.fragment.LightAutoFragment;
 import com.inledco.fluvalsmart.fragment.LightManualFragment;
 import com.inledco.fluvalsmart.fragment.LightProFragment;
 import com.inledco.fluvalsmart.fragment.RGBWManualFragment;
+import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
+import com.inledco.fluvalsmart.util.LightProfileUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 
 import java.util.ArrayList;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener
 {
+    private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
+
     private Toolbar light_toolbar;
     private ProgressDialog mProgressDialog;
     private LinearLayout light_mode_show;
     private CheckedTextView light_ctv_manual;
     private CheckedTextView light_ctv_auto;
     private CheckedTextView light_ctv_pro;
+    private TextView light_prof_name;
+    private MenuItem menu_device_update;
 
     private DevicePrefer mPrefer;
 
-//    private boolean mModifyPswFlag = false;
-//    private int mRemotePassword = -1;
+    private boolean mModifyPswFlag = false;
+    private int mRemotePassword = -1;
 
     private CountDownTimer mCountDownTimer;
+
+    private int mDeviceVersion;
+    private int mRemoteVersion;
 
     private BleCommunicateListener mCommunicateListener;
 
@@ -123,7 +142,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         getMenuInflater().inflate( R.menu.menu_device, menu );
         MenuItem menu_device_edit = menu.findItem( R.id.menu_device_edit );
         MenuItem menu_device_find = menu.findItem( R.id.menu_device_find );
-        MenuItem menu_device_update = menu.findItem( R.id.menu_device_update );
+        menu_device_update = menu.findItem( R.id.menu_device_update );
+        MenuItem menu_device_modpsw = menu.findItem( R.id.menu_device_modpsw );
         menu_device_edit.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener()
         {
             @Override
@@ -142,7 +162,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 return false;
             }
         } );
-        menu_device_update.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
+        menu_device_update.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener()
+        {
             @Override
             public boolean onMenuItemClick ( MenuItem item )
             {
@@ -152,8 +173,17 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     intent.putExtra("devid", mPrefer.getDevId());
                     intent.putExtra("name", mPrefer.getDeviceName());
                     intent.putExtra("address", mPrefer.getDeviceMac());
+                    intent.putExtra("mode", Setting.forceUpdate());
                     startActivity(intent);
                 }
+                return false;
+            }
+        } );
+        menu_device_modpsw.setOnMenuItemClickListener( new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick( MenuItem item )
+            {
+                showModifyPasswordDialog();
                 return false;
             }
         } );
@@ -167,6 +197,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         light_ctv_manual = findViewById( R.id.light_ctv_manual );
         light_ctv_auto = findViewById( R.id.light_ctv_auto );
         light_ctv_pro = findViewById( R.id.light_ctv_pro );
+        light_prof_name = findViewById( R.id.light_prof_name );
         light_toolbar = findViewById( R.id.light_toolbar );
         light_toolbar.setTitle( mPrefer.getDeviceName() );
         setSupportActionBar( light_toolbar );
@@ -185,6 +216,35 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     @Override
     protected void initData ()
     {
+        OkHttpManager.get( OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>()
+        {
+            @Override
+            public void onError( int code, final String msg )
+            {
+            }
+
+            @Override
+            public void onSuccess( final RemoteFirmware result )
+            {
+                mRemoteVersion = (result.getMajor_version()<<8)|result.getMinor_version();
+                LogUtil.e(TAG, "onSuccess: " + mDeviceVersion + "  " + mRemoteVersion);
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if (mDeviceVersion > 0 && mRemoteVersion > 0 && mDeviceVersion < mRemoteVersion)
+                        {
+                            menu_device_update.setVisible(true);
+                        }
+                        else
+                        {
+                            menu_device_update.setVisible(false);
+                        }
+                    }
+                });
+            }
+        } );
         mCountDownTimer = new CountDownTimer(2048, 1024) {
             @Override
             public void onTick ( long millisUntilFinished )
@@ -209,7 +269,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                           .commitAllowingStateLoss();
                     }
                 } );
-
             }
         };
         mCommunicateListener = new BleCommunicateListener() {
@@ -218,25 +277,25 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             {
                 if ( mac.equals( mPrefer.getDeviceMac() ) )
                 {
-//                    mModifyPswFlag = false;
-//                    BleManager.getInstance().readPassword( mac );
-//                    runOnUiThread( new Runnable() {
-//                        @Override
-//                        public void run ()
-//                        {
-//                            mProgressDialog.setMessage( getString( R.string.logging ) );
-//                            mCountDownTimer.start();
-//                        }
-//                    } );
+                    mModifyPswFlag = false;
+                    BleManager.getInstance().readPassword( mac );
                     runOnUiThread( new Runnable() {
                         @Override
                         public void run ()
                         {
-                            CommUtil.syncDeviceTime( mac );
-                            mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+                            mProgressDialog.setMessage( getString( R.string.logging ) );
                             mCountDownTimer.start();
                         }
                     } );
+//                    runOnUiThread( new Runnable() {
+//                        @Override
+//                        public void run ()
+//                        {
+//                            mCountDownTimer.start();
+//                            mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+//                            BleManager.getInstance().readMfr(mac);
+//                        }
+//                    } );
                 }
             }
 
@@ -265,7 +324,36 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             @Override
             public void onReadMfr ( String mac, String s )
             {
+                if (mac.equals(mPrefer.getDeviceMac()))
+                {
+                    byte[] mfr = DataUtil.hexToByteArray( s.replace( " ", "" ) );
+                    if ( mfr == null || mfr.length < 4 )
+                    {
+                        mDeviceVersion = 0;
+                    }
+                    else
+                    {
+                        mDeviceVersion = ((mfr[2]&0xFF)<<8)|(mfr[3]&0xFF);
+                        CommUtil.syncDeviceTime( mac );
+                    }
+                    LogUtil.e(TAG, "onReadMfr: " + mDeviceVersion + "  " + mRemoteVersion);
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            if (mDeviceVersion > 0 && mRemoteVersion > 0 && mDeviceVersion < mRemoteVersion)
+                            {
+                                menu_device_update.setVisible(true);
+                            }
+                            else
+                            {
+                                menu_device_update.setVisible(false);
+                            }
+                        }
+                    });
 
+                }
             }
 
             @Override
@@ -273,29 +361,32 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             {
                 if ( mac.equals( mPrefer.getDeviceMac() ) )
                 {
-//                    if ( mModifyPswFlag )
-//                    {
-//                        mModifyPswFlag = false;
-//                        mRemotePassword = psw;
-//                        return;
-//                    }
-//                    final int password = getLocalPassword( mac );
-//                    runOnUiThread( new Runnable() {
-//                        @Override
-//                        public void run ()
-//                        {
-//                            if ( psw == password )
-//                            {
+                    if ( mModifyPswFlag )
+                    {
+                        mModifyPswFlag = false;
+                        mRemotePassword = psw;
+                        return;
+                    }
+                    final int password = getLocalPassword( mac );
+                    runOnUiThread( new Runnable() {
+                        @Override
+                        public void run ()
+                        {
+                            if ( psw == password )
+                            {
 //                                mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
 //                                CommUtil.syncDeviceTime( mac );
-//                            }
-//                            else
-//                            {
-//                                mCountDownTimer.cancel();
-//                                showPasswordDialog( psw );
-//                            }
-//                        }
-//                    } );
+                                mCountDownTimer.start();
+                                mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+                                BleManager.getInstance().readMfr(mac);
+                            }
+                            else
+                            {
+                                mCountDownTimer.cancel();
+                                showPasswordDialog( psw );
+                            }
+                        }
+                    } );
                 }
             }
 
@@ -375,16 +466,25 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         }
         else if ( BleManager.getInstance().isDataValid( mPrefer.getDeviceMac() ) )
         {
-//            mProgressDialog.setMessage( getString( R.string.logging ) );
-//            mProgressDialog.show();
-//            mModifyPswFlag = false;
-//            BleManager.getInstance().readPassword( mPrefer.getDeviceMac() );
-//            mCountDownTimer.start();
-            mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+            mProgressDialog.setMessage( getString( R.string.logging ) );
             mProgressDialog.show();
-            CommUtil.syncDeviceTime( mPrefer.getDeviceMac() );
+            mModifyPswFlag = false;
+            BleManager.getInstance().readPassword( mPrefer.getDeviceMac() );
             mCountDownTimer.start();
+//            mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+//            mProgressDialog.show();
+//            CommUtil.syncDeviceTime( mPrefer.getDeviceMac() );
+//            mCountDownTimer.start();
         }
+    }
+
+    private boolean isNewVersion()
+    {
+        if (mDeviceVersion <= 258)        //0x0102 V1.02 old version
+        {
+            return false;
+        }
+        return true;
     }
 
     private void decodeReceiveData ( final String mac, ArrayList< Byte > list )
@@ -409,9 +509,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                               .commitAllowingStateLoss();
                         }
                         light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_pro.setVisibility(isNewVersion() ? View.VISIBLE : View.GONE);
                         light_ctv_manual.setChecked( false );
                         light_ctv_auto.setChecked( true );
                         light_ctv_pro.setChecked( false );
+                        light_prof_name.setText( LightProfileUtil.getAutoProfileName( LightActivity.this,
+                                                                                      mPrefer.getDevId(),
+                                                                                      (LightAuto) object ) );
                     }
                 } );
             }
@@ -430,9 +534,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                               .commitAllowingStateLoss();
                         }
                         light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_pro.setVisibility(isNewVersion() ? View.VISIBLE : View.GONE);
                         light_ctv_manual.setChecked( false );
                         light_ctv_auto.setChecked( false );
                         light_ctv_pro.setChecked( true );
+                        light_prof_name.setText( LightProfileUtil.getProProfileName( LightActivity.this,
+                                                                                     mPrefer.getDevId(), (LightPro) object ) );
                     }
                 } );
             }
@@ -470,9 +577,11 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                             }
                         }
                         light_mode_show.setVisibility( View.VISIBLE );
+                        light_ctv_pro.setVisibility(isNewVersion() ? View.VISIBLE : View.GONE);
                         light_ctv_manual.setChecked( true );
                         light_ctv_auto.setChecked( false );
                         light_ctv_pro.setChecked( false );
+                        light_prof_name.setText( "" );
                     }
                 } );
             }
@@ -488,7 +597,39 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         Button btn_cancel = view.findViewById( R.id.rename_cancel );
         Button btn_rename = view.findViewById( R.id.rename_confirm );
         final EditText newname = view.findViewById( R.id.rename_newname );
+        final boolean[] flag = new boolean[]{ false};
         newname.setText( prefer.getDeviceName() );
+        newname.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void beforeTextChanged( CharSequence s, int start, int count, int after )
+            {
+
+            }
+
+            @Override
+            public void onTextChanged( CharSequence s, int start, int before, int count )
+            {
+                if ( s.length() > 0 && start == 0 && flag[0] == false )
+                {
+                    flag[0] = true;
+                    String str = new StringBuilder().append( s.subSequence( 0, 1 ) ).toString().toUpperCase();
+                    str = new StringBuilder( str ).append( s.subSequence( 1, s.length() ) ).toString();
+                    newname.setText( str );
+                    newname.setSelection( start + count );
+                    LogUtil.e( TAG, "onTextChanged: " + str + " " + start + " " + before + " " + count );
+                }
+                else
+                {
+                    flag[0] = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged( Editable s )
+            {
+
+            }
+        } );
         btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View view )
@@ -556,7 +697,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         setLocalPassword( mPrefer.getDeviceMac(), value );
                         mCountDownTimer.start();
                         mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
-                        CommUtil.syncDeviceTime( mPrefer.getDeviceMac() );
+                        BleManager.getInstance().readMfr( mPrefer.getDeviceMac() );
+//                        mCountDownTimer.start();
+//                        mProgressDialog.setMessage( getString( R.string.msg_get_device_data ) );
+//                        CommUtil.syncDeviceTime( mPrefer.getDeviceMac() );
                         dialog.dismiss();
                     }
                     else
@@ -589,47 +733,47 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     private void modifyPassword ( final String mac, final int psw )
     {
-//        mModifyPswFlag = true;
-//        mRemotePassword = -1;
-//        final CountDownTimer tmr = new CountDownTimer( 400, 400 ) {
-//            @Override
-//            public void onTick ( long millisUntilFinished )
-//            {
-//
-//            }
-//
-//            @Override
-//            public void onFinish ()
-//            {
-//                runOnUiThread( new Runnable() {
-//                    @Override
-//                    public void run ()
-//                    {
-//                        if ( mRemotePassword == psw )
-//                        {
-//                            Toast.makeText( LightActivity.this, R.string.modify_password_success, Toast.LENGTH_SHORT )
-//                                 .show();
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText( LightActivity.this, R.string.modify_password_fail, Toast.LENGTH_SHORT )
-//                                 .show();
-//                        }
-//                    }
-//                } );
-//                mModifyPswFlag = false;
-//                mRemotePassword = -1;
-//            }
-//        };
-//        BleManager.getInstance().setPassword( mPrefer.getDeviceMac(), psw );
-//        new Handler().postDelayed( new Runnable() {
-//            @Override
-//            public void run ()
-//            {
-//                tmr.start();
-//                BleManager.getInstance().readPassword( mac );
-//            }
-//        }, 200 );
+        mModifyPswFlag = true;
+        mRemotePassword = -1;
+        final CountDownTimer tmr = new CountDownTimer( 400, 400 ) {
+            @Override
+            public void onTick ( long millisUntilFinished )
+            {
+
+            }
+
+            @Override
+            public void onFinish ()
+            {
+                runOnUiThread( new Runnable() {
+                    @Override
+                    public void run ()
+                    {
+                        if ( mRemotePassword == psw )
+                        {
+                            Toast.makeText( LightActivity.this, R.string.modify_password_success, Toast.LENGTH_SHORT )
+                                 .show();
+                        }
+                        else
+                        {
+                            Toast.makeText( LightActivity.this, R.string.modify_password_fail, Toast.LENGTH_SHORT )
+                                 .show();
+                        }
+                    }
+                } );
+                mModifyPswFlag = false;
+                mRemotePassword = -1;
+            }
+        };
+        BleManager.getInstance().setPassword( mPrefer.getDeviceMac(), psw );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run ()
+            {
+                tmr.start();
+                BleManager.getInstance().readPassword( mac );
+            }
+        }, 200 );
     }
 
     private void showModifyPasswordDialog ()

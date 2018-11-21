@@ -1,8 +1,11 @@
 package com.inledco.fluvalsmart.bean;
 
+import android.util.Log;
+
 import com.ble.api.DataUtil;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by liruya on 2016/11/23.
@@ -324,6 +327,62 @@ public class LightAuto implements Serializable
         mDynamicMode = dynamicMode;
     }
 
+    public int[] getTimeArray()
+    {
+        int[] array;
+        if ( mHasTurnoff && mTurnoffEnable )
+        {
+            array = new int[6];
+            array[0] = mSunrise.getStart();
+            array[1] = mSunrise.getEnd();
+            array[2] = mSunset.getStart();
+            array[3] = mSunset.getEnd();
+            array[4] = mTurnoffHour*60 + mTurnoffMinute;
+            array[5] = array[4];
+        }
+        else
+        {
+            array = new int[4];
+            array[0] = mSunrise.getStart();
+            array[1] = mSunrise.getEnd();
+            array[2] = mSunset.getStart();
+            array[3] = mSunset.getEnd();
+        }
+        return array;
+    }
+
+    public boolean isTimeValid()
+    {
+        int[] array = getTimeArray();
+        /* sort time && check time is valid or not */
+        int[] index = new int[array.length];
+        for ( int i = 0; i < index.length; i++ )
+        {
+            index[i] = i;
+        }
+        for ( int i = index.length - 1; i > 0; i-- )
+        {
+            for ( int j = 0; j < i; j++ )
+            {
+                if ( array[index[j]] > array[index[j+1]] )
+                {
+                    int tmp = index[j];
+                    index[j] = index[j+1];
+                    index[j+1] = tmp;
+                }
+            }
+        }
+        for ( int i = 0; i < index.length; i++ )
+        {
+            int j = (i+1)%index.length;
+            if ( (index[i]+1)%index.length != index[j]%index.length )
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public String toString ()
     {
@@ -332,5 +391,50 @@ public class LightAuto implements Serializable
                      + "\r\nSunset: " + mSunset.getStartHour() + ":" + mSunset.getStartMinute() + " - " + mSunset.getEndHour() + ":" + mSunset.getEndMinute()
                      + "\r\nNightLight: " + DataUtil.byteArrayToHex( mNightBright );
         return str;
+    }
+
+    public boolean equal( LightAuto a )
+    {
+        if ( a == null )
+        {
+            return false;
+        }
+        if ( mSunrise.equal( a.getSunrise() ) == false)
+        {
+            return false;
+        }
+        if ( mSunset.equal( a.getSunset() ) == false)
+        {
+            return false;
+        }
+        if ( Arrays.equals( mDayBright, a.getDayBright() ) == false )
+        {
+            return false;
+        }
+        if ( Arrays.equals( mNightBright, a.getNightBright() ) == false )
+        {
+            return false;
+        }
+        if ( mHasTurnoff != a.isHasTurnoff() || mTurnoffEnable != a.isTurnoffEnable()
+            || mTurnoffHour != a.getTurnoffHour() || mTurnoffMinute != a.getTurnoffMinute())
+        {
+            return false;
+        }
+        Log.e( "TAGG", "equal: " + (mDynamicPeriod == null) + "  " + (a.getDynamicPeriod() == null) );
+        if ( mHasDynamic != a.isHasDynamic() || mDynamicEnable != a.isDynamicEnable()
+            || mSun != a.isSun() || mMon != a.isMon() || mTue != a.isTue() || mWed != a.isWed()
+            || mThu != a.isThu() || mFri != a.isFri() || mSat != a.isSat() || mDynamicMode != a.getDynamicMode() )
+        {
+            return false;
+        }
+        if ( mDynamicPeriod != null && mDynamicPeriod.equal( a.getDynamicPeriod() ) == false )
+        {
+            return false;
+        }
+        if ( mDynamicPeriod == null && a.getDynamicPeriod() != null )
+        {
+            return false;
+        }
+        return true;
     }
 }

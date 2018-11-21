@@ -83,6 +83,7 @@
                 android:background="@color/colorPrimary"
                 android:layout_marginLeft="16dp"
                 android:textAllCaps="false"
+                android:textColor="@color/selector_btn_enable_white_red"
                 android:text="@string/save"/>
         </android.support.v7.widget.ButtonBarLayout>
     </LinearLayout>

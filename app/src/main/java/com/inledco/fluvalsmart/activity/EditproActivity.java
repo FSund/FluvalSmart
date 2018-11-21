@@ -1,8 +1,8 @@
 package com.inledco.fluvalsmart.activity;
 
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,9 +14,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -43,20 +47,19 @@ import com.inledco.fluvalsmart.view.MultiPointSeekbar;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class EditproActivity extends BaseActivity
 {
     private LineChart editpro_linechart;
     private MultiPointSeekbar editpro_mps;
-    private ImageButton editpro_ib_last;
-    private ImageButton editpro_ib_next;
-    private ImageButton editpro_ib_dec;
-    private ImageButton editpro_ib_inc;
-    private TextView editpro_tv_tmr;
+//    private ImageButton editpro_ib_last;
+//    private ImageButton editpro_ib_next;
+//    private ImageButton editpro_ib_dec;
+//    private ImageButton editpro_ib_inc;
+//    private TextView editpro_tv_tmr;
     private ImageButton editpro_ib_remove;
     private ImageButton editpro_ib_add;
     private Button editpro_btn_cancel;
@@ -66,6 +69,7 @@ public class EditproActivity extends BaseActivity
     private short devid;
     private String mAddress;
     private List<TimerBrightPoint> mPoints;
+//    private TimerBrightPoint mSelectPoint;
     private PointComparator mComparator;
     private EditproAdapter mAdapter;
 
@@ -73,11 +77,33 @@ public class EditproActivity extends BaseActivity
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
+        requestWindowFeature( Window.FEATURE_NO_TITLE );
+        getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN , WindowManager.LayoutParams.FLAG_FULLSCREEN );
         setContentView( R.layout.activity_editpro );
 
         initView();
-        initData();
         initEvent();
+        initData();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+//        int idx = editpro_mps.getSelectedPoint();
+//        if ( idx >= 0 && idx < mPoints.size() )
+//        {
+//            mPoints.get( idx ).setHour( mSelectPoint.getHour() );
+//            mPoints.get( idx ).setMinute( mSelectPoint.getMinute() );
+//            for ( int i = 0; i < mSelectPoint.getBrights().length; i++ )
+//            {
+//                mPoints.get( idx ).getBrights()[i] = mSelectPoint.getBrights()[i];
+//            }
+//            editTimeDone();
+//            editpro_mps.setProgress( idx, mPoints.get( idx ).getHour() * 60 + mPoints.get( idx ).getMinute() );
+//            refreshChart();
+//            return;
+//        }
+//        super.onBackPressed();
     }
 
     @Override
@@ -85,11 +111,11 @@ public class EditproActivity extends BaseActivity
     {
         editpro_linechart = findViewById( R.id.editpro_linechart );
         editpro_mps = findViewById( R.id.editpro_mps );
-        editpro_ib_last = findViewById( R.id.editpro_ib_last );
-        editpro_ib_next = findViewById( R.id.editpro_ib_next );
-        editpro_ib_dec = findViewById( R.id.editpro_ib_dec );
-        editpro_ib_inc = findViewById( R.id.editpro_ib_inc );
-        editpro_tv_tmr = findViewById( R.id.editpro_tv_tmr );
+//        editpro_ib_last = findViewById( R.id.editpro_ib_last );
+//        editpro_ib_next = findViewById( R.id.editpro_ib_next );
+//        editpro_ib_dec = findViewById( R.id.editpro_ib_dec );
+//        editpro_ib_inc = findViewById( R.id.editpro_ib_inc );
+//        editpro_tv_tmr = findViewById( R.id.editpro_tv_tmr );
         editpro_ib_remove = findViewById( R.id.editpro_ib_remove );
         editpro_ib_add = findViewById( R.id.editpro_ib_add );
         editpro_btn_cancel = findViewById( R.id.editpro_btn_cancel );
@@ -123,11 +149,23 @@ public class EditproActivity extends BaseActivity
             @Override
             public void onPointSelected( int index )
             {
-                if ( mPoints != null && index >= 0 && index < mPoints.size() )
+                if ( mPoints != null && index >= 0 && index < editpro_mps.getPointCount() )
                 {
-                    DecimalFormat df = new DecimalFormat( "00" );
-                    editpro_tv_tmr.setText( df.format( mPoints.get( index ).getHour() ) + ":" + df.format( mPoints.get( index ).getMinute() ) );
+                    editpro_ib_remove.setVisibility( View.VISIBLE );
+                    mAdapter.setSelectedPoint( index );
+//                    DecimalFormat df = new DecimalFormat( "00" );
+//                    editpro_tv_tmr.setText( df.format( mPoints.get( index ).getHour() ) + ":" + df.format( mPoints.get( index ).getMinute() ) );
                 }
+                else
+                {
+                    editpro_ib_remove.setVisibility( View.GONE );
+                }
+            }
+
+            @Override
+            public void onMultiPointTouched( List< Integer > points )
+            {
+                showMultiTouchPointDialog( points );
             }
 
             @Override
@@ -139,7 +177,16 @@ public class EditproActivity extends BaseActivity
             @Override
             public void onStopPointTouch( int index )
             {
-
+                if ( mPoints != null && index >= 0 && index < mPoints.size() )
+                {
+//                    DecimalFormat df = new DecimalFormat( "00" );
+                    //                    editpro_tv_tmr.setText( df.format( progress/60 ) + ":" + df.format( progress%60 ) );
+                    int progress = editpro_mps.getProgressByIndex( index );
+                    mPoints.get( index ).setHour( progress/60 );
+                    mPoints.get( index ).setMinute( progress%60 );
+                    refreshChart();
+//                    editpro_ib_add.setEnabled( !editpro_mps.isSelectedPointCoincide() );
+                }
             }
 
             @Override
@@ -147,131 +194,131 @@ public class EditproActivity extends BaseActivity
             {
                 if ( mPoints != null && index >= 0 && index < mPoints.size() && progress >= 0 && progress < 1440 )
                 {
-                    DecimalFormat df = new DecimalFormat( "00" );
-                    editpro_tv_tmr.setText( df.format( progress/60 ) + ":" + df.format( progress%60 ) );
+//                    DecimalFormat df = new DecimalFormat( "00" );
+//                    editpro_tv_tmr.setText( df.format( progress/60 ) + ":" + df.format( progress%60 ) );
                     mPoints.get( index ).setHour( progress/60 );
                     mPoints.get( index ).setMinute( progress%60 );
                     refreshChart();
                 }
             }
         } );
-        editpro_ib_dec.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View v )
-            {
-                int pt = editpro_mps.getSelectedPoint();
-                decTimer( pt );
-                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-                refreshSelectedTimer();
-                refreshChart();
-            }
-        } );
-        editpro_ib_dec.setOnLongClickListener( new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick( final View v )
-            {
-                final Timer timer = new Timer();
-                timer.schedule( new TimerTask() {
-                    @Override
-                    public void run()
-                    {
-                        if ( v.isPressed() )
-                        {
-                            final int pt = editpro_mps.getSelectedPoint();
-                            decTimer( pt );
-                            runOnUiThread( new Runnable() {
-                                @Override
-                                public void run()
-                                {
-                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-                                    refreshSelectedTimer();
-                                    refreshChart();
-                                }
-                            } );
-                        }
-                        else
-                        {
-                            cancel();
-                            timer.cancel();
-                        }
-                    }
-                }, 0, 20 );
-                return true;
-            }
-        } );
-
-        editpro_ib_inc.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View v )
-            {
-                int pt = editpro_mps.getSelectedPoint();
-                incTimer( pt );
-                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-                refreshSelectedTimer();
-                refreshChart();
-            }
-        } );
-        editpro_ib_inc.setOnLongClickListener( new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick( final View v )
-            {
-                final Timer timer = new Timer();
-                timer.schedule( new TimerTask() {
-                    @Override
-                    public void run()
-                    {
-                        if ( v.isPressed() )
-                        {
-                            final int pt = editpro_mps.getSelectedPoint();
-                            incTimer( pt );
-                            runOnUiThread( new Runnable() {
-                                @Override
-                                public void run()
-                                {
-                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-                                    refreshSelectedTimer();
-                                    refreshChart();
-                                }
-                            } );
-                        }
-                        else
-                        {
-                            cancel();
-                            timer.cancel();
-                        }
-                    }
-                }, 0, 20 );
-                return true;
-            }
-        } );
-
-        editpro_ib_last.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View v )
-            {
-                int pt = getLastPoint( editpro_mps.getSelectedPoint() );
-                if ( pt >= 0 && pt < mPoints.size() )
-                {
-                    editpro_mps.setSelectedPoint( pt );
-                    refreshSelectedTimer();
-                    mAdapter.setSelectedPoint( pt );
-                }
-            }
-        } );
-
-        editpro_ib_next.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View v )
-            {
-                int pt = getNextPoint( editpro_mps.getSelectedPoint() );
-                if ( pt >= 0 && pt < mPoints.size() )
-                {
-                    editpro_mps.setSelectedPoint( pt );
-                    refreshSelectedTimer();
-                    mAdapter.setSelectedPoint( pt );
-                }
-            }
-        } );
+//        editpro_ib_dec.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick( View v )
+//            {
+//                int pt = editpro_mps.getSelectedPoint();
+//                decTimer( pt );
+//                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
+//                refreshSelectedTimer();
+//                refreshChart();
+//            }
+//        } );
+//        editpro_ib_dec.setOnLongClickListener( new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick( final View v )
+//            {
+//                final Timer timer = new Timer();
+//                timer.schedule( new TimerTask() {
+//                    @Override
+//                    public void run()
+//                    {
+//                        if ( v.isPressed() )
+//                        {
+//                            final int pt = editpro_mps.getSelectedPoint();
+//                            decTimer( pt );
+//                            runOnUiThread( new Runnable() {
+//                                @Override
+//                                public void run()
+//                                {
+//                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
+//                                    refreshSelectedTimer();
+//                                    refreshChart();
+//                                }
+//                            } );
+//                        }
+//                        else
+//                        {
+//                            cancel();
+//                            timer.cancel();
+//                        }
+//                    }
+//                }, 0, 20 );
+//                return true;
+//            }
+//        } );
+//
+//        editpro_ib_inc.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick( View v )
+//            {
+//                int pt = editpro_mps.getSelectedPoint();
+//                incTimer( pt );
+//                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
+//                refreshSelectedTimer();
+//                refreshChart();
+//            }
+//        } );
+//        editpro_ib_inc.setOnLongClickListener( new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick( final View v )
+//            {
+//                final Timer timer = new Timer();
+//                timer.schedule( new TimerTask() {
+//                    @Override
+//                    public void run()
+//                    {
+//                        if ( v.isPressed() )
+//                        {
+//                            final int pt = editpro_mps.getSelectedPoint();
+//                            incTimer( pt );
+//                            runOnUiThread( new Runnable() {
+//                                @Override
+//                                public void run()
+//                                {
+//                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
+//                                    refreshSelectedTimer();
+//                                    refreshChart();
+//                                }
+//                            } );
+//                        }
+//                        else
+//                        {
+//                            cancel();
+//                            timer.cancel();
+//                        }
+//                    }
+//                }, 0, 20 );
+//                return true;
+//            }
+//        } );
+//
+//        editpro_ib_last.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick( View v )
+//            {
+//                int pt = getLastPoint( editpro_mps.getSelectedPoint() );
+//                if ( pt >= 0 && pt < mPoints.size() )
+//                {
+//                    editpro_mps.setSelectedPoint( pt );
+//                    refreshSelectedTimer();
+//                    mAdapter.setSelectedPoint( pt );
+//                }
+//            }
+//        } );
+//
+//        editpro_ib_next.setOnClickListener( new View.OnClickListener() {
+//            @Override
+//            public void onClick( View v )
+//            {
+//                int pt = getNextPoint( editpro_mps.getSelectedPoint() );
+//                if ( pt >= 0 && pt < mPoints.size() )
+//                {
+//                    editpro_mps.setSelectedPoint( pt );
+//                    refreshSelectedTimer();
+//                    mAdapter.setSelectedPoint( pt );
+//                }
+//            }
+//        } );
 
         editpro_ib_remove.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -288,6 +335,22 @@ public class EditproActivity extends BaseActivity
                 showAddPointDialog();
             }
         } );
+
+//        editpro_ib_add.setOnClickListener( new View.OnClickListener() {
+//            @SuppressLint ( "RestrictedApi" )
+//            @Override
+//            public void onClick( View v )
+//            {
+//                if ( editpro_ib_add.isChecked() )
+//                {
+//                    editTimeDone();
+//                }
+//                else
+//                {
+//                    showAddPointDialog();
+//                }
+//            }
+//        } );
 
         editpro_btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -323,8 +386,6 @@ public class EditproActivity extends BaseActivity
             if ( lightPro != null && TextUtils.isEmpty( mAddress ) != true && devid != 0 )
             {
                 int count = lightPro.getPointCount();
-                editpro_mps.setMax( 1439 );
-                editpro_mps.setPointCount( count );
 
                 mPoints = new ArrayList<>();
                 mComparator = new PointComparator();
@@ -333,13 +394,16 @@ public class EditproActivity extends BaseActivity
                     mPoints.add( lightPro.getPoints()[i] );
                 }
                 Collections.sort( mPoints, mComparator );
+
+                editpro_mps.setMax( 1439 );
+                editpro_mps.setPointCount( count );
+
                 for ( int i = 0; i < count; i++ )
                 {
                     editpro_mps.setProgress( i, lightPro.getPoints()[i].getTimer() );
                 }
 
                 mAdapter = new EditproAdapter();
-                mAdapter.setSelectedPoint( 0 );
                 editpro_rv_show.setAdapter( mAdapter );
 
                 editpro_mps.setSelectedPoint( 0 );
@@ -393,6 +457,9 @@ public class EditproActivity extends BaseActivity
         lineChart.setGridBackgroundColor( Color.TRANSPARENT );
         lineChart.setDescription( null );
         lineChart.setMaxVisibleValueCount( 0 );
+        lineChart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
+        lineChart.getLegend().setTextSize( 14 );
+        lineChart.getLegend().setFormSize( 12 );
         lineChart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
         IAxisValueFormatter formatter = new IAxisValueFormatter()
@@ -470,17 +537,50 @@ public class EditproActivity extends BaseActivity
         }
     }
 
+//    @SuppressLint ( "RestrictedApi" )
+//    private void editTimeStart()
+//    {
+//        TimerBrightPoint tbp = mPoints.get( editpro_mps.getSelectedPoint() );
+//        mSelectPoint = new TimerBrightPoint( tbp.getHour(), tbp.getMinute(), tbp.getBrights() );
+//        editpro_ib_remove.setVisibility( View.VISIBLE );
+//        editpro_btn_cancel.setVisibility( View.GONE );
+//        editpro_btn_save.setVisibility( View.GONE );
+//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
+//        editpro_ib_add.setChecked( true );
+//        editpro_ib_remove.setEnabled( true );
+//        editpro_btn_cancel.setEnabled( false );
+//        editpro_btn_save.setEnabled( false );
+//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
+//    }
+
+//    @SuppressLint ( "RestrictedApi" )
+//    private void editTimeDone()
+//    {
+//        mSelectPoint = null;
+//        editpro_ib_remove.setVisibility( View.GONE );
+//        editpro_btn_cancel.setVisibility( View.VISIBLE );
+//        editpro_btn_save.setVisibility( View.VISIBLE );
+//        editpro_mps.clearSelectedPoint();
+//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
+//        editpro_ib_add.setChecked( false );
+//        editpro_ib_remove.setEnabled( false );
+//        editpro_btn_cancel.setEnabled( true );
+//        editpro_btn_save.setEnabled( true );
+//        editpro_mps.clearSelectedPoint();
+//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
+//    }
+
     private void refreshSelectedTimer()
     {
-        if ( mPoints != null )
-        {
-            int sp = editpro_mps.getSelectedPoint();
-            if ( sp >= 0 && sp < mPoints.size() )
-            {
-                DecimalFormat df = new DecimalFormat( "00" );
-                editpro_tv_tmr.setText( df.format( mPoints.get( sp ).getHour() ) + ":" + df.format( mPoints.get( sp ).getMinute() ) );
-            }
-        }
+//        if ( mPoints != null )
+//        {
+//            int sp = editpro_mps.getSelectedPoint();
+//            if ( sp >= 0 && sp < mPoints.size() )
+//            {
+//                DecimalFormat df = new DecimalFormat( "00" );
+//                editpro_tv_tmr.setText( df.format( mPoints.get( sp ).getHour() ) + ":" + df.format( mPoints.get( sp ).getMinute() ) );
+//            }
+//        }
     }
 
     private void decTimer(final int point)
@@ -517,6 +617,41 @@ public class EditproActivity extends BaseActivity
             mPoints.get( point ).setHour( tmr/60 );
             mPoints.get( point ).setMinute( tmr%60 );
         }
+    }
+
+    private int getPointIndex(final int point)
+    {
+        if ( mPoints != null && point >= 0 && point < mPoints.size() )
+        {
+            int count = mPoints.size();
+            int[] index = new int[count];
+            int[] tmr = new int[count];
+            for ( int i = 0; i < count; i++ )
+            {
+                index[i] = i;
+                tmr[i] = mPoints.get( i ).getTimer();
+            }
+            for ( int i = count-1; i > 0; i-- )
+            {
+                for ( int j = 0; j < i; j++ )
+                {
+                    if ( tmr[index[j]] > tmr[index[j+1]] )
+                    {
+                        int tmp = index[j];
+                        index[j] = index[j+1];
+                        index[j+1] = tmp;
+                    }
+                }
+            }
+            for ( int i = 0; i < count; i++ )
+            {
+                if ( index[i] == point )
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private int getLastPoint(final int point)
@@ -560,7 +695,7 @@ public class EditproActivity extends BaseActivity
         {
             if ( mPoints.size() <= 4 )
             {
-                Toast.makeText( this, "Points count min 4.", Toast.LENGTH_SHORT )
+                Toast.makeText( this, "Timepoints count min 4.", Toast.LENGTH_SHORT )
                      .show();
             }
             else
@@ -572,8 +707,11 @@ public class EditproActivity extends BaseActivity
                     editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
                 }
                 editpro_mps.setSelectedPoint( 0 );
-                refreshSelectedTimer();
-                mAdapter.setSelectedPoint( 0 );
+//                editpro_mps.clearSelectedPoint();
+//                editpro_mps.setSelectedPoint( 0 );
+//                refreshSelectedTimer();
+//                mAdapter.setSelectedPoint( -1 );
+//                editTimeDone();
             }
         }
     }
@@ -587,41 +725,89 @@ public class EditproActivity extends BaseActivity
         TimerBrightPoint tbp = new TimerBrightPoint( hour, minute, DeviceUtil.getChannelCount( devid ) );
         mPoints.add( tbp );
         editpro_mps.setPointCount( mPoints.size() );
+        int idx = mPoints.size() - 1;
+        editpro_mps.setProgress( idx, mPoints.get( idx ).getTimer() );
+        editpro_mps.setSelectedPoint( idx );
+//        editTimeStart();
+//        for ( int i = 0; i < mPoints.size(); i++ )
+//        {
+//            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
+//        }
+
+//        int count = mPoints.size();
+//        int[] index = new int[count];
+//        int[] tmr = new int[count];
+//        for ( int i = 0; i < count; i++ )
+//        {
+//            index[i] = i;
+//            tmr[i] = mPoints.get( i ).getTimer();
+//        }
+//        for ( int i = count-1; i > 0; i-- )
+//        {
+//            for ( int j = 0; j < i; j++ )
+//            {
+//                if ( tmr[index[j]] > tmr[index[j+1]] )
+//                {
+//                    int tmp = index[j];
+//                    index[j] = index[j+1];
+//                    index[j+1] = tmp;
+//                }
+//            }
+//        }
+//        for ( int i = 0; i < count; i++ )
+//        {
+//            if ( index[i] == count - 1 )
+//            {
+//                editpro_mps.setSelectedPoint( index[i] );
+////                refreshSelectedTimer();
+////                mAdapter.setSelectedPoint( index[i] );
+//                editTimeStart();
+//                return;
+//            }
+//        }
+    }
+
+//    private int getTime( int tmr )
+//    {
+//        if ( tmr < 0 || tmr >= 1439 )
+//        {
+//            tmr = 0;
+//        }
+//        int m = tmr%5;
+//        switch ( m )
+//        {
+//            case 1:
+//            case 2:
+//                tmr -= m;
+//                break;
+//            case 3:
+//            case 4:
+//                tmr += 5 - m;
+//                break;
+//        }
+//        for ( int i = 0; i < mPoints.size(); i++ )
+//        {
+//            if ( tmr == mPoints.get( i ).getTimer() )
+//            {
+//
+//            }
+//        }
+//    }
+
+    private boolean isValidTime( int tmr )
+    {
+        if ( tmr < 0 || tmr > 1439 )
+        {
+            return false;
+        }
         for ( int i = 0; i < mPoints.size(); i++ )
         {
-            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
-        }
-
-        int count = mPoints.size();
-        int[] index = new int[count];
-        int[] tmr = new int[count];
-        for ( int i = 0; i < count; i++ )
-        {
-            index[i] = i;
-            tmr[i] = mPoints.get( i ).getTimer();
-        }
-        for ( int i = count-1; i > 0; i-- )
-        {
-            for ( int j = 0; j < i; j++ )
+            if ( tmr == mPoints.get( i ).getTimer() )
             {
-                if ( tmr[index[j]] > tmr[index[j+1]] )
-                {
-                    int tmp = index[j];
-                    index[j] = index[j+1];
-                    index[j+1] = tmp;
-                }
+                return false;
             }
         }
-        for ( int i = 0; i < count; i++ )
-        {
-            if ( index[i] == count - 1 )
-            {
-                editpro_mps.setSelectedPoint( index[i] );
-                refreshSelectedTimer();
-                mAdapter.setSelectedPoint( index[i] );
-                return;
-            }
-        }
+        return true;
     }
 
     private void showAddPointDialog()
@@ -630,21 +816,121 @@ public class EditproActivity extends BaseActivity
         {
             if ( mPoints.size() >= 10 )
             {
-                Toast.makeText( this, "Points count max 10.", Toast.LENGTH_SHORT )
+                Toast.makeText( this, "Timepoints count max 10.", Toast.LENGTH_SHORT )
                      .show();
                 return;
             }
-            TimePickerDialog dialog = new TimePickerDialog( this, new TimePickerDialog.OnTimeSetListener()
+            //INTERVAL * COUNT = 60
+            final int INTERVAL = 5;
+            final int COUNT = 12;
+            AlertDialog.Builder builder = new AlertDialog.Builder( this );
+            final AlertDialog dialog = builder.create();
+            View view = LayoutInflater.from( this ).inflate( R.layout.dialog_time_picker, null, false );
+            final TimePicker tp = view.findViewById( R.id.dialog_timepicker );
+            final Button btn_ok = view.findViewById( R.id.dialog_timer_ok );
+            final Button btn_cancel = view.findViewById( R.id.dialog_timer_cancel );
+            tp.setIs24HourView( true );
+            View mv = tp.findViewById( Resources.getSystem().getIdentifier( "minute", "id", "android" ) );
+            if ( mv != null && mv instanceof NumberPicker )
             {
-                @Override
-                public void onTimeSet( TimePicker view, int hourOfDay, int minute )
+                NumberPicker mnp = (NumberPicker) mv;
+                mnp.setMinValue( 0 );
+                mnp.setMaxValue( COUNT - 1 );
+                DecimalFormat df = new DecimalFormat( "00" );
+                String[] values = new String[COUNT];
+                for ( int i = 0; i < values.length; i++ )
                 {
-                    addPoint( hourOfDay, minute );
+                    values[i] = df.format( i*INTERVAL );
                 }
-            }, 0, 0, true );
-            dialog.setTitle( "Add Timer" );
-            dialog.setCanceledOnTouchOutside( false );
-            dialog.show();
+                mnp.setDisplayedValues( values );
+                int tmr = Calendar.getInstance().get( Calendar.HOUR_OF_DAY ) * 60 + Calendar.getInstance().get( Calendar.MINUTE ) + INTERVAL;
+                if ( tmr >= 1440 )
+                {
+                    tmr -= 1440;
+                }
+                tmr -= tmr%INTERVAL;
+                if ( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M )
+                {
+                    tp.setHour( tmr/60 );
+                    tp.setMinute( (tmr%60)/INTERVAL );
+                }
+                else
+                {
+                    tp.setCurrentHour( tmr/60 );
+                    tp.setCurrentMinute( (tmr%60)/INTERVAL );
+                }
+                btn_ok.setEnabled( isValidTime( tmr ) );
+                btn_ok.setTextColor( getResources().getColor( isValidTime( tmr ) ? R.color.colorGreen : R.color.colorRed ) );
+                tp.setOnTimeChangedListener( new TimePicker.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged( TimePicker view, int hourOfDay, int minute )
+                    {
+                        int v = hourOfDay*60 + minute * INTERVAL;
+                        boolean valid = isValidTime( v );
+                        btn_ok.setEnabled( valid );
+                        btn_ok.setTextColor( getResources().getColor( valid ? R.color.colorGreen : R.color.colorRed ) );
+                        //                        dialog.getButton( DialogInterface.BUTTON_POSITIVE ).setEnabled( isValidTime( v ) ? true : false );
+                    }
+                } );
+                btn_cancel.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View v )
+                    {
+                        dialog.dismiss();
+                    }
+                } );
+                btn_ok.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View v )
+                    {
+                        int hour;
+                        int minute;
+                        if ( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M )
+                        {
+                            hour = tp.getHour();
+                            minute = tp.getMinute()*INTERVAL;
+                        }
+                        else
+                        {
+                            hour = tp.getCurrentHour();
+                            minute = tp.getCurrentMinute()*INTERVAL;
+                        }
+                        addPoint( hour, minute );
+                        dialog.dismiss();
+                    }
+                } );
+                dialog.setView( view );
+//                dialog.setButton( DialogInterface.BUTTON_NEGATIVE, getString( R.string.cancel ), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick( DialogInterface dialog, int which )
+//                    {
+//
+//                    }
+//                } );
+//                dialog.setButton( DialogInterface.BUTTON_POSITIVE, getString( R.string.dialog_ok ), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick( DialogInterface dialog, int which )
+//                    {
+//                        int hour;
+//                        int minute;
+//                        if ( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M )
+//                        {
+//                            hour = tp.getHour();
+//                            minute = tp.getMinute()*INTERVAL;
+//                        }
+//                        else
+//                        {
+//                            hour = tp.getCurrentHour();
+//                            minute = tp.getCurrentMinute()*INTERVAL;
+//                        }
+//                        addPoint( hour, minute );
+//                    }
+//                } );
+                dialog.setTitle( "Add Time" );
+                dialog.setCanceledOnTouchOutside( false );
+                dialog.show();
+                dialog.getButton( DialogInterface.BUTTON_POSITIVE ).setEnabled( isValidTime( tmr ) ? true : false );
+            }
         }
     }
 
@@ -654,27 +940,31 @@ public class EditproActivity extends BaseActivity
         {
             if ( mPoints.size() <= 4 )
             {
-                Toast.makeText( this, "Points count min 4.", Toast.LENGTH_SHORT )
+                Toast.makeText( this, "Timepoints count min 4.", Toast.LENGTH_SHORT )
                      .show();
             }
             else
             {
                 AlertDialog.Builder builder = new AlertDialog.Builder( this );
-                builder.setTitle( "Remove Timer" );
+                builder.setTitle( "Delete #" + (getPointIndex( point )+1) + " Set Time" );
                 builder.setNegativeButton( R.string.cancel, null );
                 builder.setPositiveButton( R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick( DialogInterface dialog, int which )
                     {
                         mPoints.remove( point );
-                        editpro_mps.setPointCount( mPoints.size() );
-                        for ( int i = 0; i < mPoints.size(); i++ )
-                        {
-                            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
-                        }
+//                        editpro_mps.setPointCount( mPoints.size() );
+//                        for ( int i = 0; i < mPoints.size(); i++ )
+//                        {
+//                            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
+//                        }
+//                        editpro_mps.clearSelectedPoint();
+//                        refreshSelectedTimer();
+//                        mAdapter.setSelectedPoint( -1 );
+                        editpro_mps.removePoint( point );
                         editpro_mps.setSelectedPoint( 0 );
-                        refreshSelectedTimer();
-                        mAdapter.setSelectedPoint( 0 );
+//                        editTimeDone();
+                        refreshChart();
                     }
                 } );
                 AlertDialog dialog = builder.create();
@@ -719,9 +1009,38 @@ public class EditproActivity extends BaseActivity
         return -1;
     }
 
+    private void showMultiTouchPointDialog( final List<Integer> points )
+    {
+        if ( points == null || points.size() <= 1 || points.size() > mPoints.size() )
+        {
+            return;
+        }
+        DecimalFormat df = new DecimalFormat( "00" );
+        String[] array = new String[points.size()];
+        int idx;
+        int tmr;
+        for ( int i = 0; i < array.length; i++ )
+        {
+            idx = points.get( i );
+            tmr = mPoints.get( idx ).getTimer();
+            array[i] = "#" + df.format( getPointIndex( idx ) + 1) + "  " + df.format( tmr/60 ) + ":" + df.format( tmr%60 );
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setSingleChoiceItems( array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick( DialogInterface dialog, int which )
+            {
+                editpro_mps.setSelectedPoint( points.get( which ) );
+//                editTimeStart();
+                dialog.dismiss();
+            }
+        } );
+        builder.show();
+    }
+
     class EditproAdapter extends RecyclerView.Adapter<EditproViewHolder>
     {
-        private int mSelectedPoint;
+        private int mSelectedPoint = -1;
 
         public void setSelectedPoint( int selectedPoint )
         {
@@ -759,6 +1078,7 @@ public class EditproActivity extends BaseActivity
         {
             if ( mSelectedPoint >= 0 && mSelectedPoint < mPoints.size() )
             {
+                holder.itemView.setVisibility( View.VISIBLE );
                 final TimerBrightPoint tbp = mPoints.get( mSelectedPoint );
                 int[] thumbs = DeviceUtil.getThumb( devid );
                 int[] seekBars = DeviceUtil.getSeekbar( devid );
@@ -798,11 +1118,16 @@ public class EditproActivity extends BaseActivity
                     }
                 } );
             }
+            else
+            {
+                holder.itemView.setVisibility( View.INVISIBLE );
+            }
         }
 
         @Override
         public int getItemCount()
         {
+//            return (mSelectedPoint >= 0 && mSelectedPoint < mPoints.size()) ? DeviceUtil.getChannelCount( devid ) : 0;
             return DeviceUtil.getChannelCount( devid );
         }
     }

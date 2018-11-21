@@ -123,11 +123,13 @@
     <string name="preset_plant_boost">Preset - Plant Boost</string>
     <string name="dialog_export_use">Export</string>
     <string name="dialog_export_remove">Remove</string>
-    <string name="item_turnoff">Off</string>
+    <string name="item_turnoff">Sleep</string>
     <string name="disabled">Disabled</string>
     <string name="edit">Edit</string>
     <string name="overview">Overview</string>
     <string name="title_manual" translatable="false">Man</string>
     <string name="title_auto" translatable="false">Auto</string>
     <string name="title_pro" translatable="false">Pro</string>
+    <string name="msg_no_profile">No profiles found, you can save custom profiles.</string>
+    <string name="save_success">Save Success</string>
 </resources>

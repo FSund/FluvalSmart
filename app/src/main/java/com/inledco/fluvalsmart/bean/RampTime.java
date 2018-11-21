@@ -61,4 +61,39 @@ public class RampTime implements Serializable
     {
         this.endMinute = endMinute;
     }
+
+    public int getStart()
+    {
+        return (startHour*60+startMinute);
+    }
+
+    public int getEnd()
+    {
+        return (endHour*60+endMinute);
+    }
+
+    public boolean equal(RampTime rt)
+    {
+        if ( rt == null )
+        {
+            return false;
+        }
+        if ( startHour != rt.getStartHour() )
+        {
+            return false;
+        }
+        if ( startMinute != rt.getStartMinute() )
+        {
+            return false;
+        }
+        if ( endHour != rt.getEndHour() )
+        {
+            return false;
+        }
+        if ( endMinute != rt.getEndMinute() )
+        {
+            return false;
+        }
+        return true;
+    }
 }

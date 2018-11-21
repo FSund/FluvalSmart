@@ -24,7 +24,10 @@ import java.util.List;
 
 public class MultiPointSeekbar extends View
 {
+    private static final String TAG = "MultiPointSeekbar";
+
     private final int POINT_COUNT_DEFAULT = 1;
+    private final int INTERVAL_DEFAULT = 1;
     private final int POINT_COUNT_MIN = 1;
     private final int POINT_COUNT_MAX = 10;
     private final int HINT_MODE_HIDE = 0;
@@ -45,6 +48,7 @@ public class MultiPointSeekbar extends View
 
     private int mLineWidth;
 
+    private int mInterval;
     private int mPointCount;
     private int mLineColor;
     private int mThumbColor;
@@ -87,6 +91,8 @@ public class MultiPointSeekbar extends View
     private Paint mThumbPaint;
     private Paint mHintPaint;
 
+    private List<Integer> mTouchPoints;
+
     private List<RefreshData> mRefreshDataList = new ArrayList<>();
     private boolean mRefreshIsPosted;
     private RefreshDataRunnable mRefreshDataRunnable;
@@ -115,6 +121,7 @@ public class MultiPointSeekbar extends View
                                                              R.styleable.MultiPointSeekbar );
         mPointCount = a.getInt( R.styleable.MultiPointSeekbar_pointCount,
                                 POINT_COUNT_DEFAULT );
+        mInterval = a.getInt( R.styleable.MultiPointSeekbar_interval, INTERVAL_DEFAULT );
         mThumbDrawables = new Drawable[POINT_COUNT_MAX];
         mProgress = new int[POINT_COUNT_MAX];
         mThumbColor = a.getColor( R.styleable.MultiPointSeekbar_thumbColor, 0xFFFFFFFF );
@@ -157,6 +164,16 @@ public class MultiPointSeekbar extends View
             mProgress[i] = 0;
         }
         a.recycle();
+        if ( mMin >= mMax )
+        {
+            mMin = 0;
+            mMax = 100;
+        }
+        if ( mInterval <= 0 || mInterval >= mMax - mMin || ((mMax - mMin)%mInterval != 0) )
+        {
+            mInterval = INTERVAL_DEFAULT;
+        }
+        mTouchPoints = new ArrayList<>();
         mScaledTouchSlop = ViewConfiguration.get( context ).getScaledTouchSlop();
         init();
     }
@@ -250,27 +267,91 @@ public class MultiPointSeekbar extends View
         switch ( event.getAction() )
         {
             case MotionEvent.ACTION_DOWN:
-                if ( mSelectedPoint >= 0 && mSelectedPoint < mPointCount )
-                {
-                    if ( isPointTouched( mSelectedPoint, x, y ) )
-                    {
-                        mTouchDownX = x;
-                        mDragEnabled = true;
-                        mDragging = false;
-                        return true;
+                int point = getTouchedPoint( x, y );
+                if ( point >= 0 && point < mPointCount ) {
+                    mTouchDownX = x;
+                    mDragEnabled = true;
+                    if ( mSelectedPoint != point ) {
+                        mSelectedPoint = point;
+                        if ( mListener != null ) {
+                            mListener.onPointSelected( mSelectedPoint );
+                        }
                     }
-                    else
-                    {
-                        mDragEnabled = false;
-                        mDragging = false;
-                    }
-                }
-                else
-                {
+                    invalidate();
+                    return true;
+                } else {
                     mDragEnabled = false;
-                    mDragging = false;
                 }
+                mDragging = false;
                 break;
+//            case MotionEvent.ACTION_DOWN:
+//                if ( mSelectedPoint == SELECTED_POINT_NONE )
+//                {
+//                    mDragEnabled = false;
+//                    mDragging = false;
+//                    mTouchPoints.clear();
+//                    for ( int i = 0; i < mPointCount; i++ )
+//                    {
+//                        if ( isPointTouched( i, x, y ) )
+//                        {
+//                            mTouchPoints.add( i );
+//                        }
+//                    }
+//                    if ( mTouchPoints.size() == 1 )
+//                    {
+//                        mSelectedPoint = mTouchPoints.get( 0 );
+//                        mTouchDownX = x;
+//                        if ( mListener != null )
+//                        {
+//                            mListener.onPointSelected( mSelectedPoint );
+//                        }
+//                        invalidate();
+//                        return true;
+//                    }
+//                    else if ( mTouchPoints.size() > 1 && mTouchPoints.size() < mPointCount )
+//                    {
+//                        if ( mListener != null )
+//                        {
+//                            Collections.sort( mTouchPoints, new Comparator< Integer >() {
+//                                @Override
+//                                public int compare( Integer o1, Integer o2 )
+//                                {
+//                                    if ( mProgress[o1] < mProgress[o2] )
+//                                    {
+//                                        return -1;
+//                                    }
+//                                    if ( mProgress[o1] > mProgress[o2] )
+//                                    {
+//                                        return 1;
+//                                    }
+//                                    return 0;
+//                                }
+//                            } );
+//                            mListener.onMultiPointTouched( mTouchPoints );
+//                        }
+//                    }
+//                }
+//                else if ( mSelectedPoint >= 0 && mSelectedPoint < mPointCount )
+//                {
+//                    if ( isPointTouched( mSelectedPoint, x, y ) )
+//                    {
+//                        mTouchDownX = x;
+//                        mDragEnabled = true;
+//                        mDragging = false;
+//                        return true;
+//                    }
+//                    else
+//                    {
+//                        mDragEnabled = false;
+//                        mDragging = false;
+//                    }
+//                }
+//                else
+//                {
+//                    mDragEnabled = false;
+//                    mDragging = false;
+//                }
+//                break;
             case MotionEvent.ACTION_MOVE:
                 if ( mSelectedPoint >= 0 && mSelectedPoint < mPointCount && mDragEnabled )
                 {
@@ -299,6 +380,7 @@ public class MultiPointSeekbar extends View
                     {
                         if ( mListener != null )
                         {
+                            mProgress[mSelectedPoint] = convertProgress( mProgress[mSelectedPoint] );
                             mListener.onStopPointTouch( mSelectedPoint );
                         }
                     }
@@ -314,6 +396,7 @@ public class MultiPointSeekbar extends View
                         pointTouchEvent( event, mSelectedPoint );
                         if ( mListener != null )
                         {
+                            mProgress[mSelectedPoint] = convertProgress( mProgress[mSelectedPoint] );
                             mListener.onStopPointTouch( mSelectedPoint );
                         }
                     }
@@ -355,21 +438,21 @@ public class MultiPointSeekbar extends View
         final int y = Math.round( event.getY() );
         final int thumbWidth = getThumbWidth();
         final int extra = thumbWidth < mHintWidth ? mHintWidth : thumbWidth;
-        final int lineWidth = getWidth() - getPaddingLeft() - getPaddingRight() - extra;
+        final float lineWidth = getWidth() - getPaddingLeft() - getPaddingRight() - extra;
         final int left = getPaddingLeft() + extra/2;
         final int right = getWidth() - getPaddingRight() - extra/2;
         float scale;
-        if ( x < left )
+        if ( x <= left )
         {
             scale = 0.0f;
         }
-        else if ( x > right )
+        else if ( x >= right )
         {
             scale = 1.0f;
         }
         else
         {
-            scale = ( x - left )/(float) lineWidth;
+            scale = ( x - left )/lineWidth;
         }
         final int progress = Math.round( mMin + scale * ( mMax - mMin ) );
         if ( progress == mProgress[idx] )
@@ -461,7 +544,7 @@ public class MultiPointSeekbar extends View
         {
             return false;
         }
-        final int space = 50;
+        final int space = 5;
         int width = getThumbWidth();
         int height = getThumbHeight();
         int extra = width < mHintWidth ? mHintWidth : width;
@@ -484,6 +567,36 @@ public class MultiPointSeekbar extends View
             return true;
         }
         return false;
+    }
+
+    private int getTouchedPoint(float x, float y)
+    {
+        int point = SELECTED_POINT_NONE;
+        final int space = 20;
+        int width = getThumbWidth();
+        int height = getThumbHeight();
+        int rx = width/2+space;
+        int ry = height/2+space;
+        int extra = width < mHintWidth ? mHintWidth : width;
+        int lineWidth = getWidth() - getPaddingLeft() - getPaddingRight() - extra;
+        int cy = getPaddingTop() + mHintHeight + mHintPadding + height/2;
+//        int top = getPaddingTop() + mHintHeight + mHintPadding;
+//        int bottom = top + height;
+        int min = rx*rx + ry*ry;
+        for ( int i = 0; i < mPointCount; i++ )
+        {
+            int cx = (int) ( getPaddingLeft() + extra/2 + lineWidth * (mProgress[i] - mMin) / (float) ( mMax - mMin) );
+            int d = (int) ( ( x - cx) * ( x - cx) + ( y - cy) * ( y - cy));
+            if ( d < min ) {
+//                if ( i == mSelectedPoint )
+//                {
+//                    return i;
+//                }
+                min = d;
+                point = i;
+            }
+        }
+        return point;
     }
 
     public void setGetTextImpl( GetTextImpl impl )
@@ -584,8 +697,8 @@ public class MultiPointSeekbar extends View
         int thumbHeight = getThumbHeight();
         int thumbWidth = getThumbWidth();
         int extra = thumbWidth < mHintWidth ? mHintWidth : thumbWidth;
-        int lineWidth = w - getPaddingLeft() - getPaddingRight() - extra;
-        int left = (int) ( getPaddingLeft() + lineWidth * mProgress[idx] / (float)( mMax - mMin) + ( extra - thumbWidth) / 2);
+        float lineWidth = w - getPaddingLeft() - getPaddingRight() - extra;
+        int left = (int) ( getPaddingLeft() + lineWidth * (mProgress[idx]/mInterval) / (( mMax - mMin)/mInterval) + ( extra - thumbWidth) / 2);
         int top = getPaddingTop() + mHintHeight + mHintPadding + ( h - getPaddingTop() - getPaddingBottom() - mHintHeight - mHintPadding - thumbHeight )/2;
         int right = left + thumbWidth;
         int bottom = top + thumbHeight;
@@ -612,13 +725,28 @@ public class MultiPointSeekbar extends View
         }
     }
 
+    private int convertProgress( int progress )
+    {
+        int m = (progress-mMin)%mInterval;
+        if ( m > mInterval/2 )
+        {
+            progress += mInterval - m;
+        }
+        else
+        {
+            progress -= m;
+        }
+        return progress;
+    }
+
     private String getHintText( int progress )
     {
+        int value = convertProgress( progress );
         if ( mGetTextImpl != null )
         {
-            return mGetTextImpl.getText( progress );
+            return mGetTextImpl.getText( value );
         }
-        return "" + (progress - mMin)*100/(mMax-mMin) + "%";
+        return "" + (value - mMin)*100/(mMax-mMin) + "%";
     }
 
     private void drawHint( Canvas canvas, int w, int h, int idx )
@@ -664,6 +792,26 @@ public class MultiPointSeekbar extends View
             mHintPaint.setColor( mHintColor );
             canvas.drawText( text, ( left + right ) / 2, ( top + bottom ) / 2 + mTextHeight / 4, mHintPaint );
         }
+    }
+
+    public boolean isSelectedPointCoincide()
+    {
+        if ( mSelectedPoint < 0 || mSelectedPoint >= mPointCount )
+        {
+            return false;
+        }
+        for ( int i = 0; i < mPointCount; i++ )
+        {
+            if ( i == mSelectedPoint )
+            {
+                continue;
+            }
+            if ( mProgress[i] == mProgress[mSelectedPoint] )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setThumb( Drawable thumb )
@@ -726,6 +874,35 @@ public class MultiPointSeekbar extends View
         }
         mPointCount = pointCount;
         invalidate();
+    }
+
+    public synchronized void removePoint( int point )
+    {
+        if ( point < 0 || point >= mPointCount )
+        {
+            return;
+        }
+        for ( int i = point; i < mPointCount - 1; i++ )
+        {
+            mProgress[i] = mProgress[i+1];
+        }
+        mPointCount -= 1;
+        mSelectedPoint = SELECTED_POINT_NONE;
+        invalidate();
+    }
+
+    public synchronized void setInterval( int interval)
+    {
+        if ( interval <= 0 || interval >= mMax - mMin || ((mMax-mMin)%interval != 0) )
+        {
+            return;
+        }
+        mInterval = interval;
+    }
+
+    public synchronized int getInterval()
+    {
+        return mInterval;
     }
 
     public synchronized int getLineColor()
@@ -955,11 +1132,8 @@ public class MultiPointSeekbar extends View
 
     public void clearSelectedPoint()
     {
-        if ( mSelectedPoint >= 0 && mSelectedPoint < mPointCount )
-        {
-            mSelectedPoint = SELECTED_POINT_NONE;
-            invalidate();
-        }
+        mSelectedPoint = SELECTED_POINT_NONE;
+        invalidate();
     }
 
     private void setThumbPos( int w, Drawable thumb, float scale, int offset )
@@ -1007,6 +1181,8 @@ public class MultiPointSeekbar extends View
         void onPointCountChanged( int pointCount );
 
         void onPointSelected( int index );
+
+        void onMultiPointTouched( List<Integer> points );
 
         void onStartPointTouch( int index );
 

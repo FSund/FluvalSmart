@@ -63,17 +63,19 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
     private ArrayList<Frame> mFrames;
     private int mCurrent;
     private int mTotal;
+    private boolean mTestMode = false;
 
     private byte mCurrentCommand;
     private CountDownTimer mCountDownTimer;
 
-    public OTAPresenter ( BleOTAActivity t, IOTAView view, @NonNull short devid, @NonNull String address, @NonNull String remoteVersionUrl )
+    public OTAPresenter ( BleOTAActivity t, IOTAView view, @NonNull short devid, @NonNull String address, @NonNull String remoteVersionUrl, boolean mode )
     {
         super(t);
         mView = view;
         mDevid = devid;
         mAddress = address;
         mRemoteVersionUrl = remoteVersionUrl;
+        mTestMode = mode;
         mHandler = new Handler();
         mCountDownTimer = new CountDownTimer( 1000, 500 )
         {
@@ -179,6 +181,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
 
     public void checkUpdate()
     {
+        BleManager.getInstance().refresh( mAddress );
         Runnable runnable = new Runnable() {
             @Override
             public void run()
@@ -280,7 +283,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                     @Override
                     public void run()
                     {
-                        if ( device_version < remote_version )
+                        if ( mTestMode || device_version < remote_version )
                         {
                             String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format( mRemoteFirmware.getMinor_version() );
                             String msg = getString( R.string.ota_device_firmware_upgradable ).replace( "Vxx", v );
@@ -696,15 +699,22 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                     {
                         LogUtil.e( TAG, "decodeReceiveData: " + System.currentTimeMillis() );
                         mCountDownTimer.cancel();
-                        mView.showMessage( getString( R.string.ota_reset_tobootloader ) );
                         BleManager.getInstance()
                                   .disconnectDevice( mAddress );
+                        mView.showMessage( getString( R.string.ota_reset_tobootloader ) );
                         BleManager.getInstance().refresh( mAddress );
                         runOnUiThread( new Runnable() {
                             @Override
                             public void run()
                             {
-                                mView.showRepowerDialog();
+                                new Handler().postDelayed( new Runnable() {
+                                    @Override
+                                    public void run()
+                                    {
+                                        mView.showRepowerDialog();
+                                    }
+                                }, 1000 );
+
                             }
                         } );
                     }

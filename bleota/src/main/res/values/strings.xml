@@ -46,4 +46,6 @@
     <string name="ota_network_unavailable">Network is not available,please check settings.</string>
     <string name="device_frimware_version">"Device Firmware Version: "</string>
     <string name="latest_firmware_version">"Latest Firmware Version: "</string>
+    <string name="ota_wait_title">Wait</string>
+    <string name="ota_wait_msg">Please wait...</string>
 </resources>

@@ -13,9 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CheckableImageButton;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +40,7 @@ import android.widget.ToggleButton;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -48,6 +52,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.adapter.ExpanSliderAdapter;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -93,6 +98,9 @@ public class LightAutoFragment extends BaseFragment
     private LinearLayout light_auto_dynamic_show;
     private ImageView light_auto_dynamic_icon;
     private TextView light_auto_dynamic;
+    private LinearLayout auto_linearlayout;
+    private SeekBar auto_seekbar;
+    private TextView auto_textview;
 
     private LineData mLineData;
     private ArrayList< ILineDataSet > mDataSets;
@@ -154,6 +162,16 @@ public class LightAutoFragment extends BaseFragment
     public void onDestroy ()
     {
         super.onDestroy();
+        if (tsk != null)
+        {
+            tsk.cancel();
+            tsk = null;
+        }
+        if (tmr != null)
+        {
+            tmr.cancel();
+            tmr = null;
+        }
         BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
     }
 
@@ -173,6 +191,9 @@ public class LightAutoFragment extends BaseFragment
         light_auto_dynamic_show = view.findViewById( R.id.light_auto_dynamic_show );
         light_auto_dynamic_icon = view.findViewById( R.id.light_auto_dynamic_icon );
         light_auto_dynamic = view.findViewById( R.id.light_auto_dynamic );
+        auto_linearlayout = view.findViewById( R.id.auto_linearlayout );
+        auto_seekbar = view.findViewById( R.id.auto_seekbar );
+        auto_textview = view.findViewById( R.id.auto_textview );
 
         XAxis xAxis = lightautochart.getXAxis();
         YAxis axisLeft = lightautochart.getAxisLeft();
@@ -216,6 +237,9 @@ public class LightAutoFragment extends BaseFragment
         lightautochart.setGridBackgroundColor( Color.TRANSPARENT );
         lightautochart.setDescription( null );
         lightautochart.setMaxVisibleValueCount( 0 );
+        lightautochart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
+        lightautochart.getLegend().setTextSize( 14 );
+        lightautochart.getLegend().setFormSize( 12 );
         lightautochart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
         IAxisValueFormatter formatter = new IAxisValueFormatter()
@@ -466,9 +490,9 @@ public class LightAutoFragment extends BaseFragment
         }
 
         auto_sunrs_time.setText( df.format( sunrise_starthour ) + ":" + df.format( sunrise_startminute ) +
-                              "\n|\n" + df.format( sunrise_endhour ) + ":" + df.format( sunrise_endminute ) );
+                              "\n~\n" + df.format( sunrise_endhour ) + ":" + df.format( sunrise_endminute ) );
         auto_sunset_time.setText( df.format( sunset_starthour ) + ":" + df.format( sunset_startminute ) +
-                             "\n|\n" + df.format( sunset_endhour ) + ":" + df.format( sunset_endminute ) );
+                             "\n~\n" + df.format( sunset_endhour ) + ":" + df.format( sunset_endminute ) );
         SpannableStringBuilder spbd = new SpannableStringBuilder();
         SpannableStringBuilder spbn = new SpannableStringBuilder();
         for ( int i = 0; i < channels.length; i++ )
@@ -664,10 +688,37 @@ public class LightAutoFragment extends BaseFragment
     @Override
     protected void initEvent ()
     {
+        final DecimalFormat df = new DecimalFormat( "00" );
+        auto_seekbar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser )
+            {
+                if ( tsk != null && fromUser )
+                {
+                    tsk.setTm( progress );
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch( SeekBar seekBar )
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch( SeekBar seekBar )
+            {
+
+            }
+        } );
         auto_sunrs_time.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showEditSunrsDialog( EDIT_ITEM_SUNRISE );
             }
         } );
@@ -675,6 +726,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showEditDayNightDialog( EDIT_ITEM_MIDDAY );
             }
         } );
@@ -682,6 +737,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showEditSunrsDialog( EDIT_ITEM_SUNSET );
             }
         } );
@@ -689,6 +748,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showEditDayNightDialog( EDIT_ITEM_NIGHT );
             }
         } );
@@ -696,6 +759,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showEditTurnoffDialog();
             }
         } );
@@ -705,6 +772,9 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onCheckedChanged ( CompoundButton buttonView, boolean isChecked )
             {
+                auto_linearlayout.setVisibility( isChecked ? View.VISIBLE : View.GONE );
+                auto_seekbar.setProgress( 0 );
+                auto_textview.setText( "00:00" );
                 if ( isChecked )
                 {
                     tsk = new PreviewTimerTask();
@@ -735,15 +805,17 @@ public class LightAutoFragment extends BaseFragment
                                                   .removeAllLimitLines();
                                     LimitLine limitLine = new LimitLine( tm );
                                     limitLine.setLineWidth( 1 );
-                                    limitLine.setLineColor( CustomColor.COLOR_ACCENT );
+                                    limitLine.setLineColor( CustomColor.COLOR_GREEN_A700 );
                                     lightautochart.getXAxis()
                                                   .addLimitLine( limitLine );
                                     lightautochart.invalidate();
+                                    auto_seekbar.setProgress( tm );
+                                    auto_textview.setText( df.format( tm/60 ) + ":" + df.format( tm%60 ) );
                                 }
                             } );
                         }
                     } );
-                    tmr.schedule( tsk, 0, 32 );
+                    tmr.schedule( tsk, 0, 40 );
                 }
                 else
                 {
@@ -767,6 +839,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showDynamicDialog();
             }
         } );
@@ -776,6 +852,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View view )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showImportDialog();
             }
         } );
@@ -784,6 +864,10 @@ public class LightAutoFragment extends BaseFragment
             @Override
             public void onClick ( View view )
             {
+                if ( light_auto_preview.isChecked() )
+                {
+                    return;
+                }
                 showExportDialog();
             }
         } );
@@ -791,7 +875,7 @@ public class LightAutoFragment extends BaseFragment
 
     private void showImportDialog ()
     {
-        final Map< String, LightAuto > localProfiles = LightProfileUtil.getLocalAutoProfiles( getContext(), devid, mLightAuto.isHasDynamic() );
+        final Map< String, LightAuto > localProfiles = LightProfileUtil.getLocalAutoProfiles( getContext(), devid, mLightAuto.isHasDynamic(), mLightAuto.isHasTurnoff() );
         final String[] keys = new String[localProfiles.size()];
         final int[] index = { 0 };
         int i = 0;
@@ -804,7 +888,7 @@ public class LightAutoFragment extends BaseFragment
         builder.setTitle( R.string.export_profile );
         if ( keys.length == 0 )
         {
-            builder.setMessage( "No Profile." );
+            builder.setMessage( R.string.msg_no_profile );
         }
         else
         {
@@ -851,6 +935,36 @@ public class LightAutoFragment extends BaseFragment
         final EditText name = view.findViewById( R.id.export_name );
         Button btn_cancel = view.findViewById( R.id.export_cancel );
         Button btn_ok = view.findViewById( R.id.export_ok );
+        final boolean[] flag = new boolean[]{ false};
+        name.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void beforeTextChanged( CharSequence s, int start, int count, int after )
+            {
+            }
+
+            @Override
+            public void onTextChanged( CharSequence s, int start, int before, int count )
+            {
+                if ( s.length() > 0 && start == 0 && flag[0] == false )
+                {
+                    flag[0] = true;
+                    String str = new StringBuilder().append( s.subSequence( 0, 1 ) ).toString().toUpperCase();
+                    str = new StringBuilder( str ).append( s.subSequence( 1, s.length() ) ).toString();
+                    name.setText( str );
+                    name.setSelection( start + count );
+                    LogUtil.e( TAG, "onTextChanged: " + str + " " + start + " " + before + " " + count );
+                }
+                else
+                {
+                    flag[0] = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged( Editable s )
+            {
+            }
+        } );
         btn_cancel.setOnClickListener( new View.OnClickListener()
         {
             @Override
@@ -877,6 +991,8 @@ public class LightAutoFragment extends BaseFragment
                                                       name.getText()
                                                           .toString() );
                     dialog.dismiss();
+                    Toast.makeText( getContext(), R.string.save_success, Toast.LENGTH_SHORT )
+                         .show();
                 }
             }
         } );
@@ -919,7 +1035,7 @@ public class LightAutoFragment extends BaseFragment
         TimePicker tp_start = dialogView.findViewById( R.id.dialog_sunrs_start );
         TimePicker tp_end = dialogView.findViewById( R.id.dialog_sunrs_end );
         Button btn_cancel = dialogView.findViewById( R.id.dialog_sunrs_cancel );
-        Button btn_save = dialogView.findViewById( R.id.dialog_sunrs_save );
+        final Button btn_save = dialogView.findViewById( R.id.dialog_sunrs_save );
         tp_start.setIs24HourView( true );
         tp_end.setIs24HourView( true );
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M )
@@ -936,6 +1052,7 @@ public class LightAutoFragment extends BaseFragment
             tp_end.setCurrentHour( end_hour );
             tp_end.setCurrentMinute( end_minute );
         }
+        btn_save.setEnabled( mLightAuto.isTimeValid() );
         tp_start.setOnTimeChangedListener( new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged ( TimePicker view, int hourOfDay, int minute )
@@ -944,12 +1061,14 @@ public class LightAutoFragment extends BaseFragment
                 {
                     mLightAuto.getSunrise().setStartHour( (byte) hourOfDay );
                     mLightAuto.getSunrise().setStartMinute( (byte) minute );
+                    btn_save.setEnabled( mLightAuto.isTimeValid() );
                     refreshData();
                 }
                 else if ( item == EDIT_ITEM_SUNSET )
                 {
                     mLightAuto.getSunset().setStartHour( (byte) hourOfDay );
                     mLightAuto.getSunset().setStartMinute( (byte) minute );
+                    btn_save.setEnabled( mLightAuto.isTimeValid() );
                     refreshData();
                 }
             }
@@ -962,12 +1081,14 @@ public class LightAutoFragment extends BaseFragment
                 {
                     mLightAuto.getSunrise().setEndHour( (byte) hourOfDay );
                     mLightAuto.getSunrise().setEndMinute( (byte) minute );
+                    btn_save.setEnabled( mLightAuto.isTimeValid() );
                     refreshData();
                 }
                 else if ( item == EDIT_ITEM_SUNSET )
                 {
                     mLightAuto.getSunset().setEndHour( (byte) hourOfDay );
                     mLightAuto.getSunset().setEndMinute( (byte) minute );
+                    btn_save.setEnabled( mLightAuto.isTimeValid() );
                     refreshData();
                 }
             }
@@ -1137,11 +1258,12 @@ public class LightAutoFragment extends BaseFragment
         final BottomSheetDialog dialog = new BottomSheetDialog( getContext() );
         View dialogView = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_edit_turnoff, null );
         Switch sw_enable = dialogView.findViewById( R.id.dialog_turnoff_enable );
-        TimePicker tp = dialogView.findViewById( R.id.dialog_turnoff_tmr );
+        final TimePicker tp = dialogView.findViewById( R.id.dialog_turnoff_tmr );
         Button btn_cancel = dialogView.findViewById( R.id.dialog_turnoff_cancel );
-        Button btn_save = dialogView.findViewById( R.id.dialog_turnoff_save );
+        final Button btn_save = dialogView.findViewById( R.id.dialog_turnoff_save );
         sw_enable.setChecked( enable );
         tp.setIs24HourView( true );
+        tp.setEnabled( enable );
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M )
         {
             tp.setHour( hour );
@@ -1152,10 +1274,12 @@ public class LightAutoFragment extends BaseFragment
             tp.setCurrentHour( (int) hour );
             tp.setCurrentMinute( (int) minute );
         }
+        btn_save.setEnabled( mLightAuto.isTimeValid() );
         sw_enable.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged( CompoundButton buttonView, boolean isChecked )
             {
+                tp.setEnabled( isChecked );
                 mLightAuto.setTurnoffEnable( isChecked );
                 refreshData();
             }
@@ -1166,6 +1290,7 @@ public class LightAutoFragment extends BaseFragment
             {
                 mLightAuto.setTurnoffHour( (byte) hourOfDay );
                 mLightAuto.setTurnoffMinute( (byte) min );
+                btn_save.setEnabled( mLightAuto.isTimeValid() );
                 refreshData();
             }
         } );
@@ -1414,6 +1539,19 @@ public class LightAutoFragment extends BaseFragment
         public void setListener ( PreviewTaskListener listener )
         {
             mListener = listener;
+        }
+
+        public int getTm()
+        {
+            return tm;
+        }
+
+        public void setTm( int t )
+        {
+            if ( t >= 0 && t <= 1440 )
+            {
+                tm = t;
+            }
         }
 
         @Override

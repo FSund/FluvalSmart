@@ -16,7 +16,14 @@
         android:id="@+id/editpro_mps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintSize="16sp"/>
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        app:interval="5"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/editpro_rv_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,83 +33,21 @@
         android:padding="8dp">
 
         <ImageButton
-            android:id="@+id/editpro_ib_last"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:background="@drawable/ripple_theme"
-            app:srcCompat="@drawable/ic_last"/>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <ImageButton
-            android:id="@+id/editpro_ib_dec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:background="@drawable/ripple_theme"
-            app:srcCompat="@drawable/ic_left_white"/>
-
-        <TextView
-            android:id="@+id/editpro_tv_tmr"
+            android:id="@+id/editpro_ib_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="xx:xx"
-            android:textColor="@color/colorTextPrimary"/>
-
-        <ImageButton
-            android:id="@+id/editpro_ib_inc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
             android:background="@drawable/ripple_theme"
-            app:srcCompat="@drawable/ic_right_white"/>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <ImageButton
-            android:id="@+id/editpro_ib_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:background="@drawable/ripple_theme"
-            app:srcCompat="@drawable/ic_next"/>
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/editpro_rv_show"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <android.support.v7.widget.ButtonBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="8dp">
+            android:src="@drawable/selector_time_add_done"/>
 
         <ImageButton
             android:id="@+id/editpro_ib_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:visibility="gone"
             android:background="@drawable/ripple_theme"
-            android:src="@mipmap/ic_delete_time"/>
-
-        <ImageButton
-            android:id="@+id/editpro_ib_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:background="@drawable/ripple_theme"
-            android:src="@mipmap/ic_add_time"/>
+            app:srcCompat="@drawable/ic_delete_red_32dp"/>
 
         <Space
             android:layout_width="0dp"
@@ -120,5 +65,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"/>
-    </android.support.v7.widget.ButtonBarLayout>
+
+    </LinearLayout>
 </LinearLayout>

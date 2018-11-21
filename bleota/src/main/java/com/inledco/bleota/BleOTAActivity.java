@@ -13,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.inledco.blemanager.BleManager;
@@ -35,6 +33,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     private short mDevid;
     private String mName;
     private String mAddress;
+    private boolean mTestMode;
     private OTAPresenter mPresenter;
 
     private StringBuffer mMessage;
@@ -51,6 +50,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
             mDevid = intent.getShortExtra( "devid", (short) 0 );
             mName = intent.getStringExtra( "name" );
             mAddress = intent.getStringExtra( "address" );
+            mTestMode = intent.getBooleanExtra("mode", false);
         }
         initView();
         initEvent();
@@ -142,7 +142,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     {
         ota_tv_device_name.setText( mName );
         mMessage = new StringBuffer();
-        mPresenter = new OTAPresenter( this, this, mDevid, mAddress, "" );
+        mPresenter = new OTAPresenter( this, this, mDevid, mAddress, "", mTestMode );
         mPresenter.start();
         if ( NetUtil.isNetworkAvailable( this ) )
         {
@@ -253,18 +253,10 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     {
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
         final AlertDialog dialog = builder.create();
-        final int[] count = new int[]{ 5};
+        final int[] count = new int[]{ 20 };
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_repower, null, false );
-        final RadioButton rb = view.findViewById( R.id.dialog_repower_msg );
         final Button btn = view.findViewById( R.id.dialog_repower_next );
-        btn.setText( getString( R.string.next ) + " ( 5 ) " );
-        rb.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked )
-            {
-                btn.setEnabled( isChecked );
-            }
-        } );
+        btn.setText( getString( R.string.next ) + " ( 20 ) " );
         btn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v )
@@ -273,22 +265,25 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
                 mPresenter.checkUpdate();
             }
         } );
-        CountDownTimer timer = new CountDownTimer(5000, 1000) {
+        CountDownTimer timer = new CountDownTimer(20000, 1000) {
             @Override
             public void onTick( long millisUntilFinished )
             {
                 count[0]--;
-                btn.setText( getString( R.string.next ) + " ( " + count[0] + " ) " );
+                if (count[0] > 0)
+                {
+                    btn.setText(getString(R.string.next) + " ( " + count[0] + " ) ");
+                }
             }
 
             @Override
             public void onFinish()
             {
-                rb.setEnabled( true );
                 btn.setText( R.string.next );
+                btn.setEnabled(true);
             }
         };
-        dialog.setTitle( R.string.ota_repower_title );
+        dialog.setTitle( R.string.ota_wait_title );
         dialog.setView( view );
         dialog.setCanceledOnTouchOutside( false );
         dialog.setCancelable( false );

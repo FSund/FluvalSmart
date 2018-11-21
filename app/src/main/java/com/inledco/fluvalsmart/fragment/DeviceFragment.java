@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.inledco.blemanager.BleCommunicateListener;
 import com.inledco.blemanager.BleManager;
+import com.inledco.blemanager.LogUtil;
 import com.inledco.bleota.BleOTAActivity;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.activity.LightActivity;
@@ -142,14 +143,16 @@ public class DeviceFragment extends BaseFragment
                     case R.id.item_action_remove:
                         showRemoveDeviceDialog( position );
                         break;
-//                    case R.id.item_action_reset_psw:
-//                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
-//                        break;
+                    case R.id.item_action_reset_psw:
+                        LogUtil.e( TAG, "onClickAction: " );
+                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
+                        break;
                     case R.id.item_action_upgrade:
                         Intent intent = new Intent( getContext(), BleOTAActivity.class );
                         intent.putExtra( "devid", mDevices.get( position ).getDevicePrefer().getDevId() );
                         intent.putExtra( "name", mDevices.get( position ).getDevicePrefer().getDeviceName() );
                         intent.putExtra( "address", mDevices.get( position ).getDevicePrefer().getDeviceMac() );
+                        intent.putExtra("mode", Setting.forceUpdate());
                         startActivity( intent );
                         break;
                 }
@@ -213,8 +216,9 @@ public class DeviceFragment extends BaseFragment
         startActivityForResult( intent, SCAN_CODE );
     }
 
-    private void showResetPasswordDialog ( @NonNull final String address )
+    private void showResetPasswordDialog( @NonNull final String address )
     {
+        LogUtil.e( TAG, "showResetPasswordDialog: " );
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         final AlertDialog dialog = builder.create();
         View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_reset_password, null, false );

@@ -74,6 +74,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
                 }
             }
         } );
+        holder.tv_reset.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View v )
+            {
+                if ( mSwipeItemActionClickListener != null )
+                {
+                    mSwipeItemActionClickListener.onClickAction( v.getId(), holder.getAdapterPosition() );
+                }
+            }
+        } );
         holder.tv_upgrade.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
@@ -98,6 +108,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         private TextView tv_name;
         private TextView tv_tank;
         private TextView tv_remove;
+        private TextView tv_reset;
         private TextView tv_upgrade;
         private View item_content;
         private View item_action;
@@ -109,6 +120,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
             tv_name = itemView.findViewById( R.id.item_device_name );
             tv_tank = itemView.findViewById( R.id.item_device_tank );
             tv_remove = itemView.findViewById( R.id.item_action_remove );
+            tv_reset = itemView.findViewById( R.id.item_action_reset_psw );
             tv_upgrade = itemView.findViewById( R.id.item_action_upgrade );
             item_content = itemView.findViewById( R.id.item_content );
             item_action = itemView.findViewById( R.id.item_action );

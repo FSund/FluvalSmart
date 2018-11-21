@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:maxLength="18"
             android:lines="1"
-            android:inputType="text"/>
+            android:inputType="textCapSentences"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.v7.widget.ButtonBarLayout
         android:layout_width="match_parent"
