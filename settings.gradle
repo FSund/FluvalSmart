@@ -1,1 +1,1 @@
-include ':app', ':blemanager', ':bleota', ':okhttpmanager', ':itemtouchhelperextension'
+include ':app', ':bleota', ':itemtouchhelperextension'

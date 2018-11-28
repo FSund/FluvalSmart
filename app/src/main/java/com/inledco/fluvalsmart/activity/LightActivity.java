@@ -29,11 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ble.api.DataUtil;
-import com.inledco.OkHttpManager.HttpCallback;
-import com.inledco.OkHttpManager.OkHttpManager;
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.bleota.BleOTAActivity;
 import com.inledco.bleota.RemoteFirmware;
 import com.inledco.fluvalsmart.R;
@@ -52,8 +47,15 @@ import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightProfileUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
+import com.liruya.okhttpmanager.OKHttpManager;
+import com.liruya.okhttpmanager.HttpCallback;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener
 {
@@ -126,7 +128,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     protected void onDestroy ()
     {
         super.onDestroy();
-        BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
+        BleManager.getInstance().removeBleCommunicateListener(mCommunicateListener);
         mCommunicateListener = null;
         BleManager.getInstance().disConnectAll();
         if ( mCountDownTimer != null )
@@ -216,8 +218,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     @Override
     protected void initData ()
     {
-        OkHttpManager.get( OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>()
+        OKHttpManager.getInstance().get( OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>()
         {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
             @Override
             public void onError( int code, final String msg )
             {
@@ -227,7 +234,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onSuccess( final RemoteFirmware result )
             {
                 mRemoteVersion = (result.getMajor_version()<<8)|result.getMinor_version();
-                LogUtil.e(TAG, "onSuccess: " + mDeviceVersion + "  " + mRemoteVersion);
                 runOnUiThread(new Runnable()
                 {
                     @Override
@@ -336,7 +342,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         mDeviceVersion = ((mfr[2]&0xFF)<<8)|(mfr[3]&0xFF);
                         CommUtil.syncDeviceTime( mac );
                     }
-                    LogUtil.e(TAG, "onReadMfr: " + mDeviceVersion + "  " + mRemoteVersion);
                     runOnUiThread(new Runnable()
                     {
                         @Override
@@ -616,7 +621,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     str = new StringBuilder( str ).append( s.subSequence( 1, s.length() ) ).toString();
                     newname.setText( str );
                     newname.setSelection( start + count );
-                    LogUtil.e( TAG, "onTextChanged: " + str + " " + start + " " + before + " " + count );
                 }
                 else
                 {

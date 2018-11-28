@@ -1,15 +1,15 @@
 package com.inledco.fluvalsmart.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightManual;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.PointComparator;
 import com.inledco.fluvalsmart.bean.RampTime;
 import com.inledco.fluvalsmart.bean.TimerBrightPoint;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,7 +96,7 @@ public class CommUtil
      */
     public static void turnOnLed(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_SWITCH, LED_ON, FRM_HDR^CMD_SWITCH^LED_ON} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_SWITCH, LED_ON, FRM_HDR ^ CMD_SWITCH ^ LED_ON});
     }
 
     /**
@@ -217,7 +217,6 @@ public class CommUtil
         LightPro lightPro;
         int chns = DeviceUtil.getChannelCount( devid );
         int len = bytes.size();
-        LogUtil.e( TAG, "decodeLight: " + bytes.toString() );
         if ( bytes.get( 0 ) == FRM_HDR && bytes.get( 1 ) == CMD_READ && getCRC( bytes, len ) == 0x00 )
         {
             byte mode = bytes.get( 2 );
@@ -432,6 +431,7 @@ public class CommUtil
         {
             datas[10+dlen+i] = lightAuto.getNightBright()[i];
         }
+        Log.e(TAG, "setLedAuto: " + lightAuto.isHasDynamic() );
         if ( !lightAuto.isHasDynamic() )
         {
             if ( lightAuto.isHasTurnoff() )
@@ -456,6 +456,7 @@ public class CommUtil
                 datas[14 + dlen + nlen] = lightAuto.getDynamicPeriod()
                                                    .getEndMinute();
                 datas[15 + dlen + nlen] = lightAuto.getDynamicMode();
+                Log.e(TAG, "setLedAuto: " + datas[15+dlen+nlen] );
 //                len += 6;
             }
             else

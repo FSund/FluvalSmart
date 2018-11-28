@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.inledco.blemanager.BleManager;
+import com.liruya.tuner168blemanager.BleManager;
 
 public class BleOTAActivity extends AppCompatActivity implements IOTAView
 {
@@ -75,7 +75,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     {
         getMenuInflater().inflate( R.menu.menu_ota, menu );
         menu_connect_status = menu.findItem( R.id.menu_connect_status );
-        if ( BleManager.getInstance().isConnected( mAddress ) )
+        if ( BleManager.getInstance().isConnected(mAddress) )
         {
             menu_connect_status.setIcon( R.drawable.ic_bluetooth_connected_white_36dp );
             menu_connect_status.setChecked( true );

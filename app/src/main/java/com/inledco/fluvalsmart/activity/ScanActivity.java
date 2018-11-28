@@ -2,6 +2,7 @@ package com.inledco.fluvalsmart.activity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,10 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.ToggleButton;
 
 import com.ble.api.DataUtil;
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.BleScanListener;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.adapter.ScanAdapter;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
@@ -32,6 +29,9 @@ import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
+import com.liruya.tuner168blemanager.BleScanListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,6 +115,7 @@ public class ScanActivity extends BaseActivity
         return true;
     }
 
+    @SuppressLint ("RestrictedApi")
     @Override
     protected void initView ()
     {
@@ -136,6 +137,7 @@ public class ScanActivity extends BaseActivity
     {
         mHandler = new Handler()
         {
+            @SuppressLint ("RestrictedApi")
             @Override
             public void handleMessage ( Message msg )
             {
@@ -176,11 +178,11 @@ public class ScanActivity extends BaseActivity
             @Override
             public void onStartScan ()
             {
-                LogUtil.d( TAG, "onStartScan: " );
                 storedAddress = PreferenceUtil.getAllObjectMapFromPrefer( ScanActivity.this, ConstVal.DEV_PREFER_FILENAME );
                 mDeviceMacs.clear();
                 mDevices.clear();
                 runOnUiThread( new Runnable() {
+                    @SuppressLint ("RestrictedApi")
                     @Override
                     public void run ()
                     {
@@ -197,7 +199,6 @@ public class ScanActivity extends BaseActivity
                 BleManager.getInstance().disConnectAll();
                 scan_tb_scan.setChecked( false );
                 scan_pb_scanning.setVisibility( View.GONE );
-                LogUtil.d( TAG, "onStopScan: " );
             }
 
             @Override

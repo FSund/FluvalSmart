@@ -3,6 +3,7 @@ package com.inledco.fluvalsmart.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
@@ -85,6 +86,7 @@ public class LightProfileUtil
         }
         for ( String key : profiles.keySet() )
         {
+            Log.e(TAG, "getAutoProfileName: " + key );
             if ( a.equal( profiles.get( key ) ) )
             {
                 return key;

@@ -1,7 +1,5 @@
 package com.inledco.fluvalsmart.bean;
 
-import android.util.Log;
-
 import com.ble.api.DataUtil;
 
 import java.io.Serializable;
@@ -420,21 +418,24 @@ public class LightAuto implements Serializable
         {
             return false;
         }
-        Log.e( "TAGG", "equal: " + (mDynamicPeriod == null) + "  " + (a.getDynamicPeriod() == null) );
-        if ( mHasDynamic != a.isHasDynamic() || mDynamicEnable != a.isDynamicEnable()
-            || mSun != a.isSun() || mMon != a.isMon() || mTue != a.isTue() || mWed != a.isWed()
-            || mThu != a.isThu() || mFri != a.isFri() || mSat != a.isSat() || mDynamicMode != a.getDynamicMode() )
+        if (mHasDynamic != a.isHasDynamic())
         {
             return false;
         }
-        if ( mDynamicPeriod != null && mDynamicPeriod.equal( a.getDynamicPeriod() ) == false )
-        {
-            return false;
-        }
-        if ( mDynamicPeriod == null && a.getDynamicPeriod() != null )
-        {
-            return false;
-        }
+//        if ( mDynamicEnable != a.isDynamicEnable()
+//            || mSun != a.isSun() || mMon != a.isMon() || mTue != a.isTue() || mWed != a.isWed()
+//            || mThu != a.isThu() || mFri != a.isFri() || mSat != a.isSat() || mDynamicMode != a.getDynamicMode() )
+//        {
+//            return false;
+//        }
+//        if ( mDynamicPeriod != null && mDynamicPeriod.equal( a.getDynamicPeriod() ) == false )
+//        {
+//            return false;
+//        }
+//        if ( mDynamicPeriod == null && a.getDynamicPeriod() != null )
+//        {
+//            return false;
+//        }
         return true;
     }
 }

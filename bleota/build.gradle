@@ -24,12 +24,15 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    api project(':okhttpmanager')
-    api project(':blemanager')
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.android.support.constraint:constraint-layout:1.0.2'
+//    api project(':okhttpmanager')
+//    api project(':blemanager')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
+
+    implementation 'com.github.liruya:okhttpmanager:1.0.0'
+    api 'com.github.liruya:tuner168blemanager:1.0.0'
 }

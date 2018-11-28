@@ -29,9 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.bleota.BleOTAActivity;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.activity.LightActivity;
@@ -45,6 +42,8 @@ import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperCallback;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperExtension;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +143,6 @@ public class DeviceFragment extends BaseFragment
                         showRemoveDeviceDialog( position );
                         break;
                     case R.id.item_action_reset_psw:
-                        LogUtil.e( TAG, "onClickAction: " );
                         showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
                         break;
                     case R.id.item_action_upgrade:
@@ -218,7 +216,6 @@ public class DeviceFragment extends BaseFragment
 
     private void showResetPasswordDialog( @NonNull final String address )
     {
-        LogUtil.e( TAG, "showResetPasswordDialog: " );
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         final AlertDialog dialog = builder.create();
         View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_reset_password, null, false );

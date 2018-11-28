@@ -2,32 +2,25 @@ package com.inledco.fluvalsmart.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.fragment.DeviceFragment;
 import com.inledco.fluvalsmart.fragment.NewsFragment;
 import com.inledco.fluvalsmart.fragment.UserFragment;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.liruya.tuner168blemanager.BleManager;
 
 public class MainActivity extends BaseActivity
 {
@@ -56,7 +49,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy ()
     {
-        BleManager.getInstance().unbindService( this );
+        BleManager.getInstance().unbindService(this);
         BleManager.getInstance().disConnectAll();
         super.onDestroy();
     }
@@ -70,7 +63,6 @@ public class MainActivity extends BaseActivity
             case BLUETOOTH_REQUEST_ENABLE_CODE:
                 if ( resultCode == Activity.RESULT_OK )
                 {
-//                    showUpgradeTip();
                 }
                 else
                 {
@@ -91,10 +83,9 @@ public class MainActivity extends BaseActivity
     public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults )
     {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
-        if ( requestCode == PERMISSON_REQUEST_COARSE_CODE
-             && permissions[0].equals( Manifest.permission.ACCESS_COARSE_LOCATION) )
+        if (requestCode == PERMISSON_REQUEST_COARSE_CODE && Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0]))
         {
-            if ( grantResults[0] == PackageManager.PERMISSION_GRANTED )
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
                 startScanActivity();
             }
@@ -115,16 +106,13 @@ public class MainActivity extends BaseActivity
             @Override
             public boolean onMenuItemClick ( MenuItem item )
             {
-                LogUtil.e( TAG, "onMenuItemClick: " + Build.VERSION.SDK_INT );
-                if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-                     ContextCompat.checkSelfPermission( MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
+                if (BleManager.getInstance().checkLocationPermission(MainActivity.this))
                 {
                     startScanActivity();
                 }
                 else
                 {
-                    ActivityCompat.requestPermissions( MainActivity.this, new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
-                                                       PERMISSON_REQUEST_COARSE_CODE );
+                    BleManager.getInstance().requestLocationPermission(MainActivity.this, PERMISSON_REQUEST_COARSE_CODE);
                 }
                 return false;
             }
@@ -149,12 +137,12 @@ public class MainActivity extends BaseActivity
         {
             if ( BleManager.getInstance().isBluetoothEnabled() || ( Setting.isAutoTurnonBle( MainActivity.this ) && BleManager.getInstance().autoOpenBluetooth()) )
             {
-//                showUpgradeTip();
             }
             else
             {
-                Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
-                startActivityForResult( intent, BLUETOOTH_REQUEST_ENABLE_CODE );
+//                Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
+//                startActivityForResult( intent, BLUETOOTH_REQUEST_ENABLE_CODE );
+                BleManager.getInstance().requestBluetoothEnable(MainActivity.this, BLUETOOTH_REQUEST_ENABLE_CODE);
             }
         }
         else
@@ -236,26 +224,5 @@ public class MainActivity extends BaseActivity
     {
         Intent intent = new Intent( this, ScanActivity.class );
         startActivityForResult( intent, SCAN_CODE );
-    }
-
-    private void showUpgradeTip()
-    {
-        if (Setting.hasUpgradeTip(this))
-        {
-            return;
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Tip");
-        builder.setView(R.layout.dialog_tip_upgrade);
-        builder.setPositiveButton(R.string.dialog_ok, null);
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                Setting.setUpgradeTip(MainActivity.this);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
     }
 }

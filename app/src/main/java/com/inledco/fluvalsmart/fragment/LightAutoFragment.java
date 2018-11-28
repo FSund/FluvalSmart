@@ -50,9 +50,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.adapter.ExpanSliderAdapter;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -62,6 +59,8 @@ import com.inledco.fluvalsmart.constant.CustomColor;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightProfileUtil;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -172,7 +171,7 @@ public class LightAutoFragment extends BaseFragment
             tmr.cancel();
             tmr = null;
         }
-        BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
+        BleManager.getInstance().removeBleCommunicateListener(mCommunicateListener);
     }
 
     @Override
@@ -952,7 +951,6 @@ public class LightAutoFragment extends BaseFragment
                     str = new StringBuilder( str ).append( s.subSequence( 1, s.length() ) ).toString();
                     name.setText( str );
                     name.setSelection( start + count );
-                    LogUtil.e( TAG, "onTextChanged: " + str + " " + start + " " + before + " " + count );
                 }
                 else
                 {

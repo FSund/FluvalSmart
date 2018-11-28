@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.inledco.blemanager.BleManager;
 import com.inledco.fluvalsmart.R;
+import com.liruya.tuner168blemanager.BleManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,7 +94,7 @@ public class DataInvalidFragment extends BaseFragment
     @Override
     protected void initData ()
     {
-        if ( !BleManager.getInstance().isConnected( mAddress ) )
+        if ( !BleManager.getInstance().isConnected(mAddress) )
         {
             data_invalid_msg.setText( R.string.msg_disconnected );
             return;

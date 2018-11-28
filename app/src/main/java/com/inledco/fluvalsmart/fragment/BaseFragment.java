@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.inledco.blemanager.LogUtil;
 import com.inledco.fluvalsmart.prefer.Setting;
 
 /**
@@ -22,14 +21,12 @@ public abstract class BaseFragment extends Fragment
     public void onAttach ( Context context )
     {
         super.onAttach( context );
-        LogUtil.d( TAG, "onAttach: " );
     }
 
     @Override
     public void onCreate ( @Nullable Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-        LogUtil.d( TAG, "onCreate: " );
 
         Setting.changeAppLanguage( getContext() );
     }
@@ -37,7 +34,6 @@ public abstract class BaseFragment extends Fragment
     @Override
     public View onCreateView ( LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState )
     {
-        LogUtil.d( TAG, "onCreateView: " );
         return super.onCreateView( inflater, container, savedInstanceState );
     }
 
@@ -45,56 +41,48 @@ public abstract class BaseFragment extends Fragment
     public void onActivityCreated ( @Nullable Bundle savedInstanceState )
     {
         super.onActivityCreated( savedInstanceState );
-        LogUtil.d( TAG, "onActivityCreated: " );
     }
 
     @Override
     public void onStart ()
     {
         super.onStart();
-        LogUtil.d( TAG, "onStart: " );
     }
 
     @Override
     public void onResume ()
     {
         super.onResume();
-        LogUtil.d( TAG, "onResume: " );
     }
 
     @Override
     public void onPause ()
     {
         super.onPause();
-        LogUtil.d( TAG, "onPause: " );
     }
 
     @Override
     public void onStop ()
     {
         super.onStop();
-        LogUtil.d( TAG, "onStop: " );
     }
 
     @Override
     public void onDestroyView ()
     {
         super.onDestroyView();
-        LogUtil.d( TAG, "onDestroyView: " );
     }
 
     @Override
     public void onDestroy ()
     {
         super.onDestroy();
-        LogUtil.d( TAG, "onDestroy: " );
     }
 
     @Override
     public void onDetach ()
     {
         super.onDetach();
-        LogUtil.d( TAG, "onDetach: " );
     }
 
     protected abstract void initView(View view);

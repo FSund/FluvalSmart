@@ -6,12 +6,11 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.ble.api.DataUtil;
-import com.inledco.OkHttpManager.DownloadCallback;
-import com.inledco.OkHttpManager.HttpCallback;
-import com.inledco.OkHttpManager.OkHttpManager;
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
-import com.inledco.blemanager.LogUtil;
+import com.liruya.okhttpmanager.DownloadCallback;
+import com.liruya.okhttpmanager.HttpCallback;
+import com.liruya.okhttpmanager.OKHttpManager;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +19,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 /**
  * Created by liruya on 2017/5/8.
@@ -88,7 +89,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             @Override
             public void onFinish ()
             {
-                LogUtil.e( TAG, "onFinish: " + System.currentTimeMillis() );
                 mProcessing = false;
                 mView.showMessage( getString( R.string.ota_response_timeout ) );
             }
@@ -117,7 +117,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                             mView.showMessage( getString( R.string.ota_connect_success ) );
                         }
                     } );
-                    LogUtil.d( TAG, "onDataValid: " );
                 }
             }
 
@@ -220,8 +219,13 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                 final DecimalFormat df = new DecimalFormat( "00" );
 
                 BleManager.getInstance().readMfr( mAddress );
-                OkHttpManager.get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
+                OKHttpManager.getInstance().get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
                 {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                    }
+
                     @Override
                     public void onError( int code, final String msg )
                     {
@@ -245,7 +249,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                     @Override
                     public void onSuccess( final RemoteFirmware result )
                     {
-                        LogUtil.e( TAG, "onSuccess: " + result.toString() );
                         mRemoteFirmware = result;
                         runOnUiThread( new Runnable() {
                             @Override
@@ -262,7 +265,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                 final int device_version = ( mDeviceMajorVersion << 8) | mDeviceMinorVersion;
                 if ( device_version == 0 || mRemoteFirmware == null )
                 {
-                    LogUtil.e( TAG, "run: " + device_version + "  " + (mRemoteFirmware == null) );
                     mProcessing = false;
                     return;
                 }
@@ -317,11 +319,10 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                 mFirmwareFile.delete();
             }
             mView.showMessage( getString( R.string.downloading_firmware ) );
-            OkHttpManager.download( OTA_FIRMWARE_LINK + mRemoteFirmware.getFile_link(), mFirmwareFile, new DownloadCallback()
+            OKHttpManager.getInstance().download( OTA_FIRMWARE_LINK + mRemoteFirmware.getFile_link(), mFirmwareFile, new DownloadCallback()
             {
                 @Override
-                public void onError()
-                {
+                public void onError(String s) {
                     mView.showMessage( getString( R.string.ota_download_failed ) );
                     mProcessing = false;
                 }
@@ -546,7 +547,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
 
     private void decodeReceiveData ( ArrayList< Byte > list )
     {
-        LogUtil.e( TAG, "decodeReceiveData: " + list.toString() );
         if ( list == null || list.size() < 5 )
         {
             return;
@@ -697,7 +697,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                 {
                     if ( length == 0 && list.get( 4 ) == ( OTAConstants.OTA_CMD_GET_STATUS ^ list.get( 2 ) ^ list.get( 3 ) ) )
                     {
-                        LogUtil.e( TAG, "decodeReceiveData: " + System.currentTimeMillis() );
                         mCountDownTimer.cancel();
                         BleManager.getInstance()
                                   .disconnectDevice( mAddress );

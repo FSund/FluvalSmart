@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.inledco.blemanager.BleManager;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.SelectDevice;
 import com.inledco.fluvalsmart.util.DeviceUtil;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.util.ArrayList;
 
@@ -83,7 +83,7 @@ public class ScanAdapter extends RecyclerView.Adapter< ScanAdapter.ScanViewHolde
             {
                 if ( !device.isSelectable() && !device.isSelected() )
                 {
-                    BleManager.getInstance().connectDevice( device.getPrefer().getDeviceMac() );
+                    BleManager.getInstance().connectDevice(device.getPrefer().getDeviceMac());
                 }
             }
         } );

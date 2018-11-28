@@ -4,10 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FluvalSmart.iml" filepath="$PROJECT_DIR$/FluvalSmart.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/blemanager/blemanager.iml" filepath="$PROJECT_DIR$/blemanager/blemanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/bleota/bleota.iml" filepath="$PROJECT_DIR$/bleota/bleota.iml" />
       <module fileurl="file://$PROJECT_DIR$/itemtouchhelperextension/itemtouchhelperextension.iml" filepath="$PROJECT_DIR$/itemtouchhelperextension/itemtouchhelperextension.iml" />
-      <module fileurl="file://$PROJECT_DIR$/okhttpmanager/okhttpmanager.iml" filepath="$PROJECT_DIR$/okhttpmanager/okhttpmanager.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.liruya:tuner168blemanager-1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tuner168blemanager-1.0.0.aar/32eb94f22015c777234c5eab601e09c6/jars/libs/AndroidBleApi_V1.1.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tuner168blemanager-1.0.0.aar/32eb94f22015c777234c5eab601e09c6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tuner168blemanager-1.0.0.aar/32eb94f22015c777234c5eab601e09c6/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

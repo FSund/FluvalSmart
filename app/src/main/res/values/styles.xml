@@ -10,6 +10,8 @@
         <item name="android:textColorSecondary">@color/colorGray</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:windowBackground">@color/colorWindowBackgroud</item>
+        <item name="android:colorBackground">@color/colorWindowBackgroud</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <!--<style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert">-->

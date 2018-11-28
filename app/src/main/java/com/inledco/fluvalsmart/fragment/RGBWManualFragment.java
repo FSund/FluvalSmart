@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.gigamole.library.ArcProgressStackView;
-import com.inledco.blemanager.BleCommunicateListener;
-import com.inledco.blemanager.BleManager;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.Channel;
 import com.inledco.fluvalsmart.bean.LightManual;
 import com.inledco.fluvalsmart.constant.CustomColor;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
+import com.liruya.tuner168blemanager.BleCommunicateListener;
+import com.liruya.tuner168blemanager.BleManager;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -133,7 +133,7 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
     public void onDestroy ()
     {
         super.onDestroy();
-        BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
+        BleManager.getInstance().removeBleCommunicateListener(mCommunicateListener);
     }
 
     @Override
