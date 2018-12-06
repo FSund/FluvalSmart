@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="4dp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="240dp">
@@ -184,6 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:progressBackgroundTint="@color/colorGray"
                 android:thumbTint="@color/colorGreen"
                 android:progressTint="@color/colorGreen"
                 android:min="0"
@@ -198,7 +199,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="#CC000000"
+            android:background="#AA000000"
             android:gravity="center"
             android:layout_gravity="bottom"
             android:orientation="horizontal">

@@ -43,6 +43,7 @@ import com.inledco.fluvalsmart.bean.PointComparator;
 import com.inledco.fluvalsmart.bean.TimerBrightPoint;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.fluvalsmart.view.MultiPointSeekbar;
 
 import java.text.DecimalFormat;
@@ -103,7 +104,7 @@ public class EditproActivity extends BaseActivity
 //            refreshChart();
 //            return;
 //        }
-//        super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
@@ -823,9 +824,12 @@ public class EditproActivity extends BaseActivity
             //INTERVAL * COUNT = 60
             final int INTERVAL = 5;
             final int COUNT = 12;
-            AlertDialog.Builder builder = new AlertDialog.Builder( this );
-            final AlertDialog dialog = builder.create();
+//            AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+            CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
             View view = LayoutInflater.from( this ).inflate( R.layout.dialog_time_picker, null, false );
+            builder.setTitle( "Add Time" );
+            builder.setView(view);
+            final AlertDialog dialog = builder.show();
             final TimePicker tp = view.findViewById( R.id.dialog_timepicker );
             final Button btn_ok = view.findViewById( R.id.dialog_timer_ok );
             final Button btn_cancel = view.findViewById( R.id.dialog_timer_cancel );
@@ -899,7 +903,6 @@ public class EditproActivity extends BaseActivity
                         dialog.dismiss();
                     }
                 } );
-                dialog.setView( view );
 //                dialog.setButton( DialogInterface.BUTTON_NEGATIVE, getString( R.string.cancel ), new DialogInterface.OnClickListener() {
 //                    @Override
 //                    public void onClick( DialogInterface dialog, int which )
@@ -926,9 +929,8 @@ public class EditproActivity extends BaseActivity
 //                        addPoint( hour, minute );
 //                    }
 //                } );
-                dialog.setTitle( "Add Time" );
-                dialog.setCanceledOnTouchOutside( false );
-                dialog.show();
+//                dialog.setCanceledOnTouchOutside( false );
+//                dialog.show();
                 dialog.getButton( DialogInterface.BUTTON_POSITIVE ).setEnabled( isValidTime( tmr ) ? true : false );
             }
         }
@@ -945,7 +947,7 @@ public class EditproActivity extends BaseActivity
             }
             else
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder( this );
+                CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
                 builder.setTitle( "Delete #" + (getPointIndex( point )+1) + " Set Time" );
                 builder.setNegativeButton( R.string.cancel, null );
                 builder.setPositiveButton( R.string.dialog_ok, new DialogInterface.OnClickListener() {
@@ -967,9 +969,10 @@ public class EditproActivity extends BaseActivity
                         refreshChart();
                     }
                 } );
-                AlertDialog dialog = builder.create();
-                dialog.setCanceledOnTouchOutside( false );
-                dialog.show();
+                builder.show();
+//                AlertDialog dialog = builder.create();
+//                dialog.setCanceledOnTouchOutside( false );
+//                dialog.show();
             }
         }
     }

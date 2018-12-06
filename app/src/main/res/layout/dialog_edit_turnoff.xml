@@ -45,7 +45,7 @@
                 android:id="@+id/dialog_turnoff_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorGray"
+                android:background="@drawable/shape_btn_corner_gray"
                 android:layout_marginRight="16dp"
                 android:textAllCaps="false"
                 android:text="@string/cancel"/>
@@ -53,7 +53,7 @@
                 android:id="@+id/dialog_turnoff_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/shape_btn_corner_primary"
                 android:layout_marginLeft="16dp"
                 android:textAllCaps="false"
                 android:textColor="@color/selector_btn_enable_white_red"

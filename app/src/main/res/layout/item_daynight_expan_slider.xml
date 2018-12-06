@@ -11,6 +11,7 @@
         android:layout_weight="30"
         android:paddingLeft="4dp"
         android:textSize="14sp"
+        android:textColor="@color/colorTextPrimaryDark"
         android:text="@string/light_channel_name"/>
     <SeekBar
         android:id="@+id/item_expan_chn_slider"
@@ -32,5 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="15"
         android:textSize="12sp"
+        android:textColor="@color/colorTextSecondDark"
         android:text="@string/light_channel_percent"/>
 </LinearLayout>

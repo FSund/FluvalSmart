@@ -13,6 +13,7 @@ import android.support.design.widget.CheckableImageButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -27,7 +28,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -57,6 +57,8 @@ import com.inledco.fluvalsmart.constant.CustomColor;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightProfileUtil;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
+import com.inledco.fluvalsmart.view.CustomTimePickerDialog;
 import com.liruya.tuner168blemanager.BleCommunicateListener;
 import com.liruya.tuner168blemanager.BleManager;
 
@@ -84,7 +86,7 @@ public class LightProFragment extends BaseFragment
     private ToggleButton pro_tb_preview;
     private Button pro_btn_edit;
     private Button pro_btn_overview;
-    private LinearLayout pro_linearlayout;
+//    private LinearLayout pro_linearlayout;
     private SeekBar pro_seekbar;
     private TextView pro_textview;
 
@@ -148,7 +150,7 @@ public class LightProFragment extends BaseFragment
         pro_tb_preview = view.findViewById( R.id.pro_tb_preview );
         pro_btn_edit = view.findViewById( R.id.pro_btn_edit );
         pro_btn_overview = view.findViewById( R.id.pro_btn_overview );
-        pro_linearlayout = view.findViewById( R.id.pro_linearlayout );
+//        pro_linearlayout = view.findViewById( R.id.pro_linearlayout );
         pro_seekbar = view.findViewById( R.id.pro_seekbar );
         pro_textview = view.findViewById( R.id.pro_textview );
 
@@ -225,7 +227,9 @@ public class LightProFragment extends BaseFragment
                 {
                     pro_tv_points.setVisibility( View.GONE );
                     pro_tv_dynamic.setVisibility( View.GONE );
-                    pro_linearlayout.setVisibility( View.VISIBLE );
+                    pro_seekbar.setVisibility(View.VISIBLE);
+                    pro_textview.setVisibility(View.VISIBLE);
+//                    pro_linearlayout.setVisibility( View.VISIBLE );
                     mPreviewCount = -1;
                     mPreviewTimer = new Timer();
                     mPreviewTask = new TimerTask() {
@@ -269,7 +273,9 @@ public class LightProFragment extends BaseFragment
                 {
                     pro_tv_points.setVisibility( View.VISIBLE );
                     pro_tv_dynamic.setVisibility( mLightPro.isHasDynamic() ? View.VISIBLE : View.GONE );
-                    pro_linearlayout.setVisibility( View.GONE );
+                    pro_seekbar.setVisibility(View.GONE);
+                    pro_textview.setVisibility(View.GONE);
+//                    pro_linearlayout.setVisibility( View.GONE );
                     mPreviewCount = -1;
                     mPreviewTask.cancel();
                     mPreviewTimer.cancel();
@@ -578,7 +584,8 @@ public class LightProFragment extends BaseFragment
     private void showExportDialog()
     {
         final Map<String, LightPro> localProfiles = LightProfileUtil.getLocalProProfiles( getContext(), devid, mLightPro.isHasDynamic() );
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+//        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( getContext(), R.style.DialogTheme );
         builder.setTitle( R.string.export_profile );
         if ( localProfiles == null || localProfiles.size() == 0 )
         {
@@ -617,17 +624,21 @@ public class LightProFragment extends BaseFragment
         }
 
         builder.setNegativeButton( R.string.cancel, null );
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+        builder.show();
+//        AlertDialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 
     private void showSaveDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
-        final AlertDialog dialog = builder.create();
+//        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme );
         View view = LayoutInflater.from( getContext() )
                                   .inflate( R.layout.dialog_export_profile, null );
+        builder.setTitle( R.string.save_profile );
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
         final EditText name = view.findViewById( R.id.export_name );
         Button btn_cancel = view.findViewById( R.id.export_cancel );
         Button btn_ok = view.findViewById( R.id.export_ok );
@@ -692,10 +703,9 @@ public class LightProFragment extends BaseFragment
                 }
             }
         } );
-        dialog.setView( view );
-        dialog.setTitle( R.string.save_profile );
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+//        dialog.setView( view );
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 
     private short[] getBrights(final int ct)
@@ -777,7 +787,7 @@ public class LightProFragment extends BaseFragment
 
     private void showTimePickerDialog ( TimePickerDialog.OnTimeSetListener listener, int hour, int minute )
     {
-        TimePickerDialog dialog = new TimePickerDialog( getContext(), listener, hour, minute, true );
+        TimePickerDialog dialog = new CustomTimePickerDialog(getContext(), R.style.DialogTheme, listener, hour, minute, true );
         dialog.show();
     }
 
@@ -972,6 +982,7 @@ public class LightProFragment extends BaseFragment
         Button btn_ok = view.findViewById( R.id.dialog_overview_ok );
         TimerPointsAdapter adapter = new TimerPointsAdapter();
         rv_show.setLayoutManager( new LinearLayoutManager( getContext(), LinearLayoutManager.VERTICAL, false ) );
+        rv_show.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         rv_show.setAdapter( adapter );
         btn_ok.setOnClickListener( new View.OnClickListener() {
             @Override

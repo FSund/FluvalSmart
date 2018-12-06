@@ -18,6 +18,7 @@
             android:background="@color/colorCyan"
             android:padding="8dp"
             android:visibility="visible"
+            android:textColor="@color/colorTextPrimaryDark"
             android:text="@string/item_action_upgrade"/>
         <TextView
             android:id="@+id/item_action_reset_psw"
@@ -27,7 +28,8 @@
             android:background="@color/colorGray"
             android:padding="8dp"
             android:visibility="visible"
-            android:text="@string/reset_password"/>
+            android:textColor="@color/colorTextPrimaryDark"
+            android:text="@string/retrieve_password"/>
         <TextView
             android:id="@+id/item_action_remove"
             android:layout_width="80dp"
@@ -35,6 +37,7 @@
             android:gravity="center"
             android:background="@color/colorRed"
             android:padding="8dp"
+            android:textColor="@color/colorTextPrimaryDark"
             android:text="@string/remove"/>
     </LinearLayout>
     <include

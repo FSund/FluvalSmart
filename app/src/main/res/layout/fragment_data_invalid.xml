@@ -15,6 +15,7 @@
         android:padding="8dp"
         android:background="@drawable/ripple_theme"
         android:drawableTop="@mipmap/ic_bluetooth_disabled_grey_500"
+        android:textColor="@color/colorTextSecondDark"
         android:text="@string/msg_connecting_device"/>
 
 </LinearLayout>

@@ -132,4 +132,9 @@
     <string name="title_pro" translatable="false">Pro</string>
     <string name="msg_no_profile">No profiles found, you can save custom profiles.</string>
     <string name="save_success">Save Success</string>
+    <string name="retrieve">Retrieve</string>
+    <string name="retrieve_password">Retrieve Password</string>
+    <string name="retrieve_wrong_key">The retrieve key is wrong.</string>
+    <string name="retrieve_copy_msg">The information of the device has been copied,you can paste it in the email.</string>
+    <string name="retrieve_psw_is">The password of the device is:</string>
 </resources>

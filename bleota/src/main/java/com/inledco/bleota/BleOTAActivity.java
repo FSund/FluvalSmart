@@ -1,11 +1,11 @@
 package com.inledco.bleota;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -205,7 +205,8 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     @Override
     public void showUpgradeConfirmDialog (String msg)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
         builder.setTitle( R.string.ota_upgradable );
         builder.setMessage( msg );
         builder.setNegativeButton( R.string.ota_cancel, new DialogInterface.OnClickListener() {
@@ -222,10 +223,12 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
                 mPresenter.downloadFirmware();
             }
         } );
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.setCancelable( false );
-        dialog.show();
+        builder.setCancelable(false);
+        builder.show();
+//        AlertDialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.setCancelable( false );
+//        dialog.show();
     }
 
     @Override
@@ -251,10 +254,14 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     @Override
     public void showRepowerDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        final AlertDialog dialog = builder.create();
+//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
         final int[] count = new int[]{ 20 };
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_repower, null, false );
+        builder.setTitle( R.string.ota_wait_title );
+        builder.setView(view);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.show();
         final Button btn = view.findViewById( R.id.dialog_repower_next );
         btn.setText( getString( R.string.next ) + " ( 20 ) " );
         btn.setOnClickListener( new View.OnClickListener() {
@@ -283,11 +290,10 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
                 btn.setEnabled(true);
             }
         };
-        dialog.setTitle( R.string.ota_wait_title );
-        dialog.setView( view );
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.setCancelable( false );
-        dialog.show();
+
+//        dialog.setView( view );
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
         timer.start();
     }
 

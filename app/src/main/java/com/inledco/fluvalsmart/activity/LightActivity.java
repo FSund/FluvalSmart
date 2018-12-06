@@ -1,7 +1,6 @@
 package com.inledco.fluvalsmart.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -47,8 +47,10 @@ import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightProfileUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
-import com.liruya.okhttpmanager.OKHttpManager;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
+import com.inledco.fluvalsmart.view.CustomProgressDialog;
 import com.liruya.okhttpmanager.HttpCallback;
+import com.liruya.okhttpmanager.OKHttpManager;
 import com.liruya.tuner168blemanager.BleCommunicateListener;
 import com.liruya.tuner168blemanager.BleManager;
 
@@ -142,7 +144,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     public boolean onCreateOptionsMenu ( Menu menu )
     {
         getMenuInflater().inflate( R.menu.menu_device, menu );
-        MenuItem menu_device_edit = menu.findItem( R.id.menu_device_edit );
+        MenuItem menu_device_edit = menu.findItem( R.id.menu_device_rename);
         MenuItem menu_device_find = menu.findItem( R.id.menu_device_find );
         menu_device_update = menu.findItem( R.id.menu_device_update );
         MenuItem menu_device_modpsw = menu.findItem( R.id.menu_device_modpsw );
@@ -171,12 +173,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             {
                 if (mPrefer != null)
                 {
-                    Intent intent = new Intent(LightActivity.this, BleOTAActivity.class);
+                    final Intent intent = new Intent(LightActivity.this, BleOTAActivity.class);
                     intent.putExtra("devid", mPrefer.getDevId());
                     intent.putExtra("name", mPrefer.getDeviceName());
                     intent.putExtra("address", mPrefer.getDeviceMac());
                     intent.putExtra("mode", Setting.forceUpdate());
                     startActivity(intent);
+                    finish();
                 }
                 return false;
             }
@@ -204,8 +207,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         light_toolbar.setTitle( mPrefer.getDeviceName() );
         setSupportActionBar( light_toolbar );
 
-        mProgressDialog = new ProgressDialog( this );
-        mProgressDialog.setCanceledOnTouchOutside( false );
+        mProgressDialog = new CustomProgressDialog(this, R.style.DialogTheme );
         mProgressDialog.setOnCancelListener( new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel ( DialogInterface dialog )
@@ -518,9 +520,11 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         light_ctv_manual.setChecked( false );
                         light_ctv_auto.setChecked( true );
                         light_ctv_pro.setChecked( false );
-                        light_prof_name.setText( LightProfileUtil.getAutoProfileName( LightActivity.this,
-                                                                                      mPrefer.getDevId(),
-                                                                                      (LightAuto) object ) );
+                        String prof = LightProfileUtil.getAutoProfileName( LightActivity.this,
+                                                                           mPrefer.getDevId(),
+                                                                           (LightAuto) object );
+                        light_toolbar.setSubtitle(prof);
+//                        light_prof_name.setText( prof );
                     }
                 } );
             }
@@ -543,8 +547,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         light_ctv_manual.setChecked( false );
                         light_ctv_auto.setChecked( false );
                         light_ctv_pro.setChecked( true );
-                        light_prof_name.setText( LightProfileUtil.getProProfileName( LightActivity.this,
-                                                                                     mPrefer.getDevId(), (LightPro) object ) );
+                        String prof = LightProfileUtil.getProProfileName( LightActivity.this,
+                                                                          mPrefer.getDevId(), (LightPro) object );
+                        light_toolbar.setSubtitle(prof);
+//                        light_prof_name.setText( prof );
                     }
                 } );
             }
@@ -586,7 +592,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         light_ctv_manual.setChecked( true );
                         light_ctv_auto.setChecked( false );
                         light_ctv_pro.setChecked( false );
-                        light_prof_name.setText( "" );
+                        light_toolbar.setSubtitle("");
+//                        light_prof_name.setText( "" );
                     }
                 } );
             }
@@ -595,10 +602,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     private void showRenameDialog ( final DevicePrefer prefer )
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        final AlertDialog dialog = builder.create();
-        dialog.setTitle( R.string.rename_device );
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_rename, null );
+        builder.setTitle( R.string.rename_device );
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
         Button btn_cancel = view.findViewById( R.id.rename_cancel );
         Button btn_rename = view.findViewById( R.id.rename_confirm );
         final EditText newname = view.findViewById( R.id.rename_newname );
@@ -662,17 +671,20 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         } );
-        dialog.setView( view );
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+//        dialog.setView( view );
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 
     private void showPasswordDialog ( final int password )
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        final AlertDialog dialog = builder.create();
-        dialog.setTitle( R.string.input_password );
+//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_password, null, false );
+        builder.setTitle( R.string.input_password );
+        builder.setView(view);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.show();
         final EditText psw_password = view.findViewById( R.id.psw_password );
         Button btn_cancel = view.findViewById( R.id.psw_cancel );
         Button btn_login = view.findViewById( R.id.psw_login );
@@ -714,10 +726,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         } );
-        dialog.setView( view );
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.setCancelable( false );
-        dialog.show();
+//        dialog.setView( view );
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.setCancelable( false );
+//        dialog.show();
     }
 
     private int getLocalPassword ( @NonNull String mac )
@@ -782,10 +794,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     private void showModifyPasswordDialog ()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        final AlertDialog dialog = builder.create();
-        dialog.setTitle( getString( R.string.modify_password ) );
+//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
         View view = LayoutInflater.from( this ).inflate( R.layout.dialog_modify_password, null, false );
+        builder.setTitle( getString( R.string.modify_password ) );
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
         final EditText modify_new = view.findViewById( R.id.modify_psw_new );
         final EditText modify_confirm = view.findViewById( R.id.modify_psw_confirm );
         Button btn_cancel = view.findViewById( R.id.modify_psw_cancel );
@@ -825,9 +839,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         } );
-        dialog.setView( view );
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+//        dialog.setView( view );
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 
     @Override

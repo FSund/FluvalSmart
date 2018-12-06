@@ -180,14 +180,15 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
 
     public void checkUpdate()
     {
-        BleManager.getInstance().refresh( mAddress );
+        BleManager.getInstance().disconnectDevice(mAddress);
         Runnable runnable = new Runnable() {
             @Override
             public void run()
             {
                 mProcessing = true;
                 long st = System.currentTimeMillis();
-
+                while(System.currentTimeMillis() - st < 320);
+                st = System.currentTimeMillis();
                 runOnUiThread( new Runnable() {
                     @Override
                     public void run()
@@ -195,7 +196,8 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                         mView.showMessage( getString( R.string.ota_connecting ) );
                     }
                 } );
-                BleManager.getInstance().connectDevice( mAddress );
+                BleManager.getInstance().refresh( mAddress );
+                BleManager.getInstance().connectDevice(mAddress);
                 while( BleManager.getInstance().isDataValid( mAddress ) == false )
                 {
                     if ( System.currentTimeMillis() - st > 3000 )
@@ -211,7 +213,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                         return;
                     }
                 }
-
                 mDeviceMajorVersion = 0;
                 mDeviceMinorVersion = 0;
                 mRemoteFirmware = null;

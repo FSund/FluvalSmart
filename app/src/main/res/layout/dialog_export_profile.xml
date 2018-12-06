@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="8dp">
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:padding="8dp"
         app:errorEnabled="true">
+
         <EditText
             android:id="@+id/export_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="18"
-            android:lines="1"
+            style="@style/DialogTheme"
+            android:hint="@string/input_profile_name"
             android:inputType="text"
-            android:hint="@string/input_profile_name"/>
+            android:lines="1"
+            android:maxLength="18"/>
     </android.support.design.widget.TextInputLayout>
+
     <android.support.v7.widget.ButtonBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|right">
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/export_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorTransparent"
-            android:textAllCaps="false"
-            android:text="@string/cancel"/>
+            android:background="?attr/selectableItemBackground"
+            style="@style/DialogTheme"
+            android:text="@string/cancel"
+            android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/export_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorTransparent"
-            android:textAllCaps="false"
-            android:text="@string/save"/>
+            android:background="?attr/selectableItemBackground"
+            style="@style/DialogTheme"
+            android:text="@string/save"
+            android:textAllCaps="false"/>
     </android.support.v7.widget.ButtonBarLayout>
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.inledco.fluvalsmart.fragment;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,16 +22,20 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.inledco.bleota.BleOTAActivity;
+import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.activity.LightActivity;
 import com.inledco.fluvalsmart.activity.ScanActivity;
@@ -39,12 +45,16 @@ import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.impl.SwipeItemActionClickListener;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.util.DeviceUtil;
+import com.inledco.fluvalsmart.util.Md5Util;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperCallback;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperExtension;
 import com.liruya.tuner168blemanager.BleCommunicateListener;
 import com.liruya.tuner168blemanager.BleManager;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +153,8 @@ public class DeviceFragment extends BaseFragment
                         showRemoveDeviceDialog( position );
                         break;
                     case R.id.item_action_reset_psw:
-                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
+//                        showResetPasswordDialog( mDevices.get( position ).getDevicePrefer().getDeviceMac() );
+                        showRetrievePasswordDialog(mDevices.get(position));
                         break;
                     case R.id.item_action_upgrade:
                         Intent intent = new Intent( getContext(), BleOTAActivity.class );
@@ -160,7 +171,8 @@ public class DeviceFragment extends BaseFragment
 
     private void showRemoveDeviceDialog ( final int position )
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+//        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder( getContext(), R.style.DialogTheme );
         builder.setTitle( R.string.remove_device );
         builder.setNegativeButton( R.string.cancel, null );
         builder.setPositiveButton( R.string.remove, new DialogInterface.OnClickListener()
@@ -182,9 +194,10 @@ public class DeviceFragment extends BaseFragment
                 }
             }
         } );
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+        builder.show();
+//        AlertDialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 
     @Override
@@ -337,5 +350,135 @@ public class DeviceFragment extends BaseFragment
         dialog.setView( view );
         dialog.show();
         BleManager.getInstance().addBleCommunicateListener( mListener );
+    }
+
+    private void showRetrievePasswordDialog(final BaseDevice device) {
+        final String address = device.getDevicePrefer().getDeviceMac();
+//        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme );
+        View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_retrieve_password, null, false );
+        builder.setTitle( R.string.retrieve_password );
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
+        final ImageButton ib_copy = view.findViewById(R.id.dialog_retrieve_copy);
+        final EditText retrieve_key = view.findViewById( R.id.dialog_retrieve_key);
+        final TextView retrieve_msg = view.findViewById(R.id.dialog_retrieve_msg);
+        Button btn_cancel = view.findViewById( R.id.dialog_retrieve_cancel );
+        Button btn_retrieve = view.findViewById( R.id.dialog_retrieve_retrieve);
+        final CountDownTimer tmr = new CountDownTimer( 4000, 4000 ) {
+            @Override
+            public void onTick ( long millisUntilFinished )
+            {
+
+            }
+
+            @Override
+            public void onFinish ()
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                retrieve_msg.setText(R.string.timeout);
+            }
+        };
+        final BleCommunicateListener mListener = new BleCommunicateListener() {
+            @Override
+            public void onDataValid ( final String mac )
+            {
+                if ( mac.equals( address ) )
+                {
+                    BleManager.getInstance().readPassword( mac );
+                }
+            }
+
+            @Override
+            public void onDataInvalid ( String mac )
+            {
+
+            }
+
+            @Override
+            public void onReadMfr ( String mac, String s )
+            {
+
+            }
+
+            @Override
+            public void onReadPassword ( String mac, final int psw )
+            {
+                if ( mac.equals( address ) )
+                {
+                    tmr.cancel();
+                    getActivity().runOnUiThread( new Runnable() {
+                        @Override
+                        public void run ()
+                        {
+                            DecimalFormat df = new DecimalFormat("000000");
+                            retrieve_msg.setText(getString(R.string.retrieve_psw_is) + df.format(psw));
+                        }
+                    } );
+                    BleManager.getInstance().disconnectDevice( mac );
+                }
+            }
+
+            @Override
+            public void onDataReceived ( String mac, ArrayList< Byte > list )
+            {
+
+            }
+        };
+        ib_copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData cd = ClipData.newPlainText("device_info", getDeviceInfo(device));
+                cm.setPrimaryClip(cd);
+                Toast.makeText(getContext(), R.string.retrieve_copy_msg, Toast.LENGTH_LONG)
+                     .show();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btn_retrieve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = retrieve_key.getText().toString().toLowerCase();
+                if (TextUtils.isEmpty(key)) {
+                    retrieve_msg.setText("");
+                } else {
+                    if (key.equals(Md5Util.encrypt(address).toLowerCase())) {
+                        BleManager.getInstance().connectDevice( address );
+                        tmr.start();
+                        retrieve_msg.setText("");
+                    } else {
+                        retrieve_msg.setText(R.string.retrieve_wrong_key);
+                    }
+                }
+            }
+        });
+        dialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss ( DialogInterface dialog )
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                BleManager.getInstance().removeBleCommunicateListener( mListener );
+            }
+        } );
+
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.setView( view );
+//        dialog.show();
+        BleManager.getInstance().addBleCommunicateListener( mListener );
+    }
+
+    private String getDeviceInfo(BaseDevice device) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", DeviceUtil.getDeviceType(device.getDevicePrefer().getDevId()));
+        jsonObject.addProperty("name", device.getDevicePrefer().getDeviceName());
+        jsonObject.addProperty("address", device.getDevicePrefer().getDeviceMac());
+        jsonObject.addProperty("app_version", BuildConfig.VERSION_NAME);
+        return jsonObject.toString();
     }
 }

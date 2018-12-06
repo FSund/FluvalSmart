@@ -108,4 +108,9 @@
     <string name="disabled">禁用</string>
     <string name="msg_no_profile">没有配置文件,你可以保存自定义配置文件。</string>
     <string name="save_success">保存成功</string>
+    <string name="retrieve">找回</string>
+    <string name="retrieve_password">找回密码</string>
+    <string name="retrieve_wrong_key">找回密钥错误.</string>
+    <string name="retrieve_copy_msg">设备信息已经复制到剪贴板,你可以粘贴在邮件中.</string>
+    <string name="retrieve_psw_is">"设备密码是: "</string>
 </resources>

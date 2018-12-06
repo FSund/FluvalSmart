@@ -38,7 +38,8 @@
             <TextView
                 android:id="@+id/ota_tv_device_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"/>
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -47,11 +48,13 @@
                 android:id="@+id/ota_tv_device_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
                 android:text="@string/device_frimware_version"/>
             <TextView
                 android:id="@+id/ota_tv_remote_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
                 android:text="@string/latest_firmware_version"/>
         </LinearLayout>
     </LinearLayout>
@@ -75,6 +78,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:textColor="#FFFFFF"
             android:gravity="left"/>
     </android.support.v4.widget.NestedScrollView>
 
@@ -106,6 +110,7 @@
             android:layout_margin="8dp"
             android:background="?android:attr/selectableItemBackground"
             android:textAllCaps="false"
+            android:textColor="#FFFFFF"
             android:text="@string/ota_check_upgrade"/>
 
     </android.support.v7.widget.ButtonBarLayout>

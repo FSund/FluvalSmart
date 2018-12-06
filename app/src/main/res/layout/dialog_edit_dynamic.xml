@@ -241,7 +241,8 @@
                 android:id="@+id/dialog_dynamic_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorTransparent"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/shape_btn_corner_gray"
                 android:text="@string/cancel"
                 android:textAllCaps="false"/>
 
@@ -249,7 +250,8 @@
                 android:id="@+id/dialog_dynamic_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorTransparent"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/shape_btn_corner_primary"
                 android:text="@string/save"
                 android:textAllCaps="false"/>
         </LinearLayout>

@@ -3,13 +3,11 @@ package com.inledco.fluvalsmart.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.RampTime;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -86,7 +84,6 @@ public class LightProfileUtil
         }
         for ( String key : profiles.keySet() )
         {
-            Log.e(TAG, "getAutoProfileName: " + key );
             if ( a.equal( profiles.get( key ) ) )
             {
                 return key;
@@ -143,15 +140,10 @@ public class LightProfileUtil
         {
             return "";
         }
-        byte[] array = p.toArray();
         for ( String key : profiles.keySet() )
         {
             LightPro lp = profiles.get( key );
-            if ( lp == null )
-            {
-                continue;
-            }
-            if ( Arrays.equals( array, lp.toArray() ) )
+            if ( p.equal(lp) )
             {
                 return key;
             }

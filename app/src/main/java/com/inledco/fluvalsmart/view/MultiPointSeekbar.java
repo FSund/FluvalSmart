@@ -55,7 +55,6 @@ public class MultiPointSeekbar extends View
     private int mSelectedThumbColor;
     private Drawable mThumb;
     private Drawable mSelectedThumb;
-    private Drawable[] mThumbDrawables;
     private int[] mProgress;
     private String mMaxLengthHint;
     private int mHintBackgroundColor;
@@ -122,7 +121,6 @@ public class MultiPointSeekbar extends View
         mPointCount = a.getInt( R.styleable.MultiPointSeekbar_pointCount,
                                 POINT_COUNT_DEFAULT );
         mInterval = a.getInt( R.styleable.MultiPointSeekbar_interval, INTERVAL_DEFAULT );
-        mThumbDrawables = new Drawable[POINT_COUNT_MAX];
         mProgress = new int[POINT_COUNT_MAX];
         mThumbColor = a.getColor( R.styleable.MultiPointSeekbar_thumbColor, 0xFFFFFFFF );
         mSelectedThumbColor = a.getColor( R.styleable.MultiPointSeekbar_selectedThumbColor, getResources().getColor( R.color.colorAccent ) );
@@ -158,9 +156,8 @@ public class MultiPointSeekbar extends View
         //                PorterDuff.Mode mode = DrawableUtils.parseTintMode( m, mThumbMode[i] );
         //            }
         //        }
-        for ( int i = 0; i < mPointCount; i++ )
+        for ( int i = 0; i < POINT_COUNT_MAX; i++ )
         {
-            mThumbDrawables[i] = mThumb;
             mProgress[i] = 0;
         }
         a.recycle();
@@ -226,7 +223,6 @@ public class MultiPointSeekbar extends View
         }
         else if ( widthMode == MeasureSpec.AT_MOST )
         {
-
         }
         if ( heightMode == MeasureSpec.EXACTLY )
         {
@@ -627,7 +623,7 @@ public class MultiPointSeekbar extends View
         mHintPaint.setTextSize( mHintSize );
         if ( TextUtils.isEmpty( mMaxLengthHint ) )
         {
-            mMaxLengthHint = "100%";
+            mMaxLengthHint = "00:00";
         }
         Rect rect = new Rect();
         mHintPaint.getTextBounds( mMaxLengthHint, 0, mMaxLengthHint.length(), rect );
@@ -704,11 +700,9 @@ public class MultiPointSeekbar extends View
         int bottom = top + thumbHeight;
         if ( thumb != null )
         {
-            mThumbDrawables[idx].setBounds( left, top, right, bottom );
-            //            mThumbDrawables[idx].draw( canvas );
+            thumb.setBounds( left, top, right, bottom );
             final int saveCount = canvas.save();
-            //            canvas.translate( getPaddingLeft() + lineWidth*mProgress[idx]/(float)(mMax-mMin)  + (extra - thumbWidth)/2, top );
-            mThumbDrawables[idx].draw( canvas );
+            thumb.draw( canvas );
             canvas.restoreToCount( saveCount );
         }
         else

@@ -280,6 +280,27 @@ public class LightPro implements Serializable
         return array;
     }
 
+    public boolean equal(LightPro p) {
+        if (p == null) {
+            return false;
+        }
+        byte[] ary1 = toArray();
+        byte[] ary2 = p.toArray();
+        int len1 = ary1.length;
+        int len2 = ary2.length;
+        if (mHasDynamic) {
+            len1 -= 6;
+        }
+        if (p.isHasDynamic()) {
+            len2 -= 6;
+        }
+        byte[] a1 = new byte[len1];
+        byte[] a2 = new byte[len2];
+        System.arraycopy(ary1, 0, a1, 0, len1);
+        System.arraycopy(ary2, 0, a2, 0, len2);
+        return Arrays.equals(a1, a2);
+    }
+
     public static class Builder
     {
         public LightPro creatFromArray( byte[] array, int chn )

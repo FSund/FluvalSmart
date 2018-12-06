@@ -31,6 +31,10 @@
     <color name="colorSkyBlue">#118BDF</color>
     <color name="colorDarkGreen">#7F008080</color>
 
+    <color name="colorTextPrimaryLight">@color/colorBlack</color>
+    <color name="colorTextSecondLight">#9E9E9E</color>
+    <color name="colorTextPrimaryDark">@color/colorWhite</color>
+    <color name="colorTextSecondDark">#E0E0E0</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorBackground">#29366A</color>
     <color name="colorTextPrimary">#FFFFFF</color>

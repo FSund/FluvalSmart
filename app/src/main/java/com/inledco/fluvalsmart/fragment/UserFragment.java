@@ -1,6 +1,5 @@
 package com.inledco.fluvalsmart.fragment;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.activity.LaunchActivity;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -176,7 +176,7 @@ public class UserFragment extends BaseFragment
                                                          getString( R.string.setting_lang_french ),
                                                          getString( R.string.setting_lang_spanish ),
                                                          getString( R.string.setting_lang_chinese )};
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme );
         builder.setTitle( R.string.setting_language );
         if ( sl != null )
         {
@@ -226,12 +226,13 @@ public class UserFragment extends BaseFragment
 
     private void showAboutDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme );
         builder.setTitle( R.string.setting_about );
         builder.setMessage( R.string.user_about_msg );
         builder.setPositiveButton( R.string.dialog_ok, null );
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside( false );
-        dialog.show();
+        builder.show();
+//        AlertDialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside( false );
+//        dialog.show();
     }
 }
