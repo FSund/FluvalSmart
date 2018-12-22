@@ -2,8 +2,11 @@ package com.inledco.fluvalsmart.util;
 
 import android.content.Context;
 
+import com.google.gson.JsonObject;
+import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.Channel;
+import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.RampTime;
@@ -747,5 +750,14 @@ public class DeviceUtil
                 break;
         }
         return res;
+    }
+
+    public static String getDeviceInfo(DevicePrefer device) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", DeviceUtil.getDeviceType(device.getDevId()));
+        jsonObject.addProperty("name", device.getDeviceName());
+        jsonObject.addProperty("address", device.getDeviceMac());
+        jsonObject.addProperty("app_version", BuildConfig.VERSION_NAME);
+        return jsonObject.toString();
     }
 }

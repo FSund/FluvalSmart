@@ -107,12 +107,6 @@
     <string name="modify_password_success">Password modified successfully.</string>
     <string name="timeout">Timeout.</string>
     <string name="modify_password_fail">Failed to modify password.</string>
-    <string name="reset">Reset</string>
-    <string name="hint_input_reset_key">Please input the reset key.</string>
-    <string name="reset_password_success">Password reset successfully.</string>
-    <string name="reset_password_fail">Failed to reset password.</string>
-    <string name="reset_password">Reset password</string>
-    <string name="error_reset_key_wrong">Wrong reset key.</string>
     <string name="logging">Logging</string>
     <string name="preset_deep_sea_glo">Preset - Deep Sea Glo</string>
     <string name="preset_sunny_reef">Preset - Sunny Reef</string>
@@ -137,4 +131,11 @@
     <string name="retrieve_wrong_key">The retrieve key is wrong.</string>
     <string name="retrieve_copy_msg">The information of the device has been copied,you can paste it in the email.</string>
     <string name="retrieve_psw_is">The password of the device is:</string>
+    <string name="title_add_time">Add Time</string>
+    <string name="tip_timepoints_max">Time points count max 10.</string>
+    <string name="tip_timepoints_min">Time points count min 4.</string>
+    <string name="title_delete_timpoint">Delete #{index} Set Time</string>
+    <string name="timepoints_set">{count} Timepoints Set</string>
+    <string name="hint_input_retrieve_key">Please input the retrive key of the device</string>
+    <string name="tip_retrieve_password">If you forgot the password of the device, you can send a email to  cylary1218@gmail.com  with the device information to get the retrive key.Then input the retrieve key after you receive it and click the Retrive Button to get the device password.Click the Copy ImageButton to get the device information.</string>
 </resources>

@@ -37,6 +37,21 @@
         <item name="android:windowBackground">@drawable/shape_dialog_background</item>
     </style>
 
+    <style name="DialogButtonTheme" parent="DialogTheme">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextHint" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/calibri</item>
+    </style>
+
+    <style name="DesignTheme" parent="Theme.Design.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="ButtonTheme" parent="@style/Widget.AppCompat.Button">
         <item name="android:minHeight">40dp</item>
     </style>

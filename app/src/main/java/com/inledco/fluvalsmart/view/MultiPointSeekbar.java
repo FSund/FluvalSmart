@@ -1176,7 +1176,7 @@ public class MultiPointSeekbar extends View
 
         void onPointSelected( int index );
 
-        void onMultiPointTouched( List<Integer> points );
+//        void onMultiPointTouched( List<Integer> points );
 
         void onStartPointTouch( int index );
 

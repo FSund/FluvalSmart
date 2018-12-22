@@ -86,12 +86,6 @@
     <string name="modify_password_success">密码修改成功.</string>
     <string name="timeout">超时.</string>
     <string name="modify_password_fail">修改密码失败.</string>
-    <string name="reset">重置</string>
-    <string name="hint_input_reset_key">请输入重置密钥.</string>
-    <string name="reset_password_success">密码重置成功.</string>
-    <string name="reset_password_fail">重置密码失败.</string>
-    <string name="reset_password">重置密码</string>
-    <string name="error_reset_key_wrong">重置密钥错误.</string>
     <string name="logging">正在登录</string>
     <string name="preset_deep_sea_glo">Preset - Deep Sea Glo</string>
     <string name="preset_sunny_reef">Preset - Sunny Reef</string>
@@ -113,4 +107,11 @@
     <string name="retrieve_wrong_key">找回密钥错误.</string>
     <string name="retrieve_copy_msg">设备信息已经复制到剪贴板,你可以粘贴在邮件中.</string>
     <string name="retrieve_psw_is">"设备密码是: "</string>
+    <string name="title_add_time">添加时间</string>
+    <string name="tip_timepoints_max">最多10个时间点.</string>
+    <string name="tip_timepoints_min">最少4个时间点.</string>
+    <string name="title_delete_timpoint">删除 #{index} 时间点</string>
+    <string name="timepoints_set">{count} 个时间点</string>
+    <string name="hint_input_retrieve_key">请输入设备的找回密钥</string>
+    <string name="tip_retrieve_password">如果忘记了设备密码,你可以向 cylary1218@gmail.com 发送一封包含设备信息的邮件来获取找回密钥.然后输入找回密钥并点击找回按钮.点击复制按钮来获取设备信息.</string>
 </resources>

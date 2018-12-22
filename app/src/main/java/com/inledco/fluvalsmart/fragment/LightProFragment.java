@@ -434,7 +434,7 @@ public class LightProFragment extends BaseFragment
         lineChart.setDescription( null );
         lineChart.setMaxVisibleValueCount( 0 );
         lineChart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
-        lineChart.getLegend().setTextSize( 14 );
+        lineChart.getLegend().setTextSize( 12 );
         lineChart.getLegend().setFormSize( 12 );
         lineChart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
@@ -522,7 +522,8 @@ public class LightProFragment extends BaseFragment
         pro_line_chart.setData( lineData );
         pro_line_chart.invalidate();
 
-        pro_tv_points.setText( "" + mLightPro.getPointCount() + " Timepoints Set" );
+//        pro_tv_points.setText( "" + mLightPro.getPointCount() + " Timepoints Set" );
+        pro_tv_points.setText( getString(R.string.timepoints_set).replace("{count}", "" + mLightPro.getPointCount()) );
         if ( mLightPro.isHasDynamic() )
         {
             pro_tv_dynamic.setVisibility( pro_tb_preview.isChecked() ? View.GONE : View.VISIBLE );

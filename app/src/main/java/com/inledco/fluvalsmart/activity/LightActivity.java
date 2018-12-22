@@ -2,6 +2,9 @@ package com.inledco.fluvalsmart.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +13,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -24,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +51,7 @@ import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightProfileUtil;
+import com.inledco.fluvalsmart.util.Md5Util;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.fluvalsmart.view.CustomProgressDialog;
@@ -55,6 +61,7 @@ import com.liruya.tuner168blemanager.BleCommunicateListener;
 import com.liruya.tuner168blemanager.BleManager;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -179,7 +186,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     intent.putExtra("address", mPrefer.getDeviceMac());
                     intent.putExtra("mode", Setting.forceUpdate());
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
                 return false;
             }
@@ -676,6 +683,128 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 //        dialog.show();
     }
 
+    private void showRetrievePasswordDialog(final DevicePrefer device) {
+        final String address = device.getDeviceMac();
+        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(LightActivity.this, R.style.DialogTheme );
+        View view = LayoutInflater.from( LightActivity.this ).inflate( R.layout.dialog_retrieve_password, null, false );
+        builder.setTitle( R.string.retrieve_password );
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
+        final ImageButton ib_copy = view.findViewById(R.id.dialog_retrieve_copy);
+        final EditText retrieve_key = view.findViewById( R.id.dialog_retrieve_key);
+        final TextView retrieve_msg = view.findViewById(R.id.dialog_retrieve_msg);
+        Button btn_cancel = view.findViewById( R.id.dialog_retrieve_cancel );
+        Button btn_retrieve = view.findViewById( R.id.dialog_retrieve_retrieve);
+        final CountDownTimer tmr = new CountDownTimer( 4000, 4000 ) {
+            @Override
+            public void onTick ( long millisUntilFinished )
+            {
+
+            }
+
+            @Override
+            public void onFinish ()
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                retrieve_msg.setText(R.string.timeout);
+            }
+        };
+        final BleCommunicateListener mListener = new BleCommunicateListener() {
+            @Override
+            public void onDataValid ( final String mac )
+            {
+                if ( mac.equals( address ) )
+                {
+                    BleManager.getInstance().readPassword( mac );
+                }
+            }
+
+            @Override
+            public void onDataInvalid ( String mac )
+            {
+
+            }
+
+            @Override
+            public void onReadMfr ( String mac, String s )
+            {
+
+            }
+
+            @Override
+            public void onReadPassword ( String mac, final int psw )
+            {
+                if ( mac.equals( address ) )
+                {
+                    tmr.cancel();
+                    runOnUiThread( new Runnable() {
+                        @Override
+                        public void run ()
+                        {
+                            DecimalFormat df = new DecimalFormat("000000");
+                            retrieve_msg.setText(getString(R.string.retrieve_psw_is) + df.format(psw));
+                        }
+                    } );
+                    BleManager.getInstance().disconnectDevice( mac );
+                }
+            }
+
+            @Override
+            public void onDataReceived ( String mac, ArrayList< Byte > list )
+            {
+
+            }
+        };
+        ib_copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData cd = ClipData.newPlainText("device_info", DeviceUtil.getDeviceInfo(device));
+                cm.setPrimaryClip(cd);
+                Toast.makeText(LightActivity.this, R.string.retrieve_copy_msg, Toast.LENGTH_LONG)
+                     .show();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btn_retrieve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = retrieve_key.getText().toString().toLowerCase();
+                if (TextUtils.isEmpty(key)) {
+                    retrieve_msg.setText("");
+                } else {
+                    if (key.equals(Md5Util.encrypt(address).toLowerCase())) {
+                        BleManager.getInstance().connectDevice( address );
+                        tmr.start();
+                        retrieve_msg.setText("");
+                    } else {
+                        retrieve_msg.setText(R.string.retrieve_wrong_key);
+                    }
+                }
+            }
+        });
+        dialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss ( DialogInterface dialog )
+            {
+                BleManager.getInstance().disconnectDevice( address );
+                BleManager.getInstance().removeBleCommunicateListener( mListener );
+                finish();
+            }
+        } );
+
+        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView( view );
+        //        dialog.show();
+        BleManager.getInstance().addBleCommunicateListener( mListener );
+    }
+
     private void showPasswordDialog ( final int password )
     {
 //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
@@ -686,8 +815,16 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setCancelable(false);
         final AlertDialog dialog = builder.show();
         final EditText psw_password = view.findViewById( R.id.psw_password );
+        Button btn_retrieve = view.findViewById( R.id.psw_retrieve );
         Button btn_cancel = view.findViewById( R.id.psw_cancel );
         Button btn_login = view.findViewById( R.id.psw_login );
+        btn_retrieve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showRetrievePasswordDialog(mPrefer);
+            }
+        });
         btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View v )
@@ -800,8 +937,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setTitle( getString( R.string.modify_password ) );
         builder.setView(view);
         final AlertDialog dialog = builder.show();
-        final EditText modify_new = view.findViewById( R.id.modify_psw_new );
-        final EditText modify_confirm = view.findViewById( R.id.modify_psw_confirm );
+        final TextInputEditText modify_new = view.findViewById(R.id.modify_psw_new);
+        final TextInputEditText modify_confirm = view.findViewById( R.id.modify_psw_confirm );
         Button btn_cancel = view.findViewById( R.id.modify_psw_cancel );
         Button btn_modify = view.findViewById( R.id.modify_psw_modify );
         btn_cancel.setOnClickListener( new View.OnClickListener() {

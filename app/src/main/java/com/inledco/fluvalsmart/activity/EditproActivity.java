@@ -163,11 +163,11 @@ public class EditproActivity extends BaseActivity
                 }
             }
 
-            @Override
-            public void onMultiPointTouched( List< Integer > points )
-            {
-                showMultiTouchPointDialog( points );
-            }
+//            @Override
+//            public void onMultiPointTouched( List< Integer > points )
+//            {
+//                showMultiTouchPointDialog( points );
+//            }
 
             @Override
             public void onStartPointTouch( int index )
@@ -459,7 +459,7 @@ public class EditproActivity extends BaseActivity
         lineChart.setDescription( null );
         lineChart.setMaxVisibleValueCount( 0 );
         lineChart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
-        lineChart.getLegend().setTextSize( 14 );
+        lineChart.getLegend().setTextSize( 12 );
         lineChart.getLegend().setFormSize( 12 );
         lineChart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
@@ -690,32 +690,32 @@ public class EditproActivity extends BaseActivity
         return -1;
     }
 
-    private void deletePoint(int point)
-    {
-        if ( mPoints != null && point >= 0 && point < mPoints.size() )
-        {
-            if ( mPoints.size() <= 4 )
-            {
-                Toast.makeText( this, "Timepoints count min 4.", Toast.LENGTH_SHORT )
-                     .show();
-            }
-            else
-            {
-                mPoints.remove( point );
-                editpro_mps.setPointCount( mPoints.size() );
-                for ( int i = 0; i < mPoints.size(); i++ )
-                {
-                    editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
-                }
-                editpro_mps.setSelectedPoint( 0 );
-//                editpro_mps.clearSelectedPoint();
+//    private void deletePoint(int point)
+//    {
+//        if ( mPoints != null && point >= 0 && point < mPoints.size() )
+//        {
+//            if ( mPoints.size() <= 4 )
+//            {
+//                Toast.makeText( this, "Timepoints count min 4.", Toast.LENGTH_SHORT )
+//                     .show();
+//            }
+//            else
+//            {
+//                mPoints.remove( point );
+//                editpro_mps.setPointCount( mPoints.size() );
+//                for ( int i = 0; i < mPoints.size(); i++ )
+//                {
+//                    editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
+//                }
 //                editpro_mps.setSelectedPoint( 0 );
-//                refreshSelectedTimer();
-//                mAdapter.setSelectedPoint( -1 );
-//                editTimeDone();
-            }
-        }
-    }
+////                editpro_mps.clearSelectedPoint();
+////                editpro_mps.setSelectedPoint( 0 );
+////                refreshSelectedTimer();
+////                mAdapter.setSelectedPoint( -1 );
+////                editTimeDone();
+//            }
+//        }
+//    }
 
     private void addPoint(int hour, int minute)
     {
@@ -817,7 +817,7 @@ public class EditproActivity extends BaseActivity
         {
             if ( mPoints.size() >= 10 )
             {
-                Toast.makeText( this, "Timepoints count max 10.", Toast.LENGTH_SHORT )
+                Toast.makeText( this, R.string.tip_timepoints_max, Toast.LENGTH_SHORT )
                      .show();
                 return;
             }
@@ -827,7 +827,7 @@ public class EditproActivity extends BaseActivity
 //            AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
             CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
             View view = LayoutInflater.from( this ).inflate( R.layout.dialog_time_picker, null, false );
-            builder.setTitle( "Add Time" );
+            builder.setTitle( R.string.title_add_time );
             builder.setView(view);
             final AlertDialog dialog = builder.show();
             final TimePicker tp = view.findViewById( R.id.dialog_timepicker );
@@ -942,13 +942,13 @@ public class EditproActivity extends BaseActivity
         {
             if ( mPoints.size() <= 4 )
             {
-                Toast.makeText( this, "Timepoints count min 4.", Toast.LENGTH_SHORT )
+                Toast.makeText( this, R.string.tip_timepoints_min, Toast.LENGTH_SHORT )
                      .show();
             }
             else
             {
                 CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
-                builder.setTitle( "Delete #" + (getPointIndex( point )+1) + " Set Time" );
+                builder.setTitle( getString(R.string.title_delete_timpoint).replace("{index}", "" + (getPointIndex(point)+1) ) );
                 builder.setNegativeButton( R.string.cancel, null );
                 builder.setPositiveButton( R.string.dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -1012,34 +1012,34 @@ public class EditproActivity extends BaseActivity
         return -1;
     }
 
-    private void showMultiTouchPointDialog( final List<Integer> points )
-    {
-        if ( points == null || points.size() <= 1 || points.size() > mPoints.size() )
-        {
-            return;
-        }
-        DecimalFormat df = new DecimalFormat( "00" );
-        String[] array = new String[points.size()];
-        int idx;
-        int tmr;
-        for ( int i = 0; i < array.length; i++ )
-        {
-            idx = points.get( i );
-            tmr = mPoints.get( idx ).getTimer();
-            array[i] = "#" + df.format( getPointIndex( idx ) + 1) + "  " + df.format( tmr/60 ) + ":" + df.format( tmr%60 );
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-        builder.setSingleChoiceItems( array, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick( DialogInterface dialog, int which )
-            {
-                editpro_mps.setSelectedPoint( points.get( which ) );
-//                editTimeStart();
-                dialog.dismiss();
-            }
-        } );
-        builder.show();
-    }
+//    private void showMultiTouchPointDialog( final List<Integer> points )
+//    {
+//        if ( points == null || points.size() <= 1 || points.size() > mPoints.size() )
+//        {
+//            return;
+//        }
+//        DecimalFormat df = new DecimalFormat( "00" );
+//        String[] array = new String[points.size()];
+//        int idx;
+//        int tmr;
+//        for ( int i = 0; i < array.length; i++ )
+//        {
+//            idx = points.get( i );
+//            tmr = mPoints.get( idx ).getTimer();
+//            array[i] = "#" + df.format( getPointIndex( idx ) + 1) + "  " + df.format( tmr/60 ) + ":" + df.format( tmr%60 );
+//        }
+//        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+//        builder.setSingleChoiceItems( array, -1, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick( DialogInterface dialog, int which )
+//            {
+//                editpro_mps.setSelectedPoint( points.get( which ) );
+////                editTimeStart();
+//                dialog.dismiss();
+//            }
+//        } );
+//        builder.show();
+//    }
 
     class EditproAdapter extends RecyclerView.Adapter<EditproViewHolder>
     {

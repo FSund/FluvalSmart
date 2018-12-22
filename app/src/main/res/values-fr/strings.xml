@@ -82,24 +82,4 @@
     <string name="preset_plant_boost">Preset - Plant Boost</string>
     <string name="dialog_export_use">Exporter</string>
     <string name="dialog_export_remove">Retirer</string>
-    <string name="input_password">Input password</string>
-    <string name="psw_login">Login</string>
-    <string name="hint_input_password">Please input password(Initial 000000).</string>
-    <string name="error_psw_6_num">The password must be 6 digits.</string>
-    <string name="error_password_wrong">Wrong password.</string>
-    <string name="modify">Modify</string>
-    <string name="modify_password">Modify password</string>
-    <string name="hint_input_new_password">Please input a new password.</string>
-    <string name="hint_confirm_password">Please confirm the new password.</string>
-    <string name="error_password_mismatch">"Password does not match. "</string>
-    <string name="modify_password_success">Password modified successfully.</string>
-    <string name="timeout">Timeout.</string>
-    <string name="modify_password_fail">Failed to modify password.</string>
-    <string name="reset">Reset</string>
-    <string name="hint_input_reset_key">Please input the reset key.</string>
-    <string name="reset_password_success">Password reset successfully.</string>
-    <string name="reset_password_fail">Failed to reset password.</string>
-    <string name="reset_password">Reset password</string>
-    <string name="error_reset_key_wrong">Wrong reset key.</string>
-    <string name="logging">Logging</string>
 </resources>

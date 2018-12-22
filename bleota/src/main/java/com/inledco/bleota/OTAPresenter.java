@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.ble.api.DataUtil;
 import com.liruya.okhttpmanager.DownloadCallback;
@@ -107,6 +108,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             @Override
             public void onDataValid ( String mac )
             {
+                Log.e(TAG, "onDataValid: " );
                 if ( mac.equals( mAddress ) )
                 {
                     runOnUiThread( new Runnable() {
@@ -123,6 +125,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             @Override
             public void onDataInvalid ( final String mac )
             {
+                Log.e(TAG, "onDataInvalid: " );
                 if ( mac.equals( mAddress ) )
                 {
                     runOnUiThread( new Runnable() {
@@ -139,6 +142,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             @Override
             public void onReadMfr ( String mac, String s )
             {
+                Log.e(TAG, "onReadMfr: " );
                 if ( mac.equals( mAddress ) )
                 {
                     decodeMfrData( s );
@@ -148,12 +152,13 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             @Override
             public void onReadPassword ( String mac, int psw )
             {
-
+                Log.e(TAG, "onReadPassword: " );
             }
 
             @Override
             public void onDataReceived ( String mac, ArrayList< Byte > list )
             {
+                Log.e(TAG, "onDataReceived: " );
                 if ( mac.equals( mAddress ) && list.get( 0 ) == mCurrentCommand )
                 {
                     decodeReceiveData( list );
@@ -186,8 +191,9 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             public void run()
             {
                 mProcessing = true;
+                while(BleManager.getInstance().isConnected(mAddress));
                 long st = System.currentTimeMillis();
-                while(System.currentTimeMillis() - st < 320);
+                while(System.currentTimeMillis() - st < 480);
                 st = System.currentTimeMillis();
                 runOnUiThread( new Runnable() {
                     @Override
@@ -219,12 +225,14 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                 mReadRemoteVersion = false;
                 final DecimalFormat df = new DecimalFormat( "00" );
 
+                st = System.currentTimeMillis();
+                while(System.currentTimeMillis() - st < 160);
                 BleManager.getInstance().readMfr( mAddress );
                 OKHttpManager.getInstance().get( OTA_UPGRADE_LINK + mDevid, null, new HttpCallback< RemoteFirmware >()
                 {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
+                        mReadRemoteVersion = true;
                     }
 
                     @Override

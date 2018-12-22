@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,7 +86,7 @@ public class ScanActivity extends BaseActivity
     protected void onPause ()
     {
         super.onPause();
-        BleManager.getInstance().stopScan();
+        stopScan();
         BleManager.getInstance().removeBleScanListener( mScanListener );
         BleManager.getInstance().removeBleCommunicateListener( mCommunicateListener );
     }
@@ -101,17 +102,19 @@ public class ScanActivity extends BaseActivity
             @Override
             public void onCheckedChanged ( CompoundButton buttonView, boolean isChecked )
             {
+                scan_pb_scanning.setVisibility( isChecked ? View.VISIBLE : View.GONE );
                 if ( isChecked )
                 {
-                    BleManager.getInstance().startScan();
+                    startScan();
                 }
                 else
                 {
-                    BleManager.getInstance().stopScan();
+                    stopScan();
                 }
             }
         } );
         scan_tb_scan.setChecked( true );
+        Log.e(TAG, "onCreateOptionsMenu: " );
         return true;
     }
 
@@ -135,6 +138,7 @@ public class ScanActivity extends BaseActivity
     @Override
     protected void initData()
     {
+        Log.e(TAG, "initData: " );
         mHandler = new Handler()
         {
             @SuppressLint ("RestrictedApi")
@@ -176,29 +180,8 @@ public class ScanActivity extends BaseActivity
         };
         mScanListener = new BleScanListener() {
             @Override
-            public void onStartScan ()
-            {
-                storedAddress = PreferenceUtil.getAllObjectMapFromPrefer( ScanActivity.this, ConstVal.DEV_PREFER_FILENAME );
-                mDeviceMacs.clear();
-                mDevices.clear();
-                runOnUiThread( new Runnable() {
-                    @SuppressLint ("RestrictedApi")
-                    @Override
-                    public void run ()
-                    {
-                        mScanAdapter.notifyDataSetChanged();
-                        scan_pb_scanning.setVisibility( View.VISIBLE );
-                        scan_fab_confirm.setVisibility( View.GONE );
-                    }
-                } );
-            }
-
-            @Override
-            public void onStopScan ()
-            {
-                BleManager.getInstance().disConnectAll();
+            public void onScanTimeout() {
                 scan_tb_scan.setChecked( false );
-                scan_pb_scanning.setVisibility( View.GONE );
             }
 
             @Override
@@ -301,6 +284,22 @@ public class ScanActivity extends BaseActivity
         } );
     }
 
+    @SuppressLint ("RestrictedApi")
+    private void startScan()
+    {
+        storedAddress = PreferenceUtil.getAllObjectMapFromPrefer( ScanActivity.this, ConstVal.DEV_PREFER_FILENAME );
+        mDeviceMacs.clear();
+        mDevices.clear();
+        mScanAdapter.notifyDataSetChanged();
+        scan_fab_confirm.setVisibility( View.GONE );
+        BleManager.getInstance().startScan();
+    }
+
+    private void stopScan()
+    {
+        BleManager.getInstance().stopScan();
+        BleManager.getInstance().disConnectAll();
+    }
 
     private void decodeScanData( final String mac, String name, int rssi, byte[] bytes )
     {

@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:hint="@string/input_profile_name"
+        app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
 
         <EditText
@@ -17,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/DialogTheme"
-            android:hint="@string/input_profile_name"
+            android:textSize="16sp"
             android:inputType="text"
             android:lines="1"
             android:maxLength="18"/>
@@ -34,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:text="@string/cancel"
             android:textAllCaps="false"/>
 
@@ -43,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:text="@string/save"
             android:textAllCaps="false"/>
     </android.support.v7.widget.ButtonBarLayout>

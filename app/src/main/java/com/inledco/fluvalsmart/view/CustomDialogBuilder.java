@@ -1,6 +1,7 @@
 package com.inledco.fluvalsmart.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
@@ -8,7 +9,7 @@ import android.view.WindowManager;
 
 public class CustomDialogBuilder extends AlertDialog.Builder {
     private boolean mCancenOnTouchOutside = false;
-    private float xPercent = 0.72f;
+    private float xPercent = 0.8f;
 
     public CustomDialogBuilder(@NonNull Context context) {
         super(context);
@@ -44,6 +45,9 @@ public class CustomDialogBuilder extends AlertDialog.Builder {
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.width = width;
         dialog.getWindow().setAttributes(lp);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(16);
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize(16);
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextSize(16);
         return dialog;
     }
 

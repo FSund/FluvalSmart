@@ -28,14 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:text="@string/cancel"/>
         <Button
             android:id="@+id/dialog_timer_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:text="@string/dialog_ok"/>
     </LinearLayout>
 

@@ -244,6 +244,7 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/shape_btn_corner_gray"
                 android:text="@string/cancel"
+                android:textSize="@dimen/button_text_size"
                 android:textAllCaps="false"/>
 
             <Button
@@ -253,6 +254,7 @@
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/shape_btn_corner_primary"
                 android:text="@string/save"
+                android:textSize="@dimen/button_text_size"
                 android:textAllCaps="false"/>
         </LinearLayout>
     </LinearLayout>

@@ -9,4 +9,6 @@
     <dimen name="seekbar_thumb_height">12dp</dimen>
     <dimen name="seekbar_thumb_width">20dp</dimen>
     <dimen name="seekbar_thumb_radius">4dp</dimen>
+
+    <dimen name="button_text_size">16sp</dimen>
 </resources>

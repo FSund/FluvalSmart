@@ -16,7 +16,6 @@ import com.inledco.fluvalsmart.activity.WebActivity;
 public class NewsFragment extends BaseFragment
 {
     private final String URL1 = "http://www.fluvalaquatics.com/";
-    private final String URL2 = "https://www.youtube.com/user/fluvalblog";
 
     public NewsFragment ()
     {
@@ -43,16 +42,6 @@ public class NewsFragment extends BaseFragment
             {
                 Intent intent = new Intent( getContext(), WebActivity.class );
                 intent.putExtra( "url", URL1 );
-                startActivity( intent );
-            }
-        } );
-
-        view.findViewById( R.id.news_web2 ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick ( View view )
-            {
-                Intent intent = new Intent( getContext(), WebActivity.class );
-                intent.putExtra( "url", URL2 );
                 startActivity( intent );
             }
         } );

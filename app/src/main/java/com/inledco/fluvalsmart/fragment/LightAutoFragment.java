@@ -239,7 +239,7 @@ public class LightAutoFragment extends BaseFragment
         lightautochart.setDescription( null );
         lightautochart.setMaxVisibleValueCount( 0 );
         lightautochart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
-        lightautochart.getLegend().setTextSize( 14 );
+        lightautochart.getLegend().setTextSize( 12 );
         lightautochart.getLegend().setFormSize( 12 );
         lightautochart.getLegend().setTextColor( Color.WHITE );
         final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };

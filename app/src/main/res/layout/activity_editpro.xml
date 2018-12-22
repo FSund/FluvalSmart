@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:background="@drawable/shape_btn_corner_gray"
+            android:textSize="@dimen/button_text_size"
             android:text="@string/cancel"/>
 
         <Button
@@ -70,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:background="@drawable/shape_btn_corner_primary"
+            android:textSize="@dimen/button_text_size"
             android:text="@string/save"/>
 
     </LinearLayout>

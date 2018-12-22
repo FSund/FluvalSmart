@@ -1,6 +1,7 @@
 package com.inledco.bleota;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
@@ -44,7 +45,9 @@ private boolean mCancenOnTouchOutside = false;
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.width = width;
         dialog.getWindow().setAttributes(lp);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(16);
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextSize(16);
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextSize(16);
         return dialog;
     }
-
 }

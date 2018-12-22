@@ -38,6 +38,7 @@
                 android:background="@drawable/shape_btn_corner_gray"
                 android:layout_marginRight="16dp"
                 android:text="@string/cancel"
+                android:textSize="@dimen/button_text_size"
                 android:textAllCaps="false"/>
 
             <Button
@@ -47,6 +48,7 @@
                 android:background="@drawable/shape_btn_corner_primary"
                 android:layout_marginLeft="16dp"
                 android:text="@string/save"
+                android:textSize="@dimen/button_text_size"
                 android:textAllCaps="false"/>
         </android.support.v7.widget.ButtonBarLayout>
     </LinearLayout>

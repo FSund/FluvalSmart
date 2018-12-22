@@ -12,12 +12,14 @@
         android:padding="8dp"
         app:hintEnabled="true"
         android:hint="@string/input_newname"
+        app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
         <EditText
             android:id="@+id/rename_newname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/DialogTheme"
+            android:textSize="16sp"
             android:maxLength="18"
             android:lines="1"
             android:inputType="textCapSentences"/>
@@ -31,7 +33,7 @@
             android:id="@+id/rename_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:textAllCaps="false"
             android:background="?attr/selectableItemBackground"
             android:text="@string/cancel"/>
@@ -39,7 +41,7 @@
             android:id="@+id/rename_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/DialogTheme"
+            style="@style/DialogButtonTheme"
             android:textAllCaps="false"
             android:background="?attr/selectableItemBackground"
             android:text="@string/save"/>

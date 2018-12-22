@@ -8,7 +8,7 @@ import android.view.WindowManager;
 public class CustomProgressDialog extends ProgressDialog {
 
     private boolean mResized;
-    private float xPercent = 0.72f;
+    private float xPercent = 0.8f;
 
     public CustomProgressDialog(Context context) {
         super(context);
