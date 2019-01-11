@@ -92,6 +92,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
             {
                 mProcessing = false;
                 mView.showMessage( getString( R.string.ota_response_timeout ) );
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mView.showErrorDialog();
+                    }
+                });
             }
         };
     }
@@ -183,7 +189,11 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
         mProcessing = false;
     }
 
-    public void checkUpdate()
+    /**
+     *
+     * @param flag false:first time true:second time after bootloader
+     */
+    public void checkUpdate(final boolean flag)
     {
         BleManager.getInstance().disconnectDevice(mAddress);
         Runnable runnable = new Runnable() {
@@ -296,9 +306,13 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                     {
                         if ( mTestMode || device_version < remote_version )
                         {
-                            String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format( mRemoteFirmware.getMinor_version() );
-                            String msg = getString( R.string.ota_device_firmware_upgradable ).replace( "Vxx", v );
-                            mView.showUpgradeConfirmDialog(msg);
+                            if (!flag) {
+                                String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format(mRemoteFirmware.getMinor_version());
+                                String msg = getString(R.string.ota_device_firmware_upgradable).replace("Vxx", v);
+                                mView.showUpgradeConfirmDialog(msg);
+                            } else {
+                                enterBootloader();
+                            }
                         }
                         else
                         {
@@ -623,6 +637,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                             mCountDownTimer.cancel();
                             mProcessing = false;
                             mView.showMessage( getString( R.string.ota_outof_range ) );
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mView.showErrorDialog();
+                                }
+                            });
                         }
                     }
                 }
@@ -652,6 +672,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                             mCountDownTimer.cancel();
                             mProcessing = false;
                             mView.showMessage( getString( R.string.ota_erase_failed ) );
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mView.showErrorDialog();
+                                }
+                            });
                         }
                     }
                 }
@@ -663,6 +689,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                     mCountDownTimer.cancel();
                     mProcessing = false;
                     mView.showMessage( getString( R.string.ota_check_failed) );
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.showErrorDialog();
+                        }
+                    });
                 }
                 else if ( length == 4 )
                 {
@@ -685,6 +717,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                         mView.showMessage( getString( R.string.ota_upgrade_success ) );
                         BleManager.getInstance().disconnectDevice( mAddress );
                         BleManager.getInstance().refresh( mAddress );
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mView.showSuccessDialog();
+                            }
+                        });
                     }
                 }
                 break;
@@ -722,7 +760,6 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                                         mView.showRepowerDialog();
                                     }
                                 }, 1000 );
-
                             }
                         } );
                     }
@@ -738,6 +775,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity>
                         mCountDownTimer.cancel();
                         mProcessing = false;
                         mView.showMessage( getString( R.string.ota_invalid_command ) );
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mView.showErrorDialog();
+                            }
+                        });
                     }
                 }
                 break;

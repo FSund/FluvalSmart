@@ -44,8 +44,13 @@
     <string name="ota_device_firmware_upgradable">The device can update to Vxx,confirm update?</string>
     <string name="downloading_firmware">Downloading firmware...</string>
     <string name="ota_network_unavailable">Network is not available,please check settings.</string>
-    <string name="device_frimware_version">"Device Firmware Version: "</string>
-    <string name="latest_firmware_version">"Latest Firmware Version: "</string>
+    <string name="device_frimware_version">"Firmware Version: "</string>
+    <string name="latest_firmware_version">"Newest Version: "</string>
     <string name="ota_wait_title">Wait</string>
     <string name="ota_wait_msg">Please wait...</string>
+    <string name="title_upgrade_success">Upgrade Success</string>
+    <string name="close">Close</string>
+    <string name="title_upgrade_failed">Upgrade Failed</string>
+    <string name="upgrade_success_msg">Please Re-Login.</string>
+    <string name="upgrade_failed_msg">Please try again.</string>
 </resources>

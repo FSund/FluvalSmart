@@ -39,7 +39,7 @@ public class Setting
 
     public static boolean forceUpdate()
     {
-        return true;
+        return false;
     }
 
     public static boolean isAutoTurnonBle(Context context)

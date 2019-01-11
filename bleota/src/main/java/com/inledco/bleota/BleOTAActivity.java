@@ -126,7 +126,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
                         ota_tv_remote_version.setText( R.string.latest_firmware_version );
                         mMessage = new StringBuffer();
                         ota_tv_msg.setText( "" );
-                        mPresenter.checkUpdate();
+                        mPresenter.checkUpdate(false);
                     }
                     else
                     {
@@ -146,7 +146,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         mPresenter.start();
         if ( NetUtil.isNetworkAvailable( this ) )
         {
-            mPresenter.checkUpdate();
+            mPresenter.checkUpdate(false);
         }
         else
         {
@@ -269,7 +269,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
             public void onClick( View v )
             {
                 dialog.dismiss();
-                mPresenter.checkUpdate();
+                mPresenter.checkUpdate(true);
             }
         } );
         CountDownTimer timer = new CountDownTimer(20000, 1000) {
@@ -295,6 +295,33 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
 //        dialog.setCanceledOnTouchOutside( false );
 //        dialog.show();
         timer.start();
+    }
+
+    @Override
+    public void showSuccessDialog() {
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
+        builder.setTitle( R.string.title_upgrade_success );
+        builder.setIcon(R.drawable.ic_check_green_32dp);
+        builder.setMessage(R.string.upgrade_success_msg);
+        builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    @Override
+    public void showErrorDialog() {
+        CustomDialogBuilder builder = new CustomDialogBuilder( this, R.style.DialogTheme );
+        builder.setTitle( R.string.title_upgrade_failed );
+        builder.setIcon(R.drawable.ic_error_red_32dp);
+        builder.setMessage(R.string.upgrade_failed_msg);
+        builder.setPositiveButton(R.string.close, null);
+        builder.setCancelable(false);
+        builder.show();
     }
 
     @Override
