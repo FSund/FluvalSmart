@@ -4,7 +4,6 @@
     <string name="ota_firmware_invalid">Firmware does not exists or invalid format.</string>
     <string name="ota_firmware_damaged">Firmware may be damaged,please re-download.</string>
     <string name="ota_analysis_success">Analysis firmware success.</string>
-    <string name="ota_bootloader_version" translatable="false">Bootloader Version: V</string>
     <string name="ota_outof_range">Upgrade firmware failed,address out of range.</string>
     <string name="ota_erasefirmware">Erase firmware success.\nUpgrading firmware...</string>
     <string name="ota_erase_failed">Erase firmware faile,address out of range.</string>
@@ -27,30 +26,26 @@
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
-    <string name="ota_warning">Upgrade Warning:\n\t\tUnder update process, please do keep your phone or pad as much close to your light device as
-        possible.\n\t\tPlease Do Not:\n\t\t\t- Exit APP\n\t\t\t- Close Bluetooth\n\t\tUpdates may not remain light parameters you set up before.\n\t\tThe old
-        APP version may not control the devices properly once firmware updated,make sure to use up to date APP version It’s required to upgrade the
-        APP to the latest version.\n\t\tIf upgrade fails, please try again.</string>
+    <string name="ota_warning">"    Upgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.     Updates may alter previously set light parameters. Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).     If update fails, please try again."</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_warning_title">Warning</string>
     <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
     <string name="ota_cancel">Cancel</string>
     <string name="ota_continue">Continue</string>
-    <string name="confirm_repower">Please re-power the device and then click the button.</string>
     <string name="next">Next</string>
-    <string name="ota_repower_title">Re-power</string>
     <string name="ota_firmware_newest">Device firmware is up to date.</string>
     <string name="ota_upgradable">Upgradable</string>
-    <string name="ota_device_firmware_upgradable">The device can update to Vxx,confirm update?</string>
+    <string name="ota_device_firmware_upgradable">The device can update to Vxx. Confirm update?</string>
     <string name="downloading_firmware">Downloading firmware...</string>
-    <string name="ota_network_unavailable">Network is not available,please check settings.</string>
+    <string name="ota_network_unavailable">Network unavailable. Please check settings.</string>
     <string name="device_frimware_version">"Firmware Version: "</string>
     <string name="latest_firmware_version">"Newest Version: "</string>
     <string name="ota_wait_title">Wait</string>
     <string name="ota_wait_msg">Please wait...</string>
-    <string name="title_upgrade_success">Upgrade Success</string>
+    <string name="title_upgrade_success">Upgrade successful</string>
     <string name="close">Close</string>
-    <string name="title_upgrade_failed">Upgrade Failed</string>
-    <string name="upgrade_success_msg">Please Re-Login.</string>
+    <string name="title_upgrade_failed">Upgrade failed</string>
+    <string name="upgrade_success_msg">Please re-login.</string>
     <string name="upgrade_failed_msg">Please try again.</string>
+    <string name="ota_bootloader_version" translatable="false">"Bootloader version: "</string>
 </resources>

@@ -1,1 +1,1 @@
-include ':app', ':bleota', ':itemtouchhelperextension'
+include ':app', ':bleota', ':itemtouchhelperextension', ':tuner168blemanager'

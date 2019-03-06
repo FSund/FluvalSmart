@@ -76,7 +76,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     private CheckedTextView light_ctv_manual;
     private CheckedTextView light_ctv_auto;
     private CheckedTextView light_ctv_pro;
-    private TextView light_prof_name;
     private MenuItem menu_device_update;
 
     private DevicePrefer mPrefer;
@@ -209,7 +208,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         light_ctv_manual = findViewById( R.id.light_ctv_manual );
         light_ctv_auto = findViewById( R.id.light_ctv_auto );
         light_ctv_pro = findViewById( R.id.light_ctv_pro );
-        light_prof_name = findViewById( R.id.light_prof_name );
         light_toolbar = findViewById( R.id.light_toolbar );
         light_toolbar.setTitle( mPrefer.getDeviceName() );
         setSupportActionBar( light_toolbar );

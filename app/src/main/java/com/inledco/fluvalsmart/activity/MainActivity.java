@@ -2,12 +2,16 @@ package com.inledco.fluvalsmart.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -20,6 +24,7 @@ import com.inledco.fluvalsmart.fragment.DeviceFragment;
 import com.inledco.fluvalsmart.fragment.NewsFragment;
 import com.inledco.fluvalsmart.fragment.UserFragment;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.liruya.tuner168blemanager.BleManager;
 
 public class MainActivity extends BaseActivity
@@ -49,7 +54,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy ()
     {
-        BleManager.getInstance().unbindService(this);
+        BleManager.getInstance().unbindService(getApplicationContext());
         BleManager.getInstance().disConnectAll();
         super.onDestroy();
     }
@@ -91,8 +96,12 @@ public class MainActivity extends BaseActivity
             }
             else
             {
-                Toast.makeText( MainActivity.this, R.string.snackbar_coarselocation_denied, Toast.LENGTH_SHORT )
-                     .show();
+                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == false) {
+                    showPermissionDialog();
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.snackbar_coarselocation_denied, Toast.LENGTH_SHORT)
+                         .show();
+                }
             }
         }
     }
@@ -132,7 +141,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initData()
     {
-        BleManager.getInstance().bindService( this );
+        BleManager.getInstance().bindService( getApplicationContext() );
         if ( BleManager.getInstance().checkBleSupported( this ) )
         {
             if ( BleManager.getInstance().isBluetoothEnabled() || ( Setting.isAutoTurnonBle( MainActivity.this ) && BleManager.getInstance().autoOpenBluetooth()) )
@@ -224,5 +233,23 @@ public class MainActivity extends BaseActivity
     {
         Intent intent = new Intent( this, ScanActivity.class );
         startActivityForResult( intent, SCAN_CODE );
+    }
+
+    private void showPermissionDialog() {
+        CustomDialogBuilder builder = new CustomDialogBuilder(MainActivity.this, R.style.DialogTheme);
+        builder.setTitle(R.string.turnon_location_permission);
+        builder.setMessage(R.string.msg_turnon_location_permission);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        builder.show();
     }
 }

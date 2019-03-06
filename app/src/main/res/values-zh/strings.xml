@@ -105,7 +105,7 @@
     <string name="retrieve">找回</string>
     <string name="retrieve_password">找回密码</string>
     <string name="retrieve_wrong_key">找回密钥错误.</string>
-    <string name="retrieve_copy_msg">设备信息已经复制到剪贴板,你可以粘贴在邮件中.</string>
+    <string name="retrieve_copy_msg">设备信息已经复制,请粘贴在cylary1218@gmail.com邮件中来获取设备的找回密钥.</string>
     <string name="retrieve_psw_is">"设备密码是: "</string>
     <string name="title_add_time">添加时间</string>
     <string name="tip_timepoints_max">最多10个时间点.</string>
@@ -114,4 +114,8 @@
     <string name="timepoints_set">{count} 个时间点</string>
     <string name="hint_input_retrieve_key">请输入设备的找回密钥</string>
     <string name="tip_retrieve_password">如果忘记了设备密码,你可以向 cylary1218@gmail.com 发送一封包含设备信息的邮件来获取找回密钥.然后输入找回密钥并点击找回按钮.点击复制按钮来获取设备信息.</string>
+    <string name="turnon_location_permission">开启定位权限</string>
+    <string name="msg_turnon_location_permission">扫描蓝牙设备需要开启定位权限</string>
+    <string name="password">密码</string>
+    <string name="factory_password">初始密码000000.</string>
 </resources>

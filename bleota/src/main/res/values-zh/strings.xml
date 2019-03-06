@@ -27,16 +27,13 @@
     <string name="ota_msg_uptodate">固件已经是最新版本.</string>
     <string name="ota_msg_check_version">请检查更新.</string>
     <string name="ota_msg_remote_not_exists">远程固件不存在.</string>
-    <string name="ota_warning">升级警告:\n\t\t在升级过程中手机尽量靠近设备,保持良好通讯,请不要:\n\t\t\t-   退出应用\n\t\t\t-   关闭蓝牙\n\t\t设备升级可能不会保留用户设置的参数.\n\t\t设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.\n\t\t如果升级失败,可以重新升级.</string>
     <string name="ota_msg_reupgrade">请重连设备并重新升级.</string>
     <string name="ota_warning_title">警告</string>
     <string name="ota_warning_msg">升级存在风险,升级失败可能会导致设备无法运行.</string>
     <string name="ota_cancel">取消</string>
     <string name="ota_continue">继续</string>
     <string name="ota_upgradable">可用升级</string>
-    <string name="confirm_repower">请重新上电后点击按钮.</string>
     <string name="next">下一步</string>
-    <string name="ota_repower_title">重新上电</string>
     <string name="ota_firmware_newest">设备固件已经是最新版本.</string>
     <string name="ota_device_firmware_upgradable">设备可以升级到Vxx,确认升级?</string>
     <string name="downloading_firmware">正在下载固件...</string>
@@ -50,4 +47,5 @@
     <string name="title_upgrade_failed">升级失败</string>
     <string name="upgrade_success_msg">请重新登录.</string>
     <string name="upgrade_failed_msg">请重新升级.</string>
+    <string name="ota_warning">"    升级警告: 在升级过程中手机尽量靠近设备, 保持良好通讯, 请不要退出应用或者关闭蓝牙.     设备升级可能不会保留用户设置的参数. 设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.     如果升级失败,可以重新升级."</string>
 </resources>

@@ -27,11 +27,23 @@
     <string name="ota_msg_remote_not_exists">No existe firmware remoto.</string>
     <string name="ota_warning_msg">La actualización tiene riesgos, la actualización fallida puede causar que el dispositivo no funcione.</string>
     <string name="ota_warning_title">Advertencia</string>
-    <string name="ota_warning">Advertencia:\n\t\tPor favor no salga de la aplicación, cierre el Bluetooth o apague el dispositivo durante la
-        actualización.\n\t\tPor favor mantenga una buena comunicación entre el dispositivo y el móvil.</string>
     <string name="ota_msg_reupgrade">Por favor conecte el dispositivo manualmente y actualice después de haberlo conectado.</string>
     <string name="ota_continue">Continuar</string>
     <string name="ota_upgrade_success">100%\nÉxito en la actualización, dispositivo inicializando...</string>
     <string name="ota_cancel">Cancelar</string>
     <string name="ota_msg_check_version">Por favor revisar actualización.</string>
+    <string name="ota_upgradable">Actualizable</string>
+    <string name="next">Siguiente</string>
+    <string name="ota_device_firmware_upgradable">El dispositivo puede actualizarse a Vxx. ¿Confirma la actualización?</string>
+    <string name="downloading_firmware">Descargando firmware...</string>
+    <string name="ota_network_unavailable">La red no está disponible, verifique las configuraciones.</string>
+    <string name="device_frimware_version">Versión de firmware:</string>
+    <string name="latest_firmware_version">Versión más reciente:</string>
+    <string name="ota_wait_title">Espere</string>
+    <string name="ota_wait_msg">Espere...</string>
+    <string name="title_upgrade_success">Se actualizó correctamente</string>
+    <string name="title_upgrade_failed">No se pudo actualizar</string>
+    <string name="upgrade_success_msg">Vuelva a iniciar sesión.</string>
+    <string name="upgrade_failed_msg">Intente de nuevo.</string>
+    <string name="ota_warning">"    Advertencia de actualización:      Durante el proceso de actualización, mantenga su teléfono o su tableta lo más cerca posible de su dispositivo de iluminación.  Recuerde:          - No salga de la aplicación          - No desconecte el Bluetooth      Puede que los parámetros de luz establecidos no se mantengan tras las actualizaciones.      Puede que la versión anterior de la aplicación no controle los dispositivos correctamente una vez que se actualice el firmware. Asegúrese de utilizar la versión más reciente de la aplicación. Es necesario actualizar la aplicación a la versión más reciente.      Si la actualización falla, intente de nuevo."</string>
 </resources>
