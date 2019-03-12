@@ -80,7 +80,7 @@ public class CommUtil
      * @param len
      * @return
      */
-    public static byte getCRC(ArrayList<Byte> bytes, int len)
+    public static byte getCRC(List<Byte> bytes, int len)
     {
         byte crc = 0x00;
         for ( int i = 0; i < len; i++ )
@@ -206,7 +206,7 @@ public class CommUtil
         BleManager.getInstance().sendBytes( mac, txs );
     }
 
-    public static Object decodeLight ( ArrayList<Byte> bytes, short devid )
+    public static Object decodeLight ( List<Byte> bytes, short devid )
     {
         if ( bytes == null || bytes.size() == 0 )
         {
@@ -252,7 +252,7 @@ public class CommUtil
                         dbrt[i] = bytes.get( 7+i );
                         nbrt[i] = bytes.get( 11+chns+i );
                     }
-                    boolean turnoff_enable = (bytes.get( 11+2*chns ) == 0 ? false : true);
+                    boolean turnoff_enable = (bytes.get(11 + 2 * chns) != 0);
                     byte hour = bytes.get( 12+2*chns );
                     byte minute = bytes.get( 13+2*chns );
                     lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute );
@@ -291,7 +291,7 @@ public class CommUtil
                         dbrt[i] = bytes.get( 7+i );
                         nbrt[i] = bytes.get( 11+chns+i );
                     }
-                    boolean turnoff_enable = (bytes.get( 11+2*chns ) == 0 ? false : true);
+                    boolean turnoff_enable = (bytes.get(11 + 2 * chns) != 0);
                     byte hour = bytes.get( 12+2*chns );
                     byte minute = bytes.get( 13+2*chns );
                     byte week = bytes.get( 14 + chns*2 );

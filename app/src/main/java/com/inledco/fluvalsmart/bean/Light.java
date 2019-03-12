@@ -9,32 +9,41 @@ import java.io.Serializable;
 public class Light extends BaseDevice implements Serializable
 {
     private static final long serialVersionUID = -4162709866411397526L;
+
+    public static final int MODE_MANUAL = 0;
+    public static final int MODE_AUTO = 1;
+    public static final int MODE_PRO = 2;
+
     private int mMode;
     private LightManual mLightManual;
     private LightAuto mLightAuto;
     private LightPro mLightPro;
 
-    public Light ( DevicePrefer devicePrefer, boolean online, int mode, LightManual lightManual, LightAuto lightAuto )
+    public Light(DevicePrefer devicePrefer) {
+        super(devicePrefer);
+    }
+
+    public Light(DevicePrefer devicePrefer, int mode, LightManual lightManual, LightAuto lightAuto)
     {
-        super( devicePrefer, online );
+        super( devicePrefer );
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
     }
 
-    public Light ( DevicePrefer devicePrefer, boolean online, int mode, LightManual lightManual, LightAuto lightAuto, LightPro lightPro )
+    public Light ( DevicePrefer devicePrefer, int mode, LightManual lightManual, LightAuto lightAuto, LightPro lightPro )
     {
-        super( devicePrefer, online );
+        super( devicePrefer );
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
         mLightPro = lightPro;
     }
 
-    public Light ( byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, boolean online, DeviceTime deviceTime, int mode,
+    public Light ( byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, DeviceTime deviceTime, int mode,
                    LightManual lightManual, LightAuto lightAuto )
     {
-        super( majorVersion, minorVersion, devicePrefer, online, deviceTime );
+        super( majorVersion, minorVersion, devicePrefer, deviceTime );
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;

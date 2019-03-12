@@ -61,14 +61,14 @@ public class LightAuto implements Serializable
         mSunset = sunset;
         mNightBright = nightBright;
         mHasDynamic = true;
-        mDynamicEnable = (week&0x80) == 0x80 ? true : false;
-        mSat = (week&0x40) == 0x40 ? true : false;
-        mFri = (week&0x20) == 0x20 ? true : false;
-        mThu = (week&0x10) == 0x10 ? true : false;
-        mWed = (week&0x08) == 0x08 ? true : false;
-        mTue = (week&0x04) == 0x04 ? true : false;
-        mMon = (week&0x02) == 0x02 ? true : false;
-        mSun = (week&0x01) == 0x01 ? true : false;
+        mDynamicEnable = (week & 0x80) == 0x80;
+        mSat = (week & 0x40) == 0x40;
+        mFri = (week & 0x20) == 0x20;
+        mThu = (week & 0x10) == 0x10;
+        mWed = (week & 0x08) == 0x08;
+        mTue = (week & 0x04) == 0x04;
+        mMon = (week & 0x02) == 0x02;
+        mSun = (week & 0x01) == 0x01;
         mDynamicPeriod = dynamicPeriod;
         mDynamicMode = dynamicMode;
     }
@@ -84,14 +84,14 @@ public class LightAuto implements Serializable
         mTurnoffHour = turnoffHour;
         mTurnoffMinute = turnoffMinute;
         mHasDynamic = true;
-        mDynamicEnable = (week&0x80) == 0x80 ? true : false;
-        mSat = (week&0x40) == 0x40 ? true : false;
-        mFri = (week&0x20) == 0x20 ? true : false;
-        mThu = (week&0x10) == 0x10 ? true : false;
-        mWed = (week&0x08) == 0x08 ? true : false;
-        mTue = (week&0x04) == 0x04 ? true : false;
-        mMon = (week&0x02) == 0x02 ? true : false;
-        mSun = (week&0x01) == 0x01 ? true : false;
+        mDynamicEnable = (week & 0x80) == 0x80;
+        mSat = (week & 0x40) == 0x40;
+        mFri = (week & 0x20) == 0x20;
+        mThu = (week & 0x10) == 0x10;
+        mWed = (week & 0x08) == 0x08;
+        mTue = (week & 0x04) == 0x04;
+        mMon = (week & 0x02) == 0x02;
+        mSun = (week & 0x01) == 0x01;
         mDynamicPeriod = dynamicPeriod;
         mDynamicMode = dynamicMode;
     }
@@ -418,24 +418,6 @@ public class LightAuto implements Serializable
         {
             return false;
         }
-        if (mHasDynamic != a.isHasDynamic())
-        {
-            return false;
-        }
-//        if ( mDynamicEnable != a.isDynamicEnable()
-//            || mSun != a.isSun() || mMon != a.isMon() || mTue != a.isTue() || mWed != a.isWed()
-//            || mThu != a.isThu() || mFri != a.isFri() || mSat != a.isSat() || mDynamicMode != a.getDynamicMode() )
-//        {
-//            return false;
-//        }
-//        if ( mDynamicPeriod != null && mDynamicPeriod.equal( a.getDynamicPeriod() ) == false )
-//        {
-//            return false;
-//        }
-//        if ( mDynamicPeriod == null && a.getDynamicPeriod() != null )
-//        {
-//            return false;
-//        }
-        return true;
+        return mHasDynamic == a.isHasDynamic();
     }
 }

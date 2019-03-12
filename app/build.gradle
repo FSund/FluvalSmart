@@ -7,8 +7,8 @@ android {
         applicationId "com.inledco.fluvalsmart"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 12
-        versionName "1.1.0"
+        versionCode 13
+        versionName "1.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -33,7 +33,8 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
@@ -48,5 +49,4 @@ dependencies {
     implementation 'com.github.liruya:okhttpmanager:1.0.0'
     //    implementation 'com.github.liruya:tuner168blemanager:1.0.1'
     implementation project(':tuner168blemanager')
-    implementation project(':bleota')
 }

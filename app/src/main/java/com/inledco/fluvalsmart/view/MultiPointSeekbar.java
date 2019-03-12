@@ -558,11 +558,7 @@ public class MultiPointSeekbar extends View
         int right = left + width;
         int top = getPaddingTop() + mHintHeight + mHintPadding;
         int bottom = top + height;
-        if ( x >= left - space && x <= right + space && y >= top - space && y <= bottom + space )
-        {
-            return true;
-        }
-        return false;
+        return x >= left - space && x <= right + space && y >= top - space && y <= bottom + space;
     }
 
     private int getTouchedPoint(float x, float y)

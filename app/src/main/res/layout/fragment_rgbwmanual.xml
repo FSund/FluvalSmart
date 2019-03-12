@@ -9,7 +9,7 @@
               android:paddingLeft="16dp"
               android:paddingRight="16dp"
               android:paddingTop="8dp"
-              tools:context="com.inledco.fluvalsmart.fragment.RGBWManualFragment">
+              tools:context="com.inledco.fluvalsmart.light.RGBWManualFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

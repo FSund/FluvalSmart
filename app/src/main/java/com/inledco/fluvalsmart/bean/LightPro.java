@@ -334,14 +334,14 @@ public class LightPro implements Serializable
             if ( array.length == len + 6 )
             {
                 lightPro.mHasDynamic = true;
-                lightPro.mDynamicEnable = (array[len]&0x80) == 0x80 ? true : false;
-                lightPro.mSat = (array[len]&0x40) == 0x40 ? true : false;
-                lightPro.mFri = (array[len]&0x20) == 0x20 ? true : false;
-                lightPro.mThu = (array[len]&0x10) == 0x10 ? true : false;
-                lightPro.mWed = (array[len]&0x08) == 0x08 ? true : false;
-                lightPro.mTue = (array[len]&0x04) == 0x04 ? true : false;
-                lightPro.mMon = (array[len]&0x02) == 0x02 ? true : false;
-                lightPro.mSun = (array[len]&0x01) == 0x01 ? true : false;
+                lightPro.mDynamicEnable = (array[len] & 0x80) == 0x80;
+                lightPro.mSat = (array[len] & 0x40) == 0x40;
+                lightPro.mFri = (array[len] & 0x20) == 0x20;
+                lightPro.mThu = (array[len] & 0x10) == 0x10;
+                lightPro.mWed = (array[len] & 0x08) == 0x08;
+                lightPro.mTue = (array[len] & 0x04) == 0x04;
+                lightPro.mMon = (array[len] & 0x02) == 0x02;
+                lightPro.mSun = (array[len] & 0x01) == 0x01;
                 lightPro.mDynamicPeriod = new RampTime( array[len+1], array[len+2], array[len+3], array[len+4] );
                 lightPro.mDynamicMode = array[len+5];
             }

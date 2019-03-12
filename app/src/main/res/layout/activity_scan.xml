@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,43 +8,72 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:animateLayoutChanges="true"
-    tools:context="com.inledco.fluvalsmart.activity.ScanActivity">
+    tools:context="com.inledco.fluvalsmart.scan.ScanActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/scan_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_chevron_left_white_36dp"
-        style="@style/ToolbarTheme"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_chevron_left_white_36dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/scan_devices"
-            android:maxLines="1"
-            android:lines="1"
-            android:textSize="20sp"
             android:ellipsize="end"
-            android:textColor="@color/colorWhite"/>
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@string/scan_devices"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/scan_tv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/tip_enable_location"
+        android:drawableRight="@drawable/ic_chevron_right_white_32dp"
+        android:drawablePadding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/scan_rv_show"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_height="0dp"
         android:layout_below="@id/scan_toolbar"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/scan_tv_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_toolbar"/>
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/scasn_fab_confirm"
+        android:id="@+id/scan_fab_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        app:srcCompat="@drawable/ic_confirm"
-        android:visibility="gone"
+        android:layout_margin="32dp"
         android:background="?attr/selectableItemBackground"
+        android:visibility="gone"
         app:elevation="8dp"
-        app:fabSize="normal"/>
-</RelativeLayout>
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_confirm"/>
+</android.support.constraint.ConstraintLayout>

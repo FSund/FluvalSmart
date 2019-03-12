@@ -4,7 +4,7 @@
               android:gravity="center_horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="com.inledco.fluvalsmart.fragment.UserFragment">
+              tools:context="com.inledco.fluvalsmart.main.UserFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

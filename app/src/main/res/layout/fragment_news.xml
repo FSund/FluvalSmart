@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              tools:context="com.inledco.fluvalsmart.fragment.NewsFragment">
+              tools:context="com.inledco.fluvalsmart.main.NewsFragment">
 
     <ImageView
         android:id="@+id/news_web1"

@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         app:hintEnabled="true"
-        android:hint="@string/input_newname"
         app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
         <EditText
@@ -22,6 +21,7 @@
             android:textSize="16sp"
             android:maxLength="18"
             android:lines="1"
+            android:hint="@string/new_device_name"
             android:inputType="textCapSentences"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.v7.widget.ButtonBarLayout

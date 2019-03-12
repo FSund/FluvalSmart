@@ -1,48 +1,30 @@
 package com.liruya.tuner168blemanager;
 
-import android.Manifest;
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
+import android.bluetooth.BluetoothProfile;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseArray;
 
 import com.ble.api.DataUtil;
-import com.ble.api.EncodeUtil;
 import com.ble.ble.BleCallBack;
 import com.ble.ble.BleService;
-import com.ble.ble.LeScanRecord;
 import com.ble.ble.constants.BleRegConstants;
 import com.ble.ble.constants.BleUUIDS;
+import com.ble.ble.util.GattUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
-public class BleManager extends BleCallBack implements ServiceConnection, BluetoothAdapter.LeScanCallback {
+public class BleManager implements ServiceConnection {
     private final String TAG = "BleManager";
 
     /**
@@ -60,125 +42,140 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      */
     private final int DATA_SEND_INTERVAL = 32;
 
-
-    private final UUID[] TARGET_UUIDS = new UUID[] {BleUUIDS.PRIMARY_SERVICE};
-
-    /**
-     * user BluetoothLeScanner to scan or not
-     */
-    private boolean mUseNewScanner;
-
-    /**
-     * BluetoothLeScanner callback
-     */
-    private ScanCallback mScanCallback;
-
-    /**
-     * bluetooth scan period, default 15000ms
-     */
-    private int mScanPeriod = 12000;
-
-    private boolean mScanning;
-
     private BleService mBleService;
 
-    /**
-     * set of connected devices, string:device mac address,boolean:data valid or not
-     */
-    private Map<String, Boolean> mConnectedDevices;
+    private final Set<String> mValidDevices;
 
     /**
      * receive data list
      */
-    private ArrayList<Byte> mRcvBytes;
-    private Runnable mScanRunnable;
-    private Handler mHandler;
+    private final ArrayList<Byte> mRcvBytes;
+    private final Handler mHandler;
     private long msc;
-    private List<BleScanListener> mBleScanListeners;
-    private List<BleCommunicateListener> mBleCommunicateListeners;
+    private final List<BleListener> mBleListeners;
 
-    private BleManager()
-    {
-        mConnectedDevices = new HashMap<>();
-        mRcvBytes = new ArrayList<>();
-        mHandler = new Handler();
-        mScanRunnable = new Runnable() {
-            @Override
-            public void run()
-            {
-                stopScan();
-                if (mBleScanListeners != null) {
-                    for (BleScanListener listener : mBleScanListeners) {
-                        listener.onScanTimeout();
+    private final BleCallBack mBleCallBack = new BleCallBack() {
+        @Override
+        public void onConnected(String s) {
+            Log.e(TAG, "onConnected: " + s);
+            mValidDevices.remove(s);
+            for (BleListener listener : mBleListeners) {
+                listener.onConnected(s);
+            }
+        }
+
+        @Override
+        public void onConnectTimeout(String s) {
+            Log.e(TAG, "onConnectTimeout: " + s);
+            mValidDevices.remove(s);
+            for (BleListener listener : mBleListeners) {
+                listener.onConnectTimeout(s);
+            }
+        }
+
+        @Override
+        public void onConnectionError(String s, int i, int i1) {
+            Log.e(TAG, "onConnectionError: " + s + " " + i + " " + i1);
+            mValidDevices.remove(s);
+            for (BleListener listener : mBleListeners) {
+                listener.onConnectionError(s, i, i1);
+            }
+        }
+
+        @Override
+        public void onDisconnected(String s) {
+            Log.e(TAG, "onDisconnected: " + s);
+            mValidDevices.remove(s);
+            for (BleListener listener : mBleListeners) {
+                listener.onDisconnected(s);
+            }
+        }
+
+        @Override
+        public void onServicesDiscovered(final String s) {
+            Log.e(TAG, "onServicesDiscovered: " + s);
+            if (mBleService != null) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        BluetoothGatt gatt = mBleService.getBluetoothGatt(s);
+                        BluetoothGattCharacteristic characteristic = GattUtil.getGattCharacteristic(gatt, BleUUIDS.PRIMARY_SERVICE, BleUUIDS.CHARACTERS[1]);
+                        boolean result = mBleService.setCharacteristicNotification(gatt, characteristic, true);
+                        if (result) {
+                            mValidDevices.add(s);
+                        }
+                        Log.e(TAG, "Enable Notification: " + result);
+                    }
+                }, 300);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mValidDevices.contains(s)) {
+                            for (BleListener listener : mBleListeners) {
+                                listener.onDataValid(s);
+                            }
+                        }
+                    }
+                }, 400);
+            }
+        }
+
+        @Override
+        public void onServicesUndiscovered(String s, int i) {
+            Log.e(TAG, "onServicesUndiscovered: " + s + "  " + i);
+            mValidDevices.remove(s);
+        }
+
+        @Override
+        public void onRegRead(String s, String s1, int i, int i1) {
+            if (i == BleRegConstants.REG_ADV_MFR_SPC) {
+                for (BleListener listener : mBleListeners) {
+                    listener.onReadMfr(s, s1);
+                }
+            } else if (i == BleRegConstants.REG_PASSWORD) {
+                byte[] bytes = DataUtil.hexToByteArray(s1);
+                if (bytes != null && bytes.length == 4) {
+                    int psw = ((bytes[0] & 0xFF) << 24) | ((bytes[1] & 0xFF) << 16) | ((bytes[2] & 0xFF) << 8) | (bytes[3] & 0xFF);
+                    for (BleListener listener : mBleListeners) {
+                        listener.onReadPassword(s, psw);
                     }
                 }
             }
-        };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mScanCallback = new ScanCallback() {
-                @Override
-                public void onScanResult(int callbackType, ScanResult result) {
-                    super.onScanResult(callbackType, result);
-                    onLeScan(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes());
-                }
-
-                @Override
-                public void onBatchScanResults(List<ScanResult> results) {
-                    super.onBatchScanResults(results);
-                    Log.e(TAG, "onBatchScanResults: " + results.size() );
-                }
-
-                @Override
-                public void onScanFailed(int errorCode) {
-                    super.onScanFailed(errorCode);
-                    Log.e(TAG, "onScanFailed: " + errorCode );
-                }
-            };
         }
+
+        @Override
+        public void onCharacteristicChanged(String s, byte[] bytes) {
+            long t = System.currentTimeMillis();
+            if (t - msc > DATA_FRAME_INTERVAL) {
+                mRcvBytes.clear();
+            }
+            for (byte b : bytes) {
+                mRcvBytes.add(b);
+            }
+            msc = t;
+            for (BleListener listener : mBleListeners) {
+                listener.onDataReceived(s, mRcvBytes);
+            }
+        }
+
+        @Override
+        public void onReadRemoteRssi(String s, int i, int i1) {
+            for (BleListener listener : mBleListeners) {
+                listener.onReadRssi(s, i);
+            }
+        }
+    };
+
+    private BleManager() {
+        mValidDevices = new HashSet<>();
+        mRcvBytes = new ArrayList<>();
+        mHandler = new Handler();
+        mBleListeners = new ArrayList<>();
         msc = System.currentTimeMillis();
     }
 
-    public static BleManager getInstance()
-    {
+    public static BleManager getInstance() {
         return BleHolder.INSTANCE;
-    }
-
-    public int getScanPeriod()
-    {
-        return mScanPeriod;
-    }
-
-    public void setScanPeriod(int scanPeriod)
-    {
-        mScanPeriod = scanPeriod;
-    }
-
-    public boolean isUseNewScanner() {
-        return mUseNewScanner;
-    }
-
-    public void setUseNewScanner(boolean useNewScanner) {
-        if (!mScanning) {
-            mUseNewScanner = useNewScanner;
-        }
-    }
-
-    /**
-     * check does device support bluetooth/ble
-     *
-     * @param context
-     * @return true:support/false:unsupport
-     */
-    public boolean checkBleSupported(@NonNull Context context)
-    {
-        if (context.getPackageManager()
-                   .hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
-        {
-            if (BluetoothAdapter.getDefaultAdapter() != null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -186,8 +183,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      *
      * @param context
      */
-    public void bindService(@NonNull Context context)
-    {
+    public void bindService(@NonNull Context context) {
         Intent intent = new Intent(context, BleService.class);
         context.bindService(intent, this, Context.BIND_AUTO_CREATE);
     }
@@ -197,110 +193,21 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      *
      * @param context
      */
-    public void unbindService(@NonNull Context context)
-    {
+    public void unbindService(@NonNull Context context) {
         context.unbindService(this);
     }
 
-    /**
-     * check if bluetooth has been opened
-     *
-     * @return
-     */
-    public boolean isBluetoothEnabled()
-    {
-        return BluetoothAdapter.getDefaultAdapter()
-                               .isEnabled();
-    }
-
-    /**
-     * open bluetooth without authorization
-     *
-     * @return true:open bluetooth success/false:open bluetooth failed
-     */
-    public boolean autoOpenBluetooth()
-    {
-        return BluetoothAdapter.getDefaultAdapter()
-                               .enable();
-    }
-
-    public void closeBluetooth()
-    {
-        BluetoothAdapter.getDefaultAdapter()
-                        .disable();
-    }
-
-    public void refresh(String mac)
-    {
+    public void refresh(String mac) {
         if (mBleService != null) {
             mBleService.refresh(mac);
         }
     }
 
-    public boolean checkLocationPermission(@NonNull Context context)
-    {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-        {
-            return true;
-        }
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public void requestLocationPermission(@NonNull Activity activity, int requestCode)
-    {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode);
-    }
-
-    /**
-     * request authorization to open bluetooth
-     *
-     * @param activity
-     */
-    public void requestBluetoothEnable(@NonNull AppCompatActivity activity, int requestCode)
-    {
-        Intent intent = new Intent( BluetoothAdapter.ACTION_REQUEST_ENABLE );
-        activity.startActivityForResult( intent, requestCode );
-    }
-
-    /**
-     * start scan bluetooth device
-     */
-    public void startScan()
-    {
-        if (mScanning) {
+    public void startReadRssi(@NonNull String mac) {
+        if (mBleService == null) {
             return;
         }
-        mScanning = true;
-        if (mUseNewScanner && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            List<ScanFilter> filters = new ArrayList<>();
-            ScanFilter filter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(BleUUIDS.PRIMARY_SERVICE))
-                                                        .build();
-            filters.add(filter);
-            ScanSettings scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                                                                  .build();
-            BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner().startScan(filters, scanSettings, mScanCallback);
-        } else {
-            BluetoothAdapter.getDefaultAdapter()
-                            .startLeScan(TARGET_UUIDS, this);
-        }
-        mHandler.postDelayed(mScanRunnable, mScanPeriod);
-    }
-
-    /**
-     * stop scan
-     */
-    public void stopScan()
-    {
-        if (mScanning) {
-            mScanning = false;
-            if (mUseNewScanner && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner().stopScan(mScanCallback);
-            } else {
-                BluetoothAdapter.getDefaultAdapter()
-                                .stopLeScan(this);
-            }
-            mHandler.removeCallbacks(mScanRunnable);
-        }
+        mBleService.startReadRssi(mac, 1000);
     }
 
     public void startReadRssi(@NonNull String mac, int interval) {
@@ -317,6 +224,15 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
         mBleService.stopReadRssi(mac);
     }
 
+    public void enableNotification(@NonNull String mac) {
+        if (mBleService != null) {
+            BluetoothGatt gatt = mBleService.getBluetoothGatt(mac);
+            BluetoothGattCharacteristic characteristic = GattUtil.getGattCharacteristic(gatt, BleUUIDS.PRIMARY_SERVICE, BleUUIDS.CHARACTERS[1]);
+            boolean result = mBleService.setCharacteristicNotification(gatt, characteristic, true);
+            Log.e(TAG, "enableNotification: " + result);
+        }
+    }
+
     public void setAutoConnect(@NonNull String mac, boolean b) {
         if (mBleService == null) {
             return;
@@ -330,16 +246,12 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @return true:success false:failure
      */
-    public boolean connectDevice(@NonNull final String mac)
-    {
-        if (mBleService == null) {
-            return false;
-        }
-        if (isConnected(mac)) {
-            return true;
-        }
-        return mBleService.connect(mac, false);
-    }
+//    public boolean connectDevice(@NonNull final String mac, boolean autoConnect) {
+//        if (mBleService == null) {
+//            return false;
+//        }
+//        return mBleService.connect(mac, autoConnect);
+//    }
 
     /**
      * connect device
@@ -347,31 +259,10 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @return true:success false:failure
      */
-    public boolean connectDevice(@NonNull final String mac, int tick, int timeout, final BleCommunicateListener listener)
-    {
+    public boolean connectDevice(@NonNull final String mac) {
         if (mBleService == null) {
             return false;
         }
-        if (isConnected(mac)) {
-            return true;
-        }
-        new CountDownTimer(tick, timeout) {
-            @Override
-            public void onTick(long millisUntilFinished)
-            {
-                if (isConnected(mac)) {
-                    cancel();
-                }
-            }
-
-            @Override
-            public void onFinish()
-            {
-                if (!isConnected(mac) && listener != null) {
-                    BleManager.this.onConnectTimeout(mac);
-                }
-            }
-        }.start();
         return mBleService.connect(mac, false);
     }
 
@@ -380,9 +271,9 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      *
      * @param mac device mac address
      */
-    public void disconnectDevice(@NonNull String mac)
-    {
+    public void disconnectDevice(@NonNull String mac) {
         if (mBleService != null) {
+            mBleService.setAutoConnect(mac, false);
             mBleService.disconnect(mac);
         }
     }
@@ -390,14 +281,17 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
     /**
      * disconnect all device
      */
-    public void disConnectAll()
-    {
-        if (mBleService != null && mConnectedDevices != null) {
-            Set<String> adrs = new HashSet<>();
-            adrs.addAll(mConnectedDevices.keySet());
-            for (String mac : adrs) {
-                mBleService.disconnect(mac);
-            }
+    public void disConnectAll() {
+//        if (mBleService != null && mConnectedDevices != null) {
+//            Set<String> adrs = new HashSet<>();
+//            adrs.addAll(mConnectedDevices.keySet());
+//            for (String mac : adrs) {
+//                mBleService.setAutoConnect(mac, false);
+//                mBleService.disconnect(mac);
+//            }
+//        }
+        if (mBleService != null) {
+            mBleService.disconnectAll();
         }
     }
 
@@ -406,22 +300,19 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      *
      * @param mac device mac address
      */
-    public void readMfr(@NonNull String mac)
-    {
+    public void readMfr(@NonNull String mac) {
         if (mBleService != null) {
             mBleService.readReg(mac, BleRegConstants.REG_ADV_MFR_SPC);
         }
     }
 
-    public void readPassword(@NonNull String mac)
-    {
+    public void readPassword(@NonNull String mac) {
         if (mBleService != null) {
             mBleService.readReg(mac, BleRegConstants.REG_PASSWORD);
         }
     }
 
-    public void setPassword(@NonNull String mac, int psw)
-    {
+    public void setPassword(@NonNull String mac, int psw) {
         if (mBleService != null) {
             mBleService.setReg(mac, BleRegConstants.REG_PASSWORD, psw);
         }
@@ -433,8 +324,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @param name device name
      */
-    public void setSlaverName(@NonNull String mac, @NonNull String name)
-    {
+    public void setSlaverName(@NonNull String mac, @NonNull String name) {
         if (mBleService != null) {
             mBleService.setSlaverName(mac, name);
         }
@@ -446,8 +336,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @param bytes data
      */
-    public void sendBytes(@NonNull final String mac, @NonNull final byte[] bytes)
-    {
+    public void sendBytes(@NonNull final String mac, @NonNull final byte[] bytes) {
         if (mac == null || bytes == null || mBleService == null) {
             return;
         }
@@ -457,8 +346,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
         }
         new Thread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 int idx = 0;
                 while (idx < bytes.length) {
                     int size = Math.min(bytes.length - idx, DATA_MAX_LENGTH);
@@ -491,8 +379,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
         }).start();
     }
 
-    public void clearReceiveBuffer()
-    {
+    public void clearReceiveBuffer() {
         if (mRcvBytes != null) {
             mRcvBytes.clear();
         }
@@ -504,9 +391,11 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @return
      */
-    public boolean isConnected(@NonNull String mac)
-    {
-        return mConnectedDevices.containsKey( mac );
+    public boolean isConnected(@NonNull String mac) {
+        if (mBleService == null) {
+            return false;
+        }
+        return mBleService.getConnectionState(mac) == BluetoothProfile.STATE_CONNECTED;
     }
 
     /**
@@ -515,265 +404,29 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
      * @param mac device mac address
      * @return
      */
-    public boolean isDataValid(@NonNull String mac)
-    {
-        if (mConnectedDevices.containsKey(mac)) {
-            return mConnectedDevices.get(mac);
-        }
-        return false;
+    public boolean isDataValid(@NonNull String mac) {
+        return mValidDevices.contains(mac);
     }
 
-    /**
-     * add bluetooth scan listen event, like start scan,stop scan,device scaned
-     *
-     * @param listener
-     */
-    public void addBleScanListener(@NonNull BleScanListener listener)
-    {
-        if (mBleScanListeners == null) {
-            mBleScanListeners = new ArrayList<>();
+    public void addBleListener(BleListener listener) {
+        if (!mBleListeners.contains(listener)) {
+            mBleListeners.add(listener);
         }
-        mBleScanListeners.add(listener);
+        Log.e(TAG, "addBleListener: " + mBleListeners.size());
     }
 
-    /**
-     * remove bluetooth scan listener
-     *
-     * @param listener
-     */
-    public void removeBleScanListener(@NonNull BleScanListener listener)
-    {
-        if (mBleScanListeners != null && mBleScanListeners.contains(listener)) {
-            mBleScanListeners.remove(listener);
-        }
+    public void removeBleListener(BleListener listener) {
+        mBleListeners.remove(listener);
+        Log.e(TAG, "removeBleListener: " + mBleListeners.size());
     }
 
-    /**
-     * add Bluetooth transfer listener,like connect,disconnect,service discover,read reg,receive data
-     *
-     * @param listener
-     */
-    public void addBleCommunicateListener(@NonNull BleCommunicateListener listener)
-    {
-        if (mBleCommunicateListeners == null) {
-            mBleCommunicateListeners = new ArrayList<>();
-        }
-        mBleCommunicateListeners.add(listener);
-    }
-
-    /**
-     * remove Bluetooth transfer listener
-     *
-     * @param listener
-     */
-    public void removeBleCommunicateListener(@NonNull BleCommunicateListener listener)
-    {
-        if (mBleCommunicateListeners != null) {
-            int idx = mBleCommunicateListeners.indexOf(listener);
-            if (idx >= 0) {
-                mBleCommunicateListeners.remove(idx);
-            }
-        }
+    public void removeAllBleListeners() {
+        mBleListeners.clear();
     }
 
     @Override
-    public void onConnected(String s)
-    {
-        super.onConnected(s);
-//        mBleService.startReadRssi(s, 1000);
-        mConnectedDevices.put(s, false);
-        Log.e(TAG, "onConnected: " + s);
-    }
-
-    @Override
-    public void onConnectTimeout(String s)
-    {
-        super.onConnectTimeout(s);
-        if (mConnectedDevices.containsKey(s)) {
-            mConnectedDevices.remove(s);
-        }
-        if (mBleCommunicateListeners != null) {
-            for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                listener.onDataInvalid(s);
-            }
-        }
-        Log.e(TAG, "onConnectTimeout: " + s);
-    }
-
-    @Override
-    public void onConnectionError(String s, int i, int i1)
-    {
-        super.onConnectionError(s, i, i1);
-        if (mConnectedDevices.containsKey(s)) {
-            mConnectedDevices.remove(s);
-        }
-        if (mBleCommunicateListeners != null) {
-            for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                listener.onDataInvalid(s);
-            }
-        }
-        Log.e(TAG, "onConnectionError: " + s + "  \t" + i + "  \t" + i1);
-    }
-
-    @Override
-    public void onDisconnected(String s)
-    {
-        super.onDisconnected(s);
-        if (mConnectedDevices.containsKey(s)) {
-            mConnectedDevices.remove(s);
-        }
-        if (mBleCommunicateListeners != null) {
-            for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                listener.onDataInvalid(s);
-            }
-        }
-        Log.e(TAG, "onDisconnected: " + s);
-    }
-
-    @Override
-    public void onServicesDiscovered(final String s)
-    {
-        super.onServicesDiscovered(s);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                boolean b = mBleService.enableNotification(s);
-                Log.e(TAG, "run: " + b);
-            }
-        }, 300);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                mConnectedDevices.put(s, true);
-                if (mBleCommunicateListeners != null) {
-                    for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                        listener.onDataValid(s);
-                    }
-                }
-            }
-        }, 500);
-        Log.e(TAG, "onServicesDiscovered: " + s);
-    }
-
-    @Override
-    public void onServicesUndiscovered(String s, int i)
-    {
-        super.onServicesUndiscovered(s, i);
-        if (mConnectedDevices.containsKey(s)) {
-            mConnectedDevices.put(s, false);
-        }
-        Log.e(TAG, "onServicesUndiscovered: " + s + "  \t" + i);
-    }
-
-    @Override
-    public void onCharacteristicRead(String s, byte[] bytes, int i)
-    {
-        super.onCharacteristicRead(s, bytes, i);
-        Log.e(TAG, "onCharacteristicRead: " + s + "  \t" + DataUtil.byteArrayToHex(bytes) + "  \t" + i);
-    }
-
-    @Override
-    public void onRegRead(String s, String s1, int i, int i1)
-    {
-        super.onRegRead(s, s1, i, i1);
-        if (i == BleRegConstants.REG_ADV_MFR_SPC) {
-            if (mBleCommunicateListeners != null) {
-                for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                    listener.onReadMfr(s, s1);
-                }
-            }
-        }
-        else {
-            if (i == BleRegConstants.REG_PASSWORD) {
-                if (mBleCommunicateListeners != null) {
-                    byte[] bytes = DataUtil.hexToByteArray(s1);
-                    if (bytes != null && bytes.length == 4) {
-                        int psw = ((bytes[0] & 0xFF) << 24) | ((bytes[1] & 0xFF) << 16) | ((bytes[2] & 0xFF) << 8) | (bytes[3] & 0xFF);
-                        Log.e(TAG, "onRegRead: " + psw);
-                        for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                            listener.onReadPassword(s, psw);
-                        }
-                    }
-                }
-            }
-        }
-        Log.e(TAG, "onRegRead: " + s + "  \t" + s1 + "  \t" + i + "  \t" + i1);
-    }
-
-    @Override
-    public void onCharacteristicChanged(String s, byte[] bytes)
-    {
-        super.onCharacteristicChanged(s, bytes);
-        long t = System.currentTimeMillis();
-        if (t - msc > DATA_FRAME_INTERVAL) {
-            mRcvBytes.clear();
-        }
-        for (byte b : bytes) {
-            mRcvBytes.add(b);
-        }
-        msc = t;
-        if (mBleCommunicateListeners != null) {
-            for (BleCommunicateListener listener : mBleCommunicateListeners) {
-                listener.onDataReceived(s, mRcvBytes);
-            }
-        }
-        Log.e(TAG, "onCharacteristicChanged: " + s + "  \t" + DataUtil.byteArrayToHex(bytes));
-    }
-
-    @Override
-    public void onCharacteristicWrite(String s, BluetoothGattCharacteristic bluetoothGattCharacteristic, int i)
-    {
-        super.onCharacteristicWrite(s, bluetoothGattCharacteristic, i);
-        Log.e(TAG, "onCharacteristicWrite: " + s + "  \t" + i + "\t" + DataUtil.byteArrayToHex(new EncodeUtil().decodeMessage(bluetoothGattCharacteristic.getValue())));
-    }
-
-    @Override
-    public void onNotifyStateRead(UUID uuid, UUID uuid1, boolean b)
-    {
-        super.onNotifyStateRead(uuid, uuid1, b);
-        Log.e(TAG, "onNotifyStateRead: " + b);
-    }
-
-    @Override
-    public void onReadRemoteRssi(String s, int i, int i1) {
-        super.onReadRemoteRssi(s, i, i1);
-        Log.e(TAG, "onReadRemoteRssi: " + s + "\t" + i + "\t" + i1);
-    }
-
-    @Override
-    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord)
-    {
-        String mac = device.getAddress();
-        String name = device.getName();
-        LeScanRecord record = LeScanRecord.parseFromBytes(scanRecord);
-        if (record == null)
-        {
-            return;
-        }
-        SparseArray<byte[]> bytes = record.getManufacturerSpecificData();
-        Log.e(TAG, "onLeScan: Mac: " + mac + " rssi - " + rssi + "  \t" + record.toString() + "\r\n" + bytes.size());
-        byte[] rawData = null;
-        if (bytes != null && bytes.size() > 0) {
-            int id = bytes.keyAt(0);
-            byte[] mfr = bytes.get(id);
-            rawData = new byte[2 + mfr.length];
-            rawData[0] = (byte) (id & 0xFF);
-            rawData[1] = (byte) ((id >> 8) & 0xFF);
-            System.arraycopy(mfr, 0, rawData, 2, mfr.length);
-        }
-        if (mBleScanListeners != null) {
-            for (BleScanListener listener : mBleScanListeners) {
-                listener.onDeviceScanned(mac, name, rssi, rawData);
-            }
-        }
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service)
-    {
-        mBleService = ((BleService.LocalBinder) service).getService(this);
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mBleService = ((BleService.LocalBinder) service).getService(mBleCallBack);
         mBleService.setDecode(true);
         //必须调用初始化方法
         mBleService.initialize();
@@ -781,8 +434,7 @@ public class BleManager extends BleCallBack implements ServiceConnection, Blueto
     }
 
     @Override
-    public void onServiceDisconnected(ComponentName name)
-    {
+    public void onServiceDisconnected(ComponentName name) {
         mBleService = null;
         Log.e(TAG, "onServiceDisconnected: ");
     }

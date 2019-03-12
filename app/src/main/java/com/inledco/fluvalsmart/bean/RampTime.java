@@ -90,10 +90,6 @@ public class RampTime implements Serializable
         {
             return false;
         }
-        if ( endMinute != rt.getEndMinute() )
-        {
-            return false;
-        }
-        return true;
+        return endMinute == rt.getEndMinute();
     }
 }

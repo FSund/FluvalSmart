@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.inledco.fluvalsmart.fragment.LightAutoFragment">
+    tools:context="com.inledco.fluvalsmart.light.LightAutoFragment">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/light_auto_chart"

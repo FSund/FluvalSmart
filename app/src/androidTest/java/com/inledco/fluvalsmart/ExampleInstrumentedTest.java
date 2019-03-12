@@ -20,8 +20,7 @@ class ExampleInstrumentedTest
 {
 @Test
 public
-void useAppContext () throws Exception
-{
+void useAppContext () {
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getTargetContext();
 
