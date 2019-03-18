@@ -41,7 +41,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/tip_enable_location"
-        android:drawableRight="@drawable/ic_chevron_right_white_32dp"
         android:drawablePadding="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

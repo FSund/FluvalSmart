@@ -142,6 +142,61 @@
     <string name="msg_turnon_location_permission">Scan bluetooth device must turnon location permission.</string>
     <string name="password">Password</string>
     <string name="factory_password">Factory password is 000000.</string>
+    <string name="faq_msg">FAQ on Connectivity Issue\n
+\n
+FluvalSmart APP is available for Fluval LED items in below code numbers:\n
+\n
+Fluval Plant &amp; Marine 3.0: 14515/14516/14517/14521/14522/14523\n
+
+Aquasky2.0: 14531/14532/14533/14534/14549/14550/14551/14552/14553/14554/14555/14556\n
+\n
+Fluval Nano: 14539/14541\n
+\n
+Future new Fluval LEDs.\n
+\n
+If fail to connect the Fluval Bluetooth light unit. Please try with below suggestion:\n
+\n
+1.  Check if the light unit is powered on, also can consider unplugging and repowering the light.\n
+\n
+2.  Ensure that Bluetooth is enabled within your mobile device settings.\n
+\n
+3.  Check if the lamp is too far from the mobile device; try to keep within 50cm range to make connection.\n
+\n
+4.  Confirm if other mobile devices are connected to the light unit, and not log out.\n
+\n
+5.  Check if you can scan the light unit with other mobile devices.\n
+\n
+6.  Try to close the APP from the backstage, and then re-open and connect the APP.\n
+\n
+7. Try not to connect other devices at the same time, such as Bluetooth headset, Bluetooth speaker, etc.\n
+\n
+If fail to scan the Fluval Bluetooth light unit, Please try with below suggestion:\n
+\n
+1.  Check if the light unit is powered on, also can consider unplugging and repowering the light.\n
+\n
+2.  Ensure that Bluetooth is enabled within your mobile device settings.\n
+\n
+3.  Check if the lamp is too far from the mobile device; try to keep within 50cm range to make connection.\n
+\n
+4.  Confirm if other mobile devices are connected to the light unit, and not log out.\n
+\n
+5.  Check if you can scan the light unit with other mobile devices.\n
+\n
+6.  If the mobile device is Android 6.0 or above, APP will ask for location permission, please confirm this request and allow location permissions when scanning the light unit
+        for the first time.\n
+\n
+7.  Some mobile devices need to turn on GPS positioning to be able to scan the light unit due to different android system. Please open GPS permission.\n
+\n
+8.  Try to close the APP from the backstage, and then re-open and connect the APP.\n
+\n
+9.  Enter the system Bluetooth setting interface on you mobile, check whether there is a device with the name like BLE#0x1123456, pair the device with password 000000), re-power
+        the light unit after pairing successfully, and enter the APP scanning interface to re-scan.\n
+\n
+10.  Allow up to 5 times scans in Android 7.0 system and above version within 30 seconds. If in 30 seconds, over 5times scanning, APP may be no reaction.\n
+\n
+Key notes:\n
+If still not work with above suggestions, or define non-work with multi-pone devices, Please describe your issues to below Fluval developer email for help:
+        FluvalSmartApp1@gmail.com or make direct contact to Hagen customer service center.</string>
 
 
     <!--OTA-->
@@ -172,7 +227,11 @@
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
-    <string name="ota_warning">"    Upgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.     Updates may alter previously set light parameters. Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).     If update fails, please try again."</string>
+    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit.\n
+        Please DO NOT exit APP or close Bluetooth.\n
+        Updates may alter previously set light parameters.\n
+        Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).\n
+        If update fails, please try again."</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_warning_title">Warning</string>
     <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
@@ -202,4 +261,8 @@
     <string name="retrieve_key">Retrieve key</string>
     <string name="tip_enable_location">Location disabled, a few phones need enable location to scan bluetooth devices.</string>
     <string name="find">Find</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="FAQ">FAQ</string>
 </resources>

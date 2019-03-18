@@ -95,6 +95,7 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_rgbwmanual, container, false);
         initView(view);
         initData();
+        initEvent();
         return view;
     }
 
@@ -147,26 +148,10 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         rgbw_thunder2 = view.findViewById(R.id.rgbw_thunder2);
         rgbw_thunder3 = view.findViewById(R.id.rgbw_thunder3);
         rgbw_allcolor = view.findViewById(R.id.rgbw_allcolor);
-        ArrayList<ArcProgressStackView.Model> models1 = new ArrayList<>();
-        ArrayList<ArcProgressStackView.Model> models2 = new ArrayList<>();
-        ArrayList<ArcProgressStackView.Model> models3 = new ArrayList<>();
-        ArrayList<ArcProgressStackView.Model> models4 = new ArrayList<>();
-        Channel[] chns = DeviceUtil.getLightChannel(getContext(), devid);
-        for (int i = 0; i < chns.length; i++) {
-            models1.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
-            models2.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
-            models3.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
-            models4.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
-        }
-        rgbw_p1.setDrawWidthDimension(models1.size() * 6);
-        rgbw_p1.setModels(models1);
-        rgbw_p2.setDrawWidthDimension(models1.size() * 6);
-        rgbw_p2.setModels(models2);
-        rgbw_p3.setDrawWidthDimension(models1.size() * 6);
-        rgbw_p3.setModels(models3);
-        rgbw_p4.setDrawWidthDimension(models1.size() * 6);
-        rgbw_p4.setModels(models4);
+    }
 
+    @Override
+    protected void initEvent() {
         rgbw_preset1.setOnClickListener(this);
         rgbw_preset2.setOnClickListener(this);
         rgbw_preset3.setOnClickListener(this);
@@ -216,11 +201,6 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    protected void initEvent() {
-
-    }
-
-    @Override
     protected void initData() {
         mLightViewModel = ViewModelProviders.of(getActivity())
                                             .get(LightViewModel.class);
@@ -231,6 +211,26 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
             mAddress = mLight.getDevicePrefer()
                              .getDeviceMac();
             mLightManual = mLight.getLightManual();
+
+            ArrayList<ArcProgressStackView.Model> models1 = new ArrayList<>();
+            ArrayList<ArcProgressStackView.Model> models2 = new ArrayList<>();
+            ArrayList<ArcProgressStackView.Model> models3 = new ArrayList<>();
+            ArrayList<ArcProgressStackView.Model> models4 = new ArrayList<>();
+            Channel[] chns = DeviceUtil.getLightChannel(getContext(), devid);
+            for (int i = 0; i < chns.length; i++) {
+                models1.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
+                models2.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
+                models3.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
+                models4.add(new ArcProgressStackView.Model("", 0, CustomColor.GRAY, chns[i].getColor()));
+            }
+            rgbw_p1.setDrawWidthDimension(models1.size() * 6);
+            rgbw_p1.setModels(models1);
+            rgbw_p2.setDrawWidthDimension(models1.size() * 6);
+            rgbw_p2.setModels(models2);
+            rgbw_p3.setDrawWidthDimension(models1.size() * 6);
+            rgbw_p3.setModels(models3);
+            rgbw_p4.setDrawWidthDimension(models1.size() * 6);
+            rgbw_p4.setModels(models4);
             refreshData();
         }
         mLightViewModel.observe(this, new Observer<Light>() {

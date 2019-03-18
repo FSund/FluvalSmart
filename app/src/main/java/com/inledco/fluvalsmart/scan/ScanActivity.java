@@ -151,6 +151,7 @@ public class ScanActivity extends BaseActivity {
         scan_fab_confirm = findViewById(R.id.scan_fab_confirm);
         scan_tv_msg = findViewById(R.id.scan_tv_msg);
 
+        scan_tv_msg.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_right_white_32dp, 0);
         scan_rv_show.addItemDecoration(new DividerItemDecoration(this, OrientationHelper.VERTICAL));
         scan_fab_confirm.setVisibility(View.GONE);
     }
@@ -268,6 +269,7 @@ public class ScanActivity extends BaseActivity {
                 {
                     mDevices.get(i)
                             .setRssi(rssi);
+                    break;
                 }
             }
         }
@@ -309,7 +311,7 @@ public class ScanActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mScanAdapter.notifyItemInserted(mDevices.size() - 1);
+                        mScanAdapter.notifyDataSetChanged();
                     }
                 });
             }

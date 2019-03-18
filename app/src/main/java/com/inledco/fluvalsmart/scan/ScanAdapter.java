@@ -55,7 +55,8 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ScanViewHolder
 
     @Override
     public void onBindViewHolder(final ScanViewHolder holder, int position) {
-        final SelectDevice device = mSelectDevices.get(holder.getAdapterPosition());
+//        final SelectDevice device = mSelectDevices.get(holder.getAdapterPosition());
+        final SelectDevice device = mSelectDevices.get(position);
         short devid = device.getPrefer()
                             .getDevId();
         holder.iv_icon.setImageResource(DeviceUtil.getDeviceIcon(devid));

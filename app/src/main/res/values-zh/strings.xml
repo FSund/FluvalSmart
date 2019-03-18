@@ -144,6 +144,7 @@
     <string name="ota_title">设备固件升级</string>
     <string name="ota_upgrade">升级</string>
     <string name="ota_check_upgrade">检查更新</string>
+
     <string name="ota_msg_unsupport_version">设备无法升级,升级最低需要固件版本V1.02.</string>
     <string name="ota_msg_uptodate">固件已经是最新版本.</string>
     <string name="ota_msg_check_version">请检查更新.</string>
@@ -168,7 +169,10 @@
     <string name="title_upgrade_failed">升级失败</string>
     <string name="upgrade_success_msg">请重新登录.</string>
     <string name="upgrade_failed_msg">请重新升级.</string>
-    <string name="ota_warning">"    升级警告: 在升级过程中手机尽量靠近设备, 保持良好通讯, 请不要退出应用或者关闭蓝牙.     设备升级可能不会保留用户设置的参数. 设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.     如果升级失败,可以重新升级."</string>
+    <string name="ota_warning">"\t\t升级警告: 在升级过程中手机尽量靠近设备, 保持良好通讯, 请不要退出应用或者关闭蓝牙.\n
+        设备升级可能不会保留用户设置的参数.\n
+        设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.\n
+        如果升级失败,可以重新升级."</string>
     <string name="failed">失败</string>
     <string name="new_password">新密码</string>
     <string name="confirm_new_password">确认新密码</string>

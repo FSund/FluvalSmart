@@ -10,16 +10,16 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
-import com.inledco.fluvalsmart.scan.ScanActivity;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.scan.ScanActivity;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.liruya.tuner168blemanager.BleHelper;
 import com.liruya.tuner168blemanager.BleManager;
@@ -37,6 +37,10 @@ public class MainActivity extends BaseActivity {
 
     //双击back退出标志位
     private boolean mExiting;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,36 +178,32 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    /**
-     * back按键关闭app时 弹出确认关闭蓝牙dialog
-     *
-     * @param keyCode
-     * @param event
-     * @return
-     */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!mExiting) {
-                mExiting = true;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mExiting = false;
-                    }
-                }, 1500);
-                Toast.makeText(MainActivity.this, R.string.exit_app_tips, Toast.LENGTH_SHORT)
-                     .show();
-            }
-            else {
-                //如果退出时不提示 且设置为退出关闭BLE
-                if (Setting.isExitTurnoffBle(MainActivity.this)) {
-                    mBleHelper.closeBluetooth();
-                }
-                finish();
-            }
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            return;
         }
-        return true;
+        if (!mExiting) {
+            mExiting = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mExiting = false;
+                }
+            }, 1500);
+            Toast.makeText(MainActivity.this, R.string.exit_app_tips, Toast.LENGTH_SHORT)
+                 .show();
+            return;
+        }
+        else {
+            //如果退出时不提示 且设置为退出关闭BLE
+            if (Setting.isExitTurnoffBle(MainActivity.this)) {
+                mBleHelper.closeBluetooth();
+            }
+            finish();
+        }
+        super.onBackPressed();
     }
 
     private void startScanActivity() {

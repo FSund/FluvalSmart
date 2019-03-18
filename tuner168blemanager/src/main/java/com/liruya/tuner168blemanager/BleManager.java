@@ -68,6 +68,9 @@ public class BleManager implements ServiceConnection {
         public void onConnectTimeout(String s) {
             Log.e(TAG, "onConnectTimeout: " + s);
             mValidDevices.remove(s);
+            if (mBleService != null) {
+                mBleService.refresh(s);
+            }
             for (BleListener listener : mBleListeners) {
                 listener.onConnectTimeout(s);
             }
@@ -129,10 +132,12 @@ public class BleManager implements ServiceConnection {
         @Override
         public void onRegRead(String s, String s1, int i, int i1) {
             if (i == BleRegConstants.REG_ADV_MFR_SPC) {
+                Log.e(TAG, "ReadMfr: " + s);
                 for (BleListener listener : mBleListeners) {
                     listener.onReadMfr(s, s1);
                 }
             } else if (i == BleRegConstants.REG_PASSWORD) {
+                Log.e(TAG, "onReadPassword: " + s);
                 byte[] bytes = DataUtil.hexToByteArray(s1);
                 if (bytes != null && bytes.length == 4) {
                     int psw = ((bytes[0] & 0xFF) << 24) | ((bytes[1] & 0xFF) << 16) | ((bytes[2] & 0xFF) << 8) | (bytes[3] & 0xFF);
@@ -145,6 +150,7 @@ public class BleManager implements ServiceConnection {
 
         @Override
         public void onCharacteristicChanged(String s, byte[] bytes) {
+            Log.e(TAG, "onCharacteristicChanged: " + s);
             long t = System.currentTimeMillis();
             if (t - msc > DATA_FRAME_INTERVAL) {
                 mRcvBytes.clear();
@@ -224,6 +230,28 @@ public class BleManager implements ServiceConnection {
         mBleService.stopReadRssi(mac);
     }
 
+//    public void requestHightPriority(@NonNull String mac) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            if (mBleService != null) {
+//                BluetoothGatt gatt = mBleService.getBluetoothGatt(mac);
+//                if (gatt != null) {
+//                    gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
+//                }
+//            }
+//        }
+//    }
+//
+//    public void requestBalancePriority(@NonNull String mac) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            if (mBleService != null) {
+//                BluetoothGatt gatt = mBleService.getBluetoothGatt(mac);
+//                if (gatt != null) {
+//                    gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_BALANCED);
+//                }
+//            }
+//        }
+//    }
+
     public void enableNotification(@NonNull String mac) {
         if (mBleService != null) {
             BluetoothGatt gatt = mBleService.getBluetoothGatt(mac);
@@ -282,14 +310,6 @@ public class BleManager implements ServiceConnection {
      * disconnect all device
      */
     public void disConnectAll() {
-//        if (mBleService != null && mConnectedDevices != null) {
-//            Set<String> adrs = new HashSet<>();
-//            adrs.addAll(mConnectedDevices.keySet());
-//            for (String mac : adrs) {
-//                mBleService.setAutoConnect(mac, false);
-//                mBleService.disconnect(mac);
-//            }
-//        }
         if (mBleService != null) {
             mBleService.disconnectAll();
         }
@@ -375,6 +395,12 @@ public class BleManager implements ServiceConnection {
                         e.printStackTrace();
                     }
                 }
+                try {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -383,6 +409,20 @@ public class BleManager implements ServiceConnection {
         if (mRcvBytes != null) {
             mRcvBytes.clear();
         }
+    }
+
+    public int getConnectState(@NonNull String mac) {
+        if (mBleService == null) {
+            return -1;
+        }
+        return mBleService.getConnectionState(mac);
+    }
+
+    public boolean isConnecting(@NonNull String mac) {
+        if (mBleService == null) {
+            return false;
+        }
+        return mBleService.getConnectionState(mac) == BluetoothProfile.STATE_CONNECTING;
     }
 
     /**
@@ -412,12 +452,10 @@ public class BleManager implements ServiceConnection {
         if (!mBleListeners.contains(listener)) {
             mBleListeners.add(listener);
         }
-        Log.e(TAG, "addBleListener: " + mBleListeners.size());
     }
 
     public void removeBleListener(BleListener listener) {
         mBleListeners.remove(listener);
-        Log.e(TAG, "removeBleListener: " + mBleListeners.size());
     }
 
     public void removeAllBleListeners() {
@@ -428,6 +466,7 @@ public class BleManager implements ServiceConnection {
     public void onServiceConnected(ComponentName name, IBinder service) {
         mBleService = ((BleService.LocalBinder) service).getService(mBleCallBack);
         mBleService.setDecode(true);
+        mBleService.setConnectTimeout(4000);
         //必须调用初始化方法
         mBleService.initialize();
         Log.e(TAG, "onServiceConnected: ");

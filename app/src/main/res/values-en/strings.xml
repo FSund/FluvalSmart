@@ -169,7 +169,10 @@
     <string name="title_upgrade_failed">Upgrade failed</string>
     <string name="upgrade_success_msg">Please re-login.</string>
     <string name="upgrade_failed_msg">Please try again.</string>
-    <string name="ota_warning">"    Upgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.     Updates may alter previously set light parameters. Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).     If update fails, please try again."</string>
+    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.\n
+        Updates may alter previously set light parameters.\n
+        Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).\n
+        If update fails, please try again."</string>
     <string name="failed">Failed</string>
     <string name="new_password">New password</string>
     <string name="confirm_new_password">Confirm new password</string>

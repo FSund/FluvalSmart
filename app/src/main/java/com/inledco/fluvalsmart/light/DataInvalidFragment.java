@@ -8,106 +8,112 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseFragment;
+import com.inledco.fluvalsmart.main.FaqFragment;
 import com.liruya.tuner168blemanager.BleManager;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DataInvalidFragment extends BaseFragment
-{
+public class DataInvalidFragment extends BaseFragment {
     private String mAddress;
     private TextView data_invalid_msg;
+    private ImageButton data_invalid_tip;
 
     private OnRetryClickListener mListener;
 
     static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled( true );
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    public DataInvalidFragment ()
-    {
-        // Required empty public constructor
-    }
-
-    public static DataInvalidFragment newInstance( String address )
-    {
+    public static DataInvalidFragment newInstance(String address) {
         DataInvalidFragment frag = new DataInvalidFragment();
         Bundle bundle = new Bundle();
-        bundle.putString( "address", address );
-        frag.setArguments( bundle );
+        bundle.putString("address", address);
+        frag.setArguments(bundle);
         return frag;
     }
 
     @Override
-    public void onAttach ( Context context )
-    {
-        super.onAttach( context );
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mListener = (OnRetryClickListener) context;
     }
 
     @Override
-    public void onDetach ()
-    {
+    public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
     @Override
-    public void onCreate ( @Nullable Bundle savedInstanceState )
-    {
-        super.onCreate( savedInstanceState );
-        mAddress = getArguments().getString( "address" );
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAddress = getArguments().getString("address");
     }
 
     @Override
-    public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
-    {
-        View view = inflater.inflate( R.layout.fragment_data_invalid, container, false );
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_data_invalid, container, false);
 
-        initView( view );
+        initView(view);
         initEvent();
         initData();
         return view;
     }
 
     @Override
-    protected void initView ( View view )
-    {
-        data_invalid_msg = view.findViewById( R.id.data_invalid_msg );
+    protected void initView(View view) {
+        data_invalid_msg = view.findViewById(R.id.data_invalid_msg);
+        data_invalid_tip = view.findViewById(R.id.data_invalid_tip);
+
+        data_invalid_msg.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_bluetooth_disabled_grey_500_48dp, 0, 0);
     }
 
     @Override
-    protected void initEvent ()
-    {
-        data_invalid_msg.setOnClickListener( new View.OnClickListener() {
+    protected void initEvent() {
+        data_invalid_msg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick ( View v )
-            {
+            public void onClick(View v) {
                 mListener.onRetryClick();
             }
-        } );
+        });
+        data_invalid_tip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startFaqFragment();
+            }
+        });
     }
 
     @Override
-    protected void initData ()
-    {
-        if ( !BleManager.getInstance().isConnected(mAddress) )
+    protected void initData() {
+        if (!BleManager.getInstance()
+                       .isConnected(mAddress))
         {
-            data_invalid_msg.setText( R.string.msg_disconnected );
+            data_invalid_msg.setText(R.string.msg_disconnected);
             return;
         }
-        if ( BleManager.getInstance().isDataValid( mAddress ) )
+        if (BleManager.getInstance()
+                      .isDataValid(mAddress))
         {
-            data_invalid_msg.setText( R.string.msg_get_data_failed );
+            data_invalid_msg.setText(R.string.msg_get_data_failed);
         }
     }
 
-    public interface OnRetryClickListener
-    {
+    private void startFaqFragment() {
+        getActivity().getSupportFragmentManager()
+                     .beginTransaction()
+                     .add(R.id.activity_light, new FaqFragment())
+                     .addToBackStack("")
+                     .commit();
+    }
+
+    public interface OnRetryClickListener {
         void onRetryClick();
     }
 }

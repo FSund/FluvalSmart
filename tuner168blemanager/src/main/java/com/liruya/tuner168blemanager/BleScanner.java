@@ -32,9 +32,9 @@ public class BleScanner {
     /**
      * LeScanCallback (Android Version < 5.0)
      */
-    BluetoothAdapter.LeScanCallback mLeScanCallback;
+    private BluetoothAdapter.LeScanCallback mLeScanCallback;
 
-    private int mScanPeriod = 12000;
+    private int mScanPeriod = 8000;
 
     private boolean mScanning;
 

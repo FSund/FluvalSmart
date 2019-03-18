@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_device_update"
+        android:icon="@mipmap/ic_update_light"
+        android:title=""
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_device_status"
         android:title=""
         android:icon="@drawable/ic_bluetooth_disabled_grey_500_24dp"
@@ -13,12 +19,6 @@
         android:title="@string/find"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_device_update"
-        android:icon="@mipmap/ic_update_light"
-        android:title=""
-        android:visible="false"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/menu_device_rename"
         android:icon="@mipmap/ic_rename"
         android:title="@string/rename"
@@ -27,7 +27,7 @@
         android:id="@+id/menu_device_modpsw"
         android:icon="@mipmap/ic_modify_psw"
         android:title="@string/modify_password"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="never"/>
 
 </menu>

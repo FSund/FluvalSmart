@@ -217,7 +217,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 //                             showUpgradeStatus();
 //                         }
 //                     });
-        mCountDownTimer = new CountDownTimer(3000, 1000) {
+        mCountDownTimer = new CountDownTimer(4000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -475,17 +475,18 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 } else if (mState < STATE_GET_INFO) {
                     readMfr();
                 } else if (mState < STATE_GET_DATA) {
+                    showMessage(R.string.msg_get_device_data);
                     syncDeviceDatetime();
                 }
                 mCountDownTimer.start();
             } else {
                 BleManager.getInstance().disconnectDevice(mAddress);
+                showMessage(R.string.msg_connecting_device);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         while (BleManager.getInstance().isConnected(mAddress));
                         BleManager.getInstance().connectDevice(mAddress);
-                        showMessage(R.string.msg_connecting_device);
                         mCountDownTimer.start();
                     }
                 }).start();

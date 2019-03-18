@@ -1,21 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:padding="64dp"
               tools:context="com.inledco.fluvalsmart.light.DataInvalidFragment">
 
     <TextView
         android:id="@+id/data_invalid_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackground"
         android:gravity="center_horizontal"
         android:padding="8dp"
-        android:background="@drawable/ripple_theme"
-        android:drawableTop="@drawable/ic_bluetooth_disabled_grey_500_48dp"
+        android:text="@string/msg_disconnected"
         android:textColor="@color/colorTextSecondDark"
-        android:text="@string/msg_disconnected"/>
+        app:layout_constraintBottom_toTopOf="@+id/data_invalid_tip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/data_invalid_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_error_white_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>
