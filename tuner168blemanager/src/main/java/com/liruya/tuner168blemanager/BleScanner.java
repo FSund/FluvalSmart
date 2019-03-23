@@ -2,6 +2,7 @@ package com.liruya.tuner168blemanager;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
@@ -146,7 +147,10 @@ public class BleScanner {
             filters.add(filter);
             ScanSettings scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                                                                   .build();
-            BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner().startScan(filters, scanSettings, mScanCallback);
+            BluetoothLeScanner scanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
+            if (scanner != null) {
+                scanner.startScan(filters, scanSettings, mScanCallback);
+            }
         } else {
             BluetoothAdapter.getDefaultAdapter()
                             .startLeScan(TARGET_UUIDS, mLeScanCallback);
@@ -159,9 +163,10 @@ public class BleScanner {
         if (mScanning) {
             mScanning = false;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                BluetoothAdapter.getDefaultAdapter()
-                                .getBluetoothLeScanner()
-                                .stopScan(mScanCallback);
+                BluetoothLeScanner scanner = BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
+                if (scanner != null) {
+                    scanner.stopScan(mScanCallback);
+                }
             } else {
                 BluetoothAdapter.getDefaultAdapter()
                                 .stopLeScan(mLeScanCallback);

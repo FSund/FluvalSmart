@@ -12,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: " + requestCode + "  " + resultCode);
         switch (requestCode) {
             case BLUETOOTH_REQUEST_ENABLE_CODE:
                 if (resultCode == Activity.RESULT_OK) {
@@ -84,6 +86,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissions == null || grantResults == null || permissions.length < 1 || grantResults.length < 1) {
+            return;
+        }
         if (requestCode == PERMISSON_REQUEST_COARSE_CODE && Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startScanActivity();
@@ -106,6 +111,10 @@ public class MainActivity extends BaseActivity {
         menuItemBleSearch.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+//                if (!mBleHelper.isBluetoothEnabled()) {
+//                    mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_AND_SCAN_CODE);
+//                    return true;
+//                }
                 if (mBleHelper.checkLocationPermission()) {
                     startScanActivity();
                 } else {

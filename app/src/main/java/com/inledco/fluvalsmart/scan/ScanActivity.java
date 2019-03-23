@@ -3,21 +3,31 @@ package com.inledco.fluvalsmart.scan;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ble.api.DataUtil;
@@ -43,6 +53,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ScanActivity extends BaseActivity {
+    private final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
     private final int SCAN_CODE = 3;
     private Toolbar scan_toolbar;
     private ToggleButton scan_tb_scan;
@@ -59,6 +70,24 @@ public class ScanActivity extends BaseActivity {
     private ScanAdapter mScanAdapter;
     private Handler mHandler;
     private final BleHelper mBleHelper = new BleHelper(this);
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (TextUtils.isEmpty(action)) {
+                return;
+            }
+            if (TextUtils.equals(action, BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_OFF);
+                if (state == BluetoothAdapter.STATE_OFF) {
+                    scan_tb_scan.setChecked(false);
+                    scan_pb_scanning.setVisibility(View.GONE);
+                    stopScan();
+                }
+            }
+        }
+    };
 
     private final BleScanListener mScanListener = new BleScanListener() {
         @Override
@@ -112,6 +141,7 @@ public class ScanActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(mReceiver);
         scan_tb_scan.setChecked(false);
         stopScan();
         BleManager.getInstance().removeBleListener(mBleListener);
@@ -128,17 +158,42 @@ public class ScanActivity extends BaseActivity {
         scan_tb_scan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                scan_pb_scanning.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 if (isChecked) {
-                    startScan();
+                    if (mBleHelper.isBluetoothEnabled()) {
+                        startScan();
+                    } else {
+                        mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_CODE);
+                    }
                 }
                 else {
                     stopScan();
                 }
+                scan_pb_scanning.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
         scan_tb_scan.setChecked(true);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: " + requestCode + " " + resultCode);
+        if (requestCode == BLUETOOTH_REQUEST_ENABLE_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                scan_tb_scan.setChecked(true);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        startScan();
+//                    }
+//                }, 500);
+            } else {
+                scan_tb_scan.setChecked(false);
+                Toast.makeText(ScanActivity.this, R.string.snackbar_bluetooth_denied, Toast.LENGTH_LONG)
+                     .show();
+            }
+        }
     }
 
     @SuppressLint ("RestrictedApi")
@@ -158,6 +213,8 @@ public class ScanActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
         mHandler = new Handler() {
             @SuppressLint ("RestrictedApi")
             @Override

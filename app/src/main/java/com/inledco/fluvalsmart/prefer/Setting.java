@@ -1,9 +1,12 @@
 package com.inledco.fluvalsmart.prefer;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -182,6 +185,46 @@ public class Setting
         }
     }
 
+    public static Locale getLocale(Context context) {
+        String lang = getLanguage( context );
+        if ( TextUtils.isEmpty( lang ) )
+        {
+            lang = KEY_LANGUAGE_AUTO;
+        }
+        Locale locale = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList localeList = LocaleList.getDefault();
+            if (localeList != null && localeList.size() > 0) {
+                locale = localeList.get(0);
+            }
+        } else {
+            locale = Locale.getDefault();
+        }
+        if (KEY_LANGUAGE_ENGLISH.equals(lang)) {
+            locale = Locale.ENGLISH;
+        } else if (KEY_LANGUAGE_GERMANY.equals(lang)) {
+            locale = Locale.GERMANY;
+        } else if (KEY_LANGUAGE_FRENCH.equals(lang)) {
+            locale = Locale.FRENCH;
+        } else if (KEY_LANGUAGE_SPANISH.equals(lang)) {
+            locale = new Locale( "es", "ES" );
+        } else if (KEY_LANGUAGE_CHINESE.equals(lang)) {
+            locale = Locale.SIMPLIFIED_CHINESE;
+        }
+        return locale;
+    }
+
+    @TargetApi (Build.VERSION_CODES.N)
+    public static Context updateResources(Context context) {
+        Resources resources = context.getResources();
+        Locale locale = getLocale(context);// getSetLocale方法是获取新设置的语言
+
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        configuration.setLocales(new LocaleList(locale));
+        return context.createConfigurationContext(configuration);
+    }
+
     public static void changeAppLanguage ( Context context )
     {
         Resources res = context.getResources();
@@ -192,31 +235,10 @@ public class Setting
         {
             lang = KEY_LANGUAGE_AUTO;
         }
-        switch ( lang )
-        {
-            case KEY_LANGUAGE_AUTO:
-                config.setLocale( Resources.getSystem()
-                                           .getConfiguration().locale );
-                break;
-            case KEY_LANGUAGE_ENGLISH:
-                config.setLocale( Locale.ENGLISH );
-                break;
-            case KEY_LANGUAGE_GERMANY:
-                config.setLocale( Locale.GERMANY );
-                break;
-            case KEY_LANGUAGE_FRENCH:
-                config.setLocale( Locale.FRENCH );
-                break;
-            case KEY_LANGUAGE_SPANISH:
-                config.setLocale( new Locale( "es", "ES" ) );
-                break;
-            case KEY_LANGUAGE_CHINESE:
-                config.setLocale( Locale.SIMPLIFIED_CHINESE );
-                break;
-            default:
-                config.setLocale( Resources.getSystem()
-                                           .getConfiguration().locale );
-                break;
+        Locale locale = getLocale(context);
+        config.setLocale(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocales(new LocaleList(locale));
         }
         res.updateConfiguration( config, dm );
     }

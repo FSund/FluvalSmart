@@ -1,17 +1,13 @@
 package com.inledco.fluvalsmart.main;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -37,6 +33,7 @@ import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperCallback;
 import com.inledco.itemtouchhelperextension.ItemTouchHelperExtension;
+import com.liruya.tuner168blemanager.BleHelper;
 import com.liruya.tuner168blemanager.BleManager;
 
 import java.util.ArrayList;
@@ -56,6 +53,8 @@ public class DeviceFragment extends BaseFragment
 
     private List< BaseDevice > mDevices;
     private DeviceAdapter mDeviceAdapter;
+
+    private BleHelper mBleHelper;
 
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
@@ -193,15 +192,17 @@ public class DeviceFragment extends BaseFragment
             @Override
             public void onClick ( View v )
             {
-                if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-                     ContextCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED )
-                {
-                    startScanActivity();
+                if (mBleHelper == null) {
+                    mBleHelper = new BleHelper((AppCompatActivity) getActivity());
                 }
-                else
-                {
-                    ActivityCompat.requestPermissions( getActivity(), new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
-                                                       PERMISSON_REQUEST_COARSE_CODE );
+//                if (!mBleHelper.isBluetoothEnabled()) {
+//                    mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_AND_SCAN_CODE);
+//                    return;
+//                }
+                if (mBleHelper.checkLocationPermission()) {
+                    startScanActivity();
+                } else {
+                    mBleHelper.requestLocationPermission(PERMISSON_REQUEST_COARSE_CODE);
                 }
             }
         } );

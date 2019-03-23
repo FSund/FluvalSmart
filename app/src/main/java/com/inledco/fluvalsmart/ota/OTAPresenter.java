@@ -203,7 +203,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                           .connectDevice(mAddress);
                 while (BleManager.getInstance()
                                  .isDataValid(mAddress) == false) {
-                    if (System.currentTimeMillis() - st > 3000) {
+                    if (System.currentTimeMillis() - st > 5000) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -274,10 +274,20 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 }
                 final int device_version = (mDeviceMajorVersion << 8) | mDeviceMinorVersion;
                 if (device_version == 0) {
-                    mView.showDeviceVersion(getString(R.string.failed));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.showDeviceVersion(getString(R.string.failed));
+                        }
+                    });
                 }
                 if (mRemoteFirmware == null) {
-                    mView.showRemoteVersion(getString(R.string.failed));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.showRemoteVersion(getString(R.string.failed));
+                        }
+                    });
                 }
                 if (device_version == 0 || mRemoteFirmware == null) {
                     mProcessing = false;

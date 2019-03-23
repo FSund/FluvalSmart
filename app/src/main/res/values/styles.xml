@@ -19,7 +19,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:windowBackground">@color/colorWindowBackgroud</item>
         <item name="android:colorBackground">@color/colorWindowBackgroud</item>
-        <item name="android:fontFamily">@font/calibri</item>
+        <!--<item name="android:fontFamily">@font/calibri</item>-->
         <item name="android:buttonStyle">@style/ButtonTheme</item>
     </style>
 
@@ -33,7 +33,7 @@
         <item name="android:textColorPrimary">@color/colorTextPrimaryLight</item>
         <item name="android:textColorSecondary">@color/colorTextSecondLight</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:fontFamily">@font/calibri</item>
+        <!--<item name="android:fontFamily">@font/calibri</item>-->
         <item name="android:windowBackground">@drawable/shape_dialog_background</item>
     </style>
 
@@ -43,7 +43,7 @@
 
     <style name="TextHint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/calibri</item>
+        <!--<item name="android:fontFamily">@font/calibri</item>-->
     </style>
 
     <style name="DesignTheme" parent="Theme.Design.Light">
