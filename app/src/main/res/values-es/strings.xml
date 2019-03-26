@@ -169,4 +169,9 @@
         Asegúrese de utilizar la versión más reciente de la aplicación.\n
         Es necesario actualizar la aplicación a la versión más reciente.\n
         Si la actualización falla, intente de nuevo."</string>
+    <string name="find">Detectar</string>
+    <string name="tip_enable_location">Ubicación desactivada. Algunos sistemas necesitan la función de ubicación para detectar dispositivos con Bluetooth.</string>
+    <string name="new_device_name">Nombre del nuevo dispositivo</string>
+    <string name="turnon_location_permission">Activar la función de ubicación</string>
+    <string name="msg_turnon_location_permission">La función de ubicación debe estar activada para detectar dispositivos.</string>
 </resources>

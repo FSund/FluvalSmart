@@ -180,4 +180,5 @@
     <string name="profile_name">配置文件名称</string>
     <string name="retrieve_key">找回密钥</string>
     <string name="find">查找</string>
+    <string name="tip_enable_location">定位已关闭, 部分手机需要开启定位功能才能扫描蓝牙设备。</string>
 </resources>

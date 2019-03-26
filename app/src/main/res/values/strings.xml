@@ -138,8 +138,8 @@
     <string name="timepoints_set">{count} Timepoints Set</string>
     <string name="hint_input_retrieve_key">Please input the retrive key of the device</string>
     <string name="tip_retrieve_password">If you have forgotten your password, please email FluvalSmartApp1@gmail.com with your device information to obtain a retrieve key. Click on the Copy Image button to obtain device information. Next, enter retrieve key and click on the Retrieve Button to obtain your device password.</string>
-    <string name="turnon_location_permission">Turnon location permission</string>
-    <string name="msg_turnon_location_permission">Scan bluetooth device must turnon location permission.</string>
+    <string name="turnon_location_permission">Enable location permission</string>
+    <string name="msg_turnon_location_permission">Location permission must be enabled when scanning.</string>
     <string name="password">Password</string>
     <string name="factory_password">Factory password is 000000.</string>
     <string name="faq_msg">FAQ on Connectivity Issue\n
@@ -259,7 +259,7 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="new_device_name">New device name</string>
     <string name="profile_name">Profile name</string>
     <string name="retrieve_key">Retrieve key</string>
-    <string name="tip_enable_location">Location disabled, a few phones need enable location to scan bluetooth devices.</string>
+    <string name="tip_enable_location">Location disabled. Some systems require location permission for Bluetooth device scanning.</string>
     <string name="find">Find</string>
 
     <!-- TODO: Remove or change this placeholder text -->

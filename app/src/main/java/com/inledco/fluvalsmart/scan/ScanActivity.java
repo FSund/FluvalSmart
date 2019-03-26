@@ -81,8 +81,13 @@ public class ScanActivity extends BaseActivity {
             if (TextUtils.equals(action, BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_OFF);
                 if (state == BluetoothAdapter.STATE_OFF) {
-                    scan_tb_scan.setChecked(false);
-                    scan_pb_scanning.setVisibility(View.GONE);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            scan_tb_scan.setChecked(false);
+                            scan_pb_scanning.setVisibility(View.GONE);
+                        }
+                    });
                     stopScan();
                 }
             }
@@ -92,12 +97,17 @@ public class ScanActivity extends BaseActivity {
     private final BleScanListener mScanListener = new BleScanListener() {
         @Override
         public void onScanTimeout() {
-            scan_tb_scan.setChecked(false);
-            if (mDevices.size() == 0 && !mBleHelper.isLocationEnabled()) {
-                scan_tv_msg.setVisibility(View.VISIBLE);
-            } else {
-                scan_tv_msg.setVisibility(View.GONE);
-            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    scan_tb_scan.setChecked(false);
+                    if (mDevices.size() == 0 && !mBleHelper.isLocationEnabled()) {
+                        scan_tv_msg.setVisibility(View.VISIBLE);
+                    } else {
+                        scan_tv_msg.setVisibility(View.GONE);
+                    }
+                }
+            });
         }
 
         @Override
@@ -182,12 +192,6 @@ public class ScanActivity extends BaseActivity {
         if (requestCode == BLUETOOTH_REQUEST_ENABLE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 scan_tb_scan.setChecked(true);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        startScan();
-//                    }
-//                }, 500);
             } else {
                 scan_tb_scan.setChecked(false);
                 Toast.makeText(ScanActivity.this, R.string.snackbar_bluetooth_denied, Toast.LENGTH_LONG)

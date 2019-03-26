@@ -167,4 +167,9 @@
         Les versions précédentes de l’application ne contrôleront plus l’appareil à la suite de la mise à jour du micrologiciel; donc, s’assurer que la plus récente version de
         l’application est installée (requise pour la mise à jour).\n
         Si la mise à jour échoue, essayer de nouveau. "</string>
+    <string name="find">Détecter</string>
+    <string name="tip_enable_location">Service de localisation désactivé. Certains appareils nécessitent l’autorisation d’utiliser les données de localisation avant d’activer le mode de détection Bluetooth.</string>
+    <string name="new_device_name">Nom du nouvel appareil</string>
+    <string name="turnon_location_permission">Activer le service de localisation</string>
+    <string name="msg_turnon_location_permission">Le service de localisation doit être activé pour détecter un appareil.</string>
 </resources>

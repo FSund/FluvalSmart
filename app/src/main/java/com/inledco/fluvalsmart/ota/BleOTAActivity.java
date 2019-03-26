@@ -163,22 +163,37 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         }
     }
 
-    public void showDeviceVersion(String version)
+    public void showDeviceVersion(final String version)
     {
-        ota_tv_device_version.setText(getString(R.string.device_frimware_version) + version);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ota_tv_device_version.setText(getString(R.string.device_frimware_version) + version);
+            }
+        });
     }
 
-    public void showRemoteVersion(String version)
+    public void showRemoteVersion(final String version)
     {
-        ota_tv_remote_version.setText(getString(R.string.latest_firmware_version) + version);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ota_tv_remote_version.setText(getString(R.string.latest_firmware_version) + version);
+            }
+        });
     }
 
     public void showDeviceConnected ()
     {
         if ( menu_connect_status != null )
         {
-            menu_connect_status.setIcon(R.drawable.ic_bluetooth_connected_white_24dp);
-            menu_connect_status.setChecked( true );
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    menu_connect_status.setIcon(R.drawable.ic_bluetooth_connected_white_24dp);
+                    menu_connect_status.setChecked( true );
+                }
+            });
         }
     }
 
@@ -186,8 +201,13 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     {
         if ( menu_connect_status != null )
         {
-            menu_connect_status.setIcon(R.drawable.ic_bluetooth_disabled_grey_500_24dp);
-            menu_connect_status.setChecked( false );
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    menu_connect_status.setIcon(R.drawable.ic_bluetooth_disabled_grey_500_24dp);
+                    menu_connect_status.setChecked( false );
+                }
+            });
         }
     }
 

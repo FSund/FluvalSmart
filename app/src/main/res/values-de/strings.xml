@@ -167,4 +167,9 @@
         Vorherige App-Versionen können das Gerät nach der Firmware-Aktualisierung nicht mehr steuern. Stellen Sie daher sicher, dass die neueste App-Version installiert ist (für
         die Aufrüstung notwendig).\n
         Wenn die Aktualisierung fehlschlägt, versuchen Sie es bitte erneut."</string>
+    <string name="find">Suchen</string>
+    <string name="tip_enable_location">Standortzuordnung deaktiviert. Einige Systeme benötigen eine Standortzuordnung für das Scannen von Bluetooth-Geräten.</string>
+    <string name="new_device_name">Neuer Gerätenamen</string>
+    <string name="turnon_location_permission">Standortzuordnung aktivieren</string>
+    <string name="msg_turnon_location_permission">Die Standortzuordnung muss beim Scannen aktiviert sein.</string>
 </resources>

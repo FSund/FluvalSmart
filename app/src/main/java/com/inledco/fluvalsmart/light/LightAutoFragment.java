@@ -1106,7 +1106,6 @@ public class LightAutoFragment extends BaseFragment {
                 }
             }
         });
-        dialog.show();
     }
 
     private void showTimePickerDialog(TimePickerDialog.OnTimeSetListener listener, int hour, int minute) {

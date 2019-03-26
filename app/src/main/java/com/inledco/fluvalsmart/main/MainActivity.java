@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity {
     private MenuItem menuItemBleSearch;
     private BottomNavigationView main_bottom_navigation;
 
-    private BleHelper mBleHelper;
+    private final BleHelper mBleHelper = new BleHelper(this);
 
     //双击back退出标志位
     private boolean mExiting;
@@ -111,10 +111,6 @@ public class MainActivity extends BaseActivity {
         menuItemBleSearch.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-//                if (!mBleHelper.isBluetoothEnabled()) {
-//                    mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_AND_SCAN_CODE);
-//                    return true;
-//                }
                 if (mBleHelper.checkLocationPermission()) {
                     startScanActivity();
                 } else {
@@ -138,7 +134,6 @@ public class MainActivity extends BaseActivity {
     protected void initData() {
         BleManager.getInstance()
                   .bindService(MainActivity.this);
-        mBleHelper = new BleHelper(MainActivity.this);
         if (mBleHelper.checkBleSupported()) {
             if (mBleHelper.isBluetoothEnabled()
                 || (Setting.isAutoTurnonBle(MainActivity.this) && mBleHelper.autoOpenBluetooth())) {

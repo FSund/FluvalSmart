@@ -44,6 +44,7 @@ import java.util.List;
  */
 public class DeviceFragment extends BaseFragment
 {
+    private final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
     private final int PERMISSON_REQUEST_COARSE_CODE = 2;
     private final int SCAN_CODE = 3;
 
@@ -121,10 +122,17 @@ public class DeviceFragment extends BaseFragment
             @Override
             public void onClickContent ( int position )
             {
-                BaseDevice device = mDevices.get( position );
-                Intent intent = new Intent( getContext(), LightActivity.class );
-                intent.putExtra( "DevicePrefer", device.getDevicePrefer() );
-                startActivity( intent );
+                if (mBleHelper == null) {
+                    mBleHelper = new BleHelper((AppCompatActivity) getActivity());
+                }
+                if (mBleHelper.isBluetoothEnabled()) {
+                    BaseDevice device = mDevices.get(position);
+                    Intent intent = new Intent(getContext(), LightActivity.class);
+                    intent.putExtra("DevicePrefer", device.getDevicePrefer());
+                    startActivity(intent);
+                } else {
+                    mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_CODE);
+                }
             }
 
             @Override
@@ -195,10 +203,6 @@ public class DeviceFragment extends BaseFragment
                 if (mBleHelper == null) {
                     mBleHelper = new BleHelper((AppCompatActivity) getActivity());
                 }
-//                if (!mBleHelper.isBluetoothEnabled()) {
-//                    mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_AND_SCAN_CODE);
-//                    return;
-//                }
                 if (mBleHelper.checkLocationPermission()) {
                     startScanActivity();
                 } else {

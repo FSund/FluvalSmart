@@ -113,13 +113,8 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
 
             @Override
             public void onConnectTimeout() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.showDeviceDisconnected();
-                        mView.showMessage(getString(R.string.ota_disconnect));
-                    }
-                });
+                mView.showDeviceDisconnected();
+                mView.showMessage(getString(R.string.ota_disconnect));
             }
 
             @Override
@@ -129,24 +124,14 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
 
             @Override
             public void onDisconnected() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.showDeviceDisconnected();
-                        mView.showMessage(getString(R.string.ota_disconnect));
-                    }
-                });
+                mView.showDeviceDisconnected();
+                mView.showMessage(getString(R.string.ota_disconnect));
             }
 
             @Override
             public void onDataValid() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.showDeviceConnected();
-                        mView.showMessage(getString(R.string.ota_connect_success));
-                    }
-                });
+                mView.showDeviceConnected();
+                mView.showMessage(getString(R.string.ota_connect_success));
             }
 
             @Override
@@ -191,12 +176,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 long st = System.currentTimeMillis();
                 while (System.currentTimeMillis() - st < 480);
                 st = System.currentTimeMillis();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mView.showMessage(getString(R.string.ota_connecting));
-                    }
-                });
+                mView.showMessage(getString(R.string.ota_connecting));
                 BleManager.getInstance()
                           .refresh(mAddress);
                 BleManager.getInstance()
@@ -204,12 +184,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 while (BleManager.getInstance()
                                  .isDataValid(mAddress) == false) {
                     if (System.currentTimeMillis() - st > 5000) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mView.showMessage(getString(R.string.ota_disconnect));
-                            }
-                        });
+                        mView.showMessage(getString(R.string.ota_disconnect));
                         mProcessing = false;
                         return;
                     }
@@ -230,41 +205,26 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                                  @Override
                                  public void onFailure(Call call, IOException e) {
                                      Log.e(TAG, "onFailure: " + e.getMessage());
-                                     runOnUiThread(new Runnable() {
-                                         @Override
-                                         public void run() {
-                                             mView.showRemoteVersion(getString(R.string.failed));
-                                         }
-                                     });
+                                     mView.showRemoteVersion(getString(R.string.failed));
                                      mReadRemoteVersion = true;
                                  }
 
                                  @Override
                                  public void onError(int code, final String msg) {
-                                     runOnUiThread(new Runnable() {
-                                         @Override
-                                         public void run() {
-                                             if (msg == null) {
-                                                 mView.showMessage(getString(R.string.ota_msg_remote_not_exists));
-                                             }
-                                             else {
-                                                 mView.showMessage(msg);
-                                             }
-                                             mView.showRemoteVersion(getString(R.string.failed));
-                                         }
-                                     });
+                                     if (msg == null) {
+                                         mView.showMessage(getString(R.string.ota_msg_remote_not_exists));
+                                     }
+                                     else {
+                                         mView.showMessage(msg);
+                                     }
+                                     mView.showRemoteVersion(getString(R.string.failed));
                                      mReadRemoteVersion = true;
                                  }
 
                                  @Override
                                  public void onSuccess(final RemoteFirmware result) {
                                      mRemoteFirmware = result;
-                                     runOnUiThread(new Runnable() {
-                                         @Override
-                                         public void run() {
-                                             mView.showRemoteVersion("" + result.getMajor_version() + "." + df.format(result.getMinor_version()));
-                                         }
-                                     });
+                                     mView.showRemoteVersion("" + result.getMajor_version() + "." + df.format(result.getMinor_version()));
                                      mReadRemoteVersion = true;
                                  }
                              });
@@ -274,20 +234,10 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 }
                 final int device_version = (mDeviceMajorVersion << 8) | mDeviceMinorVersion;
                 if (device_version == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mView.showDeviceVersion(getString(R.string.failed));
-                        }
-                    });
+                    mView.showDeviceVersion(getString(R.string.failed));
                 }
                 if (mRemoteFirmware == null) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mView.showRemoteVersion(getString(R.string.failed));
-                        }
-                    });
+                    mView.showRemoteVersion(getString(R.string.failed));
                 }
                 if (device_version == 0 || mRemoteFirmware == null) {
                     mProcessing = false;
@@ -295,34 +245,28 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 }
                 if (device_version < OTA_SUPPORT_LOWEST_VERSION) {
                     mProcessing = false;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mView.showMessage(getString(R.string.ota_msg_unsupport_version));
-                        }
-                    });
+                    mView.showMessage(getString(R.string.ota_msg_unsupport_version));
                     return;
                 }
                 final int remote_version = (mRemoteFirmware.getMajor_version() << 8) | mRemoteFirmware.getMinor_version();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mTestMode || device_version < remote_version) {
-                            if (!flag) {
-                                String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format(mRemoteFirmware.getMinor_version());
-                                final String msg = getString(R.string.ota_device_firmware_upgradable).replace("Vxx", v);
+                if (mTestMode || device_version < remote_version) {
+                    if (!flag) {
+                        String v = "V" + mRemoteFirmware.getMajor_version() + "." + df.format(mRemoteFirmware.getMinor_version());
+                        final String msg = getString(R.string.ota_device_firmware_upgradable).replace("Vxx", v);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 mView.showUpgradeConfirmDialog(msg);
                             }
-                            else {
-                                enterBootloader();
-                            }
-                        }
-                        else {
-                            mView.showMessage(getString(R.string.ota_firmware_newest));
-                            mProcessing = false;
-                        }
+                        });
                     }
-                });
+                    else {
+                        enterBootloader();
+                    }
+                } else {
+                    mView.showMessage(getString(R.string.ota_firmware_newest));
+                    mProcessing = false;
+                }
             }
         };
         new Thread(runnable).start();
@@ -352,35 +296,25 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                              public void onProgress(long total, long current) {
                                  final float percent = (float) current / total;
                                  final DecimalFormat df = new DecimalFormat("0.0%");
-                                 runOnUiThread(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         mView.showUpgradeProgress(df.format(percent) + "\r\n");
-                                     }
-                                 });
+                                 mView.showUpgradeProgress(df.format(percent) + "\r\n");
                              }
 
                              @Override
                              public void onSuccess(File file) {
                                  mFirmwareFile = file;
-                                 runOnUiThread(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         mView.showMessage(getString(R.string.ota_download_success));
-                                         if (mFirmwareFile == null ||
-                                             !mFirmwareFile.exists() ||
-                                             (!mFirmwareFile.getName()
-                                                            .endsWith(".txt") &&
-                                              !mFirmwareFile.getName()
-                                                            .endsWith(".hex")))
-                                         {
-                                             mProcessing = false;
-                                             mView.showMessage(getString(R.string.ota_firmware_invalid));
-                                             return;
-                                         }
-                                         convertFirmware();
-                                     }
-                                 });
+                                 mView.showMessage(getString(R.string.ota_download_success));
+                                 if (mFirmwareFile == null ||
+                                     !mFirmwareFile.exists() ||
+                                     (!mFirmwareFile.getName()
+                                                    .endsWith(".txt") &&
+                                      !mFirmwareFile.getName()
+                                                    .endsWith(".hex")))
+                                 {
+                                     mProcessing = false;
+                                     mView.showMessage(getString(R.string.ota_firmware_invalid));
+                                     return;
+                                 }
+                                 convertFirmware();
                              }
                          });
         }
@@ -515,25 +449,15 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
         byte[] mfr = DataUtil.hexToByteArray(s.replace(" ", ""));
         short devid;
         if (mfr == null || mfr.length < 4) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mView.showDeviceVersion("Failed");
-                }
-            });
+            mView.showDeviceVersion(getString(R.string.failed));
         }
         else {
             devid = (short) (((mfr[0] & 0xFF) << 8) | (mfr[1] & 0xFF));
             mDevid = devid;
             mDeviceMajorVersion = mfr[2] & 0xFF;
             mDeviceMinorVersion = mfr[3] & 0xFF;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    DecimalFormat df = new DecimalFormat("00");
-                    mView.showDeviceVersion("" + mDeviceMajorVersion + "." + df.format(mDeviceMinorVersion));
-                }
-            });
+            DecimalFormat df = new DecimalFormat("00");
+            mView.showDeviceVersion("" + mDeviceMajorVersion + "." + df.format(mDeviceMinorVersion));
         }
     }
 
@@ -698,12 +622,14 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                         BleManager.getInstance()
                                   .disconnectDevice(mAddress);
                         mView.showMessage(getString(R.string.ota_reset_tobootloader));
+                        Log.e(TAG, "decodeReceiveData: reset enter bootloader");
                         BleManager.getInstance()
                                   .refresh(mAddress);
+                        //在UI线程中 使用Handler
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new Handler().postDelayed(new Runnable() {
+                                mHandler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         mView.showRepowerDialog();
