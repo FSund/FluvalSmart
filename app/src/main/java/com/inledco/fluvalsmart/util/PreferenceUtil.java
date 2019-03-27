@@ -32,6 +32,9 @@ public class PreferenceUtil
      */
     public static void setObjectToPrefer( Context context, String fileName, Object object, String key)
     {
+        if (context == null || TextUtils.isEmpty(fileName) || TextUtils.isEmpty(key)) {
+            return;
+        }
         SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
         if ( object == null )
         {
@@ -71,6 +74,9 @@ public class PreferenceUtil
      */
     public static Object getObjectFromPrefer(Context context, String fileName, String key)
     {
+        if (context == null || TextUtils.isEmpty(fileName) || TextUtils.isEmpty(key)) {
+            return null;
+        }
         SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
         String objectStr = sp.getString( key, "" );
         if ( objectStr == null || objectStr.equals( "" ) )
@@ -120,6 +126,9 @@ public class PreferenceUtil
      */
     public static <T> HashMap<String, T> getAllObjectMapFromPrefer ( Context context, String fileName )
     {
+        if (context == null || TextUtils.isEmpty(fileName)) {
+            return null;
+        }
         HashMap<String, T> objects = new HashMap<>();
         SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
         for ( String key : sp.getAll()

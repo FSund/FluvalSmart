@@ -36,7 +36,7 @@
                     android:background="#55000000"
                     android:text="@string/item_morning"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
 
                 <TextView
                     android:id="@+id/auto_sunrs_time"
@@ -65,7 +65,7 @@
                     android:background="#55000000"
                     android:text="@string/item_midday"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
 
                 <TextView
                     android:id="@+id/auto_midday_brt"
@@ -95,7 +95,7 @@
                     android:background="#55000000"
                     android:text="@string/item_evening"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
                 <TextView
                     android:id="@+id/auto_sunset_time"
                     android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     android:background="#55000000"
                     android:text="@string/item_night"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
 
                 <TextView
                     android:id="@+id/auto_night_brt"
@@ -155,7 +155,7 @@
                     android:background="#55000000"
                     android:text="@string/item_turnoff"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
                 <TextView
                     android:id="@+id/auto_turnoff_tmr"
                     android:layout_width="match_parent"

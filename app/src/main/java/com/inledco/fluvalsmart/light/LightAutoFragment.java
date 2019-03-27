@@ -288,6 +288,9 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void refreshData() {
+        if (mLightAuto == null) {
+            return;
+        }
         DecimalFormat df = new DecimalFormat("00");
         int sunrise_starthour = mLightAuto.getSunrise()
                                           .getStartHour();
@@ -669,6 +672,9 @@ public class LightAutoFragment extends BaseFragment {
 
                         @Override
                         public void onUpdate(final int tm) {
+                            if (getActivity() == null) {
+                                return;
+                            }
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -1106,6 +1112,7 @@ public class LightAutoFragment extends BaseFragment {
                 }
             }
         });
+        dialog.show();
     }
 
     private void showTimePickerDialog(TimePickerDialog.OnTimeSetListener listener, int hour, int minute) {

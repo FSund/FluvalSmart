@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
         }
         getSupportFragmentManager().beginTransaction()
                                    .replace(R.id.main_fl_show, new DeviceFragment())
-                                   .commit();
+                                   .commitAllowingStateLoss();
     }
 
     @Override
@@ -163,17 +163,17 @@ public class MainActivity extends BaseActivity {
                 switch (item.getItemId()) {
                     case R.id.menu_btm_device:
                         transaction.replace(R.id.main_fl_show, new DeviceFragment())
-                                   .commit();
+                                   .commitAllowingStateLoss();
                         menuItemBleSearch.setVisible(true);
                         break;
                     case R.id.menu_btm_news:
                         transaction.replace(R.id.main_fl_show, new NewsFragment())
-                                   .commit();
+                                   .commitAllowingStateLoss();
                         menuItemBleSearch.setVisible(false);
                         break;
                     case R.id.menu_btm_setting:
                         transaction.replace(R.id.main_fl_show, new UserFragment())
-                                   .commit();
+                                   .commitAllowingStateLoss();
                         menuItemBleSearch.setVisible(false);
                         break;
                 }

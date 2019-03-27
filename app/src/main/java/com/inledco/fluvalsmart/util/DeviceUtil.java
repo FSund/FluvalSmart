@@ -475,6 +475,9 @@ public class DeviceUtil
     public static Map< String, LightAuto > getAutoPresetProfiles( Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff )
     {
         Map< String, LightAuto > profiles = new LinkedHashMap<>();
+        boolean turnoffEnable = hasTurnoff;
+        byte turnoffHour = (byte) (hasTurnoff ? 0x16 : 0x00);
+        byte turnoffMinute = 0x00;
         switch ( devid )
         {
             case LIGHT_ID_MARINE_500:
@@ -487,19 +490,19 @@ public class DeviceUtil
                                              new byte[]{ 16, 100, 100, 100, 0 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 profiles.put( context.getString( R.string.preset_sunny_reef ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 100, 100, 100, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 profiles.put( context.getString( R.string.preset_color_boost ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 68, 100, 100, 85, 90 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 break;
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
@@ -511,19 +514,19 @@ public class DeviceUtil
                                              new byte[]{ 80, 0, 37, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 profiles.put( context.getString( R.string.preset_lake_malawi ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 50, 0, 37, 100, 0 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 profiles.put( context.getString( R.string.preset_planted ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 84, 20, 73, 100, 80 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 break;
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -542,13 +545,13 @@ public class DeviceUtil
                                              new byte[]{ 68, 100, 100, 90 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 0, 5, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 profiles.put( context.getString( R.string.preset_plant_boost ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 100, 100, 100, 100 },
                                              new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
                                              new byte[]{ 0, 0, 5, 0 },
-                                             true, (byte) 0x16, (byte) 0x00 ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute ) );
                 break;
         }
         if ( hasAutoDynamic )

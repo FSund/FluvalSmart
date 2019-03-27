@@ -246,6 +246,9 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
 
     @SuppressLint ("RestrictedApi")
     private void refreshData() {
+        if (mLightManual == null) {
+            return;
+        }
         rgbw_onoff.setChecked(mLightManual.isOn());
         p1Brt = mLightManual.getCustomP1Values();
         p2Brt = mLightManual.getCustomP2Values();

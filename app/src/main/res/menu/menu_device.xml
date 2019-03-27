@@ -6,7 +6,7 @@
         android:id="@+id/menu_device_update"
         android:icon="@mipmap/ic_update_light"
         android:title=""
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_device_status"

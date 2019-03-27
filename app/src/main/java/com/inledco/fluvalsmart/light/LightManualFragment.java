@@ -132,6 +132,9 @@ public class LightManualFragment extends BaseFragment {
 
     @SuppressLint ("RestrictedApi")
     private void refreshData() {
+        if (mLightManual == null) {
+            return;
+        }
         mChannels = new ArrayList<>();
         Channel[] chns = DeviceUtil.getLightChannel(getContext(), devid);
         for (int i = 0; i < mLightManual.getChnValues().length; i++) {

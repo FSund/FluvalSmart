@@ -57,3 +57,12 @@
 2.  重构蓝牙Module，蓝牙权限 扫描 通讯分离
 3.  重构灯具控制页面代码，采用MVVM模式
 4.  合并OTA Module到app Module
+
+2019.03.27      版本号 13  版本 1.1.1    (prePublish)
+1.  连接和扫描之前检查蓝牙是否开启
+2.  移除calibri字体
+3.  修复Auto模式无法识别旧灯具Profile名称的bug
+4.  修复OTA界面在非UI线程更新界面导致应用停止运行的bug
+5.  OTA蓝牙连接超时时间增加
+6.  移除分屏支持
+7.  修复play console后台显示的崩溃问题
