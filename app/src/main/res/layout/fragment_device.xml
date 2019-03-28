@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.inledco.fluvalsmart.fragment.DeviceFragment">
+    tools:context="com.inledco.fluvalsmart.main.DeviceFragment">
 
     <ImageView
         android:id="@+id/device_iv_add"
@@ -17,6 +17,7 @@
         android:id="@+id/device_tv_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorTextPrimaryDark"
         android:text="@string/device_press_to_scan"/>
 
     <android.support.v7.widget.RecyclerView

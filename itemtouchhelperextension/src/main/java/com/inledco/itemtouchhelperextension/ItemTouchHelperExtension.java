@@ -457,11 +457,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         int[] location = new int[2];
         child.getLocationOnScreen(location);
         Rect rect = new Rect(location[0], location[1], location[0] + child.getWidth(), location[1] + child.getHeight());
-        if (rect.contains(x, y) && ViewCompat.hasOnClickListeners(child)
-            && child.getVisibility() == View.VISIBLE) {
-            return true;
-        }
-        return false;
+        return rect.contains(x, y) && ViewCompat.hasOnClickListeners(child) && child.getVisibility() == View.VISIBLE;
     }
 
     /**
@@ -1368,7 +1364,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
      * An interface which can be implemented by LayoutManager for better integration with
      * {@link ItemTouchHelperExtension}.
      */
-    public static interface ViewDropHandler {
+    public interface ViewDropHandler {
 
         /**
          * Called by the {@link ItemTouchHelperExtension} after a View is dropped over another View.
@@ -1389,7 +1385,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
          * @param y      The <code>top</code> offset of the View that is being dragged. This value
          *               includes the movement caused by the user.
          */
-        public void prepareForDrop ( View view, View target, int x, int y );
+        void prepareForDrop(View view, View target, int x, int y);
     }
 
     /**

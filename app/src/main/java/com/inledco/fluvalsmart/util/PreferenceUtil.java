@@ -2,8 +2,11 @@ package com.inledco.fluvalsmart.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.SharedPreferencesCompat;
+import android.text.TextUtils;
 import android.util.Base64;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,18 +26,20 @@ public class PreferenceUtil
     /**
      * 储存对象到SharedPreference
      * @param context
-     * @param preferName    文件名
+     * @param fileName    文件名
      * @param object        对象
      * @param key
      */
-    public static void setObjectToPrefer( Context context, String preferName, Object object, String key)
+    public static void setObjectToPrefer( Context context, String fileName, Object object, String key)
     {
-        SharedPreferences objectPrefer
-            = context.getSharedPreferences( preferName, Context.MODE_PRIVATE );
+        if (context == null || TextUtils.isEmpty(fileName) || TextUtils.isEmpty(key)) {
+            return;
+        }
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
         if ( object == null )
         {
-            SharedPreferences.Editor editor = objectPrefer.edit().remove( key );
-            SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+            SharedPreferences.Editor editor = sp.edit().remove( key );
+            editor.apply();
             return;
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -56,21 +61,24 @@ public class PreferenceUtil
         {
             e.printStackTrace();
         }
-        SharedPreferences.Editor editor = objectPrefer.edit().putString( key, objectStr );
-        SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+        SharedPreferences.Editor editor = sp.edit().putString( key, objectStr );
+        editor.apply();
     }
 
     /**
      * 从指定文件获取对象
      * @param context
-     * @param preferName   文件名
+     * @param fileName   文件名
      * @param key
      * @return
      */
-    public static Object getObjectFromPrefer(Context context, String preferName, String key)
+    public static Object getObjectFromPrefer(Context context, String fileName, String key)
     {
-        SharedPreferences objectPrefer = context.getSharedPreferences( preferName, Context.MODE_PRIVATE );
-        String objectStr = objectPrefer.getString( key, "" );
+        if (context == null || TextUtils.isEmpty(fileName) || TextUtils.isEmpty(key)) {
+            return null;
+        }
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        String objectStr = sp.getString( key, "" );
         if ( objectStr == null || objectStr.equals( "" ) )
         {
             return  null;
@@ -96,17 +104,16 @@ public class PreferenceUtil
 
     /**
      * 从指定文件获取所有对象
-     * @param preferName
+     * @param fileName
      * @return
      */
-    public static <T> ArrayList<T> getAllObjectFromPrefer ( Context context, String preferName )
+    public static <T> ArrayList<T> getAllObjectFromPrefer ( Context context, String fileName )
     {
         ArrayList<T> objects = new ArrayList<>();
-        SharedPreferences objectPrefer = context.getSharedPreferences( preferName, Context.MODE_PRIVATE );
-        for ( String key : objectPrefer.getAll()
-                                       .keySet() )
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        for ( String key : sp.getAll().keySet() )
         {
-            Object object = getObjectFromPrefer( context, preferName, key );
+            Object object = getObjectFromPrefer( context, fileName, key );
             objects.add( (T) object );
         }
         return objects;
@@ -114,17 +121,20 @@ public class PreferenceUtil
 
     /**
      * 从指定文件获取所有对象
-     * @param preferName
+     * @param fileName
      * @return
      */
-    public static <T> HashMap<String, T> getAllObjectMapFromPrefer ( Context context, String preferName )
+    public static <T> HashMap<String, T> getAllObjectMapFromPrefer ( Context context, String fileName )
     {
+        if (context == null || TextUtils.isEmpty(fileName)) {
+            return null;
+        }
         HashMap<String, T> objects = new HashMap<>();
-        SharedPreferences objectPrefer = context.getSharedPreferences( preferName, Context.MODE_PRIVATE );
-        for ( String key : objectPrefer.getAll()
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        for ( String key : sp.getAll()
                                        .keySet() )
         {
-            Object object = getObjectFromPrefer( context, preferName, key );
+            Object object = getObjectFromPrefer( context, fileName, key );
             objects.put( key, (T) object );
         }
         return objects;
@@ -132,29 +142,76 @@ public class PreferenceUtil
 
     /**
      * 从指定文件获取所有键值
-     * @param preferName
+     * @param fileName
      * @return
      */
-    public static Set<String> getAllKeyFromPrefer ( Context context, String preferName )
+    public static Set<String> getAllKeyFromPrefer ( Context context, String fileName )
     {
-        return context.getSharedPreferences( preferName, Context.MODE_PRIVATE ).getAll().keySet();
+        if ( context == null || TextUtils.isEmpty( fileName ) )
+        {
+            return null;
+        }
+        return context.getSharedPreferences( fileName, Context.MODE_PRIVATE ).getAll().keySet();
     }
 
     /**
      * 删除文件中储存的对象
      * @param context
-     * @param preferName
+     * @param fileName
      * @param key
      */
-    public static void deleteObjectFromPrefer( Context context, String preferName, String key)
+    public static void deleteObjectFromPrefer( Context context, String fileName, String key)
     {
-        SharedPreferences objectPrefer
-            = context.getSharedPreferences( preferName, Context.MODE_PRIVATE );
-
-        if ( objectPrefer.contains( key ) )
+        if ( context == null || TextUtils.isEmpty( fileName ) || TextUtils.isEmpty( key ) )
         {
-            SharedPreferences.Editor editor = objectPrefer.edit().remove( key );
-            SharedPreferencesCompat.EditorCompat.getInstance().apply( editor );
+            return;
+        }
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        if ( sp.contains( key ) )
+        {
+            SharedPreferences.Editor editor = sp.edit().remove( key );
+            editor.apply();
+        }
+    }
+
+    public static void saveByteArray(Context context, String fileName, byte[] array, String key )
+    {
+        if ( context == null || TextUtils.isEmpty( fileName ) || array == null || array.length == 0 || TextUtils.isEmpty( key ) )
+        {
+            return;
+        }
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        JSONArray jsonArray = new JSONArray();
+        for ( byte b : array )
+        {
+            jsonArray.put( (int) b );
+        }
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString( key, jsonArray.toString() );
+        editor.apply();
+    }
+
+    public static byte[] readByteArray(Context context, String fileName, String key)
+    {
+        if ( context == null || TextUtils.isEmpty( fileName ) || TextUtils.isEmpty( key ) )
+        {
+            return null;
+        }
+        SharedPreferences sp = context.getSharedPreferences( fileName, Context.MODE_PRIVATE );
+        try
+        {
+            JSONArray jsonArray = new JSONArray(sp.getString( key, "[]" ));
+            byte[] array = new byte[jsonArray.length()];
+            for ( int i = 0; i < array.length; i++ )
+            {
+                array[i] = (byte) jsonArray.getInt( i );
+            }
+            return array;
+        }
+        catch ( JSONException e )
+        {
+            e.printStackTrace();
+            return null;
         }
     }
 }

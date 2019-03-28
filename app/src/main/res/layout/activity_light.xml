@@ -1,36 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.inledco.fluvalsmart.activity.LightActivity">
+    tools:context="com.inledco.fluvalsmart.light.LightActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/light_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        style="@style/ToolbarTheme"
         android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_chevron_left_white_36dp"
-        app:titleTextColor="@color/colorWhite" >
+        app:titleTextColor="@color/colorWhite">
     </android.support.v7.widget.Toolbar>
-    <android.support.design.widget.CheckableImageButton
-        android:id="@+id/light_sw_auto"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:visibility="gone"
-        android:src="@drawable/selector_enable"
-        android:background="@drawable/ripple_theme"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/light_toolbar">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:id="@+id/light_mode_show"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_weight="2"
+            android:background="@drawable/shape_round_rect_white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <CheckedTextView
+                android:id="@+id/light_ctv_manual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_mode_bg"
+                android:paddingVertical="4dp"
+                android:text="@string/title_manual"
+                android:textAlignment="center"
+                android:textColor="@color/selector_mode_textcolor"
+                android:textSize="16sp"/>
+
+            <CheckedTextView
+                android:id="@+id/light_ctv_auto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_mode_bg"
+                android:paddingVertical="4dp"
+                android:text="@string/title_auto"
+                android:textAlignment="center"
+                android:textColor="@color/selector_mode_textcolor"
+                android:textSize="16sp"/>
+
+            <CheckedTextView
+                android:id="@+id/light_ctv_pro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_mode_bg"
+                android:paddingVertical="4dp"
+                android:text="@string/title_pro"
+                android:textAlignment="center"
+                android:textColor="@color/selector_mode_textcolor"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/light_fl_show"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-</LinearLayout>
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+</android.support.constraint.ConstraintLayout>

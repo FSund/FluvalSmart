@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/menu_device_update"
+        android:icon="@mipmap/ic_update_light"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_device_status"
+        android:title=""
+        android:icon="@drawable/ic_bluetooth_disabled_grey_500_24dp"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_device_find"
         android:icon="@mipmap/ic_find"
-        android:title=""
-        app:showAsAction="always"/>
+        android:title="@string/find"
+        app:showAsAction="never" />
     <item
-        android:id="@+id/menu_device_edit"
-        android:icon="@mipmap/ic_edit"
+        android:id="@+id/menu_device_rename"
+        android:icon="@mipmap/ic_rename"
         android:title="@string/rename"
-        app:showAsAction="ifRoom"/>
-    <item android:id="@+id/menu_device_modify_psw"
-          android:icon="@drawable/ic_modify_password"
-          android:title="@string/modify_password"
-          android:visible="false"
-          app:showAsAction="ifRoom"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_device_modpsw"
+        android:icon="@mipmap/ic_modify_psw"
+        android:title="@string/modify_password"
+        android:visible="false"
+        app:showAsAction="never"/>
 
 </menu>

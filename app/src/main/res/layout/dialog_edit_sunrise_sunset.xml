@@ -21,7 +21,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/timepicker_start"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorTextPrimary"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/timepicker_end"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorTextPrimary"/>
         </LinearLayout>
 
         <LinearLayout
@@ -72,17 +72,20 @@
                 android:id="@+id/dialog_sunrs_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorGray"
+                android:background="@drawable/shape_btn_corner_gray"
                 android:layout_marginRight="16dp"
                 android:textAllCaps="false"
+                android:textSize="@dimen/button_text_size"
                 android:text="@string/cancel"/>
             <Button
                 android:id="@+id/dialog_sunrs_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/shape_btn_corner_primary"
                 android:layout_marginLeft="16dp"
                 android:textAllCaps="false"
+                android:textColor="@color/selector_btn_enable_white_red"
+                android:textSize="@dimen/button_text_size"
                 android:text="@string/save"/>
         </android.support.v7.widget.ButtonBarLayout>
     </LinearLayout>

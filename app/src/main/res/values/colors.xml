@@ -23,10 +23,18 @@
     <color name="colorWarmWhite">#FFFFB969</color>
     <color name="colorColdWhite">#FFC3C9FF</color>
     <color name="colorPureWhite">#FFFFFFFF</color>
+    <color name="color400nm">#8F85AF</color>
+    <color name="color420nm">#718CC7</color>
+    <color name="color440nm">#2E53A4</color>
+    <color name="color460nm">#1D2088</color>
 
     <color name="colorSkyBlue">#118BDF</color>
     <color name="colorDarkGreen">#7F008080</color>
 
+    <color name="colorTextPrimaryLight">@color/colorBlack</color>
+    <color name="colorTextSecondLight">#9E9E9E</color>
+    <color name="colorTextPrimaryDark">@color/colorWhite</color>
+    <color name="colorTextSecondDark">#E0E0E0</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorBackground">#29366A</color>
     <color name="colorTextPrimary">#FFFFFF</color>

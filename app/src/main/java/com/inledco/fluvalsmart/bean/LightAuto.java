@@ -3,6 +3,7 @@ package com.inledco.fluvalsmart.bean;
 import com.ble.api.DataUtil;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by liruya on 2016/11/23.
@@ -15,6 +16,12 @@ public class LightAuto implements Serializable
     private byte[] mDayBright;
     private RampTime mSunset;
     private byte[] mNightBright;
+
+    private boolean mHasTurnoff;
+    private boolean mTurnoffEnable;
+    private byte mTurnoffHour;
+    private byte mTurnoffMinute;
+
     private boolean mHasDynamic;
     private boolean mDynamicEnable;
     private boolean mSat;
@@ -35,24 +42,60 @@ public class LightAuto implements Serializable
         mNightBright = nightBright;
     }
 
-    public LightAuto ( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, byte week, RampTime dynamicPeriod, byte dynamicMode )
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, boolean turnoffEnable, byte turnoffHour, byte turnoffMinute )
+    {
+        mSunrise = sunrise;
+        mDayBright = dayBright;
+        mSunset = sunset;
+        mNightBright = nightBright;
+        mHasTurnoff = true;
+        mTurnoffEnable = turnoffEnable;
+        mTurnoffHour = turnoffHour;
+        mTurnoffMinute = turnoffMinute;
+    }
+
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, byte week, RampTime dynamicPeriod, byte dynamicMode )
     {
         mSunrise = sunrise;
         mDayBright = dayBright;
         mSunset = sunset;
         mNightBright = nightBright;
         mHasDynamic = true;
-        mDynamicEnable = (week&0x80) == 0x80 ? true : false;
-        mSat = (week&0x40) == 0x40 ? true : false;
-        mFri = (week&0x20) == 0x20 ? true : false;
-        mThu = (week&0x10) == 0x10 ? true : false;
-        mWed = (week&0x08) == 0x08 ? true : false;
-        mTue = (week&0x04) == 0x04 ? true : false;
-        mMon = (week&0x02) == 0x02 ? true : false;
-        mSun = (week&0x01) == 0x01 ? true : false;
+        mDynamicEnable = (week & 0x80) == 0x80;
+        mSat = (week & 0x40) == 0x40;
+        mFri = (week & 0x20) == 0x20;
+        mThu = (week & 0x10) == 0x10;
+        mWed = (week & 0x08) == 0x08;
+        mTue = (week & 0x04) == 0x04;
+        mMon = (week & 0x02) == 0x02;
+        mSun = (week & 0x01) == 0x01;
         mDynamicPeriod = dynamicPeriod;
         mDynamicMode = dynamicMode;
     }
+
+    public LightAuto( RampTime sunrise, byte[] dayBright, RampTime sunset, byte[] nightBright, boolean turnoffEnable, byte turnoffHour, byte turnoffMinute, byte week, RampTime dynamicPeriod, byte dynamicMode )
+    {
+        mSunrise = sunrise;
+        mDayBright = dayBright;
+        mSunset = sunset;
+        mNightBright = nightBright;
+        mHasTurnoff = true;
+        mTurnoffEnable = turnoffEnable;
+        mTurnoffHour = turnoffHour;
+        mTurnoffMinute = turnoffMinute;
+        mHasDynamic = true;
+        mDynamicEnable = (week & 0x80) == 0x80;
+        mSat = (week & 0x40) == 0x40;
+        mFri = (week & 0x20) == 0x20;
+        mThu = (week & 0x10) == 0x10;
+        mWed = (week & 0x08) == 0x08;
+        mTue = (week & 0x04) == 0x04;
+        mMon = (week & 0x02) == 0x02;
+        mSun = (week & 0x01) == 0x01;
+        mDynamicPeriod = dynamicPeriod;
+        mDynamicMode = dynamicMode;
+    }
+
 
     public byte getWeek()
     {
@@ -132,7 +175,47 @@ public class LightAuto implements Serializable
         mNightBright = nightBright;
     }
 
-    public void setHasDynamic ( boolean hasDynamic )
+    public boolean isHasTurnoff()
+    {
+        return mHasTurnoff;
+    }
+
+    public void setHasTurnoff( boolean hasTurnoff )
+    {
+        mHasTurnoff = hasTurnoff;
+    }
+
+    public boolean isTurnoffEnable()
+    {
+        return mTurnoffEnable;
+    }
+
+    public void setTurnoffEnable( boolean turnoffEnable )
+    {
+        mTurnoffEnable = turnoffEnable;
+    }
+
+    public byte getTurnoffHour()
+    {
+        return mTurnoffHour;
+    }
+
+    public void setTurnoffHour( byte turnoffHour )
+    {
+        mTurnoffHour = turnoffHour;
+    }
+
+    public byte getTurnoffMinute()
+    {
+        return mTurnoffMinute;
+    }
+
+    public void setTurnoffMinute( byte turnoffMinute )
+    {
+        mTurnoffMinute = turnoffMinute;
+    }
+
+    public void setHasDynamic( boolean hasDynamic )
     {
         mHasDynamic = hasDynamic;
     }
@@ -242,6 +325,62 @@ public class LightAuto implements Serializable
         mDynamicMode = dynamicMode;
     }
 
+    public int[] getTimeArray()
+    {
+        int[] array;
+        if ( mHasTurnoff && mTurnoffEnable )
+        {
+            array = new int[6];
+            array[0] = mSunrise.getStart();
+            array[1] = mSunrise.getEnd();
+            array[2] = mSunset.getStart();
+            array[3] = mSunset.getEnd();
+            array[4] = mTurnoffHour*60 + mTurnoffMinute;
+            array[5] = array[4];
+        }
+        else
+        {
+            array = new int[4];
+            array[0] = mSunrise.getStart();
+            array[1] = mSunrise.getEnd();
+            array[2] = mSunset.getStart();
+            array[3] = mSunset.getEnd();
+        }
+        return array;
+    }
+
+    public boolean isTimeValid()
+    {
+        int[] array = getTimeArray();
+        /* sort time && check time is valid or not */
+        int[] index = new int[array.length];
+        for ( int i = 0; i < index.length; i++ )
+        {
+            index[i] = i;
+        }
+        for ( int i = index.length - 1; i > 0; i-- )
+        {
+            for ( int j = 0; j < i; j++ )
+            {
+                if ( array[index[j]] > array[index[j+1]] )
+                {
+                    int tmp = index[j];
+                    index[j] = index[j+1];
+                    index[j+1] = tmp;
+                }
+            }
+        }
+        for ( int i = 0; i < index.length; i++ )
+        {
+            int j = (i+1)%index.length;
+            if ( (index[i]+1)%index.length != index[j]%index.length )
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public String toString ()
     {
@@ -250,5 +389,35 @@ public class LightAuto implements Serializable
                      + "\r\nSunset: " + mSunset.getStartHour() + ":" + mSunset.getStartMinute() + " - " + mSunset.getEndHour() + ":" + mSunset.getEndMinute()
                      + "\r\nNightLight: " + DataUtil.byteArrayToHex( mNightBright );
         return str;
+    }
+
+    public boolean equal( LightAuto a )
+    {
+        if ( a == null )
+        {
+            return false;
+        }
+        if ( mSunrise.equal( a.getSunrise() ) == false)
+        {
+            return false;
+        }
+        if ( mSunset.equal( a.getSunset() ) == false)
+        {
+            return false;
+        }
+        if ( Arrays.equals( mDayBright, a.getDayBright() ) == false )
+        {
+            return false;
+        }
+        if ( Arrays.equals( mNightBright, a.getNightBright() ) == false )
+        {
+            return false;
+        }
+        if ( mHasTurnoff != a.isHasTurnoff() || mTurnoffEnable != a.isTurnoffEnable()
+            || mTurnoffHour != a.getTurnoffHour() || mTurnoffMinute != a.getTurnoffMinute())
+        {
+            return false;
+        }
+        return mHasDynamic == a.isHasDynamic();
     }
 }

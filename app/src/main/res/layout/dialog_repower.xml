@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/DialogTheme"
+        android:layout_margin="16dp"
+        android:text="@string/ota_wait_msg"/>
+    <Button
+        android:id="@+id/dialog_repower_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        style="@style/DialogTheme"
+        android:enabled="false"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/next"/>
+
+</LinearLayout>

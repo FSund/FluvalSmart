@@ -9,12 +9,14 @@ public class SelectDevice
 {
     private boolean mSelectable;
     private boolean mSelected;
+    private int mRssi;
     private DevicePrefer mPrefer;
 
-    public SelectDevice ( boolean selectable, boolean selected, DevicePrefer prefer )
+    public SelectDevice ( boolean selectable, boolean selected, int rssi, DevicePrefer prefer )
     {
         mSelectable = selectable;
         mSelected = selected;
+        mRssi = rssi;
         mPrefer = prefer;
     }
 
@@ -38,7 +40,17 @@ public class SelectDevice
         mSelectable = selectable;
     }
 
-    public DevicePrefer getPrefer ()
+    public int getRssi()
+    {
+        return mRssi;
+    }
+
+    public void setRssi( int rssi )
+    {
+        mRssi = rssi;
+    }
+
+    public DevicePrefer getPrefer()
     {
         return mPrefer;
     }

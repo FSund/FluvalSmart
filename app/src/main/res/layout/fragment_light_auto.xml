@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.inledco.fluvalsmart.fragment.LightAutoFragment">
+    tools:context="com.inledco.fluvalsmart.light.LightAutoFragment">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/light_auto_chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="4dp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="240dp">
@@ -36,15 +36,16 @@
                     android:background="#55000000"
                     android:text="@string/item_morning"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
+
                 <TextView
                     android:id="@+id/auto_sunrs_time"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
-                    android:gravity="center"
                     android:background="#55000000"
-                    android:text="HH:mm - HH:mm"
+                    android:gravity="center"
+                    android:text="HH:mm\n|\nHH:mm"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>
@@ -64,14 +65,16 @@
                     android:background="#55000000"
                     android:text="@string/item_midday"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
+
                 <TextView
                     android:id="@+id/auto_midday_brt"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
-                    android:gravity="center"
+                    android:paddingLeft="4dp"
                     android:background="#55000000"
+                    android:gravity="center_vertical|left"
                     android:text="xx: "
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
@@ -92,7 +95,7 @@
                     android:background="#55000000"
                     android:text="@string/item_evening"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
                 <TextView
                     android:id="@+id/auto_sunset_time"
                     android:layout_width="match_parent"
@@ -100,7 +103,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:background="#55000000"
-                    android:text="HH:mm - HH:mm"
+                    android:text="HH:mm\n|\nHH:mm"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>
@@ -120,20 +123,79 @@
                     android:background="#55000000"
                     android:text="@string/item_night"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/auto_period_title_size"/>
+
                 <TextView
                     android:id="@+id/auto_night_brt"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
+                    android:background="#55000000"
+                    android:paddingLeft="4dp"
+                    android:gravity="center_vertical|left"
+                    android:text="xx: "
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/light_auto_turnoff_show"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="5"
+                android:visibility="gone"
+                android:background="@mipmap/ic_turnoff"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:background="#55000000"
-                    android:text="xx: "
+                    android:text="@string/item_turnoff"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/auto_period_title_size"/>
+                <TextView
+                    android:id="@+id/auto_turnoff_tmr"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:background="#55000000"
+                    android:text="@string/disabled"
                     android:textColor="@color/colorWhite"
                     android:textSize="11sp"/>
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/auto_linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            android:visibility="gone"
+            android:background="#CC000000"
+            android:gravity="center"
+            android:layout_gravity="top"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/auto_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:progressBackgroundTint="@color/colorGray"
+                android:thumbTint="@color/colorGreen"
+                android:progressTint="@color/colorGreen"
+                android:min="0"
+                android:max="1440"/>
+            <TextView
+                android:id="@+id/auto_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx:xx"/>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"

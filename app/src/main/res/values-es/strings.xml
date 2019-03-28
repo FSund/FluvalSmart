@@ -82,24 +82,96 @@
     <string name="preset_plant_boost">Predeterminado - Realzador de plantas</string>
     <string name="dialog_export_use">Usar</string>
     <string name="dialog_export_remove">Eliminar</string>
-    <string name="input_password">Input password</string>
-    <string name="psw_login">Login</string>
-    <string name="hint_input_password">Please input password(Initial 000000).</string>
-    <string name="error_psw_6_num">The password must be 6 digits.</string>
-    <string name="error_password_wrong">Wrong password.</string>
-    <string name="modify">Modify</string>
-    <string name="modify_password">Modify password</string>
-    <string name="hint_input_new_password">Please input a new password.</string>
-    <string name="hint_confirm_password">Please confirm the new password.</string>
-    <string name="error_password_mismatch">"Password does not match. "</string>
-    <string name="modify_password_success">Password modified successfully.</string>
-    <string name="timeout">Timeout.</string>
-    <string name="modify_password_fail">Failed to modify password.</string>
-    <string name="reset">Reset</string>
-    <string name="hint_input_reset_key">Please input the reset key.</string>
-    <string name="reset_password_success">Password reset successfully.</string>
-    <string name="reset_password_fail">Failed to reset password.</string>
-    <string name="reset_password">Reset password</string>
-    <string name="error_reset_key_wrong">Wrong reset key.</string>
-    <string name="logging">Logging</string>
+    <string name="input_password">Ingrese su contraseña</string>
+    <string name="psw_login">Iniciar sesión</string>
+    <string name="error_psw_6_num">La contraseña debe tener 6 dígitos.</string>
+    <string name="error_password_wrong">Contraseña incorrecta.</string>
+    <string name="modify">Modificar</string>
+    <string name="modify_password">Modificar contraseña</string>
+    <string name="hint_input_new_password">Ingrese una contraseña nueva.</string>
+    <string name="hint_confirm_password">Confirme la contraseña nueva.</string>
+    <string name="modify_password_success">La contraseña se modificó correctamente.</string>
+    <string name="error_password_mismatch">La contraseña no coincide.</string>
+    <string name="timeout">Tiempo de espera agotado.</string>
+    <string name="modify_password_fail">No se pudo modificar la contraseña.</string>
+    <string name="logging">Iniciando sesión</string>
+    <string name="item_turnoff">Apagado automático</string>
+    <string name="disabled">Desactivado</string>
+    <string name="edit">Editar</string>
+    <string name="overview">Resumen</string>
+    <string name="msg_no_profile">No se encontraron perfiles. Puede guardar perfiles personalizados.</string>
+    <string name="save_success">Guardado correctamente</string>
+    <string name="retrieve">Recuperar</string>
+    <string name="retrieve_password">Recuperar contraseña</string>
+    <string name="retrieve_wrong_key">La clave de recuperación es incorrecta.</string>
+    <string name="retrieve_copy_msg">La información del dispositivo se copió, puede pegarla en el correo electrónico.</string>
+    <string name="title_add_time">Añadir plazo</string>
+    <string name="tip_timepoints_max">El máximo de intervalos de tiempo es 10.</string>
+    <string name="tip_timepoints_min">El mínimo de intervalos de tiempo es 4.</string>
+    <string name="title_delete_timpoint">Borrar el plazo establecido de #{index}</string>
+    <string name="timepoints_set">{count} intervalos de tiempo establecidos</string>
+    <string name="hint_input_retrieve_key">Ingrese la clave de recuperación del dispositivo</string>
+    <string name="tip_retrieve_password">Si olvidó la contraseña del dispositivo, puede enviar un correo electrónico a FluvalSmartApp1@gmail.com con la información del dispositivo para obtener la clave de recuperación. Cuando reciba dicha clave, ingrésela y haga clic en el botón Recuperar para obtener la contraseña del dispositivo. Haga clic en el botón Copiar imagen para conseguir la información del dispositivo.</string>
+    <string name="retrieve_psw_is">"La contraseña del dispositivo es: "</string>
+
+
+    <!--OTA-->
+    <string name="ota_connecting">Conectando dispositivo...</string>
+    <string name="ota_response_timeout">Ha caducado el tiempo de respuesta de la operación.</string>
+    <string name="ota_firmware_invalid">No existe el firmware o tiene un formato inválido.</string>
+    <string name="ota_firmware_damaged">El firmware puede estar dañado, por favor vuelva a descargarlo.</string>
+    <string name="ota_analysis_success">Se ha realizado el análisis del firmware correctamente.</string>
+    <string name="ota_outof_range">Actualización fallida del firmware, dirección fuera de rango.</string>
+    <string name="ota_erasefirmware">El firmware se ha borrado correctamente.\nActualizando firmware...</string>
+    <string name="ota_erase_failed">El firmware no se ha borrado correctamente, dirección fuera de rango.</string>
+    <string name="ota_check_failed">Verificación fallida, dirección fuera de rango.</string>
+    <string name="ota_check_success">Verificación correcta.</string>
+    <string name="ota_download_success">100%\nÉxito en la descarga.</string>
+    <string name="ota_enter_bootloader">Entrando en modo de inicialización.</string>
+    <string name="ota_reset_tobootloader">Inicializando para entrar al bootloader.</string>
+    <string name="ota_invalid_command">Comando inválido.</string>
+    <string name="ota_connect_success">Se ha conectado al dispositivo correctamente.</string>
+    <string name="ota_disconnect">Dispositivo desconectado.</string>
+    <string name="ota_download_failed">Descarga fallida.</string>
+    <string name="ota_download">Descargar</string>
+    <string name="ota_redownload">Volver a descargar</string>
+    <string name="ota_title">Actualización del firmware del dispositivo</string>
+    <string name="ota_upgrade">Actualización</string>
+    <string name="ota_check_upgrade">Revisar actualización</string>
+    <string name="ota_msg_unsupport_version">Este dispositivo no se puede actualizar, la versión de firmware más baja que soporta es V1.02.</string>
+    <string name="ota_msg_uptodate">El firmware está actualizado.</string>
+    <string name="ota_msg_remote_not_exists">No existe firmware remoto.</string>
+    <string name="ota_warning_msg">La actualización tiene riesgos, la actualización fallida puede causar que el dispositivo no funcione.</string>
+    <string name="ota_warning_title">Advertencia</string>
+    <string name="ota_msg_reupgrade">Por favor conecte el dispositivo manualmente y actualice después de haberlo conectado.</string>
+    <string name="ota_continue">Continuar</string>
+    <string name="ota_upgrade_success">100%\nÉxito en la actualización, dispositivo inicializando...</string>
+    <string name="ota_cancel">Cancelar</string>
+    <string name="ota_msg_check_version">Por favor revisar actualización.</string>
+    <string name="ota_upgradable">Actualizable</string>
+    <string name="next">Siguiente</string>
+    <string name="ota_device_firmware_upgradable">El dispositivo puede actualizarse a Vxx. ¿Confirma la actualización?</string>
+    <string name="downloading_firmware">Descargando firmware...</string>
+    <string name="ota_network_unavailable">La red no está disponible, verifique las configuraciones.</string>
+    <string name="device_frimware_version">Versión de firmware:</string>
+    <string name="latest_firmware_version">Versión más reciente:</string>
+    <string name="ota_wait_title">Espere</string>
+    <string name="ota_wait_msg">Espere...</string>
+    <string name="title_upgrade_success">Se actualizó correctamente</string>
+    <string name="title_upgrade_failed">No se pudo actualizar</string>
+    <string name="upgrade_success_msg">Vuelva a iniciar sesión.</string>
+    <string name="upgrade_failed_msg">Intente de nuevo.</string>
+    <string name="ota_warning">"\t\tAdvertencia de actualización: Durante el proceso de actualización, mantenga su teléfono o su tableta lo más cerca posible de su dispositivo
+        de iluminación.\n
+        Recuerde:  - No salga de la aplicación  - No desconecte el Bluetooth  Puede que los parámetros de luz establecidos no se mantengan
+        tras las actualizaciones.\n
+        Puede que la versión anterior de la aplicación no controle los dispositivos correctamente una vez que se actualice el firmware.\n
+        Asegúrese de utilizar la versión más reciente de la aplicación.\n
+        Es necesario actualizar la aplicación a la versión más reciente.\n
+        Si la actualización falla, intente de nuevo."</string>
+    <string name="find">Detectar</string>
+    <string name="tip_enable_location">Ubicación desactivada. Algunos sistemas necesitan la función de ubicación para detectar dispositivos con Bluetooth.</string>
+    <string name="new_device_name">Nombre del nuevo dispositivo</string>
+    <string name="turnon_location_permission">Activar la función de ubicación</string>
+    <string name="msg_turnon_location_permission">La función de ubicación debe estar activada para detectar dispositivos.</string>
 </resources>

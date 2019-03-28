@@ -1,48 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.inledco.fluvalsmart.activity.MainActivity">
+    tools:context="com.inledco.fluvalsmart.main.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        style="@style/ToolbarTheme"
-        android:fitsSystemWindows="true">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ToolbarTheme"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"/>
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/main_fl_show"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/main_bottom_navigation"
+            style="@style/BottomNavigationTheme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/app_name"
-            android:maxLines="1"
-            android:lines="1"
-            android:textSize="20sp"
-            android:ellipsize="end"
-            android:textColor="@color/colorWhite"/>
-    </android.support.v7.widget.Toolbar>
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/main_vp_show"-->
+            app:itemIconTint="@color/color_bnv_selector"
+            app:itemTextColor="@color/color_bnv_selector"
+            app:menu="@menu/menu_bottom_navigation"/>
+    </LinearLayout>
+
+
+
+</FrameLayout>
+<!--<android.support.constraint.ConstraintLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/activity_main"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--tools:context="com.inledco.fluvalsmart.main.MainActivity">-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--style="@style/ToolbarTheme"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:ellipsize="end"-->
+            <!--android:lines="1"-->
+            <!--android:maxLines="1"-->
+            <!--android:text="@string/app_name"-->
+            <!--android:textColor="@color/colorWhite"-->
+            <!--android:textSize="20sp"/>-->
+    <!--</android.support.v7.widget.Toolbar>-->
+
+    <!--<android.support.design.widget.BottomNavigationView-->
+        <!--android:id="@+id/main_bottom_navigation"-->
+        <!--style="@style/BottomNavigationTheme"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:itemIconTint="@color/color_bnv_selector"-->
+        <!--app:itemTextColor="@color/color_bnv_selector"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:menu="@menu/menu_bottom_navigation"/>-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/main_fl_show"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1"/>-->
-    <FrameLayout
-        android:id="@+id/main_fl_show"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"></FrameLayout>
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/main_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@color/color_bnv_selector"
-        app:itemTextColor="@color/color_bnv_selector"
-        style="@style/BottomNavigationTheme"
-        app:menu="@menu/menu_bottom_navigation"/>
-</LinearLayout>
+        <!--android:layout_weight="1"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/toolbar"/>-->
+
+<!--</android.support.constraint.ConstraintLayout>-->

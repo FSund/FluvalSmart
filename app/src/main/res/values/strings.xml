@@ -94,26 +94,20 @@
     <string name="launch_enter">Enter</string>
     <string name="launch_select_country">Select country</string>
     <string name="launch_select_language">Select language</string>
-    <string name="input_password">Input password</string>
+    <string name="input_password">Enter password</string>
     <string name="psw_login">Login</string>
     <string name="hint_input_password">Please input password(Initial 000000).</string>
-    <string name="error_psw_6_num">The password must be 6 digits.</string>
-    <string name="error_password_wrong">Wrong password.</string>
+    <string name="error_psw_6_num">Password must be 6 digits.</string>
+    <string name="error_password_wrong">Incorrect password.</string>
     <string name="modify">Modify</string>
     <string name="modify_password">Modify password</string>
-    <string name="hint_input_new_password">Please input a new password.</string>
-    <string name="hint_confirm_password">Please confirm the new password.</string>
+    <string name="hint_input_new_password">Please enter new password.</string>
+    <string name="hint_confirm_password">Please confirm new password.</string>
     <string name="error_password_mismatch">"Password does not match. "</string>
-    <string name="modify_password_success">Password modified successfully.</string>
+    <string name="modify_password_success">Password change successfully.</string>
     <string name="timeout">Timeout.</string>
-    <string name="modify_password_fail">Failed to modify password.</string>
-    <string name="reset">Reset</string>
-    <string name="hint_input_reset_key">Please input the reset key.</string>
-    <string name="reset_password_success">Password reset successfully.</string>
-    <string name="reset_password_fail">Failed to reset password.</string>
-    <string name="reset_password">Reset password</string>
-    <string name="error_reset_key_wrong">Wrong reset key.</string>
-    <string name="logging">Logging</string>
+    <string name="modify_password_fail">Failed to change password.</string>
+    <string name="logging">Logging information...</string>
     <string name="preset_deep_sea_glo">Preset - Deep Sea Glo</string>
     <string name="preset_sunny_reef">Preset - Sunny Reef</string>
     <string name="preset_color_boost">Preset - Color Boost</string>
@@ -123,4 +117,152 @@
     <string name="preset_plant_boost">Preset - Plant Boost</string>
     <string name="dialog_export_use">Export</string>
     <string name="dialog_export_remove">Remove</string>
+    <string name="item_turnoff">Sleep</string>
+    <string name="disabled">Disabled</string>
+    <string name="edit">Edit</string>
+    <string name="overview">Overview</string>
+    <string name="title_manual" translatable="false">Man</string>
+    <string name="title_auto" translatable="false">Auto</string>
+    <string name="title_pro" translatable="false">Pro</string>
+    <string name="msg_no_profile">No profiles found. you can save custom profiles.</string>
+    <string name="save_success">Saved successfully</string>
+    <string name="retrieve">Retrieve</string>
+    <string name="retrieve_password">Retrieve Password</string>
+    <string name="retrieve_wrong_key">Retrieve key is incorrect.</string>
+    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to FluvalSmartApp1@gmail.com to obtain your retrieve key.</string>
+    <string name="retrieve_psw_is">"Device password is: "</string>
+    <string name="title_add_time">Add Time</string>
+    <string name="tip_timepoints_max">Timepoints count max 10.</string>
+    <string name="tip_timepoints_min">Timepoints count min 4.</string>
+    <string name="title_delete_timpoint">Delete #{index} Set Time</string>
+    <string name="timepoints_set">{count} Timepoints Set</string>
+    <string name="hint_input_retrieve_key">Please input the retrive key of the device</string>
+    <string name="tip_retrieve_password">If you have forgotten your password, please email FluvalSmartApp1@gmail.com with your device information to obtain a retrieve key. Click on the Copy Image button to obtain device information. Next, enter retrieve key and click on the Retrieve Button to obtain your device password.</string>
+    <string name="turnon_location_permission">Enable location permission</string>
+    <string name="msg_turnon_location_permission">Location permission must be enabled when scanning.</string>
+    <string name="password">Password</string>
+    <string name="factory_password">Factory password is 000000.</string>
+    <string name="faq_msg">FAQ on Connectivity Issue\n
+\n
+FluvalSmart APP is available for Fluval LED items in below code numbers:\n
+\n
+Fluval Plant &amp; Marine 3.0: 14515/14516/14517/14521/14522/14523\n
+
+Aquasky2.0: 14531/14532/14533/14534/14549/14550/14551/14552/14553/14554/14555/14556\n
+\n
+Fluval Nano: 14539/14541\n
+\n
+Future new Fluval LEDs.\n
+\n
+If fail to connect the Fluval Bluetooth light unit. Please try with below suggestion:\n
+\n
+1.  Check if the light unit is powered on, also can consider unplugging and repowering the light.\n
+\n
+2.  Ensure that Bluetooth is enabled within your mobile device settings.\n
+\n
+3.  Check if the lamp is too far from the mobile device; try to keep within 50cm range to make connection.\n
+\n
+4.  Confirm if other mobile devices are connected to the light unit, and not log out.\n
+\n
+5.  Check if you can scan the light unit with other mobile devices.\n
+\n
+6.  Try to close the APP from the backstage, and then re-open and connect the APP.\n
+\n
+7. Try not to connect other devices at the same time, such as Bluetooth headset, Bluetooth speaker, etc.\n
+\n
+If fail to scan the Fluval Bluetooth light unit, Please try with below suggestion:\n
+\n
+1.  Check if the light unit is powered on, also can consider unplugging and repowering the light.\n
+\n
+2.  Ensure that Bluetooth is enabled within your mobile device settings.\n
+\n
+3.  Check if the lamp is too far from the mobile device; try to keep within 50cm range to make connection.\n
+\n
+4.  Confirm if other mobile devices are connected to the light unit, and not log out.\n
+\n
+5.  Check if you can scan the light unit with other mobile devices.\n
+\n
+6.  If the mobile device is Android 6.0 or above, APP will ask for location permission, please confirm this request and allow location permissions when scanning the light unit
+        for the first time.\n
+\n
+7.  Some mobile devices need to turn on GPS positioning to be able to scan the light unit due to different android system. Please open GPS permission.\n
+\n
+8.  Try to close the APP from the backstage, and then re-open and connect the APP.\n
+\n
+9.  Enter the system Bluetooth setting interface on you mobile, check whether there is a device with the name like BLE#0x1123456, pair the device with password 000000), re-power
+        the light unit after pairing successfully, and enter the APP scanning interface to re-scan.\n
+\n
+10.  Allow up to 5 times scans in Android 7.0 system and above version within 30 seconds. If in 30 seconds, over 5times scanning, APP may be no reaction.\n
+\n
+Key notes:\n
+If still not work with above suggestions, or define non-work with multi-pone devices, Please describe your issues to below Fluval developer email for help:
+        FluvalSmartApp1@gmail.com or make direct contact to Hagen customer service center.</string>
+
+
+    <!--OTA-->
+    <string name="ota_response_timeout">Operation response timeout.</string>
+    <string name="ota_connecting">Connecting device...</string>
+    <string name="ota_firmware_invalid">Firmware does not exists or invalid format.</string>
+    <string name="ota_firmware_damaged">Firmware may be damaged,please re-download.</string>
+    <string name="ota_analysis_success">Analysis firmware success.</string>
+    <string name="ota_outof_range">Upgrade firmware failed,address out of range.</string>
+    <string name="ota_erasefirmware">Erase firmware success.\nUpgrading firmware...</string>
+    <string name="ota_erase_failed">Erase firmware faile,address out of range.</string>
+    <string name="ota_check_failed">Verification failed, address out of range.</string>
+    <string name="ota_check_success">Verification success.</string>
+    <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
+    <string name="ota_enter_bootloader">Enter bootloader mode.</string>
+    <string name="ota_reset_tobootloader">Rebooting to enter bootloader.</string>
+    <string name="ota_invalid_command">Invalid command.</string>
+    <string name="ota_connect_success">Device connection successful.</string>
+    <string name="ota_disconnect">Device disconnected.</string>
+    <string name="ota_download_failed">Download failed.</string>
+    <string name="ota_download_success">100%\nDownload success.</string>
+    <string name="ota_download">Download</string>
+    <string name="ota_redownload">Re-Download</string>
+    <string name="ota_title">Device Firmware Upgrade</string>
+    <string name="ota_upgrade">Upgrade</string>
+    <string name="ota_check_upgrade">Check for updates</string>
+    <string name="ota_msg_unsupport_version">This device can not upgrade,lowest support firmware version V1.02.</string>
+    <string name="ota_msg_uptodate">Firmware is up to date.</string>
+    <string name="ota_msg_check_version">Please check upgrade.</string>
+    <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
+    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit.\n
+        Please DO NOT exit APP or close Bluetooth.\n
+        Updates may alter previously set light parameters.\n
+        Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).\n
+        If update fails, please try again."</string>
+    <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
+    <string name="ota_warning_title">Warning</string>
+    <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
+    <string name="ota_cancel">Cancel</string>
+    <string name="ota_continue">Continue</string>
+    <string name="next">Next</string>
+    <string name="ota_firmware_newest">Device firmware is up to date.</string>
+    <string name="ota_upgradable">Upgradable</string>
+    <string name="ota_device_firmware_upgradable">The device can update to Vxx. Confirm update?</string>
+    <string name="downloading_firmware">Downloading firmware...</string>
+    <string name="ota_network_unavailable">Network unavailable. Please check settings.</string>
+    <string name="device_frimware_version">"Firmware Version: "</string>
+    <string name="latest_firmware_version">"Newest Version: "</string>
+    <string name="ota_wait_title">Wait</string>
+    <string name="ota_wait_msg">Please wait...</string>
+    <string name="title_upgrade_success">Upgrade successful</string>
+    <string name="close">Close</string>
+    <string name="title_upgrade_failed">Upgrade failed</string>
+    <string name="upgrade_success_msg">Please re-login.</string>
+    <string name="upgrade_failed_msg">Please try again.</string>
+    <string name="ota_bootloader_version" translatable="false">"Bootloader version: "</string>
+    <string name="failed">Failed</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="new_device_name">New device name</string>
+    <string name="profile_name">Profile name</string>
+    <string name="retrieve_key">Retrieve key</string>
+    <string name="tip_enable_location">Location disabled. Some systems require location permission for Bluetooth device scanning.</string>
+    <string name="find">Find</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="FAQ">FAQ</string>
 </resources>
