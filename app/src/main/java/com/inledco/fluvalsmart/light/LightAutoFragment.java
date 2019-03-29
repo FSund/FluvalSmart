@@ -313,7 +313,7 @@ public class LightAutoFragment extends BaseFragment {
         int turnoff_minute = mLightAuto.getTurnoffMinute();
         int sunrise_start = sunrise_starthour * 60 + sunrise_startminute;
         int sunrise_end = sunrise_endhour * 60 + sunrise_endminute;
-        int sunset_start = sunset_starthour * 60 + sunset_endminute;
+        int sunset_start = sunset_starthour * 60 + sunset_startminute;
         int sunset_end = sunset_endhour * 60 + sunset_endminute;
         int turnoff_time = turnoff_hour * 60 + turnoff_minute;
 
