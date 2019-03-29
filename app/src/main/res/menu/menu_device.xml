@@ -27,7 +27,7 @@
         android:id="@+id/menu_device_modpsw"
         android:icon="@mipmap/ic_modify_psw"
         android:title="@string/modify_password"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="never"/>
 
 </menu>

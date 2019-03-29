@@ -37,6 +37,20 @@
         <item name="android:windowBackground">@drawable/shape_dialog_background</item>
     </style>
 
+    <style name="BottomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/colorTextSecondLight</item>
+        <item name="android:editTextColor">@color/colorTextPrimaryLight</item>
+        <item name="android:textColor">@color/colorTextPrimaryLight</item>
+        <item name="android:textColorPrimary">@color/colorTextPrimaryLight</item>
+        <item name="android:textColorSecondary">@color/colorTextSecondLight</item>
+        <item name="android:textAllCaps">false</item>
+        <!--<item name="android:fontFamily">@font/calibri</item>-->
+        <item name="android:windowBackground">@drawable/shape_bottom_dialog_background</item>
+    </style>
+
     <style name="DialogButtonTheme" parent="DialogTheme">
         <item name="android:textSize">16sp</item>
     </style>

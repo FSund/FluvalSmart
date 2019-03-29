@@ -274,12 +274,12 @@ public class BleManager implements ServiceConnection {
      * @param mac device mac address
      * @return true:success false:failure
      */
-//    public boolean connectDevice(@NonNull final String mac, boolean autoConnect) {
-//        if (mBleService == null) {
-//            return false;
-//        }
-//        return mBleService.connect(mac, autoConnect);
-//    }
+    public boolean connectDevice(@NonNull final String mac, boolean autoConnect) {
+        if (mBleService == null) {
+            return false;
+        }
+        return mBleService.connect(mac, autoConnect);
+    }
 
     /**
      * connect device

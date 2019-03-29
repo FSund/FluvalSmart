@@ -66,7 +66,7 @@ public class EditproActivity extends BaseActivity
     private String mAddress;
     private List<TimerBrightPoint> mPoints;
 //    private TimerBrightPoint mSelectPoint;
-    private PointComparator mComparator;
+    private final PointComparator mComparator = new PointComparator();
     private EditproAdapter mAdapter;
 
     @Override
@@ -385,7 +385,6 @@ public class EditproActivity extends BaseActivity
                 int count = lightPro.getPointCount();
 
                 mPoints = new ArrayList<>();
-                mComparator = new PointComparator();
                 for ( int i = 0; i < count; i++ )
                 {
                     mPoints.add( lightPro.getPoints()[i] );

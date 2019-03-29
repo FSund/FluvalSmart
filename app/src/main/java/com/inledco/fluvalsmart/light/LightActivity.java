@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ble.api.DataUtil;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
@@ -42,6 +43,7 @@ import com.inledco.fluvalsmart.bean.LightManual;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.ota.BleOTAActivity;
+import com.inledco.fluvalsmart.ota.RemoteFirmware;
 import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
@@ -51,12 +53,17 @@ import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.fluvalsmart.view.CustomProgressDialog;
 import com.inledco.fluvalsmart.viewmodel.LightViewModel;
+import com.liruya.okhttpmanager.HttpCallback;
+import com.liruya.okhttpmanager.OKHttpManager;
 import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
 import com.liruya.tuner168blemanager.BleSimpleListener;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener {
     private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
@@ -119,7 +126,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         if (BleManager.getInstance().isConnected(mAddress)) {
             BleManager.getInstance().setAutoConnect(mAddress, mAutoConnect);
         } else {
-            BleManager.getInstance().connectDevice(mAddress);
+            BleManager.getInstance().connectDevice(mAddress, mAutoConnect);
         }
     }
 
@@ -199,24 +206,23 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     @Override
     protected void initData() {
-        //TODO
-//        OKHttpManager.getInstance()
-//                     .get(OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>() {
-//                         @Override
-//                         public void onFailure(Call call, IOException e) {
-//
-//                         }
-//
-//                         @Override
-//                         public void onError(int code, final String msg) {
-//                         }
-//
-//                         @Override
-//                         public void onSuccess(final RemoteFirmware result) {
-//                             mRemoteVersion = (result.getMajor_version() << 8) | result.getMinor_version();
-//                             showUpgradeStatus();
-//                         }
-//                     });
+        OKHttpManager.getInstance()
+                     .get(OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>() {
+                         @Override
+                         public void onFailure(Call call, IOException e) {
+
+                         }
+
+                         @Override
+                         public void onError(int code, final String msg) {
+                         }
+
+                         @Override
+                         public void onSuccess(final RemoteFirmware result) {
+                             mRemoteVersion = (result.getMajor_version() << 8) | result.getMinor_version();
+                             showUpgradeStatus();
+                         }
+                     });
         mCountDownTimer = new CountDownTimer(4000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -247,7 +253,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onConnectTimeout() {
                 showDisconnectStatus();
                 if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressDialog.dismiss();
+                        }
+                    });
                 }
                 showDataInvalidFragment();
             }
@@ -281,41 +292,37 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
             @Override
             public void onReadMfr(String s) {
-                mState = STATE_GET_INFO;
-                syncDeviceDatetime();
-                //TODO
-//                byte[] mfr = DataUtil.hexToByteArray(s.replace(" ", ""));
-//                if (mfr == null || mfr.length < 4) {
-//                    mDeviceVersion = 0;
-//                } else {
-//                    mDeviceVersion = ((mfr[2] & 0xFF) << 8) | (mfr[3] & 0xFF);
-//                    mState = STATE_GET_INFO;
-//                    syncDeviceDatetime();
-//                }
-//                showUpgradeStatus();
+//                mState = STATE_GET_INFO;
+//                syncDeviceDatetime();
+                byte[] mfr = DataUtil.hexToByteArray(s.replace(" ", ""));
+                if (mfr == null || mfr.length < 4) {
+                    mDeviceVersion = 0;
+                } else {
+                    mDeviceVersion = ((mfr[2] & 0xFF) << 8) | (mfr[3] & 0xFF);
+                    mState = STATE_GET_INFO;
+                    syncDeviceDatetime();
+                }
+                showUpgradeStatus();
             }
 
             @Override
             public void onReadPassword(final int password) {
-                mState = STATE_LOGIN;
-                readMfr();
-                //TODO
-//                if (mState < STATE_LOGIN) {
-//                    final int psw = LightPrefUtil.getLocalPassword(LightActivity.this, mAddress);
-//                    if (psw == password) {
-//                        mState = STATE_LOGIN;
-//                        readMfr();
-//                    } else {
-//                        mCountDownTimer.cancel();
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                showPasswordDialog(password);
-//                                mProgressDialog.dismiss();
-//                            }
-//                        });
-//                    }
-//                }
+                if (mState < STATE_LOGIN) {
+                    final int psw = LightPrefUtil.getLocalPassword(LightActivity.this, mAddress);
+                    if (psw == password) {
+                        mState = STATE_LOGIN;
+                        readMfr();
+                    } else {
+                        mCountDownTimer.cancel();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showPasswordDialog(password);
+                                mProgressDialog.dismiss();
+                            }
+                        });
+                    }
+                }
             }
 
             @Override
@@ -399,25 +406,29 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void showUpgradeStatus() {
-        //TODO
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (mDeviceVersion > 0 && mRemoteVersion > 0 && mDeviceVersion < mRemoteVersion) {
-//                    menu_device_update.setVisible(true);
-//                }
-//                else {
-//                    menu_device_update.setVisible(false);
-//                }
-//            }
-//        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mDeviceVersion > 0 && mRemoteVersion > 0 && mDeviceVersion < mRemoteVersion) {
+                    menu_device_update.setVisible(true);
+                }
+                else {
+                    menu_device_update.setVisible(false);
+                }
+            }
+        });
     }
 
     private void showDataInvalidFragment() {
-        light_mode_show.setVisibility(View.GONE);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.light_fl_show, DataInvalidFragment.newInstance(mPrefer.getDeviceMac()))
-          .commitAllowingStateLoss();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                light_mode_show.setVisibility(View.GONE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.light_fl_show, DataInvalidFragment.newInstance(mPrefer.getDeviceMac()))
+                  .commitAllowingStateLoss();
+            }
+        });
     }
 
     private void showMessage(final String msg) {
@@ -678,7 +689,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         //        dialog.show();
     }
 
-    private void showRetrievePasswordDialog() {
+    private void showRetrievePasswordDialog(final int password) {
         //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(LightActivity.this, R.style.DialogTheme);
         View view = LayoutInflater.from(LightActivity.this).inflate(R.layout.dialog_retrieve_password, null, false);
@@ -690,29 +701,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         final TextView retrieve_msg = view.findViewById(R.id.dialog_retrieve_msg);
         Button btn_cancel = view.findViewById(R.id.dialog_retrieve_cancel);
         Button btn_retrieve = view.findViewById(R.id.dialog_retrieve_retrieve);
-        final CountDownTimer tmr = new CountDownTimer(4000, 4000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                retrieve_msg.setText(R.string.timeout);
-            }
-        };
-        final BleListener listener = new BleSimpleListener(mAddress) {
-            @Override
-            public void onReadPassword(final int password) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DecimalFormat df = new DecimalFormat("000000");
-                        retrieve_msg.setText(getString(R.string.retrieve_psw_is) + df.format(password));
-                    }
-                });
-            }
-        };
         ib_copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -727,6 +715,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                finish();
             }
         });
         btn_retrieve.setOnClickListener(new View.OnClickListener() {
@@ -736,29 +725,19 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 if (TextUtils.isEmpty(key)) {
                     retrieve_msg.setText("");
                 } else if (key.equals(Md5Util.encrypt(mAddress).toLowerCase())) {
-                    BleManager.getInstance().readPassword(mAddress);
-                    tmr.start();
-                    retrieve_msg.setText("");
+                    DecimalFormat df = new DecimalFormat("000000");
+                    retrieve_msg.setText(getString(R.string.retrieve_psw_is) + df.format(password));
                 } else {
                     retrieve_msg.setText(R.string.retrieve_wrong_key);
                 }
             }
         });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                BleManager.getInstance().removeBleListener(listener);
-                finish();
-            }
-        });
-        BleManager.getInstance().addBleListener(listener);
         //        dialog.setCanceledOnTouchOutside( false );
         //        dialog.setView( view );
         //        dialog.show();
     }
 
     private void showPasswordDialog(final int password) {
-        Log.e(TAG, "showPasswordDialog: ");
         //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
@@ -773,8 +752,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         btn_retrieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showRetrievePasswordDialog();
                 dialog.dismiss();
+                showRetrievePasswordDialog(password);
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {

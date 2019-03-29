@@ -161,13 +161,11 @@
     <string name="title_upgrade_failed">No se pudo actualizar</string>
     <string name="upgrade_success_msg">Vuelva a iniciar sesión.</string>
     <string name="upgrade_failed_msg">Intente de nuevo.</string>
-    <string name="ota_warning">"\t\tAdvertencia de actualización: Durante el proceso de actualización, mantenga su teléfono o su tableta lo más cerca posible de su dispositivo
-        de iluminación.\n
-        Recuerde:  - No salga de la aplicación  - No desconecte el Bluetooth  Puede que los parámetros de luz establecidos no se mantengan
-        tras las actualizaciones.\n
-        Puede que la versión anterior de la aplicación no controle los dispositivos correctamente una vez que se actualice el firmware.\n
-        Asegúrese de utilizar la versión más reciente de la aplicación.\n
-        Es necesario actualizar la aplicación a la versión más reciente.\n
+    <string name="ota_warning">"\t\tAdvertencia de actualización: Durante el proceso de actualización, mantenga su teléfono o su tableta lo más cerca posible de su dispositivode iluminación.
+        Recuerde:  - No salga de la aplicación  - No desconecte el Bluetooth  Puede que los parámetros de luz establecidos no se mantengantras las actualizaciones.
+        Puede que la versión anterior de la aplicación no controle los dispositivos correctamente una vez que se actualice el firmware.
+        Asegúrese de utilizar la versión más reciente de la aplicación.
+        Es necesario actualizar la aplicación a la versión más reciente.
         Si la actualización falla, intente de nuevo."</string>
     <string name="find">Detectar</string>
     <string name="tip_enable_location">Ubicación desactivada. Algunos sistemas necesitan la función de ubicación para detectar dispositivos con Bluetooth.</string>

@@ -622,19 +622,18 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                         BleManager.getInstance()
                                   .disconnectDevice(mAddress);
                         mView.showMessage(getString(R.string.ota_reset_tobootloader));
-                        Log.e(TAG, "decodeReceiveData: reset enter bootloader");
                         BleManager.getInstance()
                                   .refresh(mAddress);
                         //在UI线程中 使用Handler
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mView.showRepowerDialog();
-                                    }
-                                }, 1000);
+                                mView.showRepowerDialog();
+//                                mHandler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                    }
+//                                }, 1000);
                             }
                         });
                     }

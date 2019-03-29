@@ -161,11 +161,10 @@
     <string name="title_upgrade_failed">Die Aufrüstung ist fehlgeschlagen</string>
     <string name="upgrade_success_msg">Bitte loggen Sie sich erneut ein.</string>
     <string name="upgrade_failed_msg">Bitte versuchen Sie es erneut.</string>
-    <string name="ota_warning">"\t\tWarnung: Während Sie das Gerät aktualisieren, sollte sich das Mobilgerät in der Nähe der Beleuchtungseinheit befinden.\n
-        Bitte schließen Sie die App NICHT und deaktivieren Sie Bluetooth NICHT.\n
-        Aktualisierungen können vorher eingestellte Beleuchtungsparameter verändern.\n
-        Vorherige App-Versionen können das Gerät nach der Firmware-Aktualisierung nicht mehr steuern. Stellen Sie daher sicher, dass die neueste App-Version installiert ist (für
-        die Aufrüstung notwendig).\n
+    <string name="ota_warning">"\t\tWarnung: Während Sie das Gerät aktualisieren, sollte sich das Mobilgerät in der Nähe der Beleuchtungseinheit befinden.
+        Bitte schließen Sie die App NICHT und deaktivieren Sie Bluetooth NICHT.
+        Aktualisierungen können vorher eingestellte Beleuchtungsparameter verändern.
+        Vorherige App-Versionen können das Gerät nach der Firmware-Aktualisierung nicht mehr steuern. Stellen Sie daher sicher, dass die neueste App-Version installiert ist (fürdie Aufrüstung notwendig).
         Wenn die Aktualisierung fehlschlägt, versuchen Sie es bitte erneut."</string>
     <string name="find">Suchen</string>
     <string name="tip_enable_location">Standortzuordnung deaktiviert. Einige Systeme benötigen eine Standortzuordnung für das Scannen von Bluetooth-Geräten.</string>

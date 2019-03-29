@@ -161,11 +161,9 @@
     <string name="title_upgrade_failed">Échec de la mise à jour</string>
     <string name="upgrade_success_msg">Ouvrir une nouvelle session.</string>
     <string name="upgrade_failed_msg">Prière d’essayer de nouveau.</string>
-    <string name="ota_warning">"\t\tAvertissement de mise à jour : Durant la mise à jour, garder l’appareil mobile à proximité de l’appareil d’éclairage. NE PAS quitter
-        l’application ou fermer la fonctionnalité Bluetooth.\n
-        Les mises à jour peuvent altérer les paramètres de l’appareil d’éclairage réglés ultérieurement.\n
-        Les versions précédentes de l’application ne contrôleront plus l’appareil à la suite de la mise à jour du micrologiciel; donc, s’assurer que la plus récente version de
-        l’application est installée (requise pour la mise à jour).\n
+    <string name="ota_warning">"\t\tAvertissement de mise à jour : Durant la mise à jour, garder l’appareil mobile à proximité de l’appareil d’éclairage. NE PAS quitterl’application ou fermer la fonctionnalité Bluetooth.
+        Les mises à jour peuvent altérer les paramètres de l’appareil d’éclairage réglés ultérieurement.
+        Les versions précédentes de l’application ne contrôleront plus l’appareil à la suite de la mise à jour du micrologiciel; donc, s’assurer que la plus récente version del’application est installée (requise pour la mise à jour).
         Si la mise à jour échoue, essayer de nouveau. "</string>
     <string name="find">Détecter</string>
     <string name="tip_enable_location">Service de localisation désactivé. Certains appareils nécessitent l’autorisation d’utiliser les données de localisation avant d’activer le mode de détection Bluetooth.</string>

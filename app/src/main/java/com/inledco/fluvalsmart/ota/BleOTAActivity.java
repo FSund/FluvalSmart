@@ -2,26 +2,29 @@ package com.inledco.fluvalsmart.ota;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
+import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.liruya.tuner168blemanager.BleManager;
 
-public class BleOTAActivity extends AppCompatActivity implements IOTAView
-{
+public class BleOTAActivity extends BaseActivity implements IOTAView {
     private static final String TAG = "BleOTAActivity";
 
     private Toolbar ota_toolbar;
@@ -42,17 +45,15 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     private StringBuffer mMessage;
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState )
-    {
-        super.onCreate( savedInstanceState );
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bleota);
 
         Intent intent = getIntent();
-        if ( intent != null )
-        {
-            mDevid = intent.getShortExtra( "devid", (short) 0 );
-            mName = intent.getStringExtra( "name" );
-            mAddress = intent.getStringExtra( "address" );
+        if (intent != null) {
+            mDevid = intent.getShortExtra("devid", (short) 0);
+            mName = intent.getStringExtra("name");
+            mAddress = intent.getStringExtra("address");
             mTestMode = intent.getBooleanExtra("mode", false);
         }
         initView();
@@ -61,38 +62,35 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     }
 
     @Override
-    protected void onResume ()
-    {
+    protected void onResume() {
         super.onResume();
     }
 
     @Override
-    protected void onDestroy ()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         mPresenter.stop();
     }
 
     @Override
-    public boolean onCreateOptionsMenu ( Menu menu )
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_ota, menu);
         menu_connect_status = menu.findItem(R.id.menu_connect_status);
-        if ( BleManager.getInstance().isConnected(mAddress) )
+        if (BleManager.getInstance()
+                      .isConnected(mAddress))
         {
             menu_connect_status.setIcon(R.drawable.ic_bluetooth_connected_white_24dp);
-            menu_connect_status.setChecked( true );
+            menu_connect_status.setChecked(true);
         }
-        else
-        {
+        else {
             menu_connect_status.setIcon(R.drawable.ic_bluetooth_disabled_grey_500_24dp);
-            menu_connect_status.setChecked( false );
+            menu_connect_status.setChecked(false);
         }
         return true;
     }
 
-    private void initView ()
-    {
+    @Override
+    protected void initView() {
         ota_toolbar = findViewById(R.id.ota_toolbar);
         ota_tv_device_name = findViewById(R.id.ota_tv_device_name);
         ota_tv_device_version = findViewById(R.id.ota_tv_device_version);
@@ -101,70 +99,62 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         ota_tv_msg = findViewById(R.id.ota_tv_msg);
         ota_check_upgrade = findViewById(R.id.ota_check_upgrade);
 
-        setSupportActionBar( ota_toolbar );
-        ota_tv_msg.setKeepScreenOn( true );
+        setSupportActionBar(ota_toolbar);
+        ota_tv_msg.setKeepScreenOn(true);
     }
 
-    private void initEvent()
-    {
-        ota_toolbar.setNavigationOnClickListener( new View.OnClickListener() {
+    @Override
+    protected void initEvent() {
+        ota_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick ( View v )
-            {
-                if ( !mPresenter.isProcessing() )
-                {
+            public void onClick(View v) {
+                if (!mPresenter.isProcessing()) {
                     finish();
                 }
             }
-        } );
-        ota_check_upgrade.setOnClickListener( new View.OnClickListener() {
+        });
+        ota_check_upgrade.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick ( View v )
-            {
-                if ( !mPresenter.isProcessing() )
-                {
-                    if ( NetUtil.isNetworkAvailable(BleOTAActivity.this) )
-                    {
+            public void onClick(View v) {
+                if (!mPresenter.isProcessing()) {
+                    if (NetUtil.isNetworkAvailable(BleOTAActivity.this)) {
                         ota_tv_device_version.setText(R.string.device_frimware_version);
                         ota_tv_remote_version.setText(R.string.latest_firmware_version);
                         mMessage = new StringBuffer();
-                        ota_tv_msg.setText( "" );
+                        ota_tv_msg.setText("");
                         mPresenter.checkUpdate(false);
                     }
-                    else
-                    {
+                    else {
                         mMessage = new StringBuffer();
                         ota_tv_msg.setText(R.string.ota_network_unavailable);
                     }
                 }
             }
-        } );
+        });
     }
 
-    private void initData()
-    {
-        ota_tv_device_name.setText( mName );
+    @Override
+    protected void initData() {
+        ota_tv_device_name.setText(mName);
         mMessage = new StringBuffer();
-        mPresenter = new OTAPresenter(this, this, mDevid, mAddress, "", mTestMode );
+        mPresenter = new OTAPresenter(this, this, mDevid, mAddress, "", mTestMode);
         mPresenter.start();
-        if ( NetUtil.isNetworkAvailable(this) )
-        {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPresenter.checkUpdate(false);
-                }
-            }, 500);
-//            mPresenter.checkUpdate(false);
-        }
-        else
-        {
-            ota_tv_msg.setText(R.string.ota_network_unavailable);
-        }
+        ota_check_upgrade.performClick();
+//        if (NetUtil.isNetworkAvailable(this)) {
+//            //            new Handler().postDelayed(new Runnable() {
+//            //                @Override
+//            //                public void run() {
+//            //                    mPresenter.checkUpdate(false);
+//            //                }
+//            //            }, 500);
+//            //            mPresenter.checkUpdate(false);
+//        }
+//        else {
+//            ota_tv_msg.setText(R.string.ota_network_unavailable);
+//        }
     }
 
-    public void showDeviceVersion(final String version)
-    {
+    public void showDeviceVersion(final String version) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -173,8 +163,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         });
     }
 
-    public void showRemoteVersion(final String version)
-    {
+    public void showRemoteVersion(final String version) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -183,152 +172,145 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         });
     }
 
-    public void showDeviceConnected ()
-    {
-        if ( menu_connect_status != null )
-        {
+    public void showDeviceConnected() {
+        if (menu_connect_status != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     menu_connect_status.setIcon(R.drawable.ic_bluetooth_connected_white_24dp);
-                    menu_connect_status.setChecked( true );
+                    menu_connect_status.setChecked(true);
                 }
             });
         }
     }
 
-    public void showDeviceDisconnected ()
-    {
-        if ( menu_connect_status != null )
-        {
+    public void showDeviceDisconnected() {
+        if (menu_connect_status != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     menu_connect_status.setIcon(R.drawable.ic_bluetooth_disabled_grey_500_24dp);
-                    menu_connect_status.setChecked( false );
+                    menu_connect_status.setChecked(false);
                 }
             });
         }
     }
 
     @Override
-    public void showMessage ( final String msg )
-    {
-        mMessage.append( msg ).append( "\r\n" );
-        runOnUiThread( new Runnable() {
+    public void showMessage(final String msg) {
+        mMessage.append(msg)
+                .append("\r\n");
+        runOnUiThread(new Runnable() {
             @Override
-            public void run ()
-            {
-                ota_tv_msg.setText( mMessage );
-                ota_nsv.post( new Runnable() {
+            public void run() {
+                ota_tv_msg.setText(mMessage);
+                ota_nsv.post(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        ota_nsv.fullScroll( NestedScrollView.FOCUS_DOWN );
+                    public void run() {
+                        ota_nsv.fullScroll(NestedScrollView.FOCUS_DOWN);
                     }
-                } );
+                });
             }
-        } );
+        });
     }
 
     @Override
-    public void showUpgradeConfirmDialog (String msg)
-    {
-//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
-        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
+    public void showUpgradeConfirmDialog(String msg) {
+//        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.BottomDialogTheme );
         builder.setTitle(R.string.ota_upgradable);
-        builder.setMessage( msg );
+        builder.setMessage(msg);
         builder.setNegativeButton(R.string.ota_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick( DialogInterface dialog, int which )
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 mPresenter.stopProcess();
             }
-        } );
+        });
         builder.setPositiveButton(R.string.ota_continue, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick ( DialogInterface dialog, int which )
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 mPresenter.downloadFirmware();
             }
-        } );
+        });
         builder.setCancelable(false);
-        builder.show();
-//        AlertDialog dialog = builder.create();
-//        dialog.setCanceledOnTouchOutside( false );
-//        dialog.setCancelable( false );
-//        dialog.show();
+        AlertDialog dialog = builder.show();
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM | Gravity.FILL_HORIZONTAL);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        lp.width = dm.widthPixels;
+        window.setAttributes(lp);
     }
 
     @Override
-    public void showUpgradeProgress ( final String msg )
-    {
-        runOnUiThread( new Runnable() {
+    public void showUpgradeProgress(final String msg) {
+        runOnUiThread(new Runnable() {
             @Override
-            public void run ()
-            {
-                ota_tv_msg.setText( mMessage  );
-                ota_tv_msg.append( msg + "\r\n" );
-                ota_nsv.post( new Runnable() {
+            public void run() {
+                ota_tv_msg.setText(mMessage);
+                ota_tv_msg.append(msg + "\r\n");
+                ota_nsv.post(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        ota_nsv.fullScroll( NestedScrollView.FOCUS_DOWN );
+                    public void run() {
+                        ota_nsv.fullScroll(NestedScrollView.FOCUS_DOWN);
                     }
-                } );
+                });
             }
-        } );
+        });
     }
 
     @Override
-    public void showRepowerDialog()
-    {
-//        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
-        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
-        final int[] count = new int[]{ 20 };
-        View view = LayoutInflater.from( this ).inflate(R.layout.dialog_repower, null, false);
+    public void showRepowerDialog() {
+//        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.BottomDialogTheme );
+        final int[] count = new int[]{20};
+        View view = LayoutInflater.from(this)
+                                  .inflate(R.layout.dialog_repower, null, false);
         builder.setTitle(R.string.ota_wait_title);
         builder.setView(view);
         builder.setCancelable(false);
         final AlertDialog dialog = builder.show();
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM | Gravity.FILL_HORIZONTAL);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        lp.width = dm.widthPixels;
+        window.setAttributes(lp);
+
         final Button btn = view.findViewById(R.id.dialog_repower_next);
         btn.setText(getString(R.string.next) + " ( 20 ) ");
-        btn.setOnClickListener( new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick( View v )
-            {
+            public void onClick(View v) {
                 dialog.dismiss();
                 mPresenter.checkUpdate(true);
             }
-        } );
+        });
         CountDownTimer timer = new CountDownTimer(20000, 1000) {
             @Override
-            public void onTick( long millisUntilFinished )
-            {
+            public void onTick(long millisUntilFinished) {
                 count[0]--;
-                if (count[0] > 0)
-                {
+                if (count[0] > 0) {
                     btn.setText(getString(R.string.next) + " ( " + count[0] + " ) ");
                 }
             }
 
             @Override
-            public void onFinish()
-            {
+            public void onFinish() {
                 btn.setText(R.string.next);
                 btn.setEnabled(true);
             }
         };
 
-//        dialog.setView( view );
-//        dialog.setCanceledOnTouchOutside( false );
-//        dialog.show();
+        //        dialog.setView( view );
+        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.show();
         timer.start();
     }
 
     @Override
     public void showSuccessDialog() {
-        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         builder.setTitle(R.string.title_upgrade_success);
         builder.setIcon(R.drawable.ic_check_green_32dp);
         builder.setMessage(R.string.upgrade_success_msg);
@@ -344,7 +326,7 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
 
     @Override
     public void showErrorDialog() {
-        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         builder.setTitle(R.string.title_upgrade_failed);
         builder.setIcon(R.drawable.ic_error_red_32dp);
         builder.setMessage(R.string.upgrade_failed_msg);
@@ -354,13 +336,10 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
     }
 
     @Override
-    public void onBackPressed ()
-    {
-        if ( mPresenter.isProcessing() )
-        {
+    public void onBackPressed() {
+        if (mPresenter.isProcessing()) {
             return;
         }
         super.onBackPressed();
     }
-
 }

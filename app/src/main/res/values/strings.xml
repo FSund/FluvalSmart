@@ -227,10 +227,9 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
-    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit.\n
-        Please DO NOT exit APP or close Bluetooth.\n
-        Updates may alter previously set light parameters.\n
-        Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).\n
+    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.
+        Updates may alter previously set light parameters.
+        Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).
         If update fails, please try again."</string>
     <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_warning_title">Warning</string>
@@ -263,6 +262,5 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="find">Find</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="FAQ">FAQ</string>
 </resources>
