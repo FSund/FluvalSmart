@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,13 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
+import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.liruya.tuner168blemanager.BleManager;
 
-public class BleOTAActivity extends AppCompatActivity implements IOTAView
+public class BleOTAActivity extends BaseActivity implements IOTAView
 {
-    private static final String TAG = "BleOTAActivity";
-
     private Toolbar ota_toolbar;
     private TextView ota_tv_device_name;
     private TextView ota_tv_device_version;
@@ -91,7 +89,8 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         return true;
     }
 
-    private void initView ()
+    @Override
+    protected void initView ()
     {
         ota_toolbar = findViewById(R.id.ota_toolbar);
         ota_tv_device_name = findViewById(R.id.ota_tv_device_name);
@@ -105,7 +104,8 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         ota_tv_msg.setKeepScreenOn( true );
     }
 
-    private void initEvent()
+    @Override
+    protected void initEvent()
     {
         ota_toolbar.setNavigationOnClickListener( new View.OnClickListener() {
             @Override
@@ -141,7 +141,8 @@ public class BleOTAActivity extends AppCompatActivity implements IOTAView
         } );
     }
 
-    private void initData()
+    @Override
+    protected void initData()
     {
         ota_tv_device_name.setText( mName );
         mMessage = new StringBuffer();

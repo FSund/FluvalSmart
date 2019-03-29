@@ -119,7 +119,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         if (BleManager.getInstance().isConnected(mAddress)) {
             BleManager.getInstance().setAutoConnect(mAddress, mAutoConnect);
         } else {
-            BleManager.getInstance().connectDevice(mAddress);
+            BleManager.getInstance().connectDevice(mAddress, mAutoConnect);
         }
     }
 
@@ -247,7 +247,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onConnectTimeout() {
                 showDisconnectStatus();
                 if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressDialog.dismiss();
+                        }
+                    });
                 }
                 showDataInvalidFragment();
             }
@@ -414,10 +419,15 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void showDataInvalidFragment() {
-        light_mode_show.setVisibility(View.GONE);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.light_fl_show, DataInvalidFragment.newInstance(mPrefer.getDeviceMac()))
-          .commitAllowingStateLoss();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                light_mode_show.setVisibility(View.GONE);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.light_fl_show, DataInvalidFragment.newInstance(mPrefer.getDeviceMac()))
+                  .commitAllowingStateLoss();
+            }
+        });
     }
 
     private void showMessage(final String msg) {

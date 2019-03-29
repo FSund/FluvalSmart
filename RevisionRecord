@@ -66,3 +66,7 @@
 5.  OTA蓝牙连接超时时间增加
 6.  移除分屏支持
 7.  修复play console后台显示的崩溃问题
+
+2019.03.29      版本号 14  版本 1.1.1    (紧急修复小bug)
+1.  修复showDataInvalidFragment引起应用停止运行的bug
+2.  修复Auto界面日落起始时间随日落结束分钟变化的bug

@@ -10,4 +10,11 @@ public class FluvalSmartApp extends Application {
 
 //        Setting.changeAppLanguage(getApplicationContext());
     }
+
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
+//
+//        MultiDex.install(this);
+//    }
 }
