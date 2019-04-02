@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -90,6 +91,8 @@ public class LightProFragment extends BaseFragment {
     private TimerTask mPreviewTask;
     private int mPreviewCount;
 
+    private final CheckSaveTimer mSaveTimer = new CheckSaveTimer(1000, 50);
+
     private LightViewModel mLightViewModel;
     private Light mLight;
 
@@ -117,6 +120,14 @@ public class LightProFragment extends BaseFragment {
         if (mPreviewTimer != null) {
             mPreviewTimer.cancel();
             mPreviewTimer = null;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 1) {
+            mSaveTimer.startCheck();
         }
     }
 
@@ -275,7 +286,7 @@ public class LightProFragment extends BaseFragment {
                 intent.putExtra("devid", devid);
                 intent.putExtra("address", mAddress);
                 intent.putExtra("light_pro", mLightPro);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -307,6 +318,7 @@ public class LightProFragment extends BaseFragment {
             public void onChanged(@Nullable Light light) {
                 if (light != null) {
                     mLightPro = light.getLightPro();
+                    mSaveTimer.finish();
                     refreshData();
                 }
             }
@@ -496,8 +508,11 @@ public class LightProFragment extends BaseFragment {
     }
 
     private void showExportDialog() {
+        final Map<String, LightPro> presetProfiles = DeviceUtil.getProPresetProfiles(getContext(), devid, mLightPro.isHasDynamic());
+        final int presetCount = (presetProfiles == null ? 0 : presetProfiles.size());
         final Map<String, LightPro> localProfiles = LightPrefUtil.getLocalProProfiles(getContext(), devid, mLightPro.isHasDynamic());
         //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        final Button[] buttons = new Button[3];
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         builder.setTitle(R.string.export_profile);
         if (localProfiles == null || localProfiles.size() == 0) {
@@ -514,6 +529,11 @@ public class LightProFragment extends BaseFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     index[0] = which;
+                    if (buttons[0] != null) {
+                        boolean enabled = (which < presetCount ? false : true);
+                        buttons[0].setEnabled(enabled);
+                        buttons[0].setTextColor(getResources().getColor(enabled ? R.color.colorTextPrimaryLight : R.color.colorGray));
+                    }
                 }
             });
             builder.setPositiveButton(R.string.dialog_export_use, new DialogInterface.OnClickListener() {
@@ -531,7 +551,10 @@ public class LightProFragment extends BaseFragment {
         }
 
         builder.setNegativeButton(R.string.cancel, null);
-        builder.show();
+        AlertDialog dialog = builder.show();
+        buttons[0] = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        buttons[0].setEnabled(false);
+        buttons[0].setTextColor(getResources().getColor(R.color.colorGray));
         //        AlertDialog dialog = builder.create();
         //        dialog.setCanceledOnTouchOutside( false );
         //        dialog.show();
@@ -919,6 +942,38 @@ public class LightProFragment extends BaseFragment {
             tv_brts[3] = itemView.findViewById(R.id.item_tbp_chn4);
             tv_brts[4] = itemView.findViewById(R.id.item_tbp_chn5);
             tv_brts[5] = itemView.findViewById(R.id.item_tbp_chn6);
+        }
+    }
+
+    class CheckSaveTimer extends CountDownTimer {
+        private boolean mRunning;
+
+        public CheckSaveTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            mRunning = false;
+        }
+
+        public void finish() {
+            cancel();
+            if (mRunning) {
+                mRunning = false;
+                Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT)
+                     .show();
+            }
+        }
+
+        public void startCheck() {
+            mRunning = true;
+            start();
         }
     }
 }

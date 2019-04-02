@@ -70,6 +70,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
     private Toolbar light_toolbar;
     private ProgressDialog mProgressDialog;
+    private AlertDialog mPasswordDialog;
     private LinearLayout light_mode_show;
     private CheckedTextView light_ctv_manual;
     private CheckedTextView light_ctv_auto;
@@ -738,13 +739,16 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void showPasswordDialog(final int password) {
+        if (mPasswordDialog != null && mPasswordDialog.isShowing()) {
+            return;
+        }
         //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
         builder.setTitle(R.string.input_password);
         builder.setView(view);
         builder.setCancelable(false);
-        final AlertDialog dialog = builder.show();
+        mPasswordDialog = builder.show();
         final EditText psw_password = view.findViewById(R.id.psw_password);
         Button btn_retrieve = view.findViewById(R.id.psw_retrieve);
         Button btn_cancel = view.findViewById(R.id.psw_cancel);
@@ -752,14 +756,14 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         btn_retrieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                mPasswordDialog.dismiss();
                 showRetrievePasswordDialog(password);
             }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                mPasswordDialog.dismiss();
                 finish();
             }
         });
@@ -775,7 +779,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     if (value == password) {
                         LightPrefUtil.setLocalPassword(LightActivity.this, mAddress, value);
                         readMfr();
-                        dialog.dismiss();
+                        mPasswordDialog.dismiss();
+                        mCountDownTimer.start();
                     }
                     else {
                         psw_password.setError(getString(R.string.error_password_wrong));

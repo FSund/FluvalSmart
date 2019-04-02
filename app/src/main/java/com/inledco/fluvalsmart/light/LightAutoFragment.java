@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -103,6 +104,8 @@ public class LightAutoFragment extends BaseFragment {
 
     private Timer tmr;
     private PreviewTimerTask tsk;
+
+    private final CheckSaveTimer mSaveTimer = new CheckSaveTimer(1000, 50);
 
     private LightViewModel mLightViewModel;
     private Light mLight;
@@ -240,6 +243,7 @@ public class LightAutoFragment extends BaseFragment {
             public void onChanged(@Nullable Light light) {
                 if (light != null) {
                     mLightAuto = light.getLightAuto();
+                    mSaveTimer.finish();
                     refreshData();
                 }
             }
@@ -740,15 +744,20 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void showImportDialog() {
+        final Map<String, LightAuto> presetProfiles = DeviceUtil.getAutoPresetProfiles(getContext(), devid, mLightAuto.isHasDynamic(), mLightAuto.isHasTurnoff());
+        final int presetCount = (presetProfiles == null ? 0 : presetProfiles.size());
         final Map<String, LightAuto> localProfiles = LightPrefUtil.getLocalAutoProfiles(getContext(), devid, mLightAuto.isHasDynamic(), mLightAuto.isHasTurnoff());
-        final String[] keys = new String[localProfiles.size()];
+        final int size = localProfiles.size();
+        final String[] keys = new String[size];
         final int[] index = {0};
-        int i = 0;
+        int idx = 0;
         for (String s : localProfiles.keySet()) {
-            keys[i] = s;
-            i++;
+            keys[idx] = s;
+            idx++;
         }
+        localProfiles.keySet().toArray(keys);
         //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        final Button[] buttons = new Button[3];
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         builder.setTitle(R.string.export_profile);
         if (keys.length == 0) {
@@ -759,6 +768,11 @@ public class LightAutoFragment extends BaseFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     index[0] = i;
+                    if (buttons[0] != null) {
+                        boolean enabled = (i < presetCount ? false : true);
+                        buttons[0].setEnabled(enabled);
+                        buttons[0].setTextColor(getResources().getColor(enabled ? R.color.colorTextPrimaryLight : R.color.colorGray));
+                    }
                 }
             });
             builder.setPositiveButton(R.string.dialog_export_use, new DialogInterface.OnClickListener() {
@@ -767,6 +781,7 @@ public class LightAutoFragment extends BaseFragment {
                     mLightAuto = localProfiles.get(keys[index[0]]);
                     refreshData();
                     CommUtil.setLedAuto(mAddress, mLightAuto);
+                    mSaveTimer.startCheck();
                     dialogInterface.dismiss();
                 }
             });
@@ -778,7 +793,10 @@ public class LightAutoFragment extends BaseFragment {
             });
         }
         builder.setNegativeButton(R.string.cancel, null);
-        builder.show();
+        AlertDialog dialog = builder.show();
+        buttons[0] = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        buttons[0].setEnabled(false);
+        buttons[0].setTextColor(getResources().getColor(R.color.colorGray));
         //        AlertDialog dialog = builder.create();
         //        dialog.setCanceledOnTouchOutside( false );
         //        dialog.show();
@@ -990,6 +1008,7 @@ public class LightAutoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommUtil.setLedAuto(mAddress, mLightAuto);
+                mSaveTimer.startCheck();
                 dialog.dismiss();
             }
         });
@@ -1092,6 +1111,7 @@ public class LightAutoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommUtil.setLedAuto(mAddress, mLightAuto);
+                mSaveTimer.startCheck();
                 dialog.dismiss();
             }
         });
@@ -1174,6 +1194,7 @@ public class LightAutoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommUtil.setLedAuto(mAddress, mLightAuto);
+                mSaveTimer.startCheck();
                 dialog.dismiss();
             }
         });
@@ -1312,6 +1333,7 @@ public class LightAutoFragment extends BaseFragment {
                 else {
                     CommUtil.setLedAuto(mAddress, mLightAuto);
                 }
+                mSaveTimer.startCheck();
                 dialog.dismiss();
             }
         });
@@ -1373,6 +1395,38 @@ public class LightAutoFragment extends BaseFragment {
                 }
             });
             return convertView;
+        }
+    }
+
+    class CheckSaveTimer extends CountDownTimer {
+        private boolean mRunning;
+
+        public CheckSaveTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            mRunning = false;
+        }
+
+        public void finish() {
+            cancel();
+            if (mRunning) {
+                mRunning = false;
+                Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT)
+                     .show();
+            }
+        }
+
+        public void startCheck() {
+            mRunning = true;
+            start();
         }
     }
 

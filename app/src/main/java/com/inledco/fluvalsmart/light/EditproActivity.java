@@ -365,6 +365,7 @@ public class EditproActivity extends BaseActivity
                 {
                     Collections.sort( mPoints, mComparator );
                     CommUtil.setLedPro( mAddress, mPoints );
+                    setResult(1);
                     finish();
                 }
             }
