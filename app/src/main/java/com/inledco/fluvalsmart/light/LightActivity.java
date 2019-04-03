@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -28,7 +29,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -630,9 +630,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setTitle(R.string.rename_device);
         builder.setView(view);
         final AlertDialog dialog = builder.show();
-        Button btn_cancel = view.findViewById(R.id.rename_cancel);
-        Button btn_rename = view.findViewById(R.id.rename_confirm);
-        final EditText newname = view.findViewById(R.id.rename_newname);
+        final Button btn_cancel = view.findViewById(R.id.rename_cancel);
+        final Button btn_rename = view.findViewById(R.id.rename_confirm);
+        final TextInputLayout til = view.findViewById(R.id.rename_til);
+        final TextInputEditText newname = view.findViewById(R.id.rename_newname);
         final boolean[] flag = new boolean[]{false};
         newname.setText(prefer.getDeviceName());
         newname.addTextChangedListener(new TextWatcher() {
@@ -674,7 +675,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onClick(View view) {
                 String s = newname.getText().toString();
                 if (TextUtils.isEmpty(s)) {
-                    newname.setError(getString(R.string.error_input_empty));
+                    til.setError(getString(R.string.error_input_empty));
                 } else if (s.equals(prefer.getDeviceName())) {
                     dialog.dismiss();
                 }else {
@@ -697,12 +698,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setTitle(R.string.retrieve_password);
         builder.setView(view);
         final AlertDialog dialog = builder.show();
-        final ImageButton ib_copy = view.findViewById(R.id.dialog_retrieve_copy);
+        final Button btn_copy = view.findViewById(R.id.dialog_retrieve_copy);
         final EditText retrieve_key = view.findViewById(R.id.dialog_retrieve_key);
         final TextView retrieve_msg = view.findViewById(R.id.dialog_retrieve_msg);
         Button btn_cancel = view.findViewById(R.id.dialog_retrieve_cancel);
         Button btn_retrieve = view.findViewById(R.id.dialog_retrieve_retrieve);
-        ib_copy.setOnClickListener(new View.OnClickListener() {
+        btn_copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -749,10 +750,11 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setView(view);
         builder.setCancelable(false);
         mPasswordDialog = builder.show();
-        final EditText psw_password = view.findViewById(R.id.psw_password);
-        Button btn_retrieve = view.findViewById(R.id.psw_retrieve);
-        Button btn_cancel = view.findViewById(R.id.psw_cancel);
-        Button btn_login = view.findViewById(R.id.psw_login);
+        final TextInputLayout psw_til = view.findViewById(R.id.psw_til);
+        final TextInputEditText psw_password = view.findViewById(R.id.psw_password);
+        final Button btn_retrieve = view.findViewById(R.id.psw_retrieve);
+        final Button btn_cancel = view.findViewById(R.id.psw_cancel);
+        final Button btn_login = view.findViewById(R.id.psw_login);
         btn_retrieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -772,7 +774,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onClick(View v) {
                 String psw = psw_password.getText().toString();
                 if (psw.length() != 6) {
-                    psw_password.setError(getString(R.string.error_psw_6_num));
+                    psw_til.setError(getString(R.string.error_psw_6_num));
                 }
                 else {
                     int value = Integer.parseInt(psw);
@@ -783,7 +785,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         mCountDownTimer.start();
                     }
                     else {
-                        psw_password.setError(getString(R.string.error_password_wrong));
+                        psw_til.setError(getString(R.string.error_password_wrong));
                     }
                 }
             }
@@ -839,6 +841,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         builder.setTitle(getString(R.string.modify_password));
         builder.setView(view);
         final AlertDialog dialog = builder.show();
+        final TextInputLayout modify_til1 = view.findViewById(R.id.modify_psw_til1);
+        final TextInputLayout modify_til2 = view.findViewById(R.id.modify_psw_til2);
         final TextInputEditText modify_new = view.findViewById(R.id.modify_psw_new);
         final TextInputEditText modify_confirm = view.findViewById(R.id.modify_psw_confirm);
         Button btn_cancel = view.findViewById(R.id.modify_psw_cancel);
@@ -857,11 +861,11 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 String psw2 = modify_confirm.getText()
                                             .toString();
                 if (psw1.length() != 6) {
-                    modify_new.setError(getString(R.string.error_psw_6_num));
+                    modify_til1.setError(getString(R.string.error_psw_6_num));
                     return;
                 }
                 if (psw2.length() != 6) {
-                    modify_confirm.setError(getString(R.string.error_psw_6_num));
+                    modify_til2.setError(getString(R.string.error_psw_6_num));
                     return;
                 }
                 if (psw1.equals(psw2)) {
@@ -870,7 +874,20 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     dialog.dismiss();
                 }
                 else {
-                    modify_confirm.setError(getString(R.string.error_password_mismatch));
+                    modify_til2.setError(getString(R.string.error_password_mismatch));
+                }
+            }
+        });
+        modify_new.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    modify_til1.setError(null);
+                } else {
+                    String text = modify_new.getText().toString();
+                    if (TextUtils.isEmpty(text) || text.length() < 6) {
+                        modify_til1.setError(getString(R.string.error_psw_6_num));
+                    }
                 }
             }
         });

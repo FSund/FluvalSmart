@@ -111,7 +111,6 @@
     <string name="title_delete_timpoint">#{Index} eingestellte Zeit löschen</string>
     <string name="timepoints_set">{count} eingestellte Zeit</string>
     <string name="hint_input_retrieve_key">Bitte geben Sie den Wiederherstellungsschlüssel des Gerätes ein</string>
-    <string name="tip_retrieve_password">Wenn Sie Ihr Passwort vergessen haben, senden Sie bitte eine E-Mail an FluvalSmartApp1@gmail.com mit Ihren Geräteinformationen, um den Wiederherstellungsschlüssel zu erhalten. Klicken Sie auf das Symbol für \"Kopieren\", um die Geräteinformationen zu erhalten. Danach geben Sie den Wiederherstellungsschlüssel ein und klicken auf das Wiederherstellungsfeld, um Ihr Gerätepasswort zu erhalten.</string>
     <string name="retrieve_psw_is">Gerätepasswort ist:</string>
 
 

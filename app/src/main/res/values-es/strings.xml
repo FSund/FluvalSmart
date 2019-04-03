@@ -111,7 +111,6 @@
     <string name="title_delete_timpoint">Borrar el plazo establecido de #{index}</string>
     <string name="timepoints_set">{count} intervalos de tiempo establecidos</string>
     <string name="hint_input_retrieve_key">Ingrese la clave de recuperación del dispositivo</string>
-    <string name="tip_retrieve_password">Si olvidó la contraseña del dispositivo, puede enviar un correo electrónico a FluvalSmartApp1@gmail.com con la información del dispositivo para obtener la clave de recuperación. Cuando reciba dicha clave, ingrésela y haga clic en el botón Recuperar para obtener la contraseña del dispositivo. Haga clic en el botón Copiar imagen para conseguir la información del dispositivo.</string>
     <string name="retrieve_psw_is">"La contraseña del dispositivo es: "</string>
 
 

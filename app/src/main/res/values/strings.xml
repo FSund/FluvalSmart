@@ -137,7 +137,7 @@
     <string name="title_delete_timpoint">Delete #{index} Set Time</string>
     <string name="timepoints_set">{count} Timepoints Set</string>
     <string name="hint_input_retrieve_key">Please input the retrive key of the device</string>
-    <string name="tip_retrieve_password">If you have forgotten your password, please email FluvalSmartApp1@gmail.com with your device information to obtain a retrieve key. Click on the Copy Image button to obtain device information. Next, enter retrieve key and click on the Retrieve Button to obtain your device password.</string>
+    <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address info@fluvalaquatics.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
     <string name="turnon_location_permission">Enable location permission</string>
     <string name="msg_turnon_location_permission">Location permission must be enabled when scanning.</string>
     <string name="password">Password</string>
@@ -263,4 +263,5 @@ If still not work with above suggestions, or define non-work with multi-pone dev
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="FAQ">FAQ</string>
+    <string name="copy">Copy</string>
 </resources>

@@ -113,7 +113,6 @@
     <string name="title_delete_timpoint">删除 #{index} 时间点</string>
     <string name="timepoints_set">{count} 个时间点</string>
     <string name="hint_input_retrieve_key">请输入设备的找回密钥</string>
-    <string name="tip_retrieve_password">如果忘记了设备密码,你可以向 FluvalSmartApp1@gmail.com 发送一封包含设备信息的邮件来获取找回密钥.然后输入找回密钥并点击找回按钮.点击复制按钮来获取设备信息.</string>
     <string name="turnon_location_permission">开启定位权限</string>
     <string name="msg_turnon_location_permission">扫描蓝牙设备需要开启定位权限</string>
     <string name="password">密码</string>
@@ -181,4 +180,6 @@
     <string name="retrieve_key">找回密钥</string>
     <string name="find">查找</string>
     <string name="tip_enable_location">定位已关闭, 部分手机需要开启定位功能才能扫描蓝牙设备。</string>
+    <string name="tip_retrieve_password">如果忘记了设备密码，请点击下方“复制”按钮来获取设备信息，将已复制的设备信息发送到邮箱info@fluvalaquatics.com 来找回密匙。收到密匙后，请进行输入并点击找回按钮。</string>
+    <string name="copy">复制</string>
 </resources>

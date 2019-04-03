@@ -153,6 +153,13 @@ public class LightProFragment extends BaseFragment {
     protected void initEvent() {
         final DecimalFormat df = new DecimalFormat("00");
 
+        pro_tv_points.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pro_btn_edit.performClick();
+            }
+        });
+
         pro_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

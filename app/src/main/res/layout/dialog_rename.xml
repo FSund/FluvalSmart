@@ -7,13 +7,14 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/rename_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         app:hintEnabled="true"
         app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/rename_newname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

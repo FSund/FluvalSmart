@@ -111,7 +111,6 @@
     <string name="title_delete_timpoint">"Supprimer l’intervalle programmé #{index} "</string>
     <string name="timepoints_set">{count} Intervalles programmés</string>
     <string name="hint_input_retrieve_key">Entrer le code de récupération de l’appareil</string>
-    <string name="tip_retrieve_password">Si le mot de passe a été oublié, envoyer un courriel à FluvalSmartApp1@gmail.com contenant l’information de l’appareil afin d’obtenir un code de récupération. Cliquer sur l’icône « Copier » pour obtenir l’information de l’appareil. Ensuite, entrer le code de récupération et cliquer sur le bouton « Récupérer » pour obtenir le mot de passe de votre appareil.</string>
     <string name="retrieve_psw_is">Mot de passe de l’appareil :</string>
 
 
