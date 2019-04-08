@@ -166,7 +166,7 @@ public class MultiPointSeekbar extends View
             mMin = 0;
             mMax = 100;
         }
-        if ( mInterval <= 0 || mInterval >= mMax - mMin || ((mMax - mMin)%mInterval != 0) )
+        if ( mInterval <= 0 || mInterval >= mMax - mMin)
         {
             mInterval = INTERVAL_DEFAULT;
         }
@@ -718,14 +718,7 @@ public class MultiPointSeekbar extends View
     private int convertProgress( int progress )
     {
         int m = (progress-mMin)%mInterval;
-        if ( m > mInterval/2 )
-        {
-            progress += mInterval - m;
-        }
-        else
-        {
-            progress -= m;
-        }
+        progress -= m;
         return progress;
     }
 

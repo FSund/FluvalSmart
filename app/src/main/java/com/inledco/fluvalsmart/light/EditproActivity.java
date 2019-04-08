@@ -119,7 +119,6 @@ public class EditproActivity extends BaseActivity
         editpro_rv_show = findViewById( R.id.editpro_rv_show );
 
         LineChartHelper.init(editpro_linechart);
-//        initLineChart( editpro_linechart );
         editpro_mps.setMaxLengthHint( "88:88" );
         editpro_mps.setGetTextImpl( new MultiPointSeekbar.GetTextImpl() {
             @Override
@@ -176,13 +175,11 @@ public class EditproActivity extends BaseActivity
             {
                 if ( mPoints != null && index >= 0 && index < mPoints.size() )
                 {
-//                    DecimalFormat df = new DecimalFormat( "00" );
-                    //                    editpro_tv_tmr.setText( df.format( progress/60 ) + ":" + df.format( progress%60 ) );
                     int progress = editpro_mps.getProgressByIndex( index );
+                    mPoints.get( index ).setHour( progress/60 );
                     mPoints.get( index ).setHour( progress/60 );
                     mPoints.get( index ).setMinute( progress%60 );
                     refreshChart();
-//                    editpro_ib_add.setEnabled( !editpro_mps.isSelectedPointCoincide() );
                 }
             }
 
@@ -392,7 +389,6 @@ public class EditproActivity extends BaseActivity
                 }
                 Collections.sort( mPoints, mComparator );
 
-                editpro_mps.setMax( 1439 );
                 editpro_mps.setPointCount( count );
 
                 for ( int i = 0; i < count; i++ )

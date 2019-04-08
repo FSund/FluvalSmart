@@ -20,6 +20,8 @@
         android:layout_marginBottom="8dp"
         app:thumbDrawable="@mipmap/ic_timer_thumb_white"
         app:selectedThumDrawable="@mipmap/ic_timer_thumb_red"
+        app:minimum="0"
+        app:maximum="1439"
         app:interval="5"/>
 
     <android.support.v7.widget.RecyclerView
