@@ -2,12 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context="com.inledco.bleota.BleOTAActivity">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/ota_toolbar"
@@ -16,7 +14,7 @@
         android:background="@color/colorPrimaryDark"
         android:gravity="center_vertical"
         app:title="@string/ota_title"
-        app:titleTextColor="#FFFFFFFF"
+        app:titleTextColor="@color/colorTextPrimaryDark"
         app:navigationIcon="@drawable/ic_chevron_left_white_36dp"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/ota_tv_device_name"
@@ -66,6 +65,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:textColor="#FFFF0000"
+        android:textSize="12sp"
         android:text="@string/ota_warning"/>
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/ota_nsv"
@@ -108,9 +108,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:background="@drawable/shape_btn_corner_primary"
+            android:drawablePadding="4dp"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorTextPrimaryDark"
             android:text="@string/ota_check_upgrade"/>
 
     </android.support.v7.widget.ButtonBarLayout>

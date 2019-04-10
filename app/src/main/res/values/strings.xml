@@ -222,12 +222,12 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="ota_redownload">Re-Download</string>
     <string name="ota_title">Device Firmware Upgrade</string>
     <string name="ota_upgrade">Upgrade</string>
-    <string name="ota_check_upgrade">Check for updates</string>
+    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">This device can not upgrade,lowest support firmware version V1.02.</string>
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware dose not exists.</string>
-    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.
+    <string name="ota_warning">"        Upgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.
         Updates may alter previously set light parameters.
         Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).
         If update fails, please try again."</string>
@@ -264,4 +264,5 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <!-- TODO: Remove or change this placeholder text -->
     <string name="FAQ">FAQ</string>
     <string name="copy">Copy</string>
+    <string name="retry">Retry</string>
 </resources>

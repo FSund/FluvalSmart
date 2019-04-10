@@ -872,6 +872,9 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void showEditSunrsDialog(final int item) {
+        if (mLightAuto == null) {
+            return;
+        }
         int bgres;
         final int start_hour;
         final int start_minute;
@@ -1047,6 +1050,9 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void showEditDayNightDialog(final int item) {
+        if (mLightAuto == null) {
+            return;
+        }
         int bgres;
         final byte[] brts;
         if (item == EDIT_ITEM_MIDDAY) {
@@ -1141,6 +1147,9 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void showEditTurnoffDialog() {
+        if (mLightAuto == null) {
+            return;
+        }
         final boolean enable = mLightAuto.isTurnoffEnable();
         final byte hour = mLightAuto.getTurnoffHour();
         final byte minute = mLightAuto.getTurnoffMinute();

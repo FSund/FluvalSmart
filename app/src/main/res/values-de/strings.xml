@@ -135,7 +135,7 @@
     <string name="ota_redownload">Erneuter Download</string>
     <string name="ota_title">Upgrade der Gerät-Firmware</string>
     <string name="ota_upgrade">Upgrade</string>
-    <string name="ota_check_upgrade">Upgrade überprüfen</string>
+    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">Ein Upgrade ist an diesem Gerät nicht möglich; niedrigste Firmware-Version V1.02.</string>
     <string name="ota_msg_uptodate">Firmware ist aktuell</string>
     <string name="ota_msg_remote_not_exists">Fern-Firmware existiert nicht.</string>
@@ -160,7 +160,7 @@
     <string name="title_upgrade_failed">Die Aufrüstung ist fehlgeschlagen</string>
     <string name="upgrade_success_msg">Bitte loggen Sie sich erneut ein.</string>
     <string name="upgrade_failed_msg">Bitte versuchen Sie es erneut.</string>
-    <string name="ota_warning">"\t\tWarnung: Während Sie das Gerät aktualisieren, sollte sich das Mobilgerät in der Nähe der Beleuchtungseinheit befinden.
+    <string name="ota_warning">"        Warnung: Während Sie das Gerät aktualisieren, sollte sich das Mobilgerät in der Nähe der Beleuchtungseinheit befinden.
         Bitte schließen Sie die App NICHT und deaktivieren Sie Bluetooth NICHT.
         Aktualisierungen können vorher eingestellte Beleuchtungsparameter verändern.
         Vorherige App-Versionen können das Gerät nach der Firmware-Aktualisierung nicht mehr steuern. Stellen Sie daher sicher, dass die neueste App-Version installiert ist (fürdie Aufrüstung notwendig).

@@ -141,7 +141,6 @@
     <string name="ota_redownload">Re-Download</string>
     <string name="ota_title">Device Firmware Upgrade</string>
     <string name="ota_upgrade">Upgrade</string>
-    <string name="ota_check_upgrade">Check for updates</string>
     <string name="ota_msg_unsupport_version">This device is unable to upgrade,Requires firmware version V1.02. or higher</string>
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware does not exist.</string>
@@ -168,7 +167,7 @@
     <string name="title_upgrade_failed">Upgrade failed</string>
     <string name="upgrade_success_msg">Please re-login.</string>
     <string name="upgrade_failed_msg">Please try again.</string>
-    <string name="ota_warning">"\t\tUpgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.
+    <string name="ota_warning">"        Upgrade Warning: While device is updating, keep mobile device in close proximity to light unit. Please DO NOT exit APP or close Bluetooth.
         Updates may alter previously set light parameters.
         Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).
         If update fails, please try again."</string>
@@ -183,4 +182,5 @@
     <string name="FAQ">FAQ</string>
     <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address info@fluvalaquatics.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
     <string name="copy">Copy</string>
+    <string name="ota_check_upgrade">Press for update</string>
 </resources>

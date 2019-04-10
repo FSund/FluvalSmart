@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -43,6 +44,10 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     private OTAPresenter mPresenter;
 
     private StringBuffer mMessage;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
         ota_tv_msg = findViewById(R.id.ota_tv_msg);
         ota_check_upgrade = findViewById(R.id.ota_check_upgrade);
 
+//        ota_check_upgrade.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upgrade_white_32dp, 0, 0, 0);
         setSupportActionBar(ota_toolbar);
         ota_tv_msg.setKeepScreenOn(true);
     }
@@ -330,7 +336,13 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
         builder.setTitle(R.string.title_upgrade_failed);
         builder.setIcon(R.drawable.ic_error_red_32dp);
         builder.setMessage(R.string.upgrade_failed_msg);
-        builder.setPositiveButton(R.string.close, null);
+        builder.setNegativeButton(R.string.close, null);
+        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ota_check_upgrade.performClick();
+            }
+        });
         builder.setCancelable(false);
         builder.show();
     }

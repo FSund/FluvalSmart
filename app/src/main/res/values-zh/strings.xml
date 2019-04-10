@@ -168,7 +168,7 @@
     <string name="title_upgrade_failed">升级失败</string>
     <string name="upgrade_success_msg">请重新登录.</string>
     <string name="upgrade_failed_msg">请重新升级.</string>
-    <string name="ota_warning">"\t\t升级警告: 在升级过程中手机尽量靠近设备, 保持良好通讯, 请不要退出应用或者关闭蓝牙.
+    <string name="ota_warning">"        升级警告: 在升级过程中手机尽量靠近设备, 保持良好通讯, 请不要退出应用或者关闭蓝牙.
         设备升级可能不会保留用户设置的参数.
         设备升级后旧版本应用可能无法正常控制设备,需要升级应用到最新版本.
         如果升级失败,可以重新升级."</string>

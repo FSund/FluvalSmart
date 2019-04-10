@@ -135,7 +135,7 @@
     <string name="ota_redownload">Télécharger de nouveau</string>
     <string name="ota_title">Mise à jour du micrologiciel de l\'appareil</string>
     <string name="ota_upgrade">Mettre à jour</string>
-    <string name="ota_check_upgrade">Vérifier la mise à jour</string>
+    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">Cet appareil ne peut être mis à jour; la version minimale prise en charge du micrologiciel est V1.02.</string>
     <string name="ota_msg_uptodate">Le micrologiciel est à jour.</string>
     <string name="ota_msg_remote_not_exists">S\'il vous plaît</string>
@@ -160,7 +160,8 @@
     <string name="title_upgrade_failed">Échec de la mise à jour</string>
     <string name="upgrade_success_msg">Ouvrir une nouvelle session.</string>
     <string name="upgrade_failed_msg">Prière d’essayer de nouveau.</string>
-    <string name="ota_warning">"\t\tAvertissement de mise à jour : Durant la mise à jour, garder l’appareil mobile à proximité de l’appareil d’éclairage. NE PAS quitterl’application ou fermer la fonctionnalité Bluetooth.
+    <string name="ota_warning">"        Avertissement de mise à jour : Durant la mise à jour, garder l’appareil mobile à proximité de l’appareil d’éclairage. NE PAS
+        quitterl’application ou fermer la fonctionnalité Bluetooth.
         Les mises à jour peuvent altérer les paramètres de l’appareil d’éclairage réglés ultérieurement.
         Les versions précédentes de l’application ne contrôleront plus l’appareil à la suite de la mise à jour du micrologiciel; donc, s’assurer que la plus récente version del’application est installée (requise pour la mise à jour).
         Si la mise à jour échoue, essayer de nouveau. "</string>
