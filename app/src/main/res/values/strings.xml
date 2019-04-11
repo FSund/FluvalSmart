@@ -129,7 +129,7 @@
     <string name="retrieve">Retrieve</string>
     <string name="retrieve_password">Retrieve Password</string>
     <string name="retrieve_wrong_key">Retrieve key is incorrect.</string>
-    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to FluvalSmartApp1@gmail.com to obtain your retrieve key.</string>
+    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to info@fluvalaquatics.com to obtain your retrieve key.</string>
     <string name="retrieve_psw_is">"Device password is: "</string>
     <string name="title_add_time">Add Time</string>
     <string name="tip_timepoints_max">Timepoints count max 10.</string>

@@ -104,7 +104,7 @@
     <string name="retrieve">Wiederherstellen</string>
     <string name="retrieve_password">Passwort wiederherstellen</string>
     <string name="retrieve_wrong_key">Der Wiederherstellungsschlüssel ist falsch.</string>
-    <string name="retrieve_copy_msg">Die Geräteinformationen wurden kopiert. Bitte kopieren Sie die Informationen in eine E-Mail an FluvalSmartApp1@gmail.com, um Ihren Wiederherstellungsschlüssel zu erhalten.</string>
+    <string name="retrieve_copy_msg">Die Geräteinformationen wurden kopiert. Bitte kopieren Sie die Informationen in eine E-Mail an info@fluvalaquatics.com, um Ihren Wiederherstellungsschlüssel zu erhalten.</string>
     <string name="title_add_time">Zusätzliche Zeit</string>
     <string name="tip_timepoints_max">Die Zeit geht bis max. 10.</string>
     <string name="tip_timepoints_min">Die Zeit geht ab min. 4.</string>
