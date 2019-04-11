@@ -152,7 +152,7 @@ public class DeviceFragment extends BaseFragment
                         intent.putExtra( "devid", mDevices.get( position ).getDevicePrefer().getDevId() );
                         intent.putExtra( "name", mDevices.get( position ).getDevicePrefer().getDeviceName() );
                         intent.putExtra( "address", mDevices.get( position ).getDevicePrefer().getDeviceMac() );
-                        intent.putExtra("mode", true);
+                        intent.putExtra("mode", false);
                         startActivity( intent );
                         break;
                 }
