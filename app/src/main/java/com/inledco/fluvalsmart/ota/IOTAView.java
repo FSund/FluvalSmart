@@ -12,4 +12,5 @@ public interface IOTAView
     void showRepowerDialog();
     void showSuccessDialog();
     void showErrorDialog();
+    void showUptodateDialog();
 }

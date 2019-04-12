@@ -265,4 +265,5 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="FAQ">FAQ</string>
     <string name="copy">Copy</string>
     <string name="retry">Retry</string>
+    <string name="uptodate">Up-to-date</string>
 </resources>

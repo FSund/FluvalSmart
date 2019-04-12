@@ -265,6 +265,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                     }
                 } else {
                     mView.showMessage(getString(R.string.ota_firmware_newest));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mView.showUptodateDialog();
+                        }
+                    });
                     mProcessing = false;
                 }
             }

@@ -348,6 +348,21 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     }
 
     @Override
+    public void showUptodateDialog() {
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+        builder.setTitle(R.string.uptodate);
+        builder.setMessage(R.string.ota_firmware_newest);
+        builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mPresenter.isProcessing()) {
             return;
