@@ -104,7 +104,7 @@
     <string name="retrieve">Récupérer</string>
     <string name="retrieve_password">Récupérer le mot de passe</string>
     <string name="retrieve_wrong_key">Le code de récupération est incorrect.</string>
-    <string name="retrieve_copy_msg">Information de l’appareil copiée. Coller l’information dans un courriel et l’envoyer à info@fluvalaquatics.com pour obtenir le code de récupération.</string>
+    <string name="retrieve_copy_msg">Information de l’appareil copiée. Coller l’information dans un courriel et l’envoyer à FluvalSmartApp1@gmail.com pour obtenir le code de récupération.</string>
     <string name="title_add_time">Ajouter un intervalle de temps</string>
     <string name="tip_timepoints_max">Maximum d’intervalles de temps : 10.</string>
     <string name="tip_timepoints_min">Minimum d’intervalles de temps : 4.</string>

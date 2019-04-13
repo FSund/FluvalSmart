@@ -2,6 +2,7 @@ package com.inledco.fluvalsmart.base;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,18 @@ public abstract class BaseActivity extends AppCompatActivity
     public void onConfigurationChanged ( Configuration newConfig )
     {
         super.onConfigurationChanged( newConfig );
+    }
+
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        if (res != null) {
+            Configuration config = res.getConfiguration();
+            if (config != null && config.fontScale != 1) {
+                config.fontScale = 1;
+            }
+        }
+        return res;
     }
 
     @Override

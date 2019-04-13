@@ -105,7 +105,7 @@
     <string name="retrieve">Retrieve</string>
     <string name="retrieve_password">Retrieve Password</string>
     <string name="retrieve_wrong_key">Retrieve key is incorrect.</string>
-    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to info@fluvalaquatics.com to obtain your retrieve key.</string>
+    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to FluvalSmartApp1@gmail.com to obtain your retrieve key.</string>
     <string name="retrieve_psw_is">"Device password is: "</string>
     <string name="title_add_time">Add Time</string>
     <string name="tip_timepoints_max">Timepoints count max 10.</string>
@@ -180,7 +180,7 @@
     <string name="find">Find</string>
     <string name="tip_enable_location">Location disabled. Some systems require location permission for Bluetooth device scanning.</string>
     <string name="FAQ">FAQ</string>
-    <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address info@fluvalaquatics.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
+    <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address FluvalSmartApp1@gmail.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
     <string name="copy">Copy</string>
     <string name="ota_check_upgrade">Press for update</string>
 </resources>
