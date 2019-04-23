@@ -146,7 +146,6 @@ public class LightProFragment extends BaseFragment {
         pro_textview = view.findViewById(R.id.pro_textview);
 
         LineChartHelper.init(pro_line_chart);
-//        initLineChart(pro_line_chart);
     }
 
     @Override
@@ -332,73 +331,6 @@ public class LightProFragment extends BaseFragment {
         });
     }
 
-//    private void initLineChart(LineChart lineChart) {
-//        XAxis xAxis = lineChart.getXAxis();
-//        YAxis axisLeft = lineChart.getAxisLeft();
-//        YAxis axisRight = lineChart.getAxisRight();
-//        xAxis.setAxisMaximum(24 * 60);
-//        xAxis.setAxisMinimum(0);
-//        xAxis.setLabelCount(5, true);
-//        xAxis.setGranularity(1);
-//        xAxis.setGranularityEnabled(true);
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setDrawGridLines(false);
-//        xAxis.setDrawAxisLine(false);
-//        xAxis.setTextColor(Color.WHITE);
-//        xAxis.setEnabled(true);
-//        axisLeft.setAxisMaximum(100);
-//        axisLeft.setAxisMinimum(0);
-//        axisLeft.setLabelCount(5, true);
-//        axisLeft.setValueFormatter(new PercentFormatter(new DecimalFormat("##0")));
-//        axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-//        axisLeft.setTextColor(Color.WHITE);
-//        axisLeft.setDrawGridLines(true);
-//        axisLeft.setGridColor(0xFF9E9E9E);
-//        axisLeft.setGridLineWidth(0.75f);
-//        axisLeft.setDrawAxisLine(false);
-//        axisLeft.setAxisLineColor(Color.WHITE);
-//        axisLeft.setGranularity(1);
-//        axisLeft.setGranularityEnabled(true);
-//        axisLeft.setSpaceTop(0);
-//        axisLeft.setSpaceBottom(0);
-//        axisLeft.setEnabled(true);
-//        axisRight.setEnabled(false);
-//        lineChart.setTouchEnabled(false);
-//        lineChart.setDragEnabled(false);
-//        lineChart.setScaleEnabled(false);
-//        lineChart.setPinchZoom(false);
-//        lineChart.setDoubleTapToZoomEnabled(false);
-//        lineChart.setBorderColor(Color.CYAN);
-//        lineChart.setBorderWidth(1);
-//        lineChart.setDrawBorders(false);
-//        lineChart.setDrawGridBackground(true);
-//        lineChart.setGridBackgroundColor(Color.TRANSPARENT);
-//        lineChart.setDescription(null);
-//        lineChart.setMaxVisibleValueCount(0);
-//        lineChart.getLegend()
-//                 .setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        lineChart.getLegend()
-//                 .setTextSize(12);
-//        lineChart.getLegend()
-//                 .setFormSize(12);
-//        lineChart.getLegend()
-//                 .setTextColor(Color.WHITE);
-//        final String[] hours = new String[]{"00:00", "06:00", "12:00", "18:00", "00:00"};
-//        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return hours[(int) (value / 360)];
-//            }
-//
-//            // we don't draw numbers, so no decimal digits needed
-//            @Override
-//            public int getDecimalDigits() {
-//                return 0;
-//            }
-//        };
-//        xAxis.setValueFormatter(formatter);
-//    }
-
     private void refreshData() {
         if (mLightPro == null) {
             return;
@@ -455,7 +387,6 @@ public class LightProFragment extends BaseFragment {
         pro_line_chart.setData(lineData);
         pro_line_chart.invalidate();
 
-        //        pro_tv_points.setText( "" + mLightPro.getPointCount() + " Timepoints Set" );
         pro_tv_points.setText(getString(R.string.timepoints_set).replace("{count}", "" + mLightPro.getPointCount()));
         if (mLightPro.isHasDynamic()) {
             pro_tv_dynamic.setVisibility(pro_tb_preview.isChecked() ? View.GONE : View.VISIBLE);

@@ -182,4 +182,8 @@
     <string name="tip_enable_location">定位已关闭, 部分手机需要开启定位功能才能扫描蓝牙设备。</string>
     <string name="tip_retrieve_password">如果忘记了设备密码，请点击下方“复制”按钮来获取设备信息，将已复制的设备信息发送到邮箱 FluvalSmartApp1@gmail.com 来找回密钥。收到密钥后，请进行输入并点击找回按钮。</string>
     <string name="copy">复制</string>
+    <string name="retry">重试</string>
+    <string name="FAQ">常见问题</string>
+    <string name="uptodate">已经最新</string>
+    <string name="title_network_unavailable">网络无连接</string>
 </resources>

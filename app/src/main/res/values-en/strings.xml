@@ -183,4 +183,7 @@
     <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address FluvalSmartApp1@gmail.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
     <string name="copy">Copy</string>
     <string name="ota_check_upgrade">Press for update</string>
+    <string name="retry">Retry</string>
+    <string name="uptodate">Up-to-date</string>
+    <string name="title_network_unavailable">Network unavailable</string>
 </resources>

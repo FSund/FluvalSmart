@@ -51,11 +51,6 @@ public class EditproActivity extends BaseActivity
 {
     private LineChart editpro_linechart;
     private MultiPointSeekbar editpro_mps;
-//    private ImageButton editpro_ib_last;
-//    private ImageButton editpro_ib_next;
-//    private ImageButton editpro_ib_dec;
-//    private ImageButton editpro_ib_inc;
-//    private TextView editpro_tv_tmr;
     private ImageButton editpro_ib_remove;
     private ImageButton editpro_ib_add;
     private Button editpro_btn_cancel;
@@ -65,7 +60,6 @@ public class EditproActivity extends BaseActivity
     private short devid;
     private String mAddress;
     private List<TimerBrightPoint> mPoints;
-//    private TimerBrightPoint mSelectPoint;
     private final PointComparator mComparator = new PointComparator();
     private EditproAdapter mAdapter;
 
@@ -85,20 +79,6 @@ public class EditproActivity extends BaseActivity
     @Override
     public void onBackPressed()
     {
-//        int idx = editpro_mps.getSelectedPoint();
-//        if ( idx >= 0 && idx < mPoints.size() )
-//        {
-//            mPoints.get( idx ).setHour( mSelectPoint.getHour() );
-//            mPoints.get( idx ).setMinute( mSelectPoint.getMinute() );
-//            for ( int i = 0; i < mSelectPoint.getBrights().length; i++ )
-//            {
-//                mPoints.get( idx ).getBrights()[i] = mSelectPoint.getBrights()[i];
-//            }
-//            editTimeDone();
-//            editpro_mps.setProgress( idx, mPoints.get( idx ).getHour() * 60 + mPoints.get( idx ).getMinute() );
-//            refreshChart();
-//            return;
-//        }
         super.onBackPressed();
     }
 
@@ -107,11 +87,6 @@ public class EditproActivity extends BaseActivity
     {
         editpro_linechart = findViewById( R.id.editpro_linechart );
         editpro_mps = findViewById( R.id.editpro_mps );
-//        editpro_ib_last = findViewById( R.id.editpro_ib_last );
-//        editpro_ib_next = findViewById( R.id.editpro_ib_next );
-//        editpro_ib_dec = findViewById( R.id.editpro_ib_dec );
-//        editpro_ib_inc = findViewById( R.id.editpro_ib_inc );
-//        editpro_tv_tmr = findViewById( R.id.editpro_tv_tmr );
         editpro_ib_remove = findViewById( R.id.editpro_ib_remove );
         editpro_ib_add = findViewById( R.id.editpro_ib_add );
         editpro_btn_cancel = findViewById( R.id.editpro_btn_cancel );
@@ -149,20 +124,12 @@ public class EditproActivity extends BaseActivity
                 {
                     editpro_ib_remove.setVisibility( View.VISIBLE );
                     mAdapter.setSelectedPoint( index );
-//                    DecimalFormat df = new DecimalFormat( "00" );
-//                    editpro_tv_tmr.setText( df.format( mPoints.get( index ).getHour() ) + ":" + df.format( mPoints.get( index ).getMinute() ) );
                 }
                 else
                 {
                     editpro_ib_remove.setVisibility( View.GONE );
                 }
             }
-
-//            @Override
-//            public void onMultiPointTouched( List< Integer > points )
-//            {
-//                showMultiTouchPointDialog( points );
-//            }
 
             @Override
             public void onStartPointTouch( int index )
@@ -188,131 +155,12 @@ public class EditproActivity extends BaseActivity
             {
                 if ( mPoints != null && index >= 0 && index < mPoints.size() && progress >= 0 && progress < 1440 )
                 {
-//                    DecimalFormat df = new DecimalFormat( "00" );
-//                    editpro_tv_tmr.setText( df.format( progress/60 ) + ":" + df.format( progress%60 ) );
                     mPoints.get( index ).setHour( progress/60 );
                     mPoints.get( index ).setMinute( progress%60 );
                     refreshChart();
                 }
             }
         } );
-//        editpro_ib_dec.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick( View v )
-//            {
-//                int pt = editpro_mps.getSelectedPoint();
-//                decTimer( pt );
-//                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-//                refreshSelectedTimer();
-//                refreshChart();
-//            }
-//        } );
-//        editpro_ib_dec.setOnLongClickListener( new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick( final View v )
-//            {
-//                final Timer timer = new Timer();
-//                timer.schedule( new TimerTask() {
-//                    @Override
-//                    public void run()
-//                    {
-//                        if ( v.isPressed() )
-//                        {
-//                            final int pt = editpro_mps.getSelectedPoint();
-//                            decTimer( pt );
-//                            runOnUiThread( new Runnable() {
-//                                @Override
-//                                public void run()
-//                                {
-//                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-//                                    refreshSelectedTimer();
-//                                    refreshChart();
-//                                }
-//                            } );
-//                        }
-//                        else
-//                        {
-//                            cancel();
-//                            timer.cancel();
-//                        }
-//                    }
-//                }, 0, 20 );
-//                return true;
-//            }
-//        } );
-//
-//        editpro_ib_inc.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick( View v )
-//            {
-//                int pt = editpro_mps.getSelectedPoint();
-//                incTimer( pt );
-//                editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-//                refreshSelectedTimer();
-//                refreshChart();
-//            }
-//        } );
-//        editpro_ib_inc.setOnLongClickListener( new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick( final View v )
-//            {
-//                final Timer timer = new Timer();
-//                timer.schedule( new TimerTask() {
-//                    @Override
-//                    public void run()
-//                    {
-//                        if ( v.isPressed() )
-//                        {
-//                            final int pt = editpro_mps.getSelectedPoint();
-//                            incTimer( pt );
-//                            runOnUiThread( new Runnable() {
-//                                @Override
-//                                public void run()
-//                                {
-//                                    editpro_mps.setProgress( pt, mPoints.get( pt ).getTimer() );
-//                                    refreshSelectedTimer();
-//                                    refreshChart();
-//                                }
-//                            } );
-//                        }
-//                        else
-//                        {
-//                            cancel();
-//                            timer.cancel();
-//                        }
-//                    }
-//                }, 0, 20 );
-//                return true;
-//            }
-//        } );
-//
-//        editpro_ib_last.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick( View v )
-//            {
-//                int pt = getLastPoint( editpro_mps.getSelectedPoint() );
-//                if ( pt >= 0 && pt < mPoints.size() )
-//                {
-//                    editpro_mps.setSelectedPoint( pt );
-//                    refreshSelectedTimer();
-//                    mAdapter.setSelectedPoint( pt );
-//                }
-//            }
-//        } );
-//
-//        editpro_ib_next.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick( View v )
-//            {
-//                int pt = getNextPoint( editpro_mps.getSelectedPoint() );
-//                if ( pt >= 0 && pt < mPoints.size() )
-//                {
-//                    editpro_mps.setSelectedPoint( pt );
-//                    refreshSelectedTimer();
-//                    mAdapter.setSelectedPoint( pt );
-//                }
-//            }
-//        } );
 
         editpro_ib_remove.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -329,22 +177,6 @@ public class EditproActivity extends BaseActivity
                 showAddPointDialog();
             }
         } );
-
-//        editpro_ib_add.setOnClickListener( new View.OnClickListener() {
-//            @SuppressLint ( "RestrictedApi" )
-//            @Override
-//            public void onClick( View v )
-//            {
-//                if ( editpro_ib_add.isChecked() )
-//                {
-//                    editTimeDone();
-//                }
-//                else
-//                {
-//                    showAddPointDialog();
-//                }
-//            }
-//        } );
 
         editpro_btn_cancel.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -400,78 +232,10 @@ public class EditproActivity extends BaseActivity
                 editpro_rv_show.setAdapter( mAdapter );
 
                 editpro_mps.setSelectedPoint( 0 );
-                refreshSelectedTimer();
                 refreshChart();
             }
         }
     }
-
-//    private void initLineChart(LineChart lineChart)
-//    {
-//        XAxis xAxis = lineChart.getXAxis();
-//        YAxis axisLeft = lineChart.getAxisLeft();
-//        YAxis axisRight = lineChart.getAxisRight();
-//        xAxis.setAxisMaximum( 24 * 60 );
-//        xAxis.setAxisMinimum( 0 );
-//        xAxis.setLabelCount( 5, true );
-//        xAxis.setGranularity( 1 );
-//        xAxis.setGranularityEnabled( true );
-//        xAxis.setPosition( XAxis.XAxisPosition.BOTTOM );
-//        xAxis.setDrawGridLines( false );
-//        xAxis.setDrawAxisLine( false );
-//        xAxis.setTextColor( Color.WHITE );
-//        xAxis.setEnabled( true );
-//        axisLeft.setAxisMaximum( 100 );
-//        axisLeft.setAxisMinimum( 0 );
-//        axisLeft.setLabelCount( 5, true );
-//        axisLeft.setValueFormatter( new PercentFormatter( new DecimalFormat( "##0" ) ) );
-//        axisLeft.setPosition( YAxis.YAxisLabelPosition.OUTSIDE_CHART );
-//        axisLeft.setTextColor( Color.WHITE );
-//        axisLeft.setDrawGridLines( true );
-//        axisLeft.setGridColor( 0xFF9E9E9E );
-//        axisLeft.setGridLineWidth( 0.75f );
-//        axisLeft.setDrawAxisLine( false );
-//        axisLeft.setAxisLineColor( Color.WHITE );
-//        axisLeft.setGranularity( 1 );
-//        axisLeft.setGranularityEnabled( true );
-//        axisLeft.setSpaceTop( 0 );
-//        axisLeft.setSpaceBottom( 0 );
-//        axisLeft.setEnabled( true );
-//        axisRight.setEnabled( false );
-//        lineChart.setTouchEnabled( false );
-//        lineChart.setDragEnabled( false );
-//        lineChart.setScaleEnabled( false );
-//        lineChart.setPinchZoom( false );
-//        lineChart.setDoubleTapToZoomEnabled( false );
-//        lineChart.setBorderColor( Color.CYAN );
-//        lineChart.setBorderWidth( 1 );
-//        lineChart.setDrawBorders( false );
-//        lineChart.setDrawGridBackground( true );
-//        lineChart.setGridBackgroundColor( Color.TRANSPARENT );
-//        lineChart.setDescription( null );
-//        lineChart.setMaxVisibleValueCount( 0 );
-//        lineChart.getLegend().setHorizontalAlignment( Legend.LegendHorizontalAlignment.CENTER );
-//        lineChart.getLegend().setTextSize( 12 );
-//        lineChart.getLegend().setFormSize( 12 );
-//        lineChart.getLegend().setTextColor( Color.WHITE );
-//        final String[] hours = new String[]{ "00:00", "06:00", "12:00", "18:00", "00:00" };
-//        IAxisValueFormatter formatter = new IAxisValueFormatter()
-//        {
-//            @Override
-//            public String getFormattedValue( float value, AxisBase axis )
-//            {
-//                return hours[(int) ( value / 360 )];
-//            }
-//
-//            // we don't draw numbers, so no decimal digits needed
-//            @Override
-//            public int getDecimalDigits ()
-//            {
-//                return 0;
-//            }
-//        };
-//        xAxis.setValueFormatter( formatter );
-//    }
 
     private void refreshChart()
     {
@@ -528,52 +292,6 @@ public class EditproActivity extends BaseActivity
             editpro_linechart.setData( lineData );
             editpro_linechart.invalidate();
         }
-    }
-
-//    @SuppressLint ( "RestrictedApi" )
-//    private void editTimeStart()
-//    {
-//        TimerBrightPoint tbp = mPoints.get( editpro_mps.getSelectedPoint() );
-//        mSelectPoint = new TimerBrightPoint( tbp.getHour(), tbp.getMinute(), tbp.getBrights() );
-//        editpro_ib_remove.setVisibility( View.VISIBLE );
-//        editpro_btn_cancel.setVisibility( View.GONE );
-//        editpro_btn_save.setVisibility( View.GONE );
-//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
-//        editpro_ib_add.setChecked( true );
-//        editpro_ib_remove.setEnabled( true );
-//        editpro_btn_cancel.setEnabled( false );
-//        editpro_btn_save.setEnabled( false );
-//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
-//    }
-
-//    @SuppressLint ( "RestrictedApi" )
-//    private void editTimeDone()
-//    {
-//        mSelectPoint = null;
-//        editpro_ib_remove.setVisibility( View.GONE );
-//        editpro_btn_cancel.setVisibility( View.VISIBLE );
-//        editpro_btn_save.setVisibility( View.VISIBLE );
-//        editpro_mps.clearSelectedPoint();
-//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
-//        editpro_ib_add.setChecked( false );
-//        editpro_ib_remove.setEnabled( false );
-//        editpro_btn_cancel.setEnabled( true );
-//        editpro_btn_save.setEnabled( true );
-//        editpro_mps.clearSelectedPoint();
-//        mAdapter.setSelectedPoint( editpro_mps.getSelectedPoint() );
-//    }
-
-    private void refreshSelectedTimer()
-    {
-//        if ( mPoints != null )
-//        {
-//            int sp = editpro_mps.getSelectedPoint();
-//            if ( sp >= 0 && sp < mPoints.size() )
-//            {
-//                DecimalFormat df = new DecimalFormat( "00" );
-//                editpro_tv_tmr.setText( df.format( mPoints.get( sp ).getHour() ) + ":" + df.format( mPoints.get( sp ).getMinute() ) );
-//            }
-//        }
     }
 
     private void decTimer(final int point)
@@ -721,71 +439,8 @@ public class EditproActivity extends BaseActivity
         int idx = mPoints.size() - 1;
         editpro_mps.setProgress( idx, mPoints.get( idx ).getTimer() );
         editpro_mps.setSelectedPoint( idx );
-//        editTimeStart();
-//        for ( int i = 0; i < mPoints.size(); i++ )
-//        {
-//            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
-//        }
 
-//        int count = mPoints.size();
-//        int[] index = new int[count];
-//        int[] tmr = new int[count];
-//        for ( int i = 0; i < count; i++ )
-//        {
-//            index[i] = i;
-//            tmr[i] = mPoints.get( i ).getTimer();
-//        }
-//        for ( int i = count-1; i > 0; i-- )
-//        {
-//            for ( int j = 0; j < i; j++ )
-//            {
-//                if ( tmr[index[j]] > tmr[index[j+1]] )
-//                {
-//                    int tmp = index[j];
-//                    index[j] = index[j+1];
-//                    index[j+1] = tmp;
-//                }
-//            }
-//        }
-//        for ( int i = 0; i < count; i++ )
-//        {
-//            if ( index[i] == count - 1 )
-//            {
-//                editpro_mps.setSelectedPoint( index[i] );
-////                refreshSelectedTimer();
-////                mAdapter.setSelectedPoint( index[i] );
-//                editTimeStart();
-//                return;
-//            }
-//        }
     }
-
-//    private int getTime( int tmr )
-//    {
-//        if ( tmr < 0 || tmr >= 1439 )
-//        {
-//            tmr = 0;
-//        }
-//        int m = tmr%5;
-//        switch ( m )
-//        {
-//            case 1:
-//            case 2:
-//                tmr -= m;
-//                break;
-//            case 3:
-//            case 4:
-//                tmr += 5 - m;
-//                break;
-//        }
-//        for ( int i = 0; i < mPoints.size(); i++ )
-//        {
-//            if ( tmr == mPoints.get( i ).getTimer() )
-//            {
-//
-//            }
-//        }
-//    }
 
     private boolean isValidTime( int tmr )
     {
@@ -895,35 +550,6 @@ public class EditproActivity extends BaseActivity
                         dialog.dismiss();
                     }
                 } );
-//                dialog.setButton( DialogInterface.BUTTON_NEGATIVE, getString( R.string.cancel ), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick( DialogInterface dialog, int which )
-//                    {
-//
-//                    }
-//                } );
-//                dialog.setButton( DialogInterface.BUTTON_POSITIVE, getString( R.string.dialog_ok ), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick( DialogInterface dialog, int which )
-//                    {
-//                        int hour;
-//                        int minute;
-//                        if ( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M )
-//                        {
-//                            hour = tp.getHour();
-//                            minute = tp.getMinute()*INTERVAL;
-//                        }
-//                        else
-//                        {
-//                            hour = tp.getCurrentHour();
-//                            minute = tp.getCurrentMinute()*INTERVAL;
-//                        }
-//                        addPoint( hour, minute );
-//                    }
-//                } );
-//                dialog.setCanceledOnTouchOutside( false );
-//                dialog.show();
-                dialog.getButton( DialogInterface.BUTTON_POSITIVE ).setEnabled(isValidTime(tmr));
             }
         }
     }
@@ -947,17 +573,8 @@ public class EditproActivity extends BaseActivity
                     public void onClick( DialogInterface dialog, int which )
                     {
                         mPoints.remove( point );
-//                        editpro_mps.setPointCount( mPoints.size() );
-//                        for ( int i = 0; i < mPoints.size(); i++ )
-//                        {
-//                            editpro_mps.setProgress( i, mPoints.get( i ).getTimer() );
-//                        }
-//                        editpro_mps.clearSelectedPoint();
-//                        refreshSelectedTimer();
-//                        mAdapter.setSelectedPoint( -1 );
                         editpro_mps.removePoint( point );
                         editpro_mps.setSelectedPoint( 0 );
-//                        editTimeDone();
                         refreshChart();
                     }
                 } );
@@ -1003,35 +620,6 @@ public class EditproActivity extends BaseActivity
         }
         return -1;
     }
-
-//    private void showMultiTouchPointDialog( final List<Integer> points )
-//    {
-//        if ( points == null || points.size() <= 1 || points.size() > mPoints.size() )
-//        {
-//            return;
-//        }
-//        DecimalFormat df = new DecimalFormat( "00" );
-//        String[] array = new String[points.size()];
-//        int idx;
-//        int tmr;
-//        for ( int i = 0; i < array.length; i++ )
-//        {
-//            idx = points.get( i );
-//            tmr = mPoints.get( idx ).getTimer();
-//            array[i] = "#" + df.format( getPointIndex( idx ) + 1) + "  " + df.format( tmr/60 ) + ":" + df.format( tmr%60 );
-//        }
-//        AlertDialog.Builder builder = new AlertDialog.Builder( this );
-//        builder.setSingleChoiceItems( array, -1, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick( DialogInterface dialog, int which )
-//            {
-//                editpro_mps.setSelectedPoint( points.get( which ) );
-////                editTimeStart();
-//                dialog.dismiss();
-//            }
-//        } );
-//        builder.show();
-//    }
 
     class EditproAdapter extends RecyclerView.Adapter<EditproViewHolder>
     {

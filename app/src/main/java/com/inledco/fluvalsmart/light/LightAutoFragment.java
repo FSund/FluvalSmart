@@ -165,65 +165,6 @@ public class LightAutoFragment extends BaseFragment {
         auto_textview = view.findViewById(R.id.auto_textview);
 
         LineChartHelper.init(lightautochart);
-
-//        XAxis xAxis = lightautochart.getXAxis();
-//        YAxis axisLeft = lightautochart.getAxisLeft();
-//        YAxis axisRight = lightautochart.getAxisRight();
-//        xAxis.setAxisMaximum(24 * 60);
-//        xAxis.setAxisMinimum(0);
-//        xAxis.setLabelCount(5, true);
-//        xAxis.setGranularity(1);
-//        xAxis.setGranularityEnabled(true);
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setDrawGridLines(false);
-//        xAxis.setDrawAxisLine(false);
-//        xAxis.setTextColor(Color.WHITE);
-//        xAxis.setEnabled(true);
-//        axisLeft.setAxisMaximum(100);
-//        axisLeft.setAxisMinimum(0);
-//        axisLeft.setLabelCount(5, true);
-//        axisLeft.setValueFormatter(new PercentFormatter(new DecimalFormat("##0")));
-//        axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-//        axisLeft.setTextColor(Color.WHITE);
-//        axisLeft.setDrawGridLines(true);
-//        axisLeft.setGridColor(0xFF9E9E9E);
-//        axisLeft.setGridLineWidth(0.75f);
-//        axisLeft.setDrawAxisLine(false);
-//        axisLeft.setAxisLineColor(Color.WHITE);
-//        axisLeft.setGranularity(1);
-//        axisLeft.setGranularityEnabled(true);
-//        axisLeft.setSpaceTop(0);
-//        axisLeft.setSpaceBottom(0);
-//        axisLeft.setEnabled(true);
-//        axisRight.setEnabled(false);
-//        lightautochart.setTouchEnabled(false);
-//        lightautochart.setDragEnabled(false);
-//        lightautochart.setScaleEnabled(false);
-//        lightautochart.setPinchZoom(false);
-//        lightautochart.setDoubleTapToZoomEnabled(false);
-//        lightautochart.setBorderColor(Color.CYAN);
-//        lightautochart.setBorderWidth(1);
-//        lightautochart.setDrawBorders(false);
-//        lightautochart.setDrawGridBackground(true);
-//        lightautochart.setGridBackgroundColor(Color.TRANSPARENT);
-//        lightautochart.setDescription(null);
-//        lightautochart.setMaxVisibleValueCount(0);
-//        lightautochart.getLegend()
-//                      .setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        lightautochart.getLegend()
-//                      .setTextSize(12);
-//        lightautochart.getLegend()
-//                      .setFormSize(12);
-//        lightautochart.getLegend()
-//                      .setTextColor(Color.WHITE);
-//        final String[] hours = new String[]{"00:00", "06:00", "12:00", "18:00", "00:00"};
-//        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return hours[(int) (value / 360)];
-//            }
-//        };
-//        xAxis.setValueFormatter(formatter);
     }
 
     @Override

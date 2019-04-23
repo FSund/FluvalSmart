@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -25,18 +26,33 @@ import java.util.ArrayList;
 public class SliderAdapter extends BaseAdapter
 {
     private Context mContext;
-    private String mac;
-    private short devid;
+    private String mAddress;
+    private short mDevid;
+    private boolean mPower;
     private ArrayList< Channel > mChannels;
     private static long msc;
 
     public SliderAdapter ( Context context, String mac, short devid, ArrayList< Channel > channels )
     {
         mContext = context;
-        this.mac = mac;
-        this.devid = devid;
+        mAddress = mac;
+        mDevid = devid;
         mChannels = channels;
         msc = System.currentTimeMillis();
+    }
+
+    public SliderAdapter ( Context context, String mac, short devid, boolean power, ArrayList< Channel > channels )
+    {
+        mContext = context;
+        mAddress = mac;
+        mDevid = devid;
+        mPower = power;
+        mChannels = channels;
+        msc = System.currentTimeMillis();
+    }
+
+    public void setPower(boolean power) {
+        mPower = power;
     }
 
     @Override
@@ -76,11 +92,10 @@ public class SliderAdapter extends BaseAdapter
             holder = (ViewHolder) convertView.getTag();
         }
         final Channel channel = mChannels.get( position );
-        //        holder.layout.setBackgroundColor( channel.getColor() );
         holder.tv_name.setText( channel.getName() );
         holder.slider.setProgress( channel.getValue() );
-        int[] thumbs = DeviceUtil.getThumb( devid );
-        int[] seekBars = DeviceUtil.getSeekbar( devid );
+        int[] thumbs = DeviceUtil.getThumb(mDevid);
+        int[] seekBars = DeviceUtil.getSeekbar(mDevid);
         if ( thumbs != null && position < thumbs.length )
         {
             Drawable progressDrawable = mContext.getResources()
@@ -94,14 +109,12 @@ public class SliderAdapter extends BaseAdapter
             holder.slider.setThumb( thumb );
         }
         final TextView percent = holder.tv_percent;
-//        percent.setText( channel.getValue() / 10 + "%" );
         percent.setText( getPercent( channel.getValue() ) );
         holder.slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged ( SeekBar seekBar, int progress, boolean fromUser )
             {
-//                percent.setText( progress / 10 + "%" );
                 percent.setText( getPercent( (short) progress ) );
                 if ( fromUser )
                 {
@@ -114,8 +127,10 @@ public class SliderAdapter extends BaseAdapter
                             values[i] = (short) 0xFFFF;
                         }
                         values[position] = (short) progress;
-                        CommUtil.setLed( mac, values );
                         msc = t;
+                        if (mPower) {
+                            CommUtil.setLed(mAddress, values);
+                        }
                     }
                 }
             }
@@ -129,23 +144,23 @@ public class SliderAdapter extends BaseAdapter
             @Override
             public void onStopTrackingTouch ( final SeekBar seekBar )
             {
-//                percent.setText( seekBar.getProgress() / 10 + "%" );
                 percent.setText( getPercent( (short) seekBar.getProgress() ) );
                 channel.setValue( (short) seekBar.getProgress() );
-                new Handler().postDelayed( new Runnable()
-                {
-                    @Override
-                    public void run ()
-                    {
-                        short[] values = new short[getCount()];
-                        for ( int i = 0; i < values.length; i++ )
-                        {
-                            values[i] = (short) 0xFFFF;
+                if (mPower) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            short[] values = new short[getCount()];
+                            for (int i = 0; i < values.length; i++) {
+                                values[i] = (short) 0xFFFF;
+                            }
+                            values[position] = (short) seekBar.getProgress();
+                            CommUtil.setLed(mAddress, values);
                         }
-                        values[position] = (short) seekBar.getProgress();
-                        CommUtil.setLed( mac, values );
-                    }
-                }, 64 );
+                    }, 64);
+                } else {
+
+                }
             }
         } );
         return convertView;
@@ -153,27 +168,17 @@ public class SliderAdapter extends BaseAdapter
 
     private String getPercent ( short value )
     {
-//        if ( value >= 1000 )
-//        {
-//            return "100%";
-//        }
-//        if ( value <= 0 )
-//        {
-//            return "0.0%";
-//        }
-//        if ( value > 99 )
-//        {
-//            return value/10 + "%";
-//        }
-//        float fl = ((float)value)/10;
-//        DecimalFormat df = new DecimalFormat( "0.0" );
-//        return df.format( fl )+"%";
         if ( value > 1000 )
         {
             return "100%";
         }
         DecimalFormat df = new DecimalFormat( "##0" );
         return df.format( value/10 ) + "%";
+    }
+
+    private void showPoweroff() {
+        Toast.makeText(mContext, R.string.tip_poweroff, Toast.LENGTH_SHORT)
+             .show();
     }
 
     class ViewHolder

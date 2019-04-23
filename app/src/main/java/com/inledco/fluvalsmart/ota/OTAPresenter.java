@@ -4,7 +4,6 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.ble.api.DataUtil;
 import com.inledco.fluvalsmart.R;
@@ -23,8 +22,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by liruya on 2017/5/8.
@@ -202,12 +199,12 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                           .readMfr(mAddress);
                 OKHttpManager.getInstance()
                              .get(OTA_UPGRADE_LINK + mDevid, null, new HttpCallback<RemoteFirmware>() {
-                                 @Override
-                                 public void onFailure(Call call, IOException e) {
-                                     Log.e(TAG, "onFailure: " + e.getMessage());
-                                     mView.showRemoteVersion(getString(R.string.failed));
-                                     mReadRemoteVersion = true;
-                                 }
+//                                 @Override
+//                                 public void onFailure(Call call, IOException e) {
+//                                     Log.e(TAG, "onFailure: " + e.getMessage());
+//                                     mView.showRemoteVersion(getString(R.string.failed));
+//                                     mReadRemoteVersion = true;
+//                                 }
 
                                  @Override
                                  public void onError(int code, final String msg) {

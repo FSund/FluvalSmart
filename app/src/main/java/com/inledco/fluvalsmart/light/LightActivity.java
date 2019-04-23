@@ -58,11 +58,8 @@ import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
 import com.liruya.tuner168blemanager.BleSimpleListener;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-
-import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener {
     private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
@@ -208,10 +205,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     protected void initData() {
         OKHttpManager.getInstance()
                      .get(OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>() {
-                         @Override
-                         public void onFailure(Call call, IOException e) {
-
-                         }
+//                         @Override
+//                         public void onFailure(Call call, IOException e) {
+//
+//                         }
 
                          @Override
                          public void onError(int code, final String msg) {
@@ -327,7 +324,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
             @Override
             public void onDataReceived(List<Byte> bytes) {
-                decodeReceiveData(mAddress, bytes);
+                decodeReceiveData(bytes);
             }
         };
         BleManager.getInstance().addBleListener(mBleListener);
@@ -595,10 +592,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         });
     }
 
-    private void decodeReceiveData(final String mac, List<Byte> list) {
+    private void decodeReceiveData(List<Byte> list) {
         final Object object = CommUtil.decodeLight(list, mPrefer.getDevId());
         if (object != null) {
-            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if (object instanceof LightAuto) {
                 mCountDownTimer.cancel();
                 mLight.setMode(Light.MODE_AUTO);

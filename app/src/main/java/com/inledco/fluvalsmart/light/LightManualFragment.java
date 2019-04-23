@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gigamole.library.ArcProgressStackView;
 import com.inledco.fluvalsmart.R;
@@ -246,47 +247,68 @@ public class LightManualFragment extends BaseFragment {
         apsv_p1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                short[] values = new short[p1Brt.length];
-                for (int i = 0; i < p1Brt.length; i++) {
-                    values[i] = (short) ((p1Brt[i] & 0xFF) * 10);
+                if (mLightManual.isOn()) {
+                    short[] values = new short[p1Brt.length];
+                    for (int i = 0; i < p1Brt.length; i++) {
+                        values[i] = (short) ((p1Brt[i] & 0xFF) * 10);
+                    }
+                    CommUtil.setLed(mAddress, values);
+                    getDeviceData();
+                } else {
+                    showPoweroff();
                 }
-                CommUtil.setLed(mAddress, values);
-                getDeviceData();
             }
         });
         apsv_p2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                short[] values = new short[p2Brt.length];
-                for (int i = 0; i < p2Brt.length; i++) {
-                    values[i] = (short) ((p2Brt[i] & 0xFF) * 10);
+                if (mLightManual.isOn()) {
+                    short[] values = new short[p2Brt.length];
+                    for (int i = 0; i < p2Brt.length; i++) {
+                        values[i] = (short) ((p2Brt[i] & 0xFF) * 10);
+                    }
+                    CommUtil.setLed(mAddress, values);
+                    getDeviceData();
+                } else {
+                    showPoweroff();
                 }
-                CommUtil.setLed(mAddress, values);
-                getDeviceData();
             }
         });
         apsv_p3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                short[] values = new short[p3Brt.length];
-                for (int i = 0; i < p3Brt.length; i++) {
-                    values[i] = (short) ((p3Brt[i] & 0xFF) * 10);
+                if (mLightManual.isOn()) {
+                    short[] values = new short[p3Brt.length];
+                    for (int i = 0; i < p3Brt.length; i++) {
+                        values[i] = (short) ((p3Brt[i] & 0xFF) * 10);
+                    }
+                    CommUtil.setLed(mAddress, values);
+                    getDeviceData();
+                } else {
+                    showPoweroff();
                 }
-                CommUtil.setLed(mAddress, values);
-                getDeviceData();
             }
         });
         apsv_p4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                short[] values = new short[p4Brt.length];
-                for (int i = 0; i < p4Brt.length; i++) {
-                    values[i] = (short) ((p4Brt[i] & 0xFF) * 10);
+                if (mLightManual.isOn()) {
+                    short[] values = new short[p4Brt.length];
+                    for (int i = 0; i < p4Brt.length; i++) {
+                        values[i] = (short) ((p4Brt[i] & 0xFF) * 10);
+                    }
+                    CommUtil.setLed(mAddress, values);
+                    getDeviceData();
+                } else {
+                    showPoweroff();
                 }
-                CommUtil.setLed(mAddress, values);
-                getDeviceData();
             }
         });
+    }
+
+    private void showPoweroff() {
+        Toast.makeText(getContext(), R.string.tip_poweroff, Toast.LENGTH_SHORT)
+             .show();
     }
 
     private void getDeviceData() {

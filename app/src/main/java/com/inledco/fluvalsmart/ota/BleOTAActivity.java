@@ -26,7 +26,6 @@ import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.liruya.tuner168blemanager.BleManager;
 
 public class BleOTAActivity extends BaseActivity implements IOTAView {
-    private static final String TAG = "BleOTAActivity";
 
     private Toolbar ota_toolbar;
     private TextView ota_tv_device_name;
@@ -133,6 +132,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
                     else {
                         mMessage = new StringBuffer();
                         ota_tv_msg.setText(R.string.ota_network_unavailable);
+                        showNonetDialog();
                     }
                 }
             }
@@ -359,6 +359,14 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
             }
         });
         builder.setCancelable(false);
+        builder.show();
+    }
+
+    private void showNonetDialog() {
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+        builder.setTitle(R.string.title_network_unavailable);
+        builder.setMessage(R.string.ota_network_unavailable);
+        builder.setPositiveButton(R.string.close, null);
         builder.show();
     }
 

@@ -135,7 +135,6 @@
     <string name="ota_redownload">Erneuter Download</string>
     <string name="ota_title">Upgrade der Gerät-Firmware</string>
     <string name="ota_upgrade">Upgrade</string>
-    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">Ein Upgrade ist an diesem Gerät nicht möglich; niedrigste Firmware-Version V1.02.</string>
     <string name="ota_msg_uptodate">Firmware ist aktuell</string>
     <string name="ota_msg_remote_not_exists">Fern-Firmware existiert nicht.</string>

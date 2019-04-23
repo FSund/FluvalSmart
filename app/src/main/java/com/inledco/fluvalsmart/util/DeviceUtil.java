@@ -2,7 +2,6 @@ package com.inledco.fluvalsmart.util;
 
 import android.content.Context;
 
-import com.google.gson.JsonObject;
 import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.bean.Channel;
@@ -11,6 +10,9 @@ import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.bean.RampTime;
 import com.inledco.fluvalsmart.constant.CustomColor;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -756,11 +758,16 @@ public class DeviceUtil
     }
 
     public static String getDeviceInfo(DevicePrefer device) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", DeviceUtil.getDeviceType(device.getDevId()));
-        jsonObject.addProperty("name", device.getDeviceName());
-        jsonObject.addProperty("address", device.getDeviceMac());
-        jsonObject.addProperty("app_version", BuildConfig.VERSION_NAME);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("type", DeviceUtil.getDeviceType(device.getDevId()));
+            jsonObject.put("name", device.getDeviceName());
+            jsonObject.put("address", device.getDeviceMac());
+            jsonObject.put("app_version", BuildConfig.VERSION_NAME);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
         return jsonObject.toString();
     }
 }

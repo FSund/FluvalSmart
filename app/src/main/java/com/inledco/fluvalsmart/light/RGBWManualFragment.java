@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.gigamole.library.ArcProgressStackView;
 import com.inledco.fluvalsmart.R;
@@ -303,6 +304,10 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         short[] values;
         byte chn;
         int id = view.getId();
+        if (mLightManual.isOn() == false && id != R.id.rgbw_onoff && id != R.id.rgbw_sunrs) {
+            showPoweroff();
+            return;
+        }
         switch (id) {
             case R.id.rgbw_preset1:
                 //                CommUtil.setLed( mAddress, new short[]{1000, 500, 0, 1000} );
@@ -472,5 +477,10 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
                 break;
         }
         return true;
+    }
+
+    private void showPoweroff() {
+        Toast.makeText(getContext(), R.string.tip_poweroff, Toast.LENGTH_SHORT)
+             .show();
     }
 }

@@ -136,7 +136,6 @@
     <string name="ota_redownload">Volver a descargar</string>
     <string name="ota_title">Actualización del firmware del dispositivo</string>
     <string name="ota_upgrade">Actualización</string>
-    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">Este dispositivo no se puede actualizar, la versión de firmware más baja que soporta es V1.02.</string>
     <string name="ota_msg_uptodate">El firmware está actualizado.</string>
     <string name="ota_msg_remote_not_exists">No existe firmware remoto.</string>

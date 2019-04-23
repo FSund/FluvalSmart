@@ -237,7 +237,7 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="ota_cancel">Cancel</string>
     <string name="ota_continue">Continue</string>
     <string name="next">Next</string>
-    <string name="ota_firmware_newest">Device firmware is up to date.</string>
+    <string name="ota_firmware_newest">Failed</string>
     <string name="ota_upgradable">Upgradable</string>
     <string name="ota_device_firmware_upgradable">The device can update to Vxx. Confirm update?</string>
     <string name="downloading_firmware">Downloading firmware...</string>
@@ -266,4 +266,6 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="copy">Copy</string>
     <string name="retry">Retry</string>
     <string name="uptodate">Up-to-date</string>
+    <string name="title_network_unavailable">Network unavailable</string>
+    <string name="tip_poweroff">The light is poweroff, please turn on it first.</string>
 </resources>

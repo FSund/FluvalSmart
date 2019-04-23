@@ -135,7 +135,6 @@
     <string name="ota_redownload">Télécharger de nouveau</string>
     <string name="ota_title">Mise à jour du micrologiciel de l\'appareil</string>
     <string name="ota_upgrade">Mettre à jour</string>
-    <string name="ota_check_upgrade">Press for update</string>
     <string name="ota_msg_unsupport_version">Cet appareil ne peut être mis à jour; la version minimale prise en charge du micrologiciel est V1.02.</string>
     <string name="ota_msg_uptodate">Le micrologiciel est à jour.</string>
     <string name="ota_msg_remote_not_exists">S\'il vous plaît</string>
