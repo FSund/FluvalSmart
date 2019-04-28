@@ -58,8 +58,11 @@ import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
 import com.liruya.tuner168blemanager.BleSimpleListener;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener {
     private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
@@ -205,10 +208,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     protected void initData() {
         OKHttpManager.getInstance()
                      .get(OTA_UPGRADE_LINK + mPrefer.getDevId(), null, new HttpCallback<RemoteFirmware>() {
-//                         @Override
-//                         public void onFailure(Call call, IOException e) {
-//
-//                         }
+                         @Override
+                         public void onFailure(Call call, IOException e) {
+
+                         }
 
                          @Override
                          public void onError(int code, final String msg) {
@@ -528,7 +531,16 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_990 ||
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_750 ||
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_1150 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_910)
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_910 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA90 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA125 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA200 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA240 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VI180 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VI260 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE190 ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE350A ||
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE350B )
                     {
                         ft.replace(R.id.light_fl_show, new RGBWManualFragment())
                           .commitAllowingStateLoss();

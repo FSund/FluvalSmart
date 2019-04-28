@@ -186,4 +186,5 @@
     <string name="FAQ">常见问题</string>
     <string name="uptodate">已经最新</string>
     <string name="title_network_unavailable">网络无连接</string>
+    <string name="tip_poweroff">灯已关闭, 请打开.</string>
 </resources>

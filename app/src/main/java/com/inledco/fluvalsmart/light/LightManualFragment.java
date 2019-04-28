@@ -40,7 +40,7 @@ public class LightManualFragment extends BaseFragment {
     private LightManual mLightManual;
     private static String mAddress;
     private short devid;
-    private ArrayList<Channel> mChannels;
+    private Channel[] mChannels;
     private SliderAdapter mSliderAdapter;
 
     private LightViewModel mLightViewModel;
@@ -102,12 +102,12 @@ public class LightManualFragment extends BaseFragment {
             ArrayList<ArcProgressStackView.Model> models2 = new ArrayList<>();
             ArrayList<ArcProgressStackView.Model> models3 = new ArrayList<>();
             ArrayList<ArcProgressStackView.Model> models4 = new ArrayList<>();
-            Channel[] chns = DeviceUtil.getLightChannel(getContext(), devid);
-            for (int i = 0; i < chns.length; i++) {
-                models1.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, chns[i].getColor()));
-                models2.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, chns[i].getColor()));
-                models3.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, chns[i].getColor()));
-                models4.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, chns[i].getColor()));
+            mChannels = DeviceUtil.getLightChannel(getContext(), devid);
+            for (int i = 0; i < mChannels.length; i++) {
+                models1.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, mChannels[i].getColor()));
+                models2.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, mChannels[i].getColor()));
+                models3.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, mChannels[i].getColor()));
+                models4.add(new ArcProgressStackView.Model("", 0, 0xFF9E9E9E, mChannels[i].getColor()));
             }
             apsv_p1.setDrawWidthDimension(models1.size() * 6);
             apsv_p1.setModels(models1);
@@ -117,6 +117,9 @@ public class LightManualFragment extends BaseFragment {
             apsv_p3.setModels(models3);
             apsv_p4.setDrawWidthDimension(models1.size() * 6);
             apsv_p4.setModels(models4);
+
+            mSliderAdapter = new SliderAdapter(getContext(), mAddress, devid, mChannels);
+            lightmanuallv.setAdapter(mSliderAdapter);
             refreshData();
         }
 
@@ -136,14 +139,10 @@ public class LightManualFragment extends BaseFragment {
         if (mLightManual == null) {
             return;
         }
-        mChannels = new ArrayList<>();
-        Channel[] chns = DeviceUtil.getLightChannel(getContext(), devid);
+        mSliderAdapter.setPower(mLightManual.isOn());
         for (int i = 0; i < mLightManual.getChnValues().length; i++) {
-            chns[i].setValue(mLightManual.getChnValues()[i]);
-            mChannels.add(chns[i]);
+            mChannels[i].setValue(mLightManual.getChnValues()[i]);
         }
-        mSliderAdapter = new SliderAdapter(getContext(), mAddress, devid, mChannels);
-        lightmanuallv.setAdapter(mSliderAdapter);
         p1Brt = mLightManual.getCustomP1Values();
         p2Brt = mLightManual.getCustomP2Values();
         p3Brt = mLightManual.getCustomP3Values();

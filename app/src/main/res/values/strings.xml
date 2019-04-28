@@ -267,5 +267,5 @@ If still not work with above suggestions, or define non-work with multi-pone dev
     <string name="retry">Retry</string>
     <string name="uptodate">Up-to-date</string>
     <string name="title_network_unavailable">Network unavailable</string>
-    <string name="tip_poweroff">The light is poweroff, please turn on it first.</string>
+    <string name="tip_poweroff">The light is poweroff, please turn on.</string>
 </resources>

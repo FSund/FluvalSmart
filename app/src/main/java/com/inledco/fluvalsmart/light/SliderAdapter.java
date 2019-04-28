@@ -17,7 +17,6 @@ import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 /**
  * Created by liruya on 2016/10/28.
@@ -29,10 +28,10 @@ public class SliderAdapter extends BaseAdapter
     private String mAddress;
     private short mDevid;
     private boolean mPower;
-    private ArrayList< Channel > mChannels;
+    private Channel[] mChannels;
     private static long msc;
 
-    public SliderAdapter ( Context context, String mac, short devid, ArrayList< Channel > channels )
+    public SliderAdapter ( Context context, String mac, short devid, Channel[] channels )
     {
         mContext = context;
         mAddress = mac;
@@ -41,7 +40,7 @@ public class SliderAdapter extends BaseAdapter
         msc = System.currentTimeMillis();
     }
 
-    public SliderAdapter ( Context context, String mac, short devid, boolean power, ArrayList< Channel > channels )
+    public SliderAdapter ( Context context, String mac, short devid, boolean power, Channel[] channels )
     {
         mContext = context;
         mAddress = mac;
@@ -58,13 +57,13 @@ public class SliderAdapter extends BaseAdapter
     @Override
     public int getCount ()
     {
-        return mChannels == null ? 0 : mChannels.size();
+        return mChannels == null ? 0 : mChannels.length;
     }
 
     @Override
     public Object getItem ( int position )
     {
-        return mChannels.get( position );
+        return mChannels[position];
     }
 
     @Override
@@ -91,7 +90,7 @@ public class SliderAdapter extends BaseAdapter
         {
             holder = (ViewHolder) convertView.getTag();
         }
-        final Channel channel = mChannels.get( position );
+        final Channel channel = mChannels[position];
         holder.tv_name.setText( channel.getName() );
         holder.slider.setProgress( channel.getValue() );
         int[] thumbs = DeviceUtil.getThumb(mDevid);
@@ -159,7 +158,7 @@ public class SliderAdapter extends BaseAdapter
                         }
                     }, 64);
                 } else {
-
+                    showPoweroff();
                 }
             }
         } );

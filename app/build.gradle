@@ -45,7 +45,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'org.jetbrains:annotations-java5:15.0'
-    implementation 'com.github.liruya:OKHttpManager:1.0.0'
+//    implementation 'com.github.liruya:okhttpmanager:1.0.0'
     //    implementation 'com.github.liruya:tuner168blemanager:1.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation project(':tuner168blemanager')
+    implementation project(path: ':okhttpmanager')
 }
