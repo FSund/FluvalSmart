@@ -126,26 +126,6 @@
         android:layout_marginRight="10dp"
         android:background="@color/colorDivider"/>
 
-    <TextView
-        android:id="@+id/setting_faq"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="20dp"
-        android:visibility="gone"
-        android:text="@string/FAQ"
-        android:textColor="@color/colorTextPrimary"
-        android:drawableRight="@mipmap/ic_enter"
-        android:drawableTint="@color/colorTextSecond"
-        android:textSize="16sp"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/colorDivider"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -32,7 +32,6 @@ public class UserFragment extends BaseFragment
     private LinearLayout setting_item_lang;
     private TextView setting_profile;
     private TextView setting_um;
-    private TextView setting_faq;
     private TextView setting_version;
     private TextView setting_about;
 
@@ -53,7 +52,6 @@ public class UserFragment extends BaseFragment
         setting_about = view.findViewById( R.id.setting_about );
         setting_version = view.findViewById( R.id.setting_version );
         setting_um = view.findViewById( R.id.setting_um );
-        setting_faq = view.findViewById( R.id.setting_faq );
         setting_profile = view.findViewById( R.id.setting_profile );
         setting_item_lang = view.findViewById( R.id.setting_item_lang );
         setting_lang = view.findViewById( R.id.setting_lang );
@@ -138,20 +136,6 @@ public class UserFragment extends BaseFragment
                 showAboutDialog();
             }
         } );
-        setting_faq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFaqFragment();
-            }
-        });
-    }
-
-    private void startFaqFragment() {
-        getActivity().getSupportFragmentManager()
-                     .beginTransaction()
-                     .add(R.id.activity_main, new FaqFragment())
-                     .addToBackStack("")
-                     .commitAllowingStateLoss();
     }
 
     private String getVersion ()

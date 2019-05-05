@@ -1,0 +1,14 @@
+body {
+    background-color: #2B386D;
+}
+
+p {
+    margin: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.p-q {
+    color: red;
+    margin-top: 15px;
+}

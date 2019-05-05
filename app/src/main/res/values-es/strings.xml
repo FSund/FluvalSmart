@@ -170,4 +170,22 @@
     <string name="new_device_name">Nombre del nuevo dispositivo</string>
     <string name="turnon_location_permission">Activar la función de ubicación</string>
     <string name="msg_turnon_location_permission">La función de ubicación debe estar activada para detectar dispositivos.</string>
+    <string name="FAQ">PREGUNTAS FRECUENTES</string>
+    <string name="close">Cerrar</string>
+    <string name="copy">Copiar</string>
+    <string name="confirm_new_password">Confirmar nueva contraseña</string>
+    <string name="factory_password">La contraseña de fábrica es 000000</string>
+    <string name="failed">Falla</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="ota_check_upgrade">Buscar actualizaciones</string>
+    <string name="ota_firmware_newest">El firmware del dispositivo está actualizado.</string>
+    <string name="password">Contraseña</string>
+    <string name="profile_name">Nombre de perfil</string>
+    <string name="retrieve_key">Recuperar clave</string>
+    <string name="retry">Intentar otra vez</string>
+    <string name="title_network_unavailable">Red no disponible</string>
+    <string name="uptodate">Actualizado</string>
+    <string name="tip_retrieve_password">Seleccionar “Copiar” para copiar el código de identificación de la lámpara. Luego, pegue el código de identificación en un correo electrónico dirigido a FluvalSmartApp1@gmail.com. Recibirá una clave de recuperación por correo electrónico en 48 horas. Ingrese la clave de recuperación y seleccione el botón “Recuperar” para obtener la contraseña.”</string>
+    <string name="faq_path">FAQ-es.html</string>
+    <string name="troubleshooting_path">Troubleshooting-es.html</string>
 </resources>

@@ -15,13 +15,9 @@ import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
 import com.liruya.tuner168blemanager.BleSimpleListener;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -62,7 +58,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
     private final Handler mHandler;
 
     private File mFirmwareFile;
-    private ArrayList<Frame> mFrames;
+    private List<Frame> mFrames;
     private int mCurrent;
     private int mTotal;
     private boolean mTestMode = false;
@@ -332,61 +328,80 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
     public void convertFirmware() {
         mCurrent = 0;
         mTotal = 0;
-        mFrames = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    FileReader fr = new FileReader(mFirmwareFile);
-                    BufferedReader br = new BufferedReader(fr);
-                    String line;
-                    boolean linear = false;
-                    while ((line = br.readLine()) != null) {
-                        Frame frame = new Frame.Builder().createFromString(line);
-                        if (frame == null) {
-                            mFrames = null;
-                            mProcessing = false;
-                            mView.showMessage(getString(R.string.ota_firmware_damaged));
-                            return;
-                        }
-                        if (frame.getType() == 0x04) {
-                            linear = frame.getData_list()
-                                          .get(0) != 0 ||
-                                     frame.getData_list()
-                                          .get(1) != 0;
-                        }
-                        else {
-                            if (frame.getType() == 0x00) {
-                                if (!linear) {
-                                    mFrames.add(frame);
-                                }
-                            }
-                            else {
-                                if (frame.getType() == 0x01) {
-                                    mFrames.add(frame);
-                                }
-                            }
-                        }
-                    }
+                mFrames = new Frame.Builder().getFramesFromFile(mFirmwareFile);
+                if (mFrames == null) {
+                    mProcessing = false;
+                    mView.showMessage(getString(R.string.ota_firmware_damaged));
+                } else {
                     mTotal = mFrames.size();
                     enterBootloader();
                     mView.showMessage(getString(R.string.ota_analysis_success));
                 }
-                catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    mFrames = null;
-                    mProcessing = false;
-                    mView.showMessage(e.toString());
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    mFrames = null;
-                    mProcessing = false;
-                    mView.showMessage(e.toString());
-                }
             }
         }).start();
     }
+
+//    public void convertFirmware() {
+//        mCurrent = 0;
+//        mTotal = 0;
+//        mFrames = new ArrayList<>();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    FileReader fr = new FileReader(mFirmwareFile);
+//                    BufferedReader br = new BufferedReader(fr);
+//                    String line;
+//                    boolean linear = false;
+//                    while ((line = br.readLine()) != null) {
+//                        Frame frame = new Frame.Builder().createFromString(line);
+//                        if (frame == null) {
+//                            mFrames = null;
+//                            mProcessing = false;
+//                            mView.showMessage(getString(R.string.ota_firmware_damaged));
+//                            return;
+//                        }
+//                        if (frame.getType() == 0x04) {
+//                            linear = frame.getData_list()
+//                                          .get(0) != 0 ||
+//                                     frame.getData_list()
+//                                          .get(1) != 0;
+//                        }
+//                        else {
+//                            if (frame.getType() == 0x00) {
+//                                if (!linear) {
+//                                    mFrames.add(frame);
+//                                }
+//                            }
+//                            else {
+//                                if (frame.getType() == 0x01) {
+//                                    mFrames.add(frame);
+//                                }
+//                            }
+//                        }
+//                    }
+//                    mTotal = mFrames.size();
+//                    enterBootloader();
+//                    mView.showMessage(getString(R.string.ota_analysis_success));
+//                }
+//                catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                    mFrames = null;
+//                    mProcessing = false;
+//                    mView.showMessage(e.toString());
+//                }
+//                catch (IOException e) {
+//                    e.printStackTrace();
+//                    mFrames = null;
+//                    mProcessing = false;
+//                    mView.showMessage(e.toString());
+//                }
+//            }
+//        }).start();
+//    }
 
     public void enterBootloader() {
         mCurrentCommand = OTAConstants.OTA_CMD_GET_STATUS;
@@ -420,7 +435,9 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
         if (mFrames != null && mFrames.size() > 0) {
             Frame frame = mFrames.get(0);
             if (frame.getType() == 0x01) {
-                resetDevice();
+                if (frame.getData_length() == 0 && frame.getAddress() == 0) {
+                    resetDevice();
+                }
             }
             else {
                 if (frame.getType() == 0x00) {
@@ -518,7 +535,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                                 public void run() {
                                     upgradeFirmware();
                                 }
-                            }, 48);
+                            }, 24);
                         }
                     }
                     else {

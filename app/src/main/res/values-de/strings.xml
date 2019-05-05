@@ -169,4 +169,22 @@
     <string name="new_device_name">Neuer Gerätenamen</string>
     <string name="turnon_location_permission">Standortzuordnung aktivieren</string>
     <string name="msg_turnon_location_permission">Die Standortzuordnung muss beim Scannen aktiviert sein.</string>
+    <string name="FAQ">FAQ</string>
+    <string name="close">Schließen</string>
+    <string name="copy">Kopieren</string>
+    <string name="confirm_new_password">Neues Passwort bestätigen</string>
+    <string name="factory_password">Werkseitiges Passwort: 000000</string>
+    <string name="failed">Fehlgeschlagen</string>
+    <string name="new_password">Neues Passwort</string>
+    <string name="ota_check_upgrade">Für die Aktualisierung hier drücken</string>
+    <string name="ota_firmware_newest">Die Firmware des Gerätes ist auf dem neuesten Stand</string>
+    <string name="password">Passwort</string>
+    <string name="profile_name">Profilname</string>
+    <string name="retrieve_key">Zurücksetzungsschlüssel</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="title_network_unavailable">Netzwerk nicht erreichbar</string>
+    <string name="uptodate">Auf dem neuesten Stand</string>
+    <string name="tip_retrieve_password">Kopieren Sie den ID-Code des Beleuchtungssystems in eine E-Mail an FluvalSmartApp1@gmail.com. Innerhalb von 48 Stunden wird Ihnen ein Zurücksetzungsschlüssel zugemailt. Geben Sie den Zurücksetzungsschlüssel ein und wählen Sie \"Zurücksetzen\", um zu dem Passwort zu gelangen.</string>
+    <string name="faq_path">FAQ-de.html</string>
+    <string name="troubleshooting_path">Troubleshooting-de.html</string>
 </resources>

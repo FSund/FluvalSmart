@@ -2,7 +2,6 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center_horizontal"
               android:orientation="vertical"
               tools:context="com.inledco.fluvalsmart.main.NewsFragment">
 
@@ -17,5 +16,21 @@
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_fluval_home"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/news_faq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:text="@string/FAQ"/>
+
+    <TextView
+        android:id="@+id/news_troubleshooting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:text="@string/troubleshooting"/>
 
 </LinearLayout>

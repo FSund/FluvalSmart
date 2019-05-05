@@ -1,0 +1,17 @@
+body,html {
+    background-color: #2B386D;
+}
+
+h4 {
+    margin: 5px;
+}
+
+ol {
+    padding: 10px 10px 0 30px;
+    margin: 0px;
+}
+
+li {
+    margin-top: 5px;
+    color: white;
+}

@@ -169,4 +169,22 @@
     <string name="new_device_name">Nom du nouvel appareil</string>
     <string name="turnon_location_permission">Activer le service de localisation</string>
     <string name="msg_turnon_location_permission">Le service de localisation doit être activé pour détecter un appareil.</string>
+    <string name="FAQ">FAQ</string>
+    <string name="close">Fermer</string>
+    <string name="copy">Copier</string>
+    <string name="confirm_new_password">Confirmer le nouveau mot de passe</string>
+    <string name="factory_password">Le mot de passe par défaut est 000000</string>
+    <string name="failed">Échec</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="ota_check_upgrade">Appuyer ici pour la mise à jour</string>
+    <string name="ota_firmware_newest">Le micrologiciel de l’appareil est à jour.</string>
+    <string name="password">Mot de passe</string>
+    <string name="profile_name">Nom d’utilisateur</string>
+    <string name="retrieve_key">Code de récupération</string>
+    <string name="retry">Essayer de nouveau</string>
+    <string name="title_network_unavailable">Réseau non disponible</string>
+    <string name="uptodate">À jour</string>
+    <string name="tip_retrieve_password">"Sélectionner « Copier »  afin de copier le code d’identification de la rampe d’éclairage. Ensuite, coller le code dans un courriel et l’envoyer à FluvalSmartApp1@gmail.com. Un code de récupération vous sera envoyé dans les 48 heures. Entrer le code de récupération et sélectionner le bouton « Récupérer » pour obtenir le mot de passe.  "</string>
+    <string name="faq_path">FAQ-fr.html</string>
+    <string name="troubleshooting_path">Troubleshooting-fr.html</string>
 </resources>

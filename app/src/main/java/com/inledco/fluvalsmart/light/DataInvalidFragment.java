@@ -1,6 +1,7 @@
 package com.inledco.fluvalsmart.light;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseFragment;
-import com.inledco.fluvalsmart.main.FaqFragment;
+import com.inledco.fluvalsmart.web.WebActivity;
 import com.liruya.tuner168blemanager.BleManager;
 
 /**
@@ -85,7 +86,7 @@ public class DataInvalidFragment extends BaseFragment {
         data_invalid_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startFaqFragment();
+                showFAQ();
             }
         });
     }
@@ -105,12 +106,10 @@ public class DataInvalidFragment extends BaseFragment {
         }
     }
 
-    private void startFaqFragment() {
-        getActivity().getSupportFragmentManager()
-                     .beginTransaction()
-                     .add(R.id.activity_light, new FaqFragment())
-                     .addToBackStack("")
-                     .commit();
+    private void showFAQ() {
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("url", "file:///android_asset/faq/" + getString(R.string.faq_path));
+        startActivity(intent);
     }
 
     public interface OnRetryClickListener {

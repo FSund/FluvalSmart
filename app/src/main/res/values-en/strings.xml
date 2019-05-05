@@ -180,11 +180,14 @@
     <string name="find">Find</string>
     <string name="tip_enable_location">Location disabled. Some systems require location permission for Bluetooth device scanning.</string>
     <string name="FAQ">FAQ</string>
-    <string name="tip_retrieve_password">"If forget password, please click below \"Copy\" Button to obtain device information, and send the device information to email address FluvalSmartApp1@gmail.com for a retrieve key response. Then input your retrieve key and click retrieve button to find it. "</string>
     <string name="copy">Copy</string>
     <string name="ota_check_upgrade">Press for update</string>
     <string name="retry">Retry</string>
     <string name="uptodate">Up-to-date</string>
     <string name="title_network_unavailable">Network unavailable</string>
-    <string name="tip_poweroff">The light is poweroff, please turn on.</string>
+    <string name="tip_poweroff">"Light's off, please turn on before operation. "</string>
+    <string name="tip_retrieve_password">"Select \"Copy\" to copy lamp ID code. Next, paste ID code into email addressed to FluvalSmartApp1@gmail.com. A Retrieve Key will be emailed back to you within 48 hours. Enter Retrieve Key and select \"Retrieve\" button to access password. "</string>
+    <string name="faq_path">FAQ-en.html</string>
+    <string name="troubleshooting_path">Troubleshooting-en.html</string>
+    <string name="troubleshooting">Toubleshooting</string>
 </resources>
