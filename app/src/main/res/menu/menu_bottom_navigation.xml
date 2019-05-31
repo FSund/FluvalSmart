@@ -4,8 +4,8 @@
           android:icon="@mipmap/ic_bnv_devices"
           android:title="@string/main_device"/>
     <item android:id="@+id/menu_btm_news"
-          android:icon="@mipmap/ic_bnv_news"
-          android:title="@string/main_news"/>
+          android:icon="@mipmap/ic_bnv_support"
+          android:title="@string/main_support"/>
     <item android:id="@+id/menu_btm_setting"
           android:icon="@mipmap/ic_bnv_settings"
           android:title="@string/main_setting"/>

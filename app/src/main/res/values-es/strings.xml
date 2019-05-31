@@ -188,4 +188,8 @@
     <string name="tip_retrieve_password">Seleccionar “Copiar” para copiar el código de identificación de la lámpara. Luego, pegue el código de identificación en un correo electrónico dirigido a FluvalSmartApp1@gmail.com. Recibirá una clave de recuperación por correo electrónico en 48 horas. Ingrese la clave de recuperación y seleccione el botón “Recuperar” para obtener la contraseña.”</string>
     <string name="faq_path">FAQ-es.html</string>
     <string name="troubleshooting_path">Troubleshooting-es.html</string>
+    <string name="forgot_password">Contraseña olvidada</string>
+    <string name="main_support">Soporte</string>
+    <string name="tip_poweroff">La luz está apagada. Enciéndala para que funcione.</string>
+    <string name="troubleshooting">Resolución de problemas</string>
 </resources>

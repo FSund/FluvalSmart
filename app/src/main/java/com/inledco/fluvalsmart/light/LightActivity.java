@@ -535,12 +535,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA90 ||
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA125 ||
                         mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA200 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA240 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VI180 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VI260 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE190 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE350A ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_VE350B )
+                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA240)
                     {
                         ft.replace(R.id.light_fl_show, new RGBWManualFragment())
                           .commitAllowingStateLoss();
@@ -753,29 +748,26 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
-        builder.setTitle(R.string.input_password);
-        builder.setView(view);
-        builder.setCancelable(false);
-        mPasswordDialog = builder.show();
         final TextInputLayout psw_til = view.findViewById(R.id.psw_til);
         final TextInputEditText psw_password = view.findViewById(R.id.psw_password);
-        final Button btn_retrieve = view.findViewById(R.id.psw_retrieve);
-        final Button btn_cancel = view.findViewById(R.id.psw_cancel);
-        final Button btn_login = view.findViewById(R.id.psw_login);
-        btn_retrieve.setOnClickListener(new View.OnClickListener() {
+        builder.setTitle(R.string.input_password);
+        builder.setView(view);
+        builder.setNeutralButton(R.string.forgot_password, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                mPasswordDialog.dismiss();
+            public void onClick(DialogInterface dialog, int which) {
                 showRetrievePasswordDialog(password);
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                mPasswordDialog.dismiss();
+            public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
+        builder.setPositiveButton(R.string.psw_login, null);
+        builder.setCancelable(false);
+        mPasswordDialog = builder.show();
+        Button btn_login = mPasswordDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -797,10 +789,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         });
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
-        //        dialog.setCancelable( false );
-        //        dialog.show();
     }
 
     private void modifyPassword(final int psw) {

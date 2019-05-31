@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.inledco.fluvalsmart.bean.LightAuto;
 import com.inledco.fluvalsmart.bean.LightPro;
@@ -49,7 +50,8 @@ public class LightPrefUtil {
         if (context == null || lightAuto == null || TextUtils.isEmpty(name)) {
             return;
         }
-        PreferenceUtil.setObjectToPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + devid, lightAuto, name);
+//        PreferenceUtil.setObjectToPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + devid, lightAuto, name);
+        PreferenceUtil.setObjectToPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), lightAuto, name);
     }
 
     public static void deleteAutoProfile(Context context, short devid, String name) {
@@ -57,23 +59,24 @@ public class LightPrefUtil {
             return;
         }
         PreferenceUtil.deleteObjectFromPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + devid, name);
+        PreferenceUtil.deleteObjectFromPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), name);
     }
 
     public static Map<String, LightAuto> getLocalAutoProfiles(Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff) {
         if (context == null) {
             return null;
         }
-        SharedPreferences sp = context.getSharedPreferences(LIGHT_AUTO_PROFILE_FILENAME + devid, Context.MODE_PRIVATE);
         Map<String, LightAuto> map = DeviceUtil.getAutoPresetProfiles(context, devid, hasAutoDynamic, hasTurnoff);
-        //        if ( map == null )
-        //        {
-        //            map = new HashMap<>();
-        //        }
-        //        map.put( context.getResources().getString( R.string.custom_default ), getDefaultProfile( devid ) );
+        SharedPreferences sp = context.getSharedPreferences(LIGHT_AUTO_PROFILE_FILENAME + devid, Context.MODE_PRIVATE);
         for (String key : sp.getAll()
                             .keySet()) {
             map.put(key, (LightAuto) PreferenceUtil.getObjectFromPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + devid, key));
         }
+        SharedPreferences sp2 = context.getSharedPreferences(LIGHT_AUTO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), Context.MODE_PRIVATE);
+        for (String key : sp2.getAll().keySet()) {
+            map.put(key, (LightAuto) PreferenceUtil.getObjectFromPrefer(context, LIGHT_AUTO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), key));
+        }
+        Log.e(TAG, "getLocalAutoProfiles: " + sp.getAll().keySet().size() + " " + sp2.getAll().keySet().size());
         return map;
     }
 
@@ -97,7 +100,8 @@ public class LightPrefUtil {
         if (context == null || lightPro == null || TextUtils.isEmpty(name)) {
             return;
         }
-        PreferenceUtil.saveByteArray(context, LIGHT_PRO_PROFILE_FILENAME + devid, lightPro.toArray(), name);
+//        PreferenceUtil.saveByteArray(context, LIGHT_PRO_PROFILE_FILENAME + devid, lightPro.toArray(), name);
+        PreferenceUtil.saveByteArray(context, LIGHT_PRO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), lightPro.toArray(), name);
     }
 
     public static void deleteProProfile(Context context, short devid, String name) {
@@ -105,21 +109,29 @@ public class LightPrefUtil {
             return;
         }
         PreferenceUtil.deleteObjectFromPrefer(context, LIGHT_PRO_PROFILE_FILENAME + devid, name);
+        PreferenceUtil.deleteObjectFromPrefer(context, LIGHT_PRO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), name);
     }
 
     public static Map<String, LightPro> getLocalProProfiles(Context context, short devid, boolean hasDynamic) {
         if (context == null) {
             return null;
         }
-        SharedPreferences sp = context.getSharedPreferences(LIGHT_PRO_PROFILE_FILENAME + devid, Context.MODE_PRIVATE);
         Map<String, LightPro> map = DeviceUtil.getProPresetProfiles(context, devid, hasDynamic);
         LightPro.Builder builder = new LightPro.Builder();
+        SharedPreferences sp = context.getSharedPreferences(LIGHT_PRO_PROFILE_FILENAME + devid, Context.MODE_PRIVATE);
         for (String key : sp.getAll()
                             .keySet()) {
             byte[] array = PreferenceUtil.readByteArray(context, LIGHT_PRO_PROFILE_FILENAME + devid, key);
             LightPro lightPro = builder.creatFromArray(array, DeviceUtil.getChannelCount(devid));
             map.put(key, lightPro);
         }
+        SharedPreferences sp2 = context.getSharedPreferences(LIGHT_PRO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), Context.MODE_PRIVATE);
+        for (String key : sp2.getAll().keySet()) {
+            byte[] array = PreferenceUtil.readByteArray(context, LIGHT_PRO_PROFILE_FILENAME + DeviceUtil.getDeviceMainType(devid), key);
+            LightPro lightPro = builder.creatFromArray(array, DeviceUtil.getChannelCount(devid));
+            map.put(key, lightPro);
+        }
+        Log.e(TAG, "getLocalProProfiles: " + sp.getAll().keySet().size() + " " + sp2.getAll().keySet().size());
         return map;
     }
 

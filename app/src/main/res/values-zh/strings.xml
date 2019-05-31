@@ -190,4 +190,6 @@
     <string name="faq_path">FAQ-zh.html</string>
     <string name="troubleshooting_path">Troubleshooting-zh.html</string>
     <string name="troubleshooting">故障排除</string>
+    <string name="forgot_password">忘记密码</string>
+    <string name="main_support">支持</string>
 </resources>

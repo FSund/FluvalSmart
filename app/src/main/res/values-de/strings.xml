@@ -187,4 +187,8 @@
     <string name="tip_retrieve_password">Kopieren Sie den ID-Code des Beleuchtungssystems in eine E-Mail an FluvalSmartApp1@gmail.com. Innerhalb von 48 Stunden wird Ihnen ein Zurücksetzungsschlüssel zugemailt. Geben Sie den Zurücksetzungsschlüssel ein und wählen Sie \"Zurücksetzen\", um zu dem Passwort zu gelangen.</string>
     <string name="faq_path">FAQ-de.html</string>
     <string name="troubleshooting_path">Troubleshooting-de.html</string>
+    <string name="forgot_password">Passwort vergessen</string>
+    <string name="main_support">Support</string>
+    <string name="tip_poweroff">Das Beleuchtungssystem ist aus. Vor dem Gebrauch bitte einschalten.</string>
+    <string name="troubleshooting">Problembehebung</string>
 </resources>

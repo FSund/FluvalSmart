@@ -15,11 +15,9 @@
         android:id="@+id/dialog_repower_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        style="@style/DialogTheme"
+        android:theme="@style/Theme.AppCompat.Light"
         android:enabled="false"
         android:layout_margin="8dp"
-        android:textColor="@color/colorPrimary"
         android:text="@string/next"/>
 
 </LinearLayout>

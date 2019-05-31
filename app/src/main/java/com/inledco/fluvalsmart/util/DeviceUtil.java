@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2016/10/21.
@@ -299,6 +300,64 @@ public class DeviceUtil
         return "Unkown device";
     }
 
+    public static Set<Short> getAllDeviceIDS() {
+        return mDeviceMap.keySet();
+    }
+
+    public static String getDeviceMainType(short devid) {
+        switch (devid) {
+            case LIGHT_ID_RGBW:
+                return "rgbw";
+            case LIGHT_ID_STRIP_III:
+                return "stripiii";
+            case LIGHT_ID_EGG:
+                return "egg";
+            case LIGHT_ID_MARINE_500:
+            case LIGHT_ID_MARINE_800:
+            case LIGHT_ID_MARINE_1100:
+            case LIGHT_ID_MARINE_1000:
+                return "marine";
+            case LIGHT_ID_FRESH_500:
+            case LIGHT_ID_FRESH_800:
+            case LIGHT_ID_FRESH_1100:
+            case LIGHT_ID_FRESH_1000:
+                return "fresh";
+            case LIGHT_ID_BLUE_500:
+            case LIGHT_ID_BLUE_800:
+            case LIGHT_ID_BLUE_1100:
+            case LIGHT_ID_BLUE_1000:
+                return "blue";
+            case LIGHT_ID_NANO_MARINE:
+                return "nano_marine";
+            case LIGHT_ID_NANO_FRESH:
+                return "nano_fresh";
+            case LIGHT_ID_AQUASKY_600:
+            case LIGHT_ID_AQUASKY_900:
+            case LIGHT_ID_AQUASKY_1200:
+            case LIGHT_ID_AQUASKY_380:
+            case LIGHT_ID_AQUASKY_530:
+            case LIGHT_ID_AQUASKY_835:
+            case LIGHT_ID_AQUASKY_990:
+            case LIGHT_ID_AQUASKY_750:
+            case LIGHT_ID_AQUASKY_1150:
+            case LIGHT_ID_AQUASKY_910:
+                return "aquasky";
+            case LIGHT_ID_ROMA90:
+            case LIGHT_ID_ROMA125:
+            case LIGHT_ID_ROMA200:
+            case LIGHT_ID_ROMA240:
+                return "roma";
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+                return "vi";
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
+                return "ve";
+        }
+        return "unkown";
+    }
+
     public static int getDeviceIcon( short devid )
     {
         int resid = R.drawable.ic_bluetooth_white_48dp;
@@ -351,6 +410,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
                                           new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
                                           new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ),
@@ -372,11 +436,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
                                           new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
                                           new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
@@ -427,6 +486,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 thumbs = new int[]{ R.drawable.shape_thumb_pink,
                                     R.drawable.shape_thumb_blue,
                                     R.drawable.shape_thumb_coldwhite,
@@ -447,11 +511,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 thumbs = new int[]{ R.drawable.shape_thumb_red, R.drawable.shape_thumb_green, R.drawable.shape_thumb_blue, R.drawable.shape_thumb_purewhite };
                 break;
             case LIGHT_ID_BLUE_500:
@@ -499,6 +558,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 seekBars = new int[]{ R.drawable.custom_seekbar_pink,
                                       R.drawable.custom_seekbar_blue,
                                       R.drawable.custom_seekbar_coldwhite,
@@ -519,11 +583,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 seekBars = new int[]{ R.drawable.custom_seekbar_red,
                                       R.drawable.custom_seekbar_green,
                                       R.drawable.custom_seekbar_blue,
@@ -576,6 +635,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 profiles.put( context.getString( R.string.preset_tropic_river ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 80, 0, 37, 100, 100 },
@@ -611,11 +675,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 profiles.put( context.getString( R.string.preset_color_boost ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
                                              new byte[]{ 68, 100, 100, 90 },
@@ -691,6 +750,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 profiles.put( context.getString( R.string.preset_tropic_river ),
                               new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_TROPIC_RIVER, chn ) );
                 profiles.put( context.getString( R.string.preset_lake_malawi ),
@@ -714,11 +778,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 profiles.put( context.getString( R.string.preset_color_boost ),
                               new LightPro.Builder().creatFromArray( PRO_AQUASKY_PRESET_COLOR_BOOST, chn ) );
                 profiles.put( context.getString( R.string.preset_plant_boost ),
@@ -783,11 +842,6 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-            case LIGHT_ID_VI180:
-            case LIGHT_ID_VI260:
-            case LIGHT_ID_VE190:
-            case LIGHT_ID_VE350A:
-            case LIGHT_ID_VE350B:
                 chns = 4;
                 break;
             case LIGHT_ID_EGG:
@@ -801,6 +855,11 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_NANO_MARINE:
             case LIGHT_ID_NANO_FRESH:
+            case LIGHT_ID_VI180:
+            case LIGHT_ID_VI260:
+            case LIGHT_ID_VE190:
+            case LIGHT_ID_VE350A:
+            case LIGHT_ID_VE350B:
                 chns = 5;
                 break;
         }

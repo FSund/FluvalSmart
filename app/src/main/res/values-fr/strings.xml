@@ -187,4 +187,8 @@
     <string name="tip_retrieve_password">"Sélectionner « Copier »  afin de copier le code d’identification de la rampe d’éclairage. Ensuite, coller le code dans un courriel et l’envoyer à FluvalSmartApp1@gmail.com. Un code de récupération vous sera envoyé dans les 48 heures. Entrer le code de récupération et sélectionner le bouton « Récupérer » pour obtenir le mot de passe.  "</string>
     <string name="faq_path">FAQ-fr.html</string>
     <string name="troubleshooting_path">Troubleshooting-fr.html</string>
+    <string name="forgot_password">Mot de passe oublié</string>
+    <string name="main_support">Soutien</string>
+    <string name="tip_poweroff">L’appareil d’éclairage est éteint. L’allumer pour le faire fonctionner.</string>
+    <string name="troubleshooting">Dépannage</string>
 </resources>
