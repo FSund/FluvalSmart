@@ -90,11 +90,11 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_ROMA125 = "Roma125";
     public static final String LIGHT_TYPE_ROMA200 = "Roma200";
     public static final String LIGHT_TYPE_ROMA240 = "Roma240";
-    public static final String LIGHT_TYPE_VI180 = "VI180";
-    public static final String LIGHT_TYPE_VI260 = "VI260";
-    public static final String LIGHT_TYPE_VE190 = "VE190";
-    public static final String LIGHT_TYPE_VE350A = "VE350A";
-    public static final String LIGHT_TYPE_VE350B = "VE350B";
+    public static final String LIGHT_TYPE_VI180 = "Vicenza 180";
+    public static final String LIGHT_TYPE_VI260 = "Vicenza 260";
+    public static final String LIGHT_TYPE_VE190 = "Venezia 190";
+    public static final String LIGHT_TYPE_VE350A = "Venezia 350A";
+    public static final String LIGHT_TYPE_VE350B = "Venezia 350B";
 
 
     private static final byte[] PRO_MARINE_PRESET_DEEP_SEA_GLO = new byte[]{ 10,
@@ -349,11 +349,11 @@ public class DeviceUtil
                 return "roma";
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
-                return "vi";
+                return "vicenza";
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
-                return "ve";
+                return "venezia";
         }
         return "unkown";
     }
