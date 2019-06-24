@@ -140,6 +140,7 @@ public class LightManualFragment extends BaseFragment {
             return;
         }
         mSliderAdapter.setPower(mLightManual.isOn());
+        mSliderAdapter.notifyDataSetChanged();
         for (int i = 0; i < mLightManual.getChnValues().length; i++) {
             mChannels[i].setValue(mLightManual.getChnValues()[i]);
         }

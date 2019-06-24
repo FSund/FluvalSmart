@@ -4,11 +4,12 @@ body {
 
 p {
     margin: 5px;
-    font-weight: bold;
     color: white;
 }
 
 .p-q {
-    color: red;
-    margin-top: 15px;
+    color: white;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 20px;
 }

@@ -4,6 +4,9 @@ body,html {
 
 h4 {
     margin: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 ol {

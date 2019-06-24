@@ -284,7 +284,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
         window.setAttributes(lp);
 
         final Button btn = view.findViewById(R.id.dialog_repower_next);
-        btn.setText(getString(R.string.next) + " ( 20 ) ");
+        btn.setText(getString(R.string.ota_wait_msg) + " ( 20 ) ");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,7 +297,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
             public void onTick(long millisUntilFinished) {
                 count[0]--;
                 if (count[0] > 0) {
-                    btn.setText(getString(R.string.next) + " ( " + count[0] + " ) ");
+                    btn.setText(getString(R.string.ota_wait_msg) + " ( " + count[0] + " ) ");
                 }
             }
 

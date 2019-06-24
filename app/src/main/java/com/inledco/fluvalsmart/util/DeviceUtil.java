@@ -37,12 +37,15 @@ public class DeviceUtil
     public static final short LIGHT_ID_MARINE_800 = 0x0122;
     public static final short LIGHT_ID_MARINE_1100 = 0x0123;
     public static final short LIGHT_ID_MARINE_1000 = 0x0124;
+    public static final short LIGHT_ID_MARINE_380 = 0x0125;
+    public static final short LIGHT_ID_MARINE_750 = 0x0126;
 
     /* Plant & Fresh */
     public static final short LIGHT_ID_FRESH_500 = 0x0131;
     public static final short LIGHT_ID_FRESH_800 = 0x0132;
     public static final short LIGHT_ID_FRESH_1100 = 0x0133;
     public static final short LIGHT_ID_FRESH_1000 = 0x0134;
+    public static final short LIGHT_ID_FRESH_380 = 0x0135;
 
     /* Aquasky */
     public static final short LIGHT_ID_AQUASKY_600 = 0x0141;
@@ -95,7 +98,6 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_VE190 = "Venezia 190";
     public static final String LIGHT_TYPE_VE350A = "Venezia 350A";
     public static final String LIGHT_TYPE_VE350B = "Venezia 350B";
-
 
     private static final byte[] PRO_MARINE_PRESET_DEEP_SEA_GLO = new byte[]{ 10,
                                                                              6, 0, 0, 0, 0, 0, 0,
@@ -200,11 +202,14 @@ public class DeviceUtil
         mDeviceMap.put( LIGHT_ID_MARINE_800, LIGHT_TYPE_MARINE + " 800mm" );
         mDeviceMap.put( LIGHT_ID_MARINE_1100, LIGHT_TYPE_MARINE + " 1100mm" );
         mDeviceMap.put( LIGHT_ID_MARINE_1000, LIGHT_TYPE_MARINE + " 1000mm" );
+        mDeviceMap.put( LIGHT_ID_MARINE_380, LIGHT_TYPE_MARINE + " 380mm" );
+        mDeviceMap.put( LIGHT_ID_MARINE_750, LIGHT_TYPE_MARINE + " 750mm" );
         /* Plant & Fresh */
         mDeviceMap.put( LIGHT_ID_FRESH_500, LIGHT_TYPE_FRESH + " 500mm" );
         mDeviceMap.put( LIGHT_ID_FRESH_800, LIGHT_TYPE_FRESH + " 800mm" );
         mDeviceMap.put( LIGHT_ID_FRESH_1100, LIGHT_TYPE_FRESH + " 1100mm" );
         mDeviceMap.put( LIGHT_ID_FRESH_1000, LIGHT_TYPE_FRESH + " 1000mm" );
+        mDeviceMap.put( LIGHT_ID_FRESH_380, LIGHT_TYPE_FRESH + " 380mm" );
         /* Aquasky */
         mDeviceMap.put( LIGHT_ID_AQUASKY_600, LIGHT_TYPE_AQUASKY + " 600mm" );
         mDeviceMap.put( LIGHT_ID_AQUASKY_900, LIGHT_TYPE_AQUASKY + " 900mm" );
@@ -244,11 +249,14 @@ public class DeviceUtil
         mIconMap.put( LIGHT_ID_MARINE_800, R.mipmap.ic_light_marine );
         mIconMap.put( LIGHT_ID_MARINE_1100, R.mipmap.ic_light_marine );
         mIconMap.put( LIGHT_ID_MARINE_1000, R.mipmap.ic_light_marine );
+        mIconMap.put( LIGHT_ID_MARINE_380, R.mipmap.ic_light_marine );
+        mIconMap.put( LIGHT_ID_MARINE_750, R.mipmap.ic_light_marine );
         /* Plant & Fresh */
         mIconMap.put( LIGHT_ID_FRESH_500, R.mipmap.ic_light_fresh );
         mIconMap.put( LIGHT_ID_FRESH_800, R.mipmap.ic_light_fresh );
         mIconMap.put( LIGHT_ID_FRESH_1100, R.mipmap.ic_light_fresh );
         mIconMap.put( LIGHT_ID_FRESH_1000, R.mipmap.ic_light_fresh );
+        mIconMap.put( LIGHT_ID_FRESH_380, R.mipmap.ic_light_fresh );
         /* Aquasky */
         mIconMap.put( LIGHT_ID_AQUASKY_600, R.mipmap.ic_light_aquasky );
         mIconMap.put( LIGHT_ID_AQUASKY_900, R.mipmap.ic_light_aquasky );
@@ -316,11 +324,14 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
                 return "marine";
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
                 return "fresh";
             case LIGHT_ID_BLUE_500:
             case LIGHT_ID_BLUE_800:
@@ -397,6 +408,8 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
                 channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
                                           new Channel( context.getString( R.string.chn_name_cyan ), CustomColor.COLOR_CYAN_A700, R.drawable.ic_cyan ),
@@ -409,6 +422,7 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -474,6 +488,8 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
                 thumbs = new int[]{ R.drawable.shape_thumb_pink,
                                     R.drawable.shape_thumb_cyan,
@@ -485,6 +501,7 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -546,6 +563,8 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
                 seekBars = new int[]{ R.drawable.custom_seekbar_pink,
                                       R.drawable.custom_seekbar_cyan,
@@ -557,6 +576,7 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -610,6 +630,8 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
                 profiles.put( context.getString( R.string.preset_deep_sea_glo ),
                               new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
@@ -634,6 +656,7 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -737,6 +760,8 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
                 profiles.put( context.getString( R.string.preset_deep_sea_glo ),
                               new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_DEEP_SEA_GLO, chn ) );
@@ -749,6 +774,7 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -849,10 +875,13 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
             case LIGHT_ID_MARINE_1000:
+            case LIGHT_ID_MARINE_380:
+            case LIGHT_ID_MARINE_750:
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
+            case LIGHT_ID_FRESH_380:
             case LIGHT_ID_NANO_MARINE:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:

@@ -152,7 +152,7 @@
     <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
     <string name="ota_cancel">Cancel</string>
     <string name="ota_msg_check_version">Please check upgrade.</string>
-    <string name="ota_upgradable">Upgradable</string>
+    <string name="ota_upgradable">Upgrade ready</string>
     <string name="ota_firmware_newest">Device firmware is up to date.</string>
     <string name="next">Next</string>
     <string name="ota_device_firmware_upgradable">The device can update to Vxx. Confirm update?</string>
@@ -189,7 +189,7 @@
     <string name="tip_retrieve_password">"Select \"Copy\" to copy lamp ID code. Next, paste ID code into email addressed to FluvalSmartApp1@gmail.com. A Retrieve Key will be emailed back to you within 48 hours. Enter Retrieve Key and select \"Retrieve\" button to access password. "</string>
     <string name="faq_path">FAQ-en.html</string>
     <string name="troubleshooting_path">Troubleshooting-en.html</string>
-    <string name="troubleshooting">Toubleshooting</string>
+    <string name="troubleshooting">Troubleshooting</string>
     <string name="forgot_password">Forgot password</string>
     <string name="main_support">Support</string>
 </resources>
