@@ -223,7 +223,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     @Override
     public void showUpgradeConfirmDialog(String msg) {
 //        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
-        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.BottomDialogTheme );
+        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         builder.setTitle(R.string.ota_upgradable);
         builder.setMessage(msg);
         builder.setNegativeButton(R.string.ota_cancel, new DialogInterface.OnClickListener() {
@@ -268,11 +268,11 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     @Override
     public void showRepowerDialog() {
 //        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
-        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.BottomDialogTheme );
+        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         final int[] count = new int[]{20};
         View view = LayoutInflater.from(this)
                                   .inflate(R.layout.dialog_repower, null, false);
-        builder.setTitle(R.string.ota_wait_title);
+//        builder.setTitle(R.string.ota_wait_title);
         builder.setView(view);
         builder.setCancelable(false);
         final AlertDialog dialog = builder.show();

@@ -192,4 +192,5 @@
     <string name="troubleshooting">Troubleshooting</string>
     <string name="forgot_password">Forgot password</string>
     <string name="main_support">Support</string>
+    <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
 </resources>

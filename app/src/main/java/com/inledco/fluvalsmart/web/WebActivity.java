@@ -56,14 +56,7 @@ public class WebActivity extends BaseActivity
             @Override
             public void onClick ( View view )
             {
-                if ( web_show.canGoBack() )
-                {
-                    web_show.goBack();
-                }
-                else
-                {
-                    finish();
-                }
+                onBackPressed();
             }
         } );
     }
@@ -81,14 +74,20 @@ public class WebActivity extends BaseActivity
 
     private void showWebView ( final WebView web, String url )
     {
-        web.getSettings()
-           .setJavaScriptEnabled( true );
-        web.getSettings()
-           .setLoadWithOverviewMode( true );
-        web.getSettings()
-           .setDefaultTextEncodingName( "utf-8" );
-        web.getSettings()
-           .setCacheMode( WebSettings.LOAD_NO_CACHE );
+        WebSettings webSettings = web.getSettings();
+        webSettings.setJavaScriptEnabled( true );
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode( true );
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setDisplayZoomControls(true);
+        webSettings.setDefaultTextEncodingName( "utf-8" );
+        webSettings.setCacheMode( WebSettings.LOAD_NO_CACHE );
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
         web.setWebChromeClient( new WebChromeClient()
         {
             /**
@@ -126,9 +125,7 @@ public class WebActivity extends BaseActivity
             {
                 super.onPageFinished( view, url );
             }
-
-
-        } );
+        });
         web.loadUrl( url );
     }
 }

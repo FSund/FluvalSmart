@@ -192,4 +192,5 @@
     <string name="troubleshooting">故障排除</string>
     <string name="forgot_password">忘记密码</string>
     <string name="main_support">支持</string>
+    <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
 </resources>

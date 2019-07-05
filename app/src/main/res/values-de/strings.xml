@@ -191,4 +191,5 @@
     <string name="main_support">Support</string>
     <string name="tip_poweroff">Das Beleuchtungssystem ist aus. Vor dem Gebrauch bitte einschalten.</string>
     <string name="troubleshooting">Problembehebung</string>
+    <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_DE_Jul3_19_SP.pdf</string>
 </resources>

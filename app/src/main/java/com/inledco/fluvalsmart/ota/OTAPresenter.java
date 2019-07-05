@@ -192,7 +192,7 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
                 final DecimalFormat df = new DecimalFormat("00");
 
                 st = System.currentTimeMillis();
-                while (System.currentTimeMillis() - st < 160) {
+                while (System.currentTimeMillis() - st < 640) {
                 }
                 BleManager.getInstance()
                           .readMfr(mAddress);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
@@ -17,15 +18,17 @@ import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseFragment;
-import com.inledco.fluvalsmart.splash.SplashActivity;
 import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.splash.SplashActivity;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
+import com.inledco.fluvalsmart.web.WebActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UserFragment extends BaseFragment
 {
+    private final String GOOGLE_DOC_URL = "https://docs.google.com/gview?embedded=true&url=";
     private SwitchCompat setting_auth_ble;
     private SwitchCompat setting_exit_close_ble;
     private TextView setting_lang;
@@ -136,6 +139,15 @@ public class UserFragment extends BaseFragment
                 showAboutDialog();
             }
         } );
+
+        setting_um.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startWebActivity(GOOGLE_DOC_URL + getString(R.string.user_manual_url));
+//                startWebActivity("https://docs.google.com/viewer?url=https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf");
+//                startWebActivity(GOOGLE_DOC_URL + pdfurl);
+            }
+        });
     }
 
     private String getVersion ()
@@ -235,5 +247,11 @@ public class UserFragment extends BaseFragment
 //        AlertDialog dialog = builder.create();
 //        dialog.setCanceledOnTouchOutside( false );
 //        dialog.show();
+    }
+
+    private void startWebActivity(@NonNull final String url) {
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 }
