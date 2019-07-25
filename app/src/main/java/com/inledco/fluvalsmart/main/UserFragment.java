@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.inledco.fluvalsmart.R;
@@ -35,8 +37,25 @@ public class UserFragment extends BaseFragment
     private LinearLayout setting_item_lang;
     private TextView setting_profile;
     private TextView setting_um;
+    private LinearLayout setting_ll_version;
     private TextView setting_version;
     private TextView setting_about;
+    private LinearLayout setting_ll_testmode;
+    private Switch setting_sw_testmode;
+
+    private int testCount;
+
+    private final CountDownTimer mTimer = new CountDownTimer(1000, 100) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            testCount = 0;
+        }
+    };
 
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
@@ -53,6 +72,7 @@ public class UserFragment extends BaseFragment
     protected void initView ( View view )
     {
         setting_about = view.findViewById( R.id.setting_about );
+        setting_ll_version = view.findViewById( R.id.setting_ll_version );
         setting_version = view.findViewById( R.id.setting_version );
         setting_um = view.findViewById( R.id.setting_um );
         setting_profile = view.findViewById( R.id.setting_profile );
@@ -60,6 +80,9 @@ public class UserFragment extends BaseFragment
         setting_lang = view.findViewById( R.id.setting_lang );
         setting_exit_close_ble = view.findViewById( R.id.setting_exit_close_ble );
         setting_auth_ble = view.findViewById( R.id.setting_auth_ble );
+
+        setting_ll_testmode = view.findViewById(R.id.setting_ll_testmode);
+        setting_sw_testmode = view.findViewById(R.id.setting_sw_testmode);
     }
 
     @Override
@@ -98,6 +121,10 @@ public class UserFragment extends BaseFragment
                 setting_lang.setText( R.string.mode_auto );
                 break;
         }
+
+        boolean testMode = Setting.isTestMode(getContext());
+        setting_ll_testmode.setVisibility(testMode ? View.VISIBLE : View.GONE);
+        setting_sw_testmode.setChecked(testMode);
 //        Resources resources = getContext().getResources();
 //        DisplayMetrics dm = resources.getDisplayMetrics();
 //        Configuration config = resources.getConfiguration();
@@ -146,6 +173,36 @@ public class UserFragment extends BaseFragment
                 startWebActivity(GOOGLE_DOC_URL + getString(R.string.user_manual_url));
 //                startWebActivity("https://docs.google.com/viewer?url=https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf");
 //                startWebActivity(GOOGLE_DOC_URL + pdfurl);
+            }
+        });
+
+        setting_ll_version.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean testMode = Setting.isTestMode(getContext());
+                if (testMode) {
+                    return;
+                }
+                if (testCount == 0) {
+                    mTimer.start();
+                }
+                testCount++;
+                if (testCount == 5) {
+                    mTimer.cancel();
+                    testCount = 0;
+                    Setting.setTestMode(getContext(), true);
+                    setting_sw_testmode.setChecked(true);
+                }
+            }
+        });
+
+        setting_sw_testmode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    Setting.setTestMode(getContext(), false);
+                }
+                setting_ll_testmode.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
     }

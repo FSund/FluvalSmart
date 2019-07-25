@@ -44,6 +44,7 @@ import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.ota.BleOTAActivity;
 import com.inledco.fluvalsmart.ota.RemoteFirmware;
+import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightPrefUtil;
@@ -745,6 +746,12 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         if (mPasswordDialog != null && mPasswordDialog.isShowing()) {
             return;
         }
+        if (Setting.isTestMode(LightActivity.this))
+        {
+            readMfr();
+            mCountDownTimer.start();
+            return;
+        }
         //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
@@ -901,7 +908,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 intent.putExtra("devid", mPrefer.getDevId());
                 intent.putExtra("name", mPrefer.getDeviceName());
                 intent.putExtra("address", mPrefer.getDeviceMac());
-                intent.putExtra("mode", false);
+                intent.putExtra("mode", Setting.isTestMode(LightActivity.this));
                 startActivity(intent);
                 finish();
             }

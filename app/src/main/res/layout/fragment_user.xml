@@ -127,6 +127,7 @@
         android:background="@color/colorDivider"/>
 
     <LinearLayout
+        android:id="@+id/setting_ll_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -172,5 +173,29 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/colorDivider"/>
+
+    <LinearLayout
+        android:id="@+id/setting_ll_testmode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="TestMode"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="16sp"/>
+        <Switch
+            android:id="@+id/setting_sw_testmode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/colorTextSecond"/>
+    </LinearLayout>
 
 </LinearLayout>

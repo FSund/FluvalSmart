@@ -263,7 +263,7 @@ public class ScanActivity extends BaseActivity {
             }
         };
         mScanAdapter = new ScanAdapter(ScanActivity.this, mHandler, mDevices);
-        mScanAdapter.setShowRssi(Setting.showRssi());
+        mScanAdapter.setShowRssi(Setting.isTestMode(ScanActivity.this));
         scan_rv_show.setAdapter(mScanAdapter);
     }
 

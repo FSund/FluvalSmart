@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
@@ -32,12 +33,28 @@ public class Setting {
     public static final String KEY_SCAN_TIP = "scan_tip";
     public static final String KEY_UPGRADE_TIP = "upgrade_tip";
 
+    private static final String KEY_TESTMODE = "testmode";
+
     public static boolean showRssi() {
-        return false;
+        return true;
     }
 
     public static boolean forceUpdate() {
         return false;
+    }
+
+    public static boolean isTestMode(@NonNull Context context)
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(KEY_TESTMODE, false);
+    }
+
+    public static void setTestMode(@NonNull Context context, boolean b)
+    {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit()
+                                            .putBoolean(KEY_TESTMODE, b);
+        editor.commit();
     }
 
     public static boolean isAutoTurnonBle(Context context) {

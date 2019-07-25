@@ -48,7 +48,7 @@ dependencies {
 //    implementation 'com.github.liruya:okhttpmanager:1.0.0'
     //    implementation 'com.github.liruya:tuner168blemanager:1.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+//    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation project(':tuner168blemanager')
     implementation project(path: ':okhttpmanager')
 }
