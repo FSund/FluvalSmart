@@ -238,26 +238,6 @@ public class LightPro implements Serializable
                 return 0;
             }
         } );
-        /* sort */
-//        int[] index = new int[mPointCount];
-//        int[] tmr = new int[mPointCount];
-//        for ( int i = 0; i < mPointCount; i++ )
-//        {
-//            index[i] = i;
-//            tmr[i] = mPoints[i].getHour()*60+mPoints[i].getMinute();
-//        }
-//        for ( int i = mPointCount-1; i > 0 ; i-- )
-//        {
-//            for ( int j = 0; j < i; j++ )
-//            {
-//                if ( tmr[index[j]] > tmr[index[j+1]] )
-//                {
-//                    int temp = index[j];
-//                    index[j] = index[j+1];
-//                    index[j+1] = temp;
-//                }
-//            }
-//        }
 
         byte[] array = new byte[len];
         array[0] = (byte) mPointCount;

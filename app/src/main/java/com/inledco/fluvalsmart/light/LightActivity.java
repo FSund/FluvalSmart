@@ -157,6 +157,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         MenuItem menu_device_find = menu.findItem(R.id.menu_device_find);
         menu_device_update = menu.findItem(R.id.menu_device_update);
         MenuItem menu_device_modpsw = menu.findItem(R.id.menu_device_modpsw);
+        MenuItem menu_device_rmpsw = menu.findItem(R.id.menu_device_rmpsw);
         menu_device_status.setIcon(BleManager.getInstance().isDataValid(mAddress) ? R.drawable.ic_bluetooth_connected_white_24dp : R.drawable.ic_bluetooth_disabled_grey_500_24dp);
         menu_device_edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -186,6 +187,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 showModifyPasswordDialog();
+                return false;
+            }
+        });
+        menu_device_rmpsw.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                showRemovePasswordDialog();
                 return false;
             }
         });
@@ -310,7 +318,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onReadPassword(final int password) {
                 if (mState < STATE_LOGIN) {
                     final int psw = LightPrefUtil.getLocalPassword(LightActivity.this, mAddress);
-                    if (psw == password) {
+                    if (password == 0 || psw == password || Setting.isTestMode(LightActivity.this)) {
                         mState = STATE_LOGIN;
                         readMfr();
                     } else {
@@ -407,6 +415,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void showUpgradeStatus() {
+        if (menu_device_update == null) {
+            return;
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -746,12 +757,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         if (mPasswordDialog != null && mPasswordDialog.isShowing()) {
             return;
         }
-        if (Setting.isTestMode(LightActivity.this))
-        {
-            readMfr();
-            mCountDownTimer.start();
-            return;
-        }
         //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
@@ -779,7 +784,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             @Override
             public void onClick(View v) {
                 String psw = psw_password.getText().toString();
-                if (psw.length() != 6) {
+                if (TextUtils.isEmpty(psw) || psw.length() != 6) {
                     psw_til.setError(getString(R.string.error_psw_6_num));
                 }
                 else {
@@ -804,7 +809,11 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onReadPassword(int password) {
                 final String msg;
                 if (psw == password) {
-                    msg = getString(R.string.modify_password_success);
+                    if (psw == 0) {
+                        msg = getString(R.string.remove_password_success);
+                    } else {
+                        msg = getString(R.string.set_password_success);
+                    }
                 } else {
                     msg = getString(R.string.modify_password_fail);
                 }
@@ -840,22 +849,17 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this)
                                   .inflate(R.layout.dialog_modify_password, null, false);
-        builder.setTitle(getString(R.string.modify_password));
+        builder.setTitle(getString(R.string.set_password));
         builder.setView(view);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.dialog_ok, null);
         final AlertDialog dialog = builder.show();
         final TextInputLayout modify_til1 = view.findViewById(R.id.modify_psw_til1);
         final TextInputLayout modify_til2 = view.findViewById(R.id.modify_psw_til2);
         final TextInputEditText modify_new = view.findViewById(R.id.modify_psw_new);
         final TextInputEditText modify_confirm = view.findViewById(R.id.modify_psw_confirm);
-        Button btn_cancel = view.findViewById(R.id.modify_psw_cancel);
-        Button btn_modify = view.findViewById(R.id.modify_psw_modify);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btn_modify.setOnClickListener(new View.OnClickListener() {
+        Button btn_set = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btn_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String psw1 = modify_new.getText()
@@ -868,6 +872,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
                 if (psw2.length() != 6) {
                     modify_til2.setError(getString(R.string.error_psw_6_num));
+                    return;
+                }
+                if (TextUtils.equals(psw1, "000000")) {
+                    modify_til1.setError(getString(R.string.password_not_zero));
                     return;
                 }
                 if (psw1.equals(psw2)) {
@@ -889,10 +897,29 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     String text = modify_new.getText().toString();
                     if (TextUtils.isEmpty(text) || text.length() < 6) {
                         modify_til1.setError(getString(R.string.error_psw_6_num));
+                    } else if (TextUtils.equals(text, "000000")) {
+                        modify_til1.setError(getString(R.string.password_not_zero));
                     }
                 }
             }
         });
+        //        dialog.setView( view );
+        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.show();
+    }
+
+    private void showRemovePasswordDialog() {
+        //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
+        builder.setTitle(getString(R.string.remove_password))
+               .setNegativeButton(R.string.cancel, null)
+               .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        modifyPassword(0);
+                    }
+                })
+               .show();
         //        dialog.setView( view );
         //        dialog.setCanceledOnTouchOutside( false );
         //        dialog.show();

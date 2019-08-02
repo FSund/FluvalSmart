@@ -64,7 +64,7 @@
     <string name="snackbar_bluetooth_denied">Open bluetooth failed, try to open bluetooth in settings mode.</string>
     <string name="snackbar_coarselocation_denied">Not allow to scan nearby bluetooth device when you forbid location services.</string>
 
-    <string name="msg_get_data_failed">Failed to up-load device data,click to try again.</string>
+    <string name="msg_get_data_failed">Failed to up-load device data, click to try again.</string>
     <string name="msg_connecting_device">Connecting device...</string>
     <string name="msg_get_device_data">Connection succuss, up-loading device data...</string>
     <string name="msg_get_data_success">Data up-load success.</string>
@@ -96,7 +96,6 @@
     <string name="launch_select_language">Select language</string>
     <string name="input_password">Enter password</string>
     <string name="psw_login">Login</string>
-    <string name="hint_input_password">Please input password(Initial 000000).</string>
     <string name="error_psw_6_num">Password must be 6 digits.</string>
     <string name="error_password_wrong">Incorrect password.</string>
     <string name="modify">Modify</string>
@@ -208,7 +207,7 @@
     <string name="FAQ">FAQ</string>
     <string name="copy">Copy</string>
     <string name="retry">Retry</string>
-    <string name="uptodate">Up-to-date</string>
+    <string name="uptodate">Up to date</string>
     <string name="title_network_unavailable">Network unavailable</string>
     <string name="tip_poweroff">Light unit is OFF. Power ON before operating.</string>
     <string name="tip_retrieve_password">"Select \"Copy\" to copy lamp ID code. Next, paste ID code into email addressed to FluvalSmartApp1@gmail.com. A Retrieve Key will be emailed back to you within 48 hours. Enter Retrieve Key and select \"Retrieve\" button to access password. "</string>
@@ -218,4 +217,10 @@
     <string name="forgot_password">Forgot password</string>
     <string name="main_support">Support</string>
     <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
+    <string name="instruction_video">Helpful Videos</string>
+    <string name="remove_password">Remove password</string>
+    <string name="set_password">Set password</string>
+    <string name="remove_password_success">Remove password successfully.</string>
+    <string name="set_password_success">Set password successfully.</string>
+    <string name="password_not_zero">Password can not be 000000.</string>
 </resources>

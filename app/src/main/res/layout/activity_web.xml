@@ -2,17 +2,18 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_web"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorBlack"
     tools:context="com.inledco.fluvalsmart.web.WebActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/web_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:navigationIcon="@drawable/ic_chevron_left_white_36dp"
         app:titleTextColor="@color/colorWhite"
         android:background="@color/colorPrimaryDark" >
@@ -30,4 +31,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <FrameLayout
+        android:id="@+id/web_fs_container"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

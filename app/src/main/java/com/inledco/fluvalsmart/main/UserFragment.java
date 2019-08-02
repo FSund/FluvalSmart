@@ -31,12 +31,14 @@ import com.inledco.fluvalsmart.web.WebActivity;
 public class UserFragment extends BaseFragment
 {
     private final String GOOGLE_DOC_URL = "https://docs.google.com/gview?embedded=true&url=";
+    private final String UPGRADE_GUIDE_LINK = "https://www.fluvalaquatics.com/fluvalsmartfirmwareupdate/";
     private SwitchCompat setting_auth_ble;
     private SwitchCompat setting_exit_close_ble;
     private TextView setting_lang;
     private LinearLayout setting_item_lang;
     private TextView setting_profile;
     private TextView setting_um;
+    private TextView setting_instruction;
     private LinearLayout setting_ll_version;
     private TextView setting_version;
     private TextView setting_about;
@@ -75,6 +77,7 @@ public class UserFragment extends BaseFragment
         setting_ll_version = view.findViewById( R.id.setting_ll_version );
         setting_version = view.findViewById( R.id.setting_version );
         setting_um = view.findViewById( R.id.setting_um );
+        setting_instruction = view.findViewById(R.id.setting_instruction);
         setting_profile = view.findViewById( R.id.setting_profile );
         setting_item_lang = view.findViewById( R.id.setting_item_lang );
         setting_lang = view.findViewById( R.id.setting_lang );
@@ -171,8 +174,13 @@ public class UserFragment extends BaseFragment
             @Override
             public void onClick(View v) {
                 startWebActivity(GOOGLE_DOC_URL + getString(R.string.user_manual_url));
-//                startWebActivity("https://docs.google.com/viewer?url=https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf");
-//                startWebActivity(GOOGLE_DOC_URL + pdfurl);
+            }
+        });
+
+        setting_instruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startWebActivity(UPGRADE_GUIDE_LINK);
             }
         });
 
@@ -308,6 +316,7 @@ public class UserFragment extends BaseFragment
 
     private void startWebActivity(@NonNull final String url) {
         Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("allow_open_in_browser", true);
         intent.putExtra("url", url);
         startActivity(intent);
     }

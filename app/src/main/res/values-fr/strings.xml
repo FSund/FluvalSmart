@@ -192,4 +192,10 @@
     <string name="tip_poweroff">L’appareil d’éclairage est éteint. L’allumer pour le faire fonctionner.</string>
     <string name="troubleshooting">Dépannage</string>
     <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_FR_Jul3_19_SP.pdf</string>
+    <string name="set_password">Configurer le mot de passe</string>
+    <string name="set_password_success">Mot de passe configuré avec succès.</string>
+    <string name="remove_password">Supprimer le mot de passe</string>
+    <string name="remove_password_success">Mot de passe supprimé avec succès.</string>
+    <string name="password_not_zero">Le mot de passe ne peut pas être 000000.</string>
+    <string name="instruction_video">Vidéos utiles</string>
 </resources>

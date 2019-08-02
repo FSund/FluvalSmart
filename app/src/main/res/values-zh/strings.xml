@@ -75,7 +75,6 @@
     <string name="launch_select_country">选择国家</string>
     <string name="input_password">输入密码</string>
     <string name="psw_login">登录</string>
-    <string name="hint_input_password">请输入密码(初始密码000000).</string>
     <string name="error_psw_6_num">密码必须是6位数字.</string>
     <string name="error_password_wrong">密码错误.</string>
     <string name="modify">修改</string>
@@ -186,11 +185,17 @@
     <string name="uptodate">已经最新</string>
     <string name="title_network_unavailable">网络无连接</string>
     <string name="tip_poweroff">灯已关闭, 请先打开.</string>
-    <string name="tip_retrieve_password">"选择\"复制\"按钮复制设备信息, 然后粘贴设备信息到邮件发送给FluvalSmartApp1@gmail.com. 一个找回密钥将会在48小时内发送到您的邮箱. 输入找回密钥并选择\"找回\"按钮来获取设备密码. "</string>
+    <string name="tip_retrieve_password">"选择\"复制\"按钮复制设备信息, 然后粘贴设备信息到邮件发送给 FluvalSmartApp1@gmail.com. 一个找回密钥将会在48小时内发送到您的邮箱. 输入找回密钥并选择\"找回\"按钮来获取设备密码. "</string>
     <string name="faq_path">FAQ-zh.html</string>
     <string name="troubleshooting_path">Troubleshooting-zh.html</string>
     <string name="troubleshooting">故障排除</string>
     <string name="forgot_password">忘记密码</string>
     <string name="main_support">支持</string>
     <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
+    <string name="instruction_video">指引视频</string>
+    <string name="remove_password">移除密码</string>
+    <string name="set_password">设置密码</string>
+    <string name="remove_password_success">移除密码成功.</string>
+    <string name="set_password_success">设置密码成功.</string>
+    <string name="password_not_zero">密码不能为000000.</string>
 </resources>

@@ -193,4 +193,10 @@
     <string name="tip_poweroff">La luz está apagada. Enciéndala para que funcione.</string>
     <string name="troubleshooting">Resolución de problemas</string>
     <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_ES_Jul3_19_SP.pdf</string>
+    <string name="set_password">Establecer contraseña</string>
+    <string name="set_password_success">La contraseña se estableció correctamente.</string>
+    <string name="remove_password">Eliminar contraseña</string>
+    <string name="remove_password_success">La contraseña se eliminó correctamente.</string>
+    <string name="password_not_zero">La contraseña no puede ser 000000.</string>
+    <string name="instruction_video">Videos útiles</string>
 </resources>

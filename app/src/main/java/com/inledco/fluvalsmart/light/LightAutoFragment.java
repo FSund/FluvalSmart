@@ -105,6 +105,7 @@ public class LightAutoFragment extends BaseFragment {
     private Timer tmr;
     private PreviewTimerTask tsk;
 
+    private final Handler mHandler = new Handler();
     private final CheckSaveTimer mSaveTimer = new CheckSaveTimer(1000, 50);
 
     private LightViewModel mLightViewModel;
@@ -719,10 +720,20 @@ public class LightAutoFragment extends BaseFragment {
             builder.setPositiveButton(R.string.dialog_export_use, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    mLightAuto = localProfiles.get(keys[index[0]]);
-                    refreshData();
-                    CommUtil.setLedAuto(mAddress, mLightAuto);
-                    mSaveTimer.startCheck();
+                    final LightAuto lightAuto = localProfiles.get(keys[index[0]]);
+                    lightAuto.setHasTurnoff(mLightAuto.isHasTurnoff());
+                    CommUtil.setLedAuto(mAddress, lightAuto);
+                    if (mLightAuto.isHasTurnoff() && mLightAuto.isHasDynamic()) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                CommUtil.setLedDynamicPeriod(mAddress, lightAuto.getWeek(), lightAuto.getDynamicPeriod(), lightAuto.getDynamicMode());
+                                mSaveTimer.startCheck();
+                            }
+                        }, 200);
+                    } else {
+                        mSaveTimer.startCheck();
+                    }
                     dialogInterface.dismiss();
                 }
             });

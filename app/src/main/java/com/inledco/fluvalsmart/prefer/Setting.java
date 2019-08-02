@@ -57,7 +57,7 @@ public class Setting {
         editor.commit();
     }
 
-    public static boolean isAutoTurnonBle(Context context) {
+    public static boolean isAutoTurnonBle(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getBoolean(KEY_AUTO_TURNON_BLE, false);
@@ -65,7 +65,7 @@ public class Setting {
         return false;
     }
 
-    public static void setAutoTurnonBle(Context context, boolean b) {
+    public static void setAutoTurnonBle(@NonNull Context context, boolean b) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -74,7 +74,7 @@ public class Setting {
         }
     }
 
-    public static boolean isExitTurnoffBle(Context context) {
+    public static boolean isExitTurnoffBle(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getBoolean(KEY_EXIT_TURNOFF_BLE, false);
@@ -82,7 +82,7 @@ public class Setting {
         return false;
     }
 
-    public static void setExitTurnoffBle(Context context, boolean b) {
+    public static void setExitTurnoffBle(@NonNull Context context, boolean b) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -91,7 +91,7 @@ public class Setting {
         }
     }
 
-    public static boolean hasSelectCountryLanguage(Context context) {
+    public static boolean hasSelectCountryLanguage(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getBoolean(KEY_COUNTRY_LANGUAGE_SELECTED, false);
@@ -99,7 +99,7 @@ public class Setting {
         return false;
     }
 
-    public static void setSelectCountryLanguage(Context context) {
+    public static void setSelectCountryLanguage(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -108,7 +108,7 @@ public class Setting {
         }
     }
 
-    public static boolean hasScanTip(Context context) {
+    public static boolean hasScanTip(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getBoolean(KEY_SCAN_TIP, false);
@@ -116,7 +116,7 @@ public class Setting {
         return false;
     }
 
-    public static void setScanTip(Context context) {
+    public static void setScanTip(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -125,7 +125,7 @@ public class Setting {
         }
     }
 
-    public static boolean hasUpgradeTip(Context context) {
+    public static boolean hasUpgradeTip(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getBoolean(KEY_UPGRADE_TIP, false);
@@ -133,7 +133,7 @@ public class Setting {
         return false;
     }
 
-    public static void setUpgradeTip(Context context) {
+    public static void setUpgradeTip(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -142,7 +142,7 @@ public class Setting {
         }
     }
 
-    public static String getCountry(Context context) {
+    public static String getCountry(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getString(KEY_COUNTRY, "");
@@ -150,7 +150,7 @@ public class Setting {
         return "";
     }
 
-    public static void setCountry(Context context, String c) {
+    public static void setCountry(@NonNull Context context, String c) {
         if (context != null && !TextUtils.isEmpty(c)) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -159,7 +159,7 @@ public class Setting {
         }
     }
 
-    public static String getLanguage(Context context) {
+    public static String getLanguage(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             return sp.getString(KEY_LANGUAGE, KEY_LANGUAGE_AUTO);
@@ -167,7 +167,7 @@ public class Setting {
         return KEY_LANGUAGE_AUTO;
     }
 
-    public static void setLanguage(Context context, String c) {
+    public static void setLanguage(@NonNull Context context, String c) {
         if (context != null && !TextUtils.isEmpty(c)) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = sp.edit()
@@ -176,7 +176,10 @@ public class Setting {
         }
     }
 
-    public static Locale getLocale(Context context) {
+    public static Locale getLocale(@NonNull Context context) {
+        if (context == null) {
+            return null;
+        }
         String lang = getLanguage(context);
         if (TextUtils.isEmpty(lang)) {
             lang = KEY_LANGUAGE_AUTO;
@@ -218,7 +221,10 @@ public class Setting {
     }
 
     @TargetApi (Build.VERSION_CODES.N)
-    public static Context updateResources(Context context) {
+    public static Context updateResources(@NonNull Context context) {
+        if (context == null) {
+            return null;
+        }
         Resources resources = context.getResources();
         Locale locale = getLocale(context);// getSetLocale方法是获取新设置的语言
 
@@ -228,7 +234,10 @@ public class Setting {
         return context.createConfigurationContext(configuration);
     }
 
-    public static void changeAppLanguage(Context context) {
+    public static void changeAppLanguage(@NonNull Context context) {
+        if (context == null) {
+            return;
+        }
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();

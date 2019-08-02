@@ -91,6 +91,7 @@ public class LightProFragment extends BaseFragment {
     private TimerTask mPreviewTask;
     private int mPreviewCount;
 
+    private final Handler mHandler = new Handler();
     private final CheckSaveTimer mSaveTimer = new CheckSaveTimer(1000, 50);
 
     private LightViewModel mLightViewModel;
@@ -477,7 +478,19 @@ public class LightProFragment extends BaseFragment {
             builder.setPositiveButton(R.string.dialog_export_use, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    CommUtil.setLedPro(mAddress, localProfiles.get(keys[index[0]]));
+                    final LightPro lightPro = localProfiles.get(keys[index[0]]);
+                    CommUtil.setLedPro(mAddress, lightPro);
+                    if (lightPro.isHasDynamic()) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                CommUtil.setLedDynamicPeriod(mAddress, lightPro.getWeek(), lightPro.getDynamicPeriod(), lightPro.getDynamicMode());
+                                mSaveTimer.startCheck();
+                            }
+                        }, 200);
+                    } else {
+                        mSaveTimer.startCheck();
+                    }
                 }
             });
             builder.setNeutralButton(R.string.dialog_export_remove, new DialogInterface.OnClickListener() {

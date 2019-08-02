@@ -43,7 +43,9 @@
         <activity
             android:name=".web.WebActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity android:name=".light.EditproActivity"
                   android:launchMode="singleTask"
