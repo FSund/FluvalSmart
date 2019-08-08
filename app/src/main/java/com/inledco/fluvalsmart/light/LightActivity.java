@@ -59,6 +59,9 @@ import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
 import com.liruya.tuner168blemanager.BleSimpleListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -66,7 +69,8 @@ import java.util.List;
 import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener {
-    private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
+    private final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
+    private final String POST_DEVINFO_LINK = "http://47.88.12.183:8080/api/DeviceInfo/ExistInfo";
 
     private Toolbar light_toolbar;
     private ProgressDialog mProgressDialog;
@@ -392,6 +396,39 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         });
     }
 
+    private void postDeviceInfo() {
+        DecimalFormat df = new DecimalFormat("00");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            short devid = mLight.getDevicePrefer().getDevId();
+            String mac = mLight.getDevicePrefer().getDeviceMac();
+            String version = "" + (mDeviceVersion>>8) + "." + df.format((mDeviceVersion&0xFF));
+            jsonObject.put("deviceid", devid);
+            jsonObject.put("currentversion", version);
+            jsonObject.put("lighttype", DeviceUtil.getDeviceType(devid));
+            jsonObject.put("macaddress", mac);
+            OKHttpManager.getInstance().post(POST_DEVINFO_LINK, null, jsonObject.toString(), new HttpCallback() {
+                @Override
+                public void onError(int code, String msg) {
+                    Log.e(TAG, "onError: ");
+                }
+
+                @Override
+                public void onSuccess(Object result) {
+                    Log.e(TAG, "onSuccess: ");
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "onFailure: " + e.getMessage());
+                }
+            });
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showConnectStatus() {
         if (menu_device_status != null) {
             runOnUiThread(new Runnable() {
@@ -488,6 +525,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 CommUtil.syncDeviceTime(mAddress);
             }
         }, 100);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                postDeviceInfo();
+            }
+        }, 1000);
     }
 
     public void getDeviceData() {

@@ -1,6 +1,5 @@
 package com.liruya.okhttpmanager;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,19 +14,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class OKHttpManager
-{
-    public static final MediaType JSON = MediaType.parse( "application/json; charset=utf-8" );
+public class OKHttpManager {
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private final OkHttpClient mHttpClient;
 
-    private OKHttpManager()
-    {
+    private OKHttpManager() {
         mHttpClient = new OkHttpClient();
     }
 
-    public static OKHttpManager getInstance()
-    {
+    public static OKHttpManager getInstance() {
         return LazyHolder.INSTANCE;
     }
 
@@ -36,26 +32,22 @@ public class OKHttpManager
      * @param headers new Headers.Builder().add( key, value );
      * @param callback
      */
-    public boolean get( String url, Headers headers, HttpCallback callback )
-    {
-        if ( url == null || "".equals( url ) )
-        {
+    public boolean get(String url, Headers headers, HttpCallback callback) {
+        if (url == null || "".equals(url)) {
             return false;
         }
         Request request;
-        if ( headers == null )
-        {
-            request = new Request.Builder().url( url )
+        if (headers == null) {
+            request = new Request.Builder().url(url)
                                            .build();
         }
-        else
-        {
-            request = new Request.Builder().url( url )
-                                           .headers( headers )
+        else {
+            request = new Request.Builder().url(url)
+                                           .headers(headers)
                                            .build();
         }
-        mHttpClient.newCall( request )
-                   .enqueue( callback );
+        mHttpClient.newCall(request)
+                   .enqueue(callback);
         return true;
     }
 
@@ -67,28 +59,24 @@ public class OKHttpManager
      * @param body new  FormBody.Builder().add( key, value );
      * @param callback
      */
-    public boolean post( String url, Headers headers, RequestBody body, HttpCallback callback )
-    {
-        if ( url == null || "".equals( url ) || body == null )
-        {
+    public boolean post(String url, Headers headers, RequestBody body, HttpCallback callback) {
+        if (url == null || "".equals(url) || body == null) {
             return false;
         }
         Request request;
-        if ( headers == null )
-        {
-            request = new Request.Builder().url( url )
-                                           .post( body )
+        if (headers == null) {
+            request = new Request.Builder().url(url)
+                                           .post(body)
                                            .build();
         }
-        else
-        {
-            request = new Request.Builder().url( url )
-                                           .headers( headers )
-                                           .post( body )
+        else {
+            request = new Request.Builder().url(url)
+                                           .headers(headers)
+                                           .post(body)
                                            .build();
         }
-        mHttpClient.newCall( request )
-                   .enqueue( callback );
+        mHttpClient.newCall(request)
+                   .enqueue(callback);
         return true;
     }
 
@@ -98,30 +86,26 @@ public class OKHttpManager
      * @param json
      * @param callback
      */
-    public boolean post ( String url, Headers headers, String json, HttpCallback callback )
-    {
-        if ( url == null || "".equals( url ) || json == null || "".equals( json ) )
-        {
+    public boolean post(String url, Headers headers, String json, HttpCallback callback) {
+        if (url == null || "".equals(url) || json == null || "".equals(json)) {
             return false;
         }
-        RequestBody body = RequestBody.create( JSON, json );
+        RequestBody body = RequestBody.create(JSON, json);
         Request request;
-        if ( headers == null )
-        {
-            request = new Request.Builder().url( url )
-                                           .post( body )
+        if (headers == null) {
+            request = new Request.Builder().url(url)
+                                           .post(body)
                                            .build();
         }
-        else
-        {
-            request = new Request.Builder().url( url )
-                                           .headers( headers )
-                                           .post( body )
+        else {
+            request = new Request.Builder().url(url)
+                                           .headers(headers)
+                                           .post(body)
                                            .build();
         }
 
-        mHttpClient.newCall( request )
-                   .enqueue( callback );
+        mHttpClient.newCall(request)
+                   .enqueue(callback);
         return true;
     }
 
@@ -130,102 +114,80 @@ public class OKHttpManager
      * @param file
      * @param callback
      */
-    public boolean download( String url, final File file, final DownloadCallback callback )
-    {
-        if ( url == null || "".equals( url ) )
-        {
+    public boolean download(String url, final File file, final DownloadCallback callback) {
+        if (url == null || "".equals(url)) {
             return false;
         }
-        if ( file == null )
-        {
+        if (file == null) {
             return false;
         }
-        if ( file.exists() )
-        {
+        if (file.exists()) {
             return false;
         }
-        Request request = new Request.Builder().url( url )
+        Request request = new Request.Builder().url(url)
                                                .build();
-        mHttpClient.newCall( request )
-                   .enqueue( new Callback()
-                   {
+        mHttpClient.newCall(request)
+                   .enqueue(new Callback() {
                        @Override
-                       public void onFailure( Call call, IOException e )
-                       {
-                           if ( callback != null )
-                           {
-                               callback.onError( e.getMessage() );
+                       public void onFailure(Call call, IOException e) {
+                           if (callback != null) {
+                               callback.onError(e.getMessage());
                            }
                        }
 
                        @Override
-                       public void onResponse( Call call, Response response )
-                       {
-                           if ( response.isSuccessful() )
-                           {
+                       public void onResponse(Call call, Response response) {
+                           if (response.isSuccessful()) {
                                InputStream is = null;
                                FileOutputStream fos = null;
                                byte[] buf = new byte[1024];
                                int len;
-                               try
-                               {
+                               try {
                                    long total = response.body()
                                                         .contentLength();
                                    long current = 0;
                                    is = response.body()
                                                 .byteStream();
-                                   fos = new FileOutputStream( file );
-                                   while ( ( len = is.read( buf ) ) != -1 )
-                                   {
+                                   fos = new FileOutputStream(file);
+                                   while ((len = is.read(buf)) != -1) {
                                        current += len;
-                                       fos.write( buf, 0, len );
-                                       if ( callback != null )
-                                       {
-                                           callback.onProgress( total, current );
+                                       fos.write(buf, 0, len);
+                                       if (callback != null) {
+                                           callback.onProgress(total, current);
                                        }
                                    }
                                    fos.flush();
-                                   if ( callback != null )
-                                   {
-                                       callback.onSuccess( file );
+                                   if (callback != null) {
+                                       callback.onSuccess(file);
                                    }
                                }
-                               catch ( Exception e )
-                               {
-                                   if ( callback != null )
-                                   {
-                                       callback.onError( e.getMessage() );
+                               catch (Exception e) {
+                                   if (callback != null) {
+                                       callback.onError(e.getMessage());
                                    }
                                }
-                               finally
-                               {
-                                   try
-                                   {
-                                       if ( is != null )
-                                       {
+                               finally {
+                                   try {
+                                       if (is != null) {
                                            is.close();
                                        }
-                                       if ( fos != null )
-                                       {
+                                       if (fos != null) {
                                            fos.close();
                                        }
                                    }
-                                   catch ( Exception e )
-                                   {
-                                        if ( callback != null )
-                                        {
-                                            callback.onError( e.getMessage() );
-                                        }
+                                   catch (Exception e) {
+                                       if (callback != null) {
+                                           callback.onError(e.getMessage());
+                                       }
                                    }
                                }
                            }
                        }
-                   } );
+                   });
         return true;
     }
 
-    private static class LazyHolder
-    {
+    private static class LazyHolder {
         private static final OKHttpManager INSTANCE = new OKHttpManager();
     }
 }

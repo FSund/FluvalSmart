@@ -3,8 +3,11 @@ package com.inledco.fluvalsmart.web;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -45,23 +48,23 @@ public class WebActivity extends BaseActivity
         super.onDestroy();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (mAllowOpenInBrowser) {
-//            getMenuInflater().inflate(R.menu.menu_web, menu);
-//            MenuItem menu_web = menu.findItem(R.id.menu_web_browser);
-//            menu_web.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                @Override
-//                public boolean onMenuItemClick(MenuItem item) {
-//                    Uri uri = Uri.parse(mUrl);
-//                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                    startActivity(intent);
-//                    return false;
-//                }
-//            });
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mAllowOpenInBrowser) {
+            getMenuInflater().inflate(R.menu.menu_web, menu);
+            MenuItem menu_web = menu.findItem(R.id.menu_web_browser);
+            menu_web.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Uri uri = Uri.parse(mUrl);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return false;
+                }
+            });
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
