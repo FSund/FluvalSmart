@@ -29,29 +29,26 @@ public class Setting {
     public static final String KEY_SCAN_TIP = "scan_tip";
     public static final String KEY_UPGRADE_TIP = "upgrade_tip";
 
-    private static final String KEY_TESTMODE = "testmode";
+//    private static final String KEY_TESTMODE = "testmode";
 
-    public static boolean showRssi() {
-        return true;
-    }
+//    public static boolean showRssi() {
+//        return true;
+//    }
+//
+//    public static boolean forceUpdate() {
+//        return false;
+//    }
 
-    public static boolean forceUpdate() {
-        return false;
-    }
-
-    public static boolean isTestMode(@NonNull Context context)
-    {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(KEY_TESTMODE, false);
-    }
-
-    public static void setTestMode(@NonNull Context context, boolean b)
-    {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit()
-                                            .putBoolean(KEY_TESTMODE, b);
-        editor.commit();
-    }
+//    public static boolean isTestMode(@NonNull Context context) {
+//        return true;
+//    }
+//
+//    public static void setTestMode(@NonNull Context context, boolean b) {
+//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = sp.edit()
+//                                            .putBoolean(KEY_TESTMODE, b);
+//        editor.commit();
+//    }
 
     public static boolean isAutoTurnonBle(@NonNull Context context) {
         if (context != null) {

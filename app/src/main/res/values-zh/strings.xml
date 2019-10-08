@@ -66,7 +66,6 @@
     <string name="weekday_thu">" 四 "</string>
     <string name="weekday_fri">" 五 "</string>
     <string name="weekday_sat">" 六 "</string>
-    <string name="app_name">FluvalSmart</string>
     <string name="setting_version">版本</string>
     <string name="device_press_to_scan">点击 + 扫描新设备</string>
     <string name="enable">开启</string>

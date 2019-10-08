@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FluvalSmart</string>
-
     <string name="main_device">デバイス</string>
     <string name="main_news">ニュース</string>
     <string name="ble_no_support">このデバイスはBLE4.x.をサポートしておりません</string>

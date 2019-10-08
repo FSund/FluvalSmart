@@ -7,8 +7,8 @@ android {
         applicationId "com.inledco.fluvalsmart"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 17
-        versionName "1.1.4"
+        versionCode 18
+        versionName "1.1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -16,8 +16,44 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            resValue("string", "app_name", "FluvalSmart")
+
+            buildConfigField("boolean", "SHOW_RSSI", "false")
+            buildConfigField("boolean", "FORCE_UPDATE", "false")
+            buildConfigField("boolean", "LOGIN_NOPSW", "false")
+        }
+
+        debug {
+            versionNameSuffix "-debug"
+            resValue("string", "app_name", "FluvalSmart-Debug")
+
+            buildConfigField("boolean", "SHOW_RSSI", "true")
+            buildConfigField("boolean", "FORCE_UPDATE", "true")
+            buildConfigField("boolean", "LOGIN_NOPSW", "false")
+        }
+
+        selftest {
+            applicationIdSuffix ".test"
+            versionNameSuffix "-test"
+            resValue("string", "app_name", "FluvalSmart-Test")
+
+            buildConfigField("boolean", "SHOW_RSSI", "true")
+            buildConfigField("boolean", "FORCE_UPDATE", "true")
+            buildConfigField("boolean", "LOGIN_NOPSW", "true")
+        }
+
+        dev {
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue("string", "app_name", "FluvalSmart-Dev")
+
+            buildConfigField("boolean", "SHOW_RSSI", "false")
+            buildConfigField("boolean", "FORCE_UPDATE", "true")
+            buildConfigField("boolean", "LOGIN_NOPSW", "true")
         }
     }
+
     productFlavors {
     }
 }
@@ -25,7 +61,6 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
 }
-
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

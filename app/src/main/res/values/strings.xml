@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">FluvalSmart</string>
     <string name="main_device">Devices</string>
     <string name="main_news">Web</string>
     <string name="main_setting">Settings</string>

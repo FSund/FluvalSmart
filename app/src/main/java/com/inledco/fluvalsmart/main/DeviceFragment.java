@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseFragment;
 import com.inledco.fluvalsmart.bean.BaseDevice;
@@ -152,7 +153,7 @@ public class DeviceFragment extends BaseFragment
                         intent.putExtra( "devid", mDevices.get( position ).getDevicePrefer().getDevId() );
                         intent.putExtra( "name", mDevices.get( position ).getDevicePrefer().getDeviceName() );
                         intent.putExtra( "address", mDevices.get( position ).getDevicePrefer().getDeviceMac() );
-                        intent.putExtra("mode", Setting.isTestMode(getContext()));
+                        intent.putExtra("mode", BuildConfig.FORCE_UPDATE);
                         startActivity( intent );
                         break;
                 }

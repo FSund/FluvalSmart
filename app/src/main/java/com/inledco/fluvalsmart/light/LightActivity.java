@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ble.api.DataUtil;
+import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
@@ -44,7 +45,6 @@ import com.inledco.fluvalsmart.bean.LightPro;
 import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.ota.BleOTAActivity;
 import com.inledco.fluvalsmart.ota.RemoteFirmware;
-import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.CommUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightPrefUtil;
@@ -322,7 +322,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             public void onReadPassword(final int password) {
                 if (mState < STATE_LOGIN) {
                     final int psw = LightPrefUtil.getLocalPassword(LightActivity.this, mAddress);
-                    if (password == 0 || psw == password || Setting.isTestMode(LightActivity.this)) {
+                    if (password == 0 || psw == password || BuildConfig.LOGIN_NOPSW) {
                         mState = STATE_LOGIN;
                         readMfr();
                     } else {
@@ -979,7 +979,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 intent.putExtra("devid", mPrefer.getDevId());
                 intent.putExtra("name", mPrefer.getDeviceName());
                 intent.putExtra("address", mPrefer.getDeviceMac());
-                intent.putExtra("mode", Setting.isTestMode(LightActivity.this));
+                intent.putExtra("mode", BuildConfig.FORCE_UPDATE);
                 startActivity(intent);
                 finish();
             }

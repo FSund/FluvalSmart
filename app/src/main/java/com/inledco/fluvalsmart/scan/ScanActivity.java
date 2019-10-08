@@ -31,12 +31,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ble.api.DataUtil;
+import com.inledco.fluvalsmart.BuildConfig;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.SelectDevice;
 import com.inledco.fluvalsmart.constant.ConstVal;
-import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.liruya.tuner168blemanager.BleHelper;
@@ -263,7 +263,7 @@ public class ScanActivity extends BaseActivity {
             }
         };
         mScanAdapter = new ScanAdapter(ScanActivity.this, mHandler, mDevices);
-        mScanAdapter.setShowRssi(Setting.isTestMode(ScanActivity.this));
+        mScanAdapter.setShowRssi(BuildConfig.SHOW_RSSI);
         scan_rv_show.setAdapter(mScanAdapter);
     }
 

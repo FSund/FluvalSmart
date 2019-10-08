@@ -66,7 +66,6 @@
     <string name="weekday_fri">Ven.</string>
     <string name="weekday_sat">Sam.</string>
     <string name="light_auto_dynamic_disabled">Effets dynamiques désactivés</string>
-    <string name="app_name">FluvalSmart</string>
     <string name="setting_version">Version</string>
     <string name="device_press_to_scan">Appuyez sur + pour rechercher de nouveau appareils</string>
     <string name="enable">Activer</string>

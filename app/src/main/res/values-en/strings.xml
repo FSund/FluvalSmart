@@ -66,7 +66,6 @@
     <string name="weekday_tue">Tue</string>
     <string name="weekday_wed">Wed</string>
     <string name="light_auto_dynamic_disabled">Dynamic Effect Disabled</string>
-    <string name="app_name">FluvalSmart</string>
     <string name="setting_version">Version</string>
     <string name="device_press_to_scan">Press + to scan for new devices</string>
     <string name="enable">Enable</string>
