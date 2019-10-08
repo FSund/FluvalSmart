@@ -1,10 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.gigamole.arcprogressstackview:library:1.0.3@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf1ef63c9a6cf2c1a41052504d2d43f9/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf1ef63c9a6cf2c1a41052504d2d43f9/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7a367cc47ffbdb2829ec70140738ad01/library-1.0.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7a367cc47ffbdb2829ec70140738ad01/library-1.0.3/res" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gigamole.arcprogressstackview/library/1.0.3/6a9ec17a3e8189b17084bbd47ccc9f69cab69ab8/library-1.0.3-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gigamole.arcprogressstackview/library/1.0.3/2f58c8e990a41140b6396a19f96e9ec64d325fc3/library-1.0.3-sources.jar!/" />
     </SOURCES>

@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -326,6 +327,7 @@ public class LightProFragment extends BaseFragment {
                 if (light != null) {
                     mLightPro = light.getLightPro();
                     mSaveTimer.finish();
+                    Log.e(TAG, "onChanged: ");
                     refreshData();
                 }
             }
@@ -484,10 +486,11 @@ public class LightProFragment extends BaseFragment {
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                Log.e(TAG, "run: ");
                                 CommUtil.setLedDynamicPeriod(mAddress, lightPro.getWeek(), lightPro.getDynamicPeriod(), lightPro.getDynamicMode());
                                 mSaveTimer.startCheck();
                             }
-                        }, 200);
+                        }, 512);
                     } else {
                         mSaveTimer.startCheck();
                     }

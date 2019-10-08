@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.inledco.fluvalsmart.R;
+
 import java.util.Locale;
 
 /**
@@ -24,12 +26,6 @@ public class Setting {
     public static final String KEY_COUNTRY_LANGUAGE_SELECTED = "IS_COUNTRY_LANGUAGE_SELECTED";
     public static final String KEY_COUNTRY = "COUNTRY";
     public static final String KEY_LANGUAGE = "LANGUAGE";
-    public static final String KEY_LANGUAGE_AUTO = "auto";
-    public static final String KEY_LANGUAGE_ENGLISH = "en";
-    public static final String KEY_LANGUAGE_GERMANY = "de";
-    public static final String KEY_LANGUAGE_FRENCH = "fr";
-    public static final String KEY_LANGUAGE_SPANISH = "es";
-    public static final String KEY_LANGUAGE_CHINESE = "zh";
     public static final String KEY_SCAN_TIP = "scan_tip";
     public static final String KEY_UPGRADE_TIP = "upgrade_tip";
 
@@ -162,9 +158,9 @@ public class Setting {
     public static String getLanguage(@NonNull Context context) {
         if (context != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-            return sp.getString(KEY_LANGUAGE, KEY_LANGUAGE_AUTO);
+            return sp.getString(KEY_LANGUAGE, "");
         }
-        return KEY_LANGUAGE_AUTO;
+        return "";
     }
 
     public static void setLanguage(@NonNull Context context, String c) {
@@ -181,43 +177,31 @@ public class Setting {
             return null;
         }
         String lang = getLanguage(context);
-        if (TextUtils.isEmpty(lang)) {
-            lang = KEY_LANGUAGE_AUTO;
-        }
-        Locale locale = null;
+        Locale[] locales = new Locale[] {null,
+                                         Locale.ENGLISH,
+                                         Locale.GERMANY,
+                                         Locale.FRENCH,
+                                         new Locale("es", "ES"),
+                                         Locale.SIMPLIFIED_CHINESE,
+                                         Locale.JAPANESE};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleList localeList = LocaleList.getDefault();
             if (localeList != null && localeList.size() > 0) {
-                locale = localeList.get(0);
+                locales[0] = localeList.get(0);
+            }
+        } else {
+            locales[0] = Locale.getDefault();
+        }
+        String[] keys = context.getResources().getStringArray(R.array.language_keys);
+        if (keys.length != locales.length) {
+            return locales[0];
+        }
+        for (int i = 0; i < keys.length; i++) {
+            if (TextUtils.equals(lang, keys[i])) {
+                return locales[i];
             }
         }
-        else {
-            locale = Locale.getDefault();
-        }
-        if (KEY_LANGUAGE_ENGLISH.equals(lang)) {
-            locale = Locale.ENGLISH;
-        }
-        else {
-            if (KEY_LANGUAGE_GERMANY.equals(lang)) {
-                locale = Locale.GERMANY;
-            }
-            else {
-                if (KEY_LANGUAGE_FRENCH.equals(lang)) {
-                    locale = Locale.FRENCH;
-                }
-                else {
-                    if (KEY_LANGUAGE_SPANISH.equals(lang)) {
-                        locale = new Locale("es", "ES");
-                    }
-                    else {
-                        if (KEY_LANGUAGE_CHINESE.equals(lang)) {
-                            locale = Locale.SIMPLIFIED_CHINESE;
-                        }
-                    }
-                }
-            }
-        }
-        return locale;
+        return locales[0];
     }
 
     @TargetApi (Build.VERSION_CODES.N)
@@ -241,10 +225,6 @@ public class Setting {
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
-        String lang = getLanguage(context);
-        if (TextUtils.isEmpty(lang)) {
-            lang = KEY_LANGUAGE_AUTO;
-        }
         Locale locale = getLocale(context);
         config.setLocale(locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

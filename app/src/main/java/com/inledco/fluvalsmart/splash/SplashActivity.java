@@ -1,10 +1,8 @@
 package com.inledco.fluvalsmart.splash;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +17,6 @@ import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.main.MainActivity;
 import com.inledco.fluvalsmart.prefer.Setting;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,26 +88,13 @@ public class SplashActivity extends BaseActivity {
         if (!hasSelect) {
             String[] counties = getResources().getStringArray(R.array.countries);
             countryList = Arrays.asList(counties);
-            languageList = new ArrayList<>();
-            languageList.add(getString(R.string.mode_auto));
-            languageList.add(getString(R.string.setting_lang_english));
-            languageList.add(getString(R.string.setting_lang_germany));
-            languageList.add(getString(R.string.setting_lang_french));
-            languageList.add(getString(R.string.setting_lang_spanish));
-            languageList.add(getString(R.string.setting_lang_chinese));
+            languageList = Arrays.asList(getResources().getStringArray(R.array.languages));
             wp_country.setData(countryList);
             wp_language.setData(languageList);
             btn_enter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String[] ll = new String[]{Setting.KEY_LANGUAGE_AUTO,
-                                                     Setting.KEY_LANGUAGE_ENGLISH,
-                                                     Setting.KEY_LANGUAGE_GERMANY,
-                                                     Setting.KEY_LANGUAGE_FRENCH,
-                                                     Setting.KEY_LANGUAGE_SPANISH,
-                                                     Setting.KEY_LANGUAGE_CHINESE};
-                    SharedPreferences defaultSet = PreferenceManager.getDefaultSharedPreferences(SplashActivity.this);
-                    SharedPreferences.Editor editor = defaultSet.edit();
+                    final String[] ll = getResources().getStringArray(R.array.language_keys);
                     Setting.setCountry(SplashActivity.this, countryList.get(wp_country.getCurrentItemPosition()));
                     Setting.setLanguage(SplashActivity.this, ll[wp_language.getCurrentItemPosition()]);
                     Setting.setSelectCountryLanguage(SplashActivity.this);
@@ -120,8 +104,7 @@ public class SplashActivity extends BaseActivity {
                     startActivity(intent);
                 }
             });
-        }
-        else {
+        } else {
             mCountDownTimer = new CountDownTimer(1500, 1500) {
                 @Override
                 public void onTick(long millisUntilFinished) {

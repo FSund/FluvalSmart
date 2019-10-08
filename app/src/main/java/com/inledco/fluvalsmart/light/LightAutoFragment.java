@@ -730,7 +730,7 @@ public class LightAutoFragment extends BaseFragment {
                                 CommUtil.setLedDynamicPeriod(mAddress, lightAuto.getWeek(), lightAuto.getDynamicPeriod(), lightAuto.getDynamicMode());
                                 mSaveTimer.startCheck();
                             }
-                        }, 200);
+                        }, 256);
                     } else {
                         mSaveTimer.startCheck();
                     }

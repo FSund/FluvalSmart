@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FluvalSmart</string>
+
+    <string name="main_device">デバイス</string>
+    <string name="main_news">ニュース</string>
+    <string name="ble_no_support">このデバイスはBLE4.x.をサポートしておりません</string>
+    <string name="scan_devices">デバイス</string>
+    <string name="scan_scan">Scan</string>
+    <string name="scan_stop">Stop</string>
+    <string name="mode_auto">Auto</string>
+    <string name="mode_manual">Manual</string>
+    <string name="light_auto_export">Export</string>
+    <string name="item_morning">Sunrise</string>
+    <string name="item_evening">Sunset</string>
+    <string name="item_midday">Day</string>
+    <string name="item_night">Night</string>
+    <string name="timepicker_start">Start</string>
+    <string name="timepicker_end">End</string>
+    <string name="light_auto_preview">Preview</string>
+    <string name="light_auto_stop">Stop</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="rename_device">デバイスの名称変更</string>
+    <string name="rename">名称変更</string>
+    <string name="input_newname">新しいデバイスの名称を入力</string>
+    <string name="export_profile">設定のエクスポート</string>
+    <string name="input_profile_name">設定名の入力</string>
+    <string name="error_input_empty">入力は必須です</string>
+    <string name="setting_auth_ble">Bluetoothの自動接続を許可</string>
+    <string name="setting_exit_close_ble">Bluetoothの自動接続を切る</string>
+
+    <string name="light_auto_save">Save as</string>
+    <string name="main_setting">Settings</string>
+    <string name="save_profile">Save profile as</string>
+
+    <string name="setting_language">言語</string>
+    <string name="setting_profile">設定</string>
+    <string name="setting_about">About us</string>
+    <string name="setting_um">取扱説明書</string>
+    <string name="dialog_ok">OK</string>
+    <string name="load_success">アップロード成功</string>
+    <string name="remove_device">デバイスを消去</string>
+    <string name="remove">消去</string>
+    <string name="chn_name_red">Red</string>
+    <string name="chn_name_green">Green</string>
+    <string name="chn_name_blue">Blue</string>
+    <string name="chn_name_white">White</string>
+    <string name="chn_name_purple">Purple</string>
+    <string name="chn_name_deepblue">Deep Blue</string>
+    <string name="chn_name_pink">Pink</string>
+    <string name="chn_name_cyan">Cyan</string>
+    <string name="chn_name_Warmwhite">Warm White</string>
+    <string name="chn_name_coldwhite">Cold White</string>
+    <string name="chn_name_purewhite">Pure White</string>
+    <string name="exit_app_tips">再度クリックしてください</string>
+
+    <string name="ota_upgrade">アップグレード</string>
+    <string name="msg_connecting_device">デバイス接続中...</string>
+    <string name="msg_disconnected">接続の場合はクリックしてください</string>
+    <string name="msg_get_data_failed">アップロードに失敗しました。再度クリックしてください.</string>
+    <string name="msg_get_data_success">アップロード成功</string>
+    <string name="msg_get_device_data">接続成功、アップロード中...</string>
+    <string name="snackbar_bluetooth_denied">Bluetooth接続失敗、セッティングモードにて再度Bluetooh接続を行ってください.</string>
+    <string name="snackbar_coarselocation_denied">位置情報サービスが切られている場合はBluetoothデバイススキャンができません。</string>
+
+
+    <string name="item_action_upgrade">アップグレード</string>
+    <string name="weekday_fri">Fri</string>
+    <string name="weekday_mon">Mon</string>
+    <string name="weekday_sat">Sat</string>
+    <string name="weekday_sun">Sun</string>
+    <string name="weekday_thu">Thu</string>
+    <string name="weekday_tue">Tue</string>
+    <string name="weekday_wed">Wed</string>
+    <string name="light_auto_dynamic_disabled">ダイナミック効果無効</string>
+    <string name="preset_deep_sea_glo">プリセット - Deep Sea Glo</string>
+    <string name="preset_sunny_reef">プリセット - Sunny Reef</string>
+    <string name="preset_color_boost">プリセット - Color Boost</string>
+    <string name="preset_tropic_river">プリセット - Tropic River</string>
+    <string name="preset_lake_malawi">プリセット - Lake Malawi</string>
+    <string name="preset_planted">プリセット - Planted</string>
+    <string name="preset_plant_boost">プリセット - Plant Boost</string>
+
+    <string name="error_password_mismatch">パスワードが異なります</string>
+    <string name="error_password_wrong">パスワードが違います</string>
+    <string name="error_psw_6_num">パスワードは６桁以上必要です</string>
+    <string name="hint_confirm_password">新しいパスワードを確認してください</string>
+    <string name="hint_input_new_password">新しいパスワードを入力してください</string>
+    <string name="input_password">パスワードを入力</string>
+    <string name="modify">変更</string>
+    <string name="modify_password">パスワードの変更</string>
+    <string name="modify_password_fail">パスワード変更失敗</string>
+    <string name="modify_password_success">パスワード変更成功</string>
+    <string name="psw_login">ログイン</string>
+    <string name="timeout">タイムアウト</string>
+    <string name="logging">情報取得中</string>
+
+
+    <string name="disabled">無効</string>
+    <string name="edit">編集</string>
+    <string name="item_turnoff">スリープ</string>
+    <string name="overview">Overview</string>
+    <string name="msg_no_profile">プロファイルが見つかりません。カスタムプロファイルを保存できます.</string>
+    <string name="save_success">保存成功</string>
+    <string name="forgot_password">パスワードをお忘れですか？</string>
+    <string name="retrieve_password">パスワードの再設定</string>
+    <string name="retrieve_wrong_key">パスワードの再設定コードが間違っています。</string>
+    <string name="retrieve_copy_msg">デバイス情報はコピーされました。情報をペーストし、FluvalSmartApp1@gmail.com にパスワード再発行コードを申請してください。</string>
+    <string name="retrieve_psw_is">デバイスパスワード：</string>
+    <string name="title_add_time">時間設定</string>
+    <string name="tip_timepoints_max">時間設定は 10 回までです</string>
+    <string name="tip_timepoints_min">時間設定は 4 回以上必要です</string>
+    <string name="title_delete_timpoint">Delete #{index} 時間設定</string>
+    <string name="timepoints_set">{count} 時間設定数設定</string>
+    <string name="hint_input_retrieve_key">デバイスのパスワード再設定コードを入力ください.</string>
+
+    <string name="next">次</string>
+    <string name="ota_firmware_newest">デバイスファームウェアは最新版です</string>
+    <string name="ota_upgradable">アップグレード準備完了</string>
+    <string name="ota_device_firmware_upgradable">このデバイスはVxx.にアップデート可能です。アップデートしますか？</string>
+    <string name="downloading_firmware">ファームウェアダウンロード中</string>
+    <string name="ota_network_unavailable">ネットワーク検出できません。セッティングを確認ください。</string>
+    <string name="device_frimware_version">ファームウェアバージョン：</string>
+    <string name="latest_firmware_version">最新バージョン：</string>
+    <string name="ota_wait_title">お待ちください</string>
+    <string name="ota_wait_msg">お待ちください・・・</string>
+    <string name="ota_warning">    アップグレード警告： デバイスアップグレード中は端末機器をライトの近くでご使用ください。アプリを閉じたたり、Bluetoothを切らないでください。
+        アップデートにより以前の設定値が変わることがあります。以前のアプリケーションバージョンではファームウェアアップデート後はデバイス操作はできません。つきましては、最新のバージョンであることをお確かめください。
+        アップデートを失敗した際は再度実施ください。</string>
+    <string name="title_upgrade_success">アップデート成功</string>
+    <string name="title_upgrade_failed">アップデート失敗</string>
+    <string name="upgrade_success_msg">再ログインください</string>
+    <string name="upgrade_failed_msg">再実行ください</string>
+    <string name="close">閉じる</string>
+
+    <string name="turnon_location_permission">位置情報取得承諾可能</string>
+    <string name="msg_turnon_location_permission">スキャン中は位置情報取得承諾が必要です。</string>
+    <string name="new_device_name">新規デバイス名称</string>
+    <string name="tip_enable_location">位置情報取得ができませんでした。Bluetooth接続のため位置情報取得が必要な場合があります。</string>
+    <string name="find">探す</string>
+
+    <string name="tip_retrieve_password">ライトIDコードをコピーするため、”コピー”を選択ください。次にFluvalSmartApp1@gmai.com宛のメールにIDコードをペーストください。パスワード再設定コードが48時間以内に送られます。再設定コードを入力し、パスワード再登録を選択してください。</string>
+    <string name="password">パスワード</string>
+    <string name="factory_password">出荷時パスワードは 000000です</string>
+    <string name="failed">失敗</string>
+    <string name="new_password">新しいパスワード</string>
+    <string name="confirm_new_password">新しいパスワードの確認</string>
+    <string name="profile_name">プロファイル名称</string>
+    <string name="retrieve_key">回復キー</string>
+    <string name="copy">コピー</string>
+    <string name="retry">再トライ</string>
+    <string name="uptodate">最新版</string>
+    <string name="title_network_unavailable">ネットワーク利用不可</string>
+    <string name="ota_check_upgrade">アップデートのため押してください</string>
+    <string name="FAQ">FAQ</string>
+
+    <string name="tip_poweroff">ライトの電源が入っておりません。操作の前に電源を入れてください。</string>
+    <string name="troubleshooting">トラブルシューティング</string>
+    <string name="main_support">サポート</string>
+
+    <string name="instruction_video">操作ガイドビデオ</string>
+    <string name="remove_password">パスワードの解除</string>
+    <string name="remove_password_success">パスワードの解除成功</string>
+
+    <string name="set_password">パスワードの設定</string>
+    <string name="set_password_success">パスワードの設定成功</string>
+    <string name="password_not_zero">パスワード000000の登録はできません</string>
+
+    <string name="setting_version">Version</string>
+    <string name="device_press_to_scan">Press + to scan for new devices</string>
+    <string name="enable">Enable</string>
+    <string name="launch_enter">Enter</string>
+    <string name="launch_select_language">Select language</string>
+    <string name="launch_select_country">Select country</string>
+    <string name="dialog_export_use">Export</string>
+    <string name="dialog_export_remove">消去</string>
+    <string name="retrieve">Retrieve</string>
+
+    <!--OTA-->
+    <string name="ota_response_timeout">タイムアウト</string>
+    <string name="ota_firmware_invalid">ファームウェアが存在しない、もしくは無効なフォーマット</string>
+    <string name="ota_firmware_damaged">ファームウェアが破損している可能性があります、再度ダウンロードください.</string>
+    <string name="ota_analysis_success">ファームウェア解析成功</string>
+    <string name="ota_outof_range">ファームウェアのアップグレード失敗、アドレス範囲外</string>
+    <string name="ota_erasefirmware">ファームウェア消去成功。\r\nファームウエァーアップグレード中...</string>
+    <string name="ota_erase_failed">ファームウェア消去失敗、アドレス範囲外</string>
+    <string name="ota_check_failed">認証失敗、アドレス範囲外</string>
+    <string name="ota_check_success">認証成功</string>
+    <string name="ota_upgrade_success">100%\r\nアップグレード成功、デバイス再起動中・・・</string>
+    <string name="ota_enter_bootloader">ブートローダーモードの入力</string>
+    <string name="ota_reset_tobootloader">Bootloader入力のため再起動中.</string>
+    <string name="ota_invalid_command">無効な操作</string>
+    <string name="ota_connect_success">デバイス接続成功</string>
+    <string name="ota_disconnect">デバイスが切断されました</string>
+    <string name="ota_download_failed">ダウンロード失敗</string>
+    <string name="ota_download_success">100%\r\nダウンロード成功</string>
+    <string name="ota_download">ダウンロード</string>
+    <string name="ota_redownload">再ダウンロード</string>
+    <string name="ota_title">デバイスファームウェア・アップグレード</string>
+    <string name="ota_msg_unsupport_version">このデバイスはアプリのアップデートができません。ファームウエァーV1.02もしくはそれ以上のバージョンが必要です。</string>
+    <string name="ota_msg_uptodate">ファームウェアは最新版です</string>
+    <string name="ota_msg_remote_not_exists">リモートファームウェアは存在しません.</string>
+    <string name="ota_warning_title">警告</string>
+    <string name="ota_continue">Continue</string>
+    <string name="ota_cancel">Cancel</string>
+    <string name="ota_connecting">デバイス接続中・・・</string>
+
+    <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
+    <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
+    <string name="ota_msg_check_version">Please check upgrade.</string>
+    <string name="faq_path">FAQ-ja.html</string>
+    <string name="troubleshooting_path">Troubleshooting-ja.html</string>
+    <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
+</resources>
