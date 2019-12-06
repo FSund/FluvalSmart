@@ -8,101 +8,55 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * Created by liruya on 2017/5/23.
  */
 
-public class ItemTouchHelperCallback extends ItemTouchHelperExtension.Callback
-{
-    private boolean mSwipeEnabled = true;
-    private boolean mDragEnabled;
-    private int mSwipeFlags = ItemTouchHelper.START;
-    private int mDragFlags = 0;
-    private boolean mSwipeSpring = false;
+public class ItemTouchHelperCallback extends ItemTouchHelperExtension.SimpleCallback {
 
-    public ItemTouchHelperCallback ()
-    {
+    private boolean mSwipeEnable;
+    private boolean mDragEnable;
+
+    public ItemTouchHelperCallback() {
+        super(ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.LEFT);
+        mSwipeEnable = true;
+        mDragEnable = false;
     }
 
-    public ItemTouchHelperCallback ( boolean swipeEnabled, boolean dragEnabled )
-    {
-        mSwipeEnabled = swipeEnabled;
-        mDragEnabled = dragEnabled;
+    public void setSwipeEnable(boolean swipeEnable) {
+        mSwipeEnable = swipeEnable;
     }
 
-    public ItemTouchHelperCallback ( boolean swipeEnabled, boolean dragEnabled, boolean swipeSpring )
-    {
-        mSwipeEnabled = swipeEnabled;
-        mDragEnabled = dragEnabled;
-        mSwipeSpring = swipeSpring;
-    }
-
-    public ItemTouchHelperCallback ( boolean swipeEnabled, boolean dragEnabled, int swipeFlags, int dragFlags )
-    {
-        mSwipeEnabled = swipeEnabled;
-        mDragEnabled = dragEnabled;
-        mSwipeFlags = swipeFlags;
-        mDragFlags = dragFlags;
-    }
-
-    public ItemTouchHelperCallback ( boolean swipeEnabled, boolean dragEnabled, int swipeFlags, int dragFlags, boolean swipeSpring )
-    {
-        mSwipeEnabled = swipeEnabled;
-        mDragEnabled = dragEnabled;
-        mSwipeFlags = swipeFlags;
-        mDragFlags = dragFlags;
-        mSwipeSpring = swipeSpring;
+    public void setDragEnable(boolean dragEnable) {
+        mDragEnable = dragEnable;
     }
 
     @Override
-    public int getMovementFlags ( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder )
-    {
-        return makeMovementFlags( 0, mSwipeFlags );
-        //        return makeMovementFlags( 0, mSwipeFlags );
+    public boolean isItemViewSwipeEnabled() {
+        return mSwipeEnable;
     }
 
     @Override
-    public boolean onMove ( RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target )
-    {
+    public boolean isLongPressDragEnabled() {
+        return mDragEnable;
+    }
+
+    @Override
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         return false;
     }
 
     @Override
-    public void onSwiped ( RecyclerView.ViewHolder viewHolder, int direction )
-    {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
     }
 
     @Override
-    public boolean isLongPressDragEnabled ()
-    {
-        //        return super.isLongPressDragEnabled() && mDragEnabled;
-        return mDragEnabled;
-    }
-
-    @Override
-    public boolean isItemViewSwipeEnabled ()
-    {
-        //        return super.isItemViewSwipeEnabled() && mSwipeEnabled;
-        return mSwipeEnabled;
-    }
-
-    @Override
-    public void onChildDraw ( Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
-                              boolean isCurrentlyActive )
-    {
-        if ( viewHolder instanceof SwipeItemViewHolder )
-        {
-            if ( mDragEnabled && dY != 0 && dX == 0 )
-            {
-                super.onChildDraw( c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive );
-            }
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        if (viewHolder instanceof SwipeItemViewHolder && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             SwipeItemViewHolder holder = (SwipeItemViewHolder) viewHolder;
-            float x = dX;
-            if ( !mSwipeSpring )
-            {
-                if ( dX < 0 - holder.getActionWidth() )
-                {
-                    x = 0 - holder.getActionWidth();
-                }
+            if (dX < 0 - holder.getActionWidth()) {
+                dX = 0 - holder.getActionWidth();
             }
-            holder.getContentView().setTranslationX( x );
+            holder.getContentView().setTranslationX(dX);
+            return;
         }
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 }

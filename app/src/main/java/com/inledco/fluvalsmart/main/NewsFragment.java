@@ -21,6 +21,7 @@ public class NewsFragment extends BaseFragment
     private final String URL1 = "http://www.fluvalaquatics.com/";
     private TextView news_faq;
     private TextView news_troubleshooting;
+    private TextView news_contactus;
 
     public NewsFragment ()
     {
@@ -43,6 +44,7 @@ public class NewsFragment extends BaseFragment
     {
         news_faq = view.findViewById(R.id.news_faq);
         news_troubleshooting = view.findViewById(R.id.news_troubleshooting);
+        news_contactus = view.findViewById(R.id.news_contactus);
         view.findViewById( R.id.news_web1 ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick ( View view )
@@ -72,11 +74,17 @@ public class NewsFragment extends BaseFragment
                 startWebActivity(url);
             }
         });
+
+        news_contactus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFragmentToStack(R.id.activity_main, new ContactusFragment());
+            }
+        });
     }
 
     @Override
-    protected void initData ()
-    {
+    protected void initData () {
 
     }
 

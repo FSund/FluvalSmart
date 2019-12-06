@@ -46,10 +46,10 @@ import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.ota.BleOTAActivity;
 import com.inledco.fluvalsmart.ota.RemoteFirmware;
 import com.inledco.fluvalsmart.util.CommUtil;
+import com.inledco.fluvalsmart.util.DevicePrefUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
 import com.inledco.fluvalsmart.util.LightPrefUtil;
 import com.inledco.fluvalsmart.util.Md5Util;
-import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
 import com.inledco.fluvalsmart.view.CustomProgressDialog;
 import com.inledco.fluvalsmart.viewmodel.LightViewModel;
@@ -104,6 +104,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     private LightViewModel mLightViewModel;
     private Light mLight;
 
+    private boolean rename;
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
@@ -151,6 +153,14 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
             mCountDownTimer.cancel();
             mCountDownTimer = null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (rename) {
+            setResult(ConstVal.RENAME_CODE);
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -692,6 +702,9 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         final Button btn_rename = view.findViewById(R.id.rename_confirm);
         final TextInputLayout til = view.findViewById(R.id.rename_til);
         final TextInputEditText newname = view.findViewById(R.id.rename_newname);
+        StringBuilder sb = new StringBuilder("BLE#0x").append(prefer.getDeviceMac());
+        String mac = new String(sb);
+        mac = mac.replace(":", "");
         final boolean[] flag = new boolean[]{false};
         newname.setText(prefer.getDeviceName());
         newname.addTextChangedListener(new TextWatcher() {
@@ -711,8 +724,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                                                 .toString();
                     newname.setText(str);
                     newname.setSelection(start + count);
-                }
-                else {
+                } else {
                     flag[0] = false;
                 }
             }
@@ -728,19 +740,25 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 dialog.dismiss();
             }
         });
+        final String finalMac = mac;
         btn_rename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String s = newname.getText().toString();
                 if (TextUtils.isEmpty(s)) {
                     til.setError(getString(R.string.error_input_empty));
+                    if (BuildConfig.RESET_NAME) {
+                        newname.setText(finalMac);
+                    }
                 } else if (s.equals(prefer.getDeviceName())) {
                     dialog.dismiss();
                 }else {
+                    rename = true;
                     prefer.setDeviceName(s);
-                    BleManager.getInstance().setSlaverName(prefer.getDeviceMac(), s);
-                    PreferenceUtil.setObjectToPrefer(LightActivity.this, ConstVal.DEV_PREFER_FILENAME, prefer, prefer.getDeviceMac());
+                    BleManager.getInstance().setSlaveName(prefer.getDeviceMac(), s);
+                    DevicePrefUtil.renameLocalDevice(LightActivity.this, prefer);
                     dialog.dismiss();
+                    light_toolbar.setTitle(s);
                 }
             }
         });

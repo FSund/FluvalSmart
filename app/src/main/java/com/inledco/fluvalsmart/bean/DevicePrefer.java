@@ -6,64 +6,53 @@ import java.io.Serializable;
  * Created by Administrator on 2016/10/20.
  */
 
-public class DevicePrefer implements Serializable
-{
+public class DevicePrefer implements Serializable {
     private static final long serialVersionUID = -3359140079103510542L;
     private short mDevId;
     private String mDeviceMac;
     private String mDeviceName;
-    private String mTank;
+    private int mIndex;
 
-    public DevicePrefer ( String deviceMac, String deviceName )
-    {
+    public DevicePrefer(String deviceMac, String deviceName) {
         mDeviceMac = deviceMac;
         mDeviceName = deviceName;
     }
 
-    public DevicePrefer ( short devId, String deviceMac, String deviceName )
-    {
+    public DevicePrefer(short devId, String deviceMac, String deviceName) {
         mDevId = devId;
         mDeviceMac = deviceMac;
         mDeviceName = deviceName;
     }
 
-    public short getDevId ()
-    {
+    public short getDevId() {
         return mDevId;
     }
 
-    public void setDevId ( short devId )
-    {
+    public void setDevId(short devId) {
         mDevId = devId;
     }
 
-    public String getDeviceName ()
-    {
+    public String getDeviceName() {
         return mDeviceName;
     }
 
-    public void setDeviceName ( String deviceName )
-    {
+    public void setDeviceName(String deviceName) {
         mDeviceName = deviceName;
     }
 
-    public String getDeviceMac ()
-    {
+    public String getDeviceMac() {
         return mDeviceMac;
     }
 
-    public void setDeviceMac ( String deviceMac )
-    {
+    public void setDeviceMac(String deviceMac) {
         mDeviceMac = deviceMac;
     }
 
-    public String getTank ()
-    {
-        return mTank;
+    public int getIndex() {
+        return mIndex;
     }
 
-    public void setTank ( String tank )
-    {
-        mTank = tank;
+    public void setIndex(int index) {
+        mIndex = index;
     }
 }

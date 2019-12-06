@@ -42,23 +42,21 @@ public class BleHelper {
         return BluetoothAdapter.getDefaultAdapter().isEnabled();
     }
 
-    public boolean autoOpenBluetooth()
-    {
-        return BluetoothAdapter.getDefaultAdapter()
-                               .enable();
+    public boolean autoOpenBluetooth() {
+        return BluetoothAdapter.getDefaultAdapter().enable();
     }
 
     public void closeBluetooth() {
         BluetoothAdapter.getDefaultAdapter().disable();
     }
 
+
     /**
      * Check if Location is enabled, some phones need to enable location to scan bluetooth devices
      * @return
      */
     public boolean isLocationEnabled() {
-        LocationManager manager = (LocationManager) mActivity.get()
-                                                             .getSystemService(Context.LOCATION_SERVICE);
+        LocationManager manager = (LocationManager) mActivity.get().getSystemService(Context.LOCATION_SERVICE);
         if (manager != null) {
             return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         }
@@ -91,8 +89,7 @@ public class BleHelper {
      */
     public void requestBluetoothEnable(int requestCode) {
         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        mActivity.get()
-                 .startActivityForResult(intent, requestCode);
+        mActivity.get().startActivityForResult(intent, requestCode);
     }
 
     public boolean shouldShowRequestPermissionRationale() {
@@ -110,8 +107,7 @@ public class BleHelper {
                                 null);
         intent.setData(uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mActivity.get()
-                 .startActivity(intent);
+        mActivity.get().startActivity(intent);
     }
 
     /**
@@ -120,8 +116,7 @@ public class BleHelper {
     public void startLocationActivity() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mActivity.get()
-                 .startActivity(intent);
+        mActivity.get().startActivity(intent);
     }
 
     /**

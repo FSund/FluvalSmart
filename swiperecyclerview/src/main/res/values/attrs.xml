@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeLayout">
+        <attr name="contentLayout" format="reference"/>
+        <attr name="actionLayout" format="reference"/>
+        <attr name="swipeMode" format="enum">
+            <enum name="disabled" value="0"/>
+            <enum name="cover" value="1"/>
+            <enum name="scroll" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

@@ -1,29 +1,92 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.inledco.fluvalsmart.main.DeviceFragment">
 
-    <ImageView
-        android:id="@+id/device_iv_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_press_add"/>
-
-    <TextView
-        android:id="@+id/device_tv_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorTextPrimaryDark"
-        android:text="@string/device_press_to_scan"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/device_rv_show"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/device_toolbar"
+        style="@style/ToolbarTheme"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_sort">
+
+        <TextView
+            android:id="@+id/device_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@string/app_name"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/device_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/device_sort_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:textColor="@color/colorTextPrimary"
+            android:text="@string/type"/>
+        <TextView
+            android:id="@+id/device_sort_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:textColor="@color/colorTextPrimary"
+            android:text="@string/name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/device_iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_press_add"/>
+
+        <TextView
+            android:id="@+id/device_tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextPrimaryDark"
+            android:text="@string/device_press_to_scan"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/device_rv_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
 </LinearLayout>

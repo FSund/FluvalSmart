@@ -142,9 +142,7 @@
     <string name="ota_msg_unsupport_version">This device is unable to upgrade,Requires firmware version V1.02. or higher</string>
     <string name="ota_msg_uptodate">Firmware is up to date.</string>
     <string name="ota_msg_remote_not_exists">Remote firmware does not exist.</string>
-    <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
     <string name="ota_warning_title">Warning</string>
-    <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_continue">Continue</string>
     <string name="ota_connecting">Connecting device...</string>
     <string name="ota_upgrade_success">100%\nUpgrade success,device rebooting...</string>
@@ -197,4 +195,5 @@
     <string name="remove_password_success">Remove password successfully.</string>
     <string name="set_password_success">Set password successfully.</string>
     <string name="password_not_zero">Password can not be 000000.</string>
+    <string name="contactus">Contact us</string>
 </resources>

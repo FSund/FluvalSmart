@@ -20,8 +20,7 @@ import android.widget.ProgressBar;
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
 
-public class WebActivity extends BaseActivity
-{
+public class WebActivity extends BaseActivity {
     private boolean mAllowOpenInBrowser;
     private String mUrl;
     private Toolbar web_toolbar;
@@ -30,10 +29,9 @@ public class WebActivity extends BaseActivity
     private FrameLayout web_fs_container;
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState )
-    {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_web );
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web);
 
         initView();
         initData();
@@ -82,104 +80,88 @@ public class WebActivity extends BaseActivity
     }
 
     @Override
-    protected void initView ()
-    {
-        web_toolbar = findViewById( R.id.web_toolbar );
-        web_loading = findViewById( R.id.web_loading );
-        web_show = findViewById( R.id.web_show );
+    protected void initView() {
+        web_toolbar = findViewById(R.id.web_toolbar);
+        web_loading = findViewById(R.id.web_loading);
+        web_show = findViewById(R.id.web_show);
         web_fs_container = findViewById(R.id.web_fs_container);
 
-        setSupportActionBar( web_toolbar );
+        setSupportActionBar(web_toolbar);
     }
 
     @Override
-    protected void initData ()
-    {
+    protected void initData() {
         Intent intent = getIntent();
         mAllowOpenInBrowser = intent.getBooleanExtra("allow_open_in_browser", false);
-        mUrl = intent.getStringExtra( "url" );
-        showWebView( web_show, mUrl );
+        mUrl = intent.getStringExtra("url");
+        showWebView(web_show, mUrl);
     }
 
     @Override
-    protected void initEvent ()
-    {
-        web_toolbar.setNavigationOnClickListener( new View.OnClickListener()
-        {
+    protected void initEvent() {
+        web_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick ( View view )
-            {
+            public void onClick(View view) {
                 onBackPressed();
             }
-        } );
+        });
     }
 
     @Override
-    public void onBackPressed ()
-    {
-        if ( web_show.canGoBack() )
-        {
+    public void onBackPressed() {
+        if (web_show.canGoBack()) {
             web_show.goBack();
             return;
         }
         super.onBackPressed();
     }
 
-    private void showWebView ( final WebView web, String url )
-    {
+    private void showWebView(final WebView web, String url) {
         WebSettings webSettings = web.getSettings();
-        webSettings.setJavaScriptEnabled( true );
+        webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setSupportZoom(true);
         webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode( true );
+        webSettings.setLoadWithOverviewMode(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setDisplayZoomControls(true);
-        webSettings.setDefaultTextEncodingName( "utf-8" );
-        webSettings.setCacheMode( WebSettings.LOAD_NO_CACHE );
+        webSettings.setDefaultTextEncodingName("utf-8");
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
-        web.setWebChromeClient( new MyWebChromeClient()
-        {
+        web.setWebChromeClient(new MyWebChromeClient() {
             /**
              * 获取到链接标题
              * @param view
              * @param title
              */
             @Override
-            public void onReceivedTitle ( WebView view, String title )
-            {
-                super.onReceivedTitle( view, title );
-                web_toolbar.setTitle( title );
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                web_toolbar.setTitle(title);
             }
 
             @Override
-            public void onProgressChanged ( WebView view, int newProgress )
-            {
-                super.onProgressChanged( view, newProgress );
-                web_loading.setProgress( newProgress );
-                if ( newProgress >= 100 )
-                {
-                    web_loading.setVisibility( View.GONE );
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                web_loading.setProgress(newProgress);
+                if (newProgress >= 100) {
+                    web_loading.setVisibility(View.GONE);
+                } else {
+                    web_loading.setVisibility(View.VISIBLE);
                 }
-                else
-                {
-                    web_loading.setVisibility( View.VISIBLE );
-                }
-            }
-        } );
-
-        web.setWebViewClient( new WebViewClient()
-        {
-            @Override
-            public void onPageFinished ( WebView view, String url )
-            {
-                super.onPageFinished( view, url );
             }
         });
-        web.loadUrl( url );
+
+        web.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+        });
+        web.loadUrl(url);
     }
 
     private void fullscreen() {

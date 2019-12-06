@@ -146,9 +146,7 @@
     <string name="ota_msg_uptodate">固件已经是最新版本.</string>
     <string name="ota_msg_check_version">请检查更新.</string>
     <string name="ota_msg_remote_not_exists">远程固件不存在.</string>
-    <string name="ota_msg_reupgrade">请重连设备并重新升级.</string>
     <string name="ota_warning_title">警告</string>
-    <string name="ota_warning_msg">升级存在风险,升级失败可能会导致设备无法运行.</string>
     <string name="ota_cancel">取消</string>
     <string name="ota_continue">继续</string>
     <string name="ota_upgradable">可用升级</string>
@@ -197,4 +195,5 @@
     <string name="remove_password_success">移除密码成功.</string>
     <string name="set_password_success">设置密码成功.</string>
     <string name="password_not_zero">密码不能为000000.</string>
+    <string name="contactus">联系我们</string>
 </resources>

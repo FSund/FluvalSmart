@@ -5,6 +5,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.inledco.fluvalsmart.prefer.Setting;
@@ -82,6 +86,28 @@ public abstract class BaseActivity extends AppCompatActivity
         } else {
             super.attachBaseContext(newBase);
         }
+    }
+
+    protected void replaceFragment(@IdRes int layout, @NonNull final Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                                   .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                   .replace(layout, fragment, fragment.getClass().getSimpleName())
+                                   .commitAllowingStateLoss();
+    }
+
+    protected void addFragment(@IdRes int layout, @NonNull final Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                                   .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                   .add(layout, fragment, fragment.getClass().getSimpleName())
+                                   .commitAllowingStateLoss();
+    }
+
+    protected void addFragmentToStack(@IdRes int layout, @NonNull final Fragment fragment) {
+        String name = fragment.getClass().getSimpleName();
+        getSupportFragmentManager().beginTransaction()
+                                   .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                   .add(layout, fragment, name).addToBackStack(name)
+                                   .commitAllowingStateLoss();
     }
 
     protected abstract void initView();

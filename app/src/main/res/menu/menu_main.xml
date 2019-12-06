@@ -6,8 +6,14 @@
 
     <item
         android:id="@+id/menu_search_ble"
+        android:title=""
         android:icon="@drawable/ic_add_white"
-        app:showAsAction="ifRoom"
-        android:title=""/>
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_done"
+        android:title=""
+        android:icon="@drawable/ic_done_white_32dp"
+        android:visible="false"
+        app:showAsAction="always" />
 
 </menu>

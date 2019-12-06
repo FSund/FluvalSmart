@@ -1,1 +1,1 @@
-include ':app', ':itemtouchhelperextension', ':tuner168blemanager', ':okhttpmanager'
+include ':app', ':itemtouchhelperextension', ':tuner168blemanager', ':okhttpmanager', ':swiperecyclerview'

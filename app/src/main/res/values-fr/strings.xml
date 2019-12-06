@@ -137,9 +137,7 @@
     <string name="ota_msg_unsupport_version">Cet appareil ne peut être mis à jour; la version minimale prise en charge du micrologiciel est V1.02.</string>
     <string name="ota_msg_uptodate">Le micrologiciel est à jour.</string>
     <string name="ota_msg_remote_not_exists">S\'il vous plaît</string>
-    <string name="ota_warning_msg">La mise à jour comporte des risques; l\'échec de la mise à jour pourrait entraîner l\'extinction de l\'appareil.</string>
     <string name="ota_warning_title">Avertissement</string>
-    <string name="ota_msg_reupgrade">Connecter l\'appareil manuellement et procéder à la mise à jour une fois la connexion établie.</string>
     <string name="ota_continue">Continuer</string>
     <string name="ota_connecting">Connexion de l\'appareil...</string>
     <string name="ota_upgrade_success">100%\nMise à jour réussie. Redémarrage de l\'appareil en cours...</string>

@@ -172,9 +172,7 @@
         Updates may alter previously set light parameters.
         Previous APP versions will no longer control device upon firmware update, therefore, please ensure latest APP version is installed (required for upgrade).
         If update fails, please try again."</string>
-    <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
     <string name="ota_warning_title">Warning</string>
-    <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
     <string name="ota_cancel">Cancel</string>
     <string name="ota_continue">Continue</string>
     <string name="next">Next</string>
@@ -222,4 +220,21 @@
     <string name="remove_password_success">Remove password successfully.</string>
     <string name="set_password_success">Set password successfully.</string>
     <string name="password_not_zero">Password can not be 000000.</string>
+    <string name="contactus">Contact us</string>
+    <string name="fluval_url" translatable="false">https://www.fluvalaquatics.com</string>
+    <string name="facebook_url" translatable="false">https://www.facebook.com/fluval</string>
+    <string name="twitter_url" translatable="false">https://twitter.com/Fluvalaquatics</string>
+    <string name="instagram_url" translatable="false">https://www.instagram.com/fluvalaquatics</string>
+    <string name="fluval_email" translatable="false">FluvalSmartApp1@gmail.com</string>
+    <string name="instagram" translatable="false">Instagram</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="facebook" translatable="false">Facebook</string>
+    <string name="fluval" translatable="false">Fluval</string>
+    <string name="type">Type</string>
+    <string name="name">Name</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by_type">Sort by type</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_manual">Sort manually</string>
+    <string name="drag_to_sort">Drag to sort</string>
 </resources>

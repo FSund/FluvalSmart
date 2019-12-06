@@ -9,16 +9,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
+import com.inledco.fluvalsmart.constant.ConstVal;
 import com.inledco.fluvalsmart.prefer.Setting;
 import com.inledco.fluvalsmart.scan.ScanActivity;
 import com.inledco.fluvalsmart.view.CustomDialogBuilder;
@@ -26,15 +24,9 @@ import com.liruya.tuner168blemanager.BleHelper;
 import com.liruya.tuner168blemanager.BleManager;
 
 public class MainActivity extends BaseActivity {
-    private final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
-    private final int PERMISSON_REQUEST_COARSE_CODE = 2;
-    private final int SCAN_CODE = 3;
-
-    private Toolbar toolbar;
-    private MenuItem menuItemBleSearch;
     private BottomNavigationView main_bottom_navigation;
 
-    private final BleHelper mBleHelper = new BleHelper(this);
+    private BleHelper mBleHelper;
 
     //双击back退出标志位
     private boolean mExiting;
@@ -55,10 +47,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        BleManager.getInstance()
-                  .unbindService(MainActivity.this);
-        BleManager.getInstance()
-                  .disConnectAll();
+        BleManager.getInstance().unbindService(MainActivity.this);
+        BleManager.getInstance().disConnectAll();
         super.onDestroy();
     }
 
@@ -67,7 +57,7 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.e(TAG, "onActivityResult: " + requestCode + "  " + resultCode);
         switch (requestCode) {
-            case BLUETOOTH_REQUEST_ENABLE_CODE:
+            case ConstVal.BLUETOOTH_REQUEST_ENABLE_CODE:
                 if (resultCode == Activity.RESULT_OK) {
                 }
                 else {
@@ -75,9 +65,14 @@ public class MainActivity extends BaseActivity {
                          .show();
                 }
                 break;
-            case SCAN_CODE:
-                if (resultCode == SCAN_CODE) {
-                    Setting.setScanTip(MainActivity.this);
+            case ConstVal.SCAN_CODE:
+                if (resultCode == ConstVal.SCAN_CODE) {
+                    replaceFragment(R.id.main_fl_show, new DeviceFragment());
+                }
+                break;
+            case ConstVal.RENAME_CODE:
+                if (resultCode == ConstVal.RENAME_CODE) {
+                    replaceFragment(R.id.main_fl_show, new DeviceFragment());
                 }
                 break;
         }
@@ -86,10 +81,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e(TAG, "onRequestPermissionsResult: ");
         if (permissions == null || grantResults == null || permissions.length < 1 || grantResults.length < 1) {
             return;
         }
-        if (requestCode == PERMISSON_REQUEST_COARSE_CODE && Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])) {
+        if (requestCode == ConstVal.PERMISSON_REQUEST_COARSE_CODE && Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startScanActivity();
             }
@@ -105,53 +101,29 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        menuItemBleSearch = menu.findItem(R.id.menu_search_ble);
-        menuItemBleSearch.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (mBleHelper.checkLocationPermission()) {
-                    startScanActivity();
-                } else {
-                    mBleHelper.requestLocationPermission(PERMISSON_REQUEST_COARSE_CODE);
-                }
-                return true;
-            }
-        });
-        return true;
-    }
-
-    @Override
     protected void initView() {
         main_bottom_navigation = findViewById(R.id.main_bottom_navigation);
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
     }
 
     @Override
     protected void initData() {
-        BleManager.getInstance()
-                  .bindService(MainActivity.this);
+        BleManager.getInstance().bindService(MainActivity.this);
+        mBleHelper = new BleHelper(this);
         if (mBleHelper.checkBleSupported()) {
             if (mBleHelper.isBluetoothEnabled()
                 || (Setting.isAutoTurnonBle(MainActivity.this) && mBleHelper.autoOpenBluetooth())) {
 
             }
             else {
-                mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_CODE);
+                mBleHelper.requestBluetoothEnable(ConstVal.BLUETOOTH_REQUEST_ENABLE_CODE);
             }
-        }
-        else {
+        } else {
             Toast.makeText(this, R.string.ble_no_support, Toast.LENGTH_SHORT)
                  .show();
             finish();
             return;
         }
-        getSupportFragmentManager().beginTransaction()
-                                   .replace(R.id.main_fl_show, new DeviceFragment())
-                                   .commitAllowingStateLoss();
+        replaceFragment(R.id.main_fl_show, new DeviceFragment());
     }
 
     @Override
@@ -159,22 +131,15 @@ public class MainActivity extends BaseActivity {
         main_bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.menu_btm_device:
-                        transaction.replace(R.id.main_fl_show, new DeviceFragment())
-                                   .commitAllowingStateLoss();
-                        menuItemBleSearch.setVisible(true);
+                        replaceFragment(R.id.main_fl_show, new DeviceFragment());
                         break;
                     case R.id.menu_btm_news:
-                        transaction.replace(R.id.main_fl_show, new NewsFragment())
-                                   .commitAllowingStateLoss();
-                        menuItemBleSearch.setVisible(false);
+                        replaceFragment(R.id.main_fl_show, new NewsFragment());
                         break;
                     case R.id.menu_btm_setting:
-                        transaction.replace(R.id.main_fl_show, new UserFragment())
-                                   .commitAllowingStateLoss();
-                        menuItemBleSearch.setVisible(false);
+                        replaceFragment(R.id.main_fl_show, new UserFragment());
                         break;
                 }
                 return true;
@@ -212,7 +177,7 @@ public class MainActivity extends BaseActivity {
 
     private void startScanActivity() {
         Intent intent = new Intent(this, ScanActivity.class);
-        startActivityForResult(intent, SCAN_CODE);
+        startActivityForResult(intent, ConstVal.SCAN_CODE);
     }
 
     private void showPermissionDialog() {

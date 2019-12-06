@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_device_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/item_device_content_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="8dp"
+        android:background="@color/colorTransparent"
+        app:srcCompat="@drawable/ic_bluetooth_white_48dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/item_device_content_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/item_device_content_icon"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/item_device_content_icon"
+            android:text="@string/item_device_name"
+            android:textColor="@color/colorTextPrimaryDark"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/item_device_content_tank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_device_content_icon"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/item_device_content_icon"
+            android:textColor="@color/colorTextSecondDark"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/item_device_content_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_sorting" />
+
+</LinearLayout>

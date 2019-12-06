@@ -138,9 +138,7 @@
     <string name="ota_msg_unsupport_version">Este dispositivo no se puede actualizar, la versión de firmware más baja que soporta es V1.02.</string>
     <string name="ota_msg_uptodate">El firmware está actualizado.</string>
     <string name="ota_msg_remote_not_exists">No existe firmware remoto.</string>
-    <string name="ota_warning_msg">La actualización tiene riesgos, la actualización fallida puede causar que el dispositivo no funcione.</string>
     <string name="ota_warning_title">Advertencia</string>
-    <string name="ota_msg_reupgrade">Por favor conecte el dispositivo manualmente y actualice después de haberlo conectado.</string>
     <string name="ota_continue">Continuar</string>
     <string name="ota_upgrade_success">100%\nÉxito en la actualización, dispositivo inicializando...</string>
     <string name="ota_cancel">Cancelar</string>

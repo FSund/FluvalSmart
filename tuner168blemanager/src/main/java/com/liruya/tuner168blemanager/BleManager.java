@@ -344,7 +344,7 @@ public class BleManager implements ServiceConnection {
      * @param mac device mac address
      * @param name device name
      */
-    public void setSlaverName(@NonNull String mac, @NonNull String name) {
+    public void setSlaveName(@NonNull String mac, @NonNull String name) {
         if (mBleService != null) {
             mBleService.setSlaverName(mac, name);
         }

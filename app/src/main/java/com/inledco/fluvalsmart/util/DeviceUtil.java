@@ -46,6 +46,8 @@ public class DeviceUtil
     public static final short LIGHT_ID_FRESH_1100 = 0x0133;
     public static final short LIGHT_ID_FRESH_1000 = 0x0134;
     public static final short LIGHT_ID_FRESH_380 = 0x0135;
+    public static final short LIGHT_ID_FRESH_600 = 0x0136;
+    public static final short LIGHT_ID_FRESH_900 = 0x0137;
 
     /* Aquasky */
     public static final short LIGHT_ID_AQUASKY_600 = 0x0141;
@@ -210,6 +212,8 @@ public class DeviceUtil
         mDeviceMap.put( LIGHT_ID_FRESH_1100, LIGHT_TYPE_FRESH + " 1100mm" );
         mDeviceMap.put( LIGHT_ID_FRESH_1000, LIGHT_TYPE_FRESH + " 1000mm" );
         mDeviceMap.put( LIGHT_ID_FRESH_380, LIGHT_TYPE_FRESH + " 380mm" );
+        mDeviceMap.put( LIGHT_ID_FRESH_600, LIGHT_TYPE_FRESH + " 600mm" );
+        mDeviceMap.put( LIGHT_ID_FRESH_900, LIGHT_TYPE_FRESH + " 900mm" );
         /* Aquasky */
         mDeviceMap.put( LIGHT_ID_AQUASKY_600, LIGHT_TYPE_AQUASKY + " 600mm" );
         mDeviceMap.put( LIGHT_ID_AQUASKY_900, LIGHT_TYPE_AQUASKY + " 900mm" );
@@ -257,6 +261,8 @@ public class DeviceUtil
         mIconMap.put( LIGHT_ID_FRESH_1100, R.mipmap.ic_light_fresh );
         mIconMap.put( LIGHT_ID_FRESH_1000, R.mipmap.ic_light_fresh );
         mIconMap.put( LIGHT_ID_FRESH_380, R.mipmap.ic_light_fresh );
+        mIconMap.put( LIGHT_ID_FRESH_600, R.mipmap.ic_light_fresh );
+        mIconMap.put( LIGHT_ID_FRESH_900, R.mipmap.ic_light_fresh );
         /* Aquasky */
         mIconMap.put( LIGHT_ID_AQUASKY_600, R.mipmap.ic_light_aquasky );
         mIconMap.put( LIGHT_ID_AQUASKY_900, R.mipmap.ic_light_aquasky );
@@ -332,6 +338,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
                 return "fresh";
             case LIGHT_ID_BLUE_500:
             case LIGHT_ID_BLUE_800:
@@ -423,6 +431,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -502,6 +512,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -577,6 +589,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -657,6 +671,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -775,6 +791,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:
             case LIGHT_ID_VI260:
@@ -882,6 +900,8 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_1100:
             case LIGHT_ID_FRESH_1000:
             case LIGHT_ID_FRESH_380:
+            case LIGHT_ID_FRESH_600:
+            case LIGHT_ID_FRESH_900:
             case LIGHT_ID_NANO_MARINE:
             case LIGHT_ID_NANO_FRESH:
             case LIGHT_ID_VI180:

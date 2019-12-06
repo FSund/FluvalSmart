@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/item_action"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_alignTop="@id/item_content"
+        android:layout_alignBottom="@id/item_content"
+        android:layout_alignParentRight="true"
         android:gravity="right|center_vertical"
         android:layout_gravity="right">
         <TextView
@@ -40,6 +45,136 @@
             android:textColor="@color/colorTextPrimaryDark"
             android:text="@string/remove"/>
     </LinearLayout>
-    <include
-        layout="@layout/item_device"/>
-</FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@color/colorWindowBackgroud">
+
+        <ImageView
+            android:id="@+id/item_device_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@color/colorTransparent"
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/ic_bluetooth_white_48dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/item_device_name"
+                android:textColor="@color/colorTextPrimaryDark"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/item_device_tank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/colorTextSecondDark"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/item_action"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_alignTop="@id/item_content"-->
+<!--        android:layout_alignBottom="@id/item_content"-->
+<!--        android:layout_toRightOf="@id/item_content"-->
+<!--        android:layout_marginLeft="1dp"-->
+<!--        android:layout_marginRight="1dp"-->
+<!--        android:gravity="right|center_vertical"-->
+<!--        android:layout_gravity="right">-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_upgrade"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorCyan"-->
+<!--            android:padding="8dp"-->
+<!--            android:visibility="visible"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/item_action_upgrade"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_reset_psw"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorGray"-->
+<!--            android:padding="8dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/retrieve_password"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_remove"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorRed"-->
+<!--            android:padding="8dp"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/remove"/>-->
+<!--    </LinearLayout>-->
+</RelativeLayout>
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--              android:layout_width="match_parent"-->
+<!--              android:layout_height="wrap_content">-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/item_action"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="right|center_vertical"-->
+<!--        android:layout_gravity="right">-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_upgrade"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorCyan"-->
+<!--            android:padding="8dp"-->
+<!--            android:visibility="visible"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/item_action_upgrade"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_reset_psw"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorGray"-->
+<!--            android:padding="8dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/retrieve_password"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/item_action_remove"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/colorRed"-->
+<!--            android:padding="8dp"-->
+<!--            android:textColor="@color/colorTextPrimaryDark"-->
+<!--            android:text="@string/remove"/>-->
+<!--    </LinearLayout>-->
+<!--    <include-->
+<!--        layout="@layout/item_device"/>-->
+<!--</FrameLayout>-->

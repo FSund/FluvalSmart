@@ -4,21 +4,21 @@
     <string name="main_news">ニュース</string>
     <string name="ble_no_support">このデバイスはBLE4.x.をサポートしておりません</string>
     <string name="scan_devices">デバイス</string>
-    <string name="scan_scan">Scan</string>
-    <string name="scan_stop">Stop</string>
-    <string name="mode_auto">Auto</string>
-    <string name="mode_manual">Manual</string>
-    <string name="light_auto_export">Export</string>
+    <string name="scan_scan">スキャン</string>
+    <string name="scan_stop">ストップ</string>
+    <string name="mode_auto">オート</string>
+    <string name="mode_manual">マニュアル</string>
+    <string name="light_auto_export">エクスポート</string>
     <string name="item_morning">Sunrise</string>
     <string name="item_evening">Sunset</string>
     <string name="item_midday">Day</string>
     <string name="item_night">Night</string>
-    <string name="timepicker_start">Start</string>
-    <string name="timepicker_end">End</string>
-    <string name="light_auto_preview">Preview</string>
-    <string name="light_auto_stop">Stop</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
+    <string name="timepicker_start">スタート</string>
+    <string name="timepicker_end">終了</string>
+    <string name="light_auto_preview">プレビュー</string>
+    <string name="light_auto_stop">ストップ</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
     <string name="rename_device">デバイスの名称変更</string>
     <string name="rename">名称変更</string>
     <string name="input_newname">新しいデバイスの名称を入力</string>
@@ -28,9 +28,9 @@
     <string name="setting_auth_ble">Bluetoothの自動接続を許可</string>
     <string name="setting_exit_close_ble">Bluetoothの自動接続を切る</string>
 
-    <string name="light_auto_save">Save as</string>
-    <string name="main_setting">Settings</string>
-    <string name="save_profile">Save profile as</string>
+    <string name="light_auto_save">保存</string>
+    <string name="main_setting">セッティング</string>
+    <string name="save_profile">プロファイルの保存</string>
 
     <string name="setting_language">言語</string>
     <string name="setting_profile">設定</string>
@@ -55,13 +55,12 @@
 
     <string name="ota_upgrade">アップグレード</string>
     <string name="msg_connecting_device">デバイス接続中...</string>
-    <string name="msg_disconnected">接続の場合はクリックしてください</string>
+    <string name="msg_disconnected">接続できませんでした</string>
     <string name="msg_get_data_failed">アップロードに失敗しました。再度クリックしてください.</string>
     <string name="msg_get_data_success">アップロード成功</string>
     <string name="msg_get_device_data">接続成功、アップロード中...</string>
     <string name="snackbar_bluetooth_denied">Bluetooth接続失敗、セッティングモードにて再度Bluetooh接続を行ってください.</string>
     <string name="snackbar_coarselocation_denied">位置情報サービスが切られている場合はBluetoothデバイススキャンができません。</string>
-
 
     <string name="item_action_upgrade">アップグレード</string>
     <string name="weekday_fri">Fri</string>
@@ -94,11 +93,10 @@
     <string name="timeout">タイムアウト</string>
     <string name="logging">情報取得中</string>
 
-
     <string name="disabled">無効</string>
     <string name="edit">編集</string>
-    <string name="item_turnoff">スリープ</string>
-    <string name="overview">Overview</string>
+    <string name="item_turnoff">Sleep</string>
+    <string name="overview">一覧表示</string>
     <string name="msg_no_profile">プロファイルが見つかりません。カスタムプロファイルを保存できます.</string>
     <string name="save_success">保存成功</string>
     <string name="forgot_password">パスワードをお忘れですか？</string>
@@ -109,14 +107,14 @@
     <string name="title_add_time">時間設定</string>
     <string name="tip_timepoints_max">時間設定は 10 回までです</string>
     <string name="tip_timepoints_min">時間設定は 4 回以上必要です</string>
-    <string name="title_delete_timpoint">Delete #{index} 時間設定</string>
-    <string name="timepoints_set">{count} 時間設定数設定</string>
+    <string name="title_delete_timpoint">#{index} 時間設定消去</string>
+    <string name="timepoints_set">時間設定 {count}回</string>
     <string name="hint_input_retrieve_key">デバイスのパスワード再設定コードを入力ください.</string>
 
-    <string name="next">次</string>
+    <string name="next">次へ</string>
     <string name="ota_firmware_newest">デバイスファームウェアは最新版です</string>
     <string name="ota_upgradable">アップグレード準備完了</string>
-    <string name="ota_device_firmware_upgradable">このデバイスはVxx.にアップデート可能です。アップデートしますか？</string>
+    <string name="ota_device_firmware_upgradable">このデバイスはにアップデート可能です。Vxxにアップデートしますか？</string>
     <string name="downloading_firmware">ファームウェアダウンロード中</string>
     <string name="ota_network_unavailable">ネットワーク検出できません。セッティングを確認ください。</string>
     <string name="device_frimware_version">ファームウェアバージョン：</string>
@@ -165,15 +163,15 @@
     <string name="set_password_success">パスワードの設定成功</string>
     <string name="password_not_zero">パスワード000000の登録はできません</string>
 
-    <string name="setting_version">Version</string>
-    <string name="device_press_to_scan">Press + to scan for new devices</string>
-    <string name="enable">Enable</string>
-    <string name="launch_enter">Enter</string>
-    <string name="launch_select_language">Select language</string>
-    <string name="launch_select_country">Select country</string>
-    <string name="dialog_export_use">Export</string>
+    <string name="setting_version">バージョン</string>
+    <string name="device_press_to_scan">新しいデバイススキャンは＋を押してください</string>
+    <string name="enable">有効</string>
+    <string name="launch_enter">エンター</string>
+    <string name="launch_select_language">言語を選択</string>
+    <string name="launch_select_country">国を選択</string>
+    <string name="dialog_export_use">エクスポート</string>
     <string name="dialog_export_remove">消去</string>
-    <string name="retrieve">Retrieve</string>
+    <string name="retrieve">回復する</string>
 
     <!--OTA-->
     <string name="ota_response_timeout">タイムアウト</string>
@@ -200,13 +198,11 @@
     <string name="ota_msg_uptodate">ファームウェアは最新版です</string>
     <string name="ota_msg_remote_not_exists">リモートファームウェアは存在しません.</string>
     <string name="ota_warning_title">警告</string>
-    <string name="ota_continue">Continue</string>
-    <string name="ota_cancel">Cancel</string>
+    <string name="ota_continue">続ける</string>
+    <string name="ota_cancel">キャンセル</string>
     <string name="ota_connecting">デバイス接続中・・・</string>
 
-    <string name="ota_warning_msg">Upgrade has risks, upgrade failed may cause the device out of run.</string>
-    <string name="ota_msg_reupgrade">Please connect device manually and upgrade again after connected.</string>
-    <string name="ota_msg_check_version">Please check upgrade.</string>
+    <string name="ota_msg_check_version">アップデートを確認ください</string>
     <string name="faq_path">FAQ-ja.html</string>
     <string name="troubleshooting_path">Troubleshooting-ja.html</string>
     <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>

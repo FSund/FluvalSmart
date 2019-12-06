@@ -137,9 +137,7 @@
     <string name="ota_msg_unsupport_version">Ein Upgrade ist an diesem Gerät nicht möglich; niedrigste Firmware-Version V1.02.</string>
     <string name="ota_msg_uptodate">Firmware ist aktuell</string>
     <string name="ota_msg_remote_not_exists">Fern-Firmware existiert nicht.</string>
-    <string name="ota_msg_reupgrade">Bitte verbinden Sie das Gerät manuell und führen Sie nach der Verbindung ein erneutes Upgrade durch.</string>
     <string name="ota_warning_title">Warnung</string>
-    <string name="ota_warning_msg">Upgrade birgt Risiken. Ein fehlgeschlagenes Upgrade kann zu Störungen des Gerätes führen.</string>
     <string name="ota_continue">Fortfahren</string>
     <string name="ota_connecting">Verbinde Gerät…</string>
     <string name="ota_upgrade_success">100%\nUpgrade erfolgreich; Gerät startet neu…</string>

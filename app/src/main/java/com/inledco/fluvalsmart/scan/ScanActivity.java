@@ -37,8 +37,9 @@ import com.inledco.fluvalsmart.base.BaseActivity;
 import com.inledco.fluvalsmart.bean.DevicePrefer;
 import com.inledco.fluvalsmart.bean.SelectDevice;
 import com.inledco.fluvalsmart.constant.ConstVal;
+import com.inledco.fluvalsmart.prefer.Setting;
+import com.inledco.fluvalsmart.util.DevicePrefUtil;
 import com.inledco.fluvalsmart.util.DeviceUtil;
-import com.inledco.fluvalsmart.util.PreferenceUtil;
 import com.liruya.tuner168blemanager.BleHelper;
 import com.liruya.tuner168blemanager.BleListener;
 import com.liruya.tuner168blemanager.BleManager;
@@ -48,13 +49,13 @@ import com.liruya.tuner168blemanager.BleScanner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class ScanActivity extends BaseActivity {
-    private final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
-    private final int SCAN_CODE = 3;
     private Toolbar scan_toolbar;
     private ToggleButton scan_tb_scan;
     private ProgressBar scan_pb_scanning;
@@ -62,14 +63,14 @@ public class ScanActivity extends BaseActivity {
     private TextView scan_tv_msg;
     private FloatingActionButton scan_fab_confirm;
 
-    private Map<String, DevicePrefer> storedAddress;
+    private final Map<String, DevicePrefer> storedAddress = new HashMap<>();
 
     private final Set<String> mDeviceMacs = new HashSet<>();
     private final ArrayList<SelectDevice> mDevices = new ArrayList<>();
     private Comparator<SelectDevice> mComparator;
     private ScanAdapter mScanAdapter;
     private Handler mHandler;
-    private final BleHelper mBleHelper = new BleHelper(this);
+    private BleHelper mBleHelper;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -112,7 +113,7 @@ public class ScanActivity extends BaseActivity {
 
         @Override
         public void onDeviceScanned(String mac, String name, int rssi, byte[] bytes) {
-            decodeScanData(mac, name, rssi, bytes);
+            decodeScanData(mac, name.trim(), rssi, bytes);
         }
     };
 
@@ -172,7 +173,7 @@ public class ScanActivity extends BaseActivity {
                     if (mBleHelper.isBluetoothEnabled()) {
                         startScan();
                     } else {
-                        mBleHelper.requestBluetoothEnable(BLUETOOTH_REQUEST_ENABLE_CODE);
+                        mBleHelper.requestBluetoothEnable(ConstVal.BLUETOOTH_REQUEST_ENABLE_CODE);
                     }
                 }
                 else {
@@ -189,7 +190,7 @@ public class ScanActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.e(TAG, "onActivityResult: " + requestCode + " " + resultCode);
-        if (requestCode == BLUETOOTH_REQUEST_ENABLE_CODE) {
+        if (requestCode == ConstVal.BLUETOOTH_REQUEST_ENABLE_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 scan_tb_scan.setChecked(true);
             } else {
@@ -217,6 +218,7 @@ public class ScanActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mBleHelper = new BleHelper(this);
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mHandler = new Handler() {
@@ -281,16 +283,15 @@ public class ScanActivity extends BaseActivity {
         scan_fab_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<DevicePrefer> devices = DevicePrefUtil.getLocalDevices(ScanActivity.this);
                 for (SelectDevice dev : mDevices) {
-                    if (dev.isSelected()) {
-                        PreferenceUtil.setObjectToPrefer(ScanActivity.this,
-                                                         ConstVal.DEV_PREFER_FILENAME,
-                                                         dev.getPrefer(),
-                                                         dev.getPrefer()
-                                                            .getDeviceMac());
+                    if (dev.isSelected() && dev.isSelectable()) {
+                        devices.add(dev.getPrefer());
                     }
                 }
-                setResult(SCAN_CODE);
+                DevicePrefUtil.setLocalDevices(ScanActivity.this, devices);
+                Setting.setScanTip(ScanActivity.this);
+                setResult(ConstVal.SCAN_CODE);
                 finish();
             }
         });
@@ -305,7 +306,11 @@ public class ScanActivity extends BaseActivity {
 
     @SuppressLint ("RestrictedApi")
     private void startScan() {
-        storedAddress = PreferenceUtil.getAllObjectMapFromPrefer(ScanActivity.this, ConstVal.DEV_PREFER_FILENAME);
+        storedAddress.clear();
+        List<DevicePrefer> localDevices = DevicePrefUtil.getLocalDevices(ScanActivity.this);
+        for (DevicePrefer pref : localDevices) {
+            storedAddress.put(pref.getDeviceMac(), pref);
+        }
         mDeviceMacs.clear();
         mDevices.clear();
         mScanAdapter.notifyDataSetChanged();

@@ -4,7 +4,7 @@ import android.view.View;
 
 public interface Extension
 {
-    float getActionWidth ();
+    int getActionWidth ();
 
     View getContentView();
 }
