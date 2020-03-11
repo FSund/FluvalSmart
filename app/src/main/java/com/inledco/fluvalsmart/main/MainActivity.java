@@ -64,6 +64,7 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(MainActivity.this, R.string.snackbar_bluetooth_denied, Toast.LENGTH_LONG)
                          .show();
                 }
+                showEmailTipDialog();
                 break;
             case ConstVal.SCAN_CODE:
                 if (resultCode == ConstVal.SCAN_CODE) {
@@ -112,7 +113,7 @@ public class MainActivity extends BaseActivity {
         if (mBleHelper.checkBleSupported()) {
             if (mBleHelper.isBluetoothEnabled()
                 || (Setting.isAutoTurnonBle(MainActivity.this) && mBleHelper.autoOpenBluetooth())) {
-
+                showEmailTipDialog();
             }
             else {
                 mBleHelper.requestBluetoothEnable(ConstVal.BLUETOOTH_REQUEST_ENABLE_CODE);
@@ -191,6 +192,23 @@ public class MainActivity extends BaseActivity {
                 mBleHelper.startAppDetailActivity();
             }
         });
+        builder.show();
+    }
+
+    private void showEmailTipDialog() {
+        if (Setting.hasShowEmailTip(this)) {
+            return;
+        }
+        CustomDialogBuilder builder = new CustomDialogBuilder(MainActivity.this, R.style.DialogTheme);
+        builder.setTitle(R.string.title_important);
+        builder.setView(R.layout.dialog_message);
+        builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Setting.setShowEmailTip(MainActivity.this);
+            }
+        });
+        builder.setCancelable(false);
         builder.show();
     }
 }

@@ -127,7 +127,7 @@
     <string name="retrieve">Retrieve</string>
     <string name="retrieve_password">Retrieve Password</string>
     <string name="retrieve_wrong_key">Retrieve key is incorrect.</string>
-    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to FluvalSmartApp1@gmail.com to obtain your retrieve key.</string>
+    <string name="retrieve_copy_msg">Device information copied. Please paste information into email to FluvalSmart@FluvalAquatics.com to obtain your retrieve key.</string>
     <string name="retrieve_psw_is">"Device password is: "</string>
     <string name="title_add_time">Add Time</string>
     <string name="tip_timepoints_max">Timepoints count max 10.</string>
@@ -207,7 +207,7 @@
     <string name="uptodate">Up to date</string>
     <string name="title_network_unavailable">Network unavailable</string>
     <string name="tip_poweroff">Light unit is OFF. Power ON before operating.</string>
-    <string name="tip_retrieve_password">"Select \"Copy\" to copy lamp ID code. Next, paste ID code into email addressed to FluvalSmartApp1@gmail.com. A Retrieve Key will be emailed back to you within 48 hours. Enter Retrieve Key and select \"Retrieve\" button to access password. "</string>
+    <string name="tip_retrieve_password">"Select \"Copy\" to copy lamp ID code. Next, paste ID code into email addressed to FluvalSmart@FluvalAquatics.com. A Retrieve Key will be emailed back to you within 48 hours. Enter Retrieve Key and select \"Retrieve\" button to access password. "</string>
     <string name="faq_path">FAQ-en.html</string>
     <string name="troubleshooting">Troubleshooting</string>
     <string name="troubleshooting_path">Troubleshooting-en.html</string>
@@ -217,24 +217,25 @@
     <string name="instruction_video">Helpful Videos</string>
     <string name="remove_password">Remove password</string>
     <string name="set_password">Set password</string>
-    <string name="remove_password_success">Remove password successfully.</string>
-    <string name="set_password_success">Set password successfully.</string>
+    <string name="remove_password_success">Password removed successfully.</string>
+    <string name="set_password_success">Password set successfully.</string>
     <string name="password_not_zero">Password can not be 000000.</string>
-    <string name="contactus">Contact us</string>
-    <string name="fluval_url" translatable="false">https://www.fluvalaquatics.com</string>
+    <string name="contactus">Contact Us</string>
+    <string name="fluval_url">https://www.fluvalaquatics.com</string>
     <string name="facebook_url" translatable="false">https://www.facebook.com/fluval</string>
     <string name="twitter_url" translatable="false">https://twitter.com/Fluvalaquatics</string>
     <string name="instagram_url" translatable="false">https://www.instagram.com/fluvalaquatics</string>
-    <string name="fluval_email" translatable="false">FluvalSmartApp1@gmail.com</string>
+    <string name="fluval_email" translatable="false">FluvalSmart@FluvalAquatics.com</string>
     <string name="instagram" translatable="false">Instagram</string>
     <string name="twitter" translatable="false">Twitter</string>
     <string name="facebook" translatable="false">Facebook</string>
-    <string name="fluval" translatable="false">Fluval</string>
-    <string name="type">Type</string>
-    <string name="name">Name</string>
+    <string name="website">Website</string>
     <string name="sort">Sort</string>
     <string name="sort_by_type">Sort by type</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_manual">Sort manually</string>
-    <string name="drag_to_sort">Drag to sort</string>
+    <string name="drag_to_sort">Hold &#038; Drag to sort</string>
+    <string name="email">Email</string>
+    <string name="title_important">Important!</string>
+    <string name="msg_first_use">If you require help connecting to your light, please contact our support team at FluvalSmart@FluvalAquatics.com. Please do not return the unit to the retailer from which you purchased it before doing so!</string>
 </resources>

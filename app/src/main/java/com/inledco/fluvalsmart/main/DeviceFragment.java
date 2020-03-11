@@ -48,9 +48,6 @@ public class DeviceFragment extends BaseFragment {
     private TextView device_title;
     private ImageView device_iv_add;
     private TextView device_tv_add;
-//    private LinearLayout device_ll;
-//    private TextView device_sort_type;
-//    private TextView device_sort_name;
     private RecyclerView device_rv_show;
 
     private final List<DevicePrefer> mDevices = new ArrayList<>();
@@ -90,14 +87,9 @@ public class DeviceFragment extends BaseFragment {
         device_iv_add = view.findViewById(R.id.device_iv_add);
         device_tv_add = view.findViewById(R.id.device_tv_add);
         device_rv_show = view.findViewById(R.id.device_rv_show);
-//        device_ll = view.findViewById(R.id.device_ll);
-//        device_sort_type = view.findViewById(R.id.device_sort_type);
-//        device_sort_name = view.findViewById(R.id.device_sort_name);
 
         device_toolbar.inflateMenu(R.menu.menu_main);
         device_rv_show.addItemDecoration(new DividerItemDecoration(getContext(), OrientationHelper.VERTICAL));
-//        device_sort_type.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sort_24dp, 0, 0, 0);
-//        device_sort_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sort_24dp, 0, 0, 0);
     }
 
     @Override
@@ -236,43 +228,6 @@ public class DeviceFragment extends BaseFragment {
                 }
             }
         });
-
-//        device_sort_type.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Collections.sort(mDevices, new Comparator<DevicePrefer>() {
-//                    @Override
-//                    public int compare(DevicePrefer o1, DevicePrefer o2) {
-//                        String type1 = DeviceUtil.getDeviceType(o1.getDevId());
-//                        String type2 = DeviceUtil.getDeviceType(o2.getDevId());
-//                        int result = type1.compareToIgnoreCase(type2);
-//                        if (result == 0) {
-//                            String name1 = o1.getDeviceName();
-//                            String name2 = o2.getDeviceName();
-//                            result = name1.compareToIgnoreCase(name2);
-//                        }
-//                        return result;
-//                    }
-//                });
-//                mAdapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        device_sort_name.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Collections.sort(mDevices, new Comparator<DevicePrefer>() {
-//                    @Override
-//                    public int compare(DevicePrefer o1, DevicePrefer o2) {
-//                        String name1 = o1.getDeviceName();
-//                        String name2 = o2.getDeviceName();
-//                        int result = name1.compareToIgnoreCase(name2);
-//                        return result;
-//                    }
-//                });
-//                mAdapter.notifyDataSetChanged();
-//            }
-//        });
     }
 
     private void startScanActivity() {
@@ -286,7 +241,6 @@ public class DeviceFragment extends BaseFragment {
         device_toolbar.setNavigationIcon(R.drawable.ic_clear);
         device_toolbar.getMenu().findItem(R.id.menu_search_ble).setVisible(false);
         device_toolbar.getMenu().findItem(R.id.menu_done).setVisible(true);
-//        device_ll.setVisibility(View.VISIBLE);
         device_title.setText(R.string.drag_to_sort);
     }
 
@@ -296,7 +250,6 @@ public class DeviceFragment extends BaseFragment {
         device_toolbar.setNavigationIcon(R.drawable.ic_sort);
         device_toolbar.getMenu().findItem(R.id.menu_search_ble).setVisible(true);
         device_toolbar.getMenu().findItem(R.id.menu_done).setVisible(false);
-//        device_ll.setVisibility(View.GONE);
         device_title.setText(R.string.app_name);
     }
 

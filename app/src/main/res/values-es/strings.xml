@@ -182,7 +182,7 @@
     <string name="retry">Intentar otra vez</string>
     <string name="title_network_unavailable">Red no disponible</string>
     <string name="uptodate">Actualizado</string>
-    <string name="tip_retrieve_password">Seleccionar “Copiar” para copiar el código de identificación de la lámpara. Luego, pegue el código de identificación en un correo electrónico dirigido a FluvalSmartApp1@gmail.com. Recibirá una clave de recuperación por correo electrónico en 48 horas. Ingrese la clave de recuperación y seleccione el botón “Recuperar” para obtener la contraseña.”</string>
+    <string name="tip_retrieve_password">Seleccionar “Copiar” para copiar el código de identificación de la lámpara. Luego, pegue el código de identificación en un correo electrónico dirigido a FluvalSmart@FluvalAquatics.com. Recibirá una clave de recuperación por correo electrónico en 48 horas. Ingrese la clave de recuperación y seleccione el botón “Recuperar” para obtener la contraseña.”</string>
     <string name="faq_path">FAQ-es.html</string>
     <string name="troubleshooting_path">Troubleshooting-es.html</string>
     <string name="forgot_password">Contraseña olvidada</string>
@@ -196,4 +196,15 @@
     <string name="remove_password_success">La contraseña se eliminó correctamente.</string>
     <string name="password_not_zero">La contraseña no puede ser 000000.</string>
     <string name="instruction_video">Videos útiles</string>
+    <string name="fluval_url">https://www.fluvalaquatics.com</string>
+    <string name="email">Correo electrónico</string>
+    <string name="website">Página web</string>
+    <string name="sort">Ordenar</string>
+    <string name="sort_by_type">Ordenar por tipo</string>
+    <string name="sort_by_name">Ordenar por nombre</string>
+    <string name="sort_manual">Ordenar manualmente</string>
+    <string name="drag_to_sort">Mantener y arrastrar para ordenar</string>
+    <string name="title_important">"¡Importante! "</string>
+    <string name="contactus">Contáctanos</string>
+    <string name="msg_first_use">Si requiere ayuda conectando su iluminación, contante con nuestro Servicio Técnico en FluvalSmart@FluvalAquatics.com. Por favor, no devuleva el dispositivo de luz a la tienda en la que lo compró, antes de haber contactado con nosotros.</string>
 </resources>

@@ -77,6 +77,44 @@
         android:background="@color/colorDivider"/>
 
     <TextView
+        android:id="@+id/news_um"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@mipmap/ic_usermanual"
+        android:text="@string/setting_um"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        android:id="@+id/news_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@mipmap/ic_video"
+        android:text="@string/instruction_video"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorDivider"/>
+
+    <TextView
         android:id="@+id/news_contactus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

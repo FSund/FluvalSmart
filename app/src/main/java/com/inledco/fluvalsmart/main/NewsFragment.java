@@ -19,8 +19,13 @@ import com.inledco.fluvalsmart.web.WebActivity;
 public class NewsFragment extends BaseFragment
 {
     private final String URL1 = "http://www.fluvalaquatics.com/";
+    private final String GOOGLE_DOC_URL = "https://docs.google.com/gview?embedded=true&url=";
+    private final String UPGRADE_GUIDE_LINK = "https://www.fluvalaquatics.com/fluvalsmartfirmwareupdate/";
+
     private TextView news_faq;
     private TextView news_troubleshooting;
+    private TextView news_um;
+    private TextView news_instruction;
     private TextView news_contactus;
 
     public NewsFragment ()
@@ -44,6 +49,8 @@ public class NewsFragment extends BaseFragment
     {
         news_faq = view.findViewById(R.id.news_faq);
         news_troubleshooting = view.findViewById(R.id.news_troubleshooting);
+        news_um = view.findViewById(R.id.news_um);
+        news_instruction = view.findViewById(R.id.news_instruction);
         news_contactus = view.findViewById(R.id.news_contactus);
         view.findViewById( R.id.news_web1 ).setOnClickListener( new View.OnClickListener() {
             @Override
@@ -75,6 +82,20 @@ public class NewsFragment extends BaseFragment
             }
         });
 
+        news_um.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startWebActivity(GOOGLE_DOC_URL + getString(R.string.user_manual_url), true);
+            }
+        });
+
+        news_instruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startWebActivity(UPGRADE_GUIDE_LINK, true);
+            }
+        });
+
         news_contactus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +111,13 @@ public class NewsFragment extends BaseFragment
 
     private void startWebActivity(@NonNull final String url) {
         Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
+    }
+
+    private void startWebActivity(@NonNull final String url, final boolean allowOpenInBrowser) {
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        intent.putExtra("allow_open_in_browser", allowOpenInBrowser);
         intent.putExtra("url", url);
         startActivity(intent);
     }

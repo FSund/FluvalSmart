@@ -28,6 +28,7 @@ public class Setting {
     public static final String KEY_LANGUAGE = "LANGUAGE";
     public static final String KEY_SCAN_TIP = "scan_tip";
     public static final String KEY_UPGRADE_TIP = "upgrade_tip";
+    public static final String KEY_EMAIL_TIP = "email_tip";
 
 //    private static final String KEY_TESTMODE = "testmode";
 
@@ -228,5 +229,22 @@ public class Setting {
             config.setLocales(new LocaleList(locale));
         }
         res.updateConfiguration(config, dm);
+    }
+
+    public static boolean hasShowEmailTip(@NonNull Context context) {
+        if (context != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            return sp.getBoolean(KEY_EMAIL_TIP, false);
+        }
+        return false;
+    }
+
+    public static void setShowEmailTip(@NonNull Context context) {
+        if (context != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(KEY_EMAIL_TIP, true);
+            editor.apply();
+        }
     }
 }

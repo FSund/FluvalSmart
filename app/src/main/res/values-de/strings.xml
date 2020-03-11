@@ -103,7 +103,7 @@
     <string name="retrieve">Wiederherstellen</string>
     <string name="retrieve_password">Passwort wiederherstellen</string>
     <string name="retrieve_wrong_key">Der Wiederherstellungsschlüssel ist falsch.</string>
-    <string name="retrieve_copy_msg">Die Geräteinformationen wurden kopiert. Bitte kopieren Sie die Informationen in eine E-Mail an FluvalSmartApp1@gmail.com, um Ihren Wiederherstellungsschlüssel zu erhalten.</string>
+    <string name="retrieve_copy_msg">Die Geräteinformationen wurden kopiert. Bitte kopieren Sie die Informationen in eine E-Mail an FluvalSmart@FluvalAquatics.com, um Ihren Wiederherstellungsschlüssel zu erhalten.</string>
     <string name="title_add_time">Zusätzliche Zeit</string>
     <string name="tip_timepoints_max">Die Zeit geht bis max. 10.</string>
     <string name="tip_timepoints_min">Die Zeit geht ab min. 4.</string>
@@ -181,7 +181,7 @@
     <string name="retry">Erneut versuchen</string>
     <string name="title_network_unavailable">Netzwerk nicht erreichbar</string>
     <string name="uptodate">Auf dem neuesten Stand</string>
-    <string name="tip_retrieve_password">Kopieren Sie den ID-Code des Beleuchtungssystems in eine E-Mail an FluvalSmartApp1@gmail.com. Innerhalb von 48 Stunden wird Ihnen ein Zurücksetzungsschlüssel zugemailt. Geben Sie den Zurücksetzungsschlüssel ein und wählen Sie \"Zurücksetzen\", um zu dem Passwort zu gelangen.</string>
+    <string name="tip_retrieve_password">Kopieren Sie den ID-Code des Beleuchtungssystems in eine E-Mail an FluvalSmart@FluvalAquatics.com. Innerhalb von 48 Stunden wird Ihnen ein Zurücksetzungsschlüssel zugemailt. Geben Sie den Zurücksetzungsschlüssel ein und wählen Sie \"Zurücksetzen\", um zu dem Passwort zu gelangen.</string>
     <string name="faq_path">FAQ-de.html</string>
     <string name="troubleshooting_path">Troubleshooting-de.html</string>
     <string name="forgot_password">Passwort vergessen</string>
@@ -195,4 +195,15 @@
     <string name="remove_password_success">Passwort erfolgreich gelöscht.</string>
     <string name="password_not_zero">Das Passwort darf nicht 000000 sein.</string>
     <string name="instruction_video">Hilfreiche Videos</string>
+    <string name="fluval_url">https://www.fluvalaquatics.com</string>
+    <string name="email">E-Mail</string>
+    <string name="website">Website</string>
+    <string name="sort">Sortieren</string>
+    <string name="sort_by_type">Nach Modell sortieren</string>
+    <string name="sort_by_name">Nach Name sortieren</string>
+    <string name="sort_manual">Manuell sortieren</string>
+    <string name="drag_to_sort">Zum Sortieren markieren &#038; herunterziehen</string>
+    <string name="title_important">"Wichtig! "</string>
+    <string name="msg_first_use">Wenn Sie Hilfe bei der Verbindung Ihres Beleuchtungssystems benötigen, wenden Sie sich bitte zuerst an unser Support-Team unter FluvalSmart@FluvalAquatics.com und geben Sie das Gerät nicht vorher an den Händler zurück, bei dem Sie es gekauft haben!</string>
+    <string name="contactus">Kontaktieren Sie uns</string>
 </resources>

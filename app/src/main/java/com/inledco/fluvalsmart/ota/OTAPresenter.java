@@ -30,8 +30,8 @@ public class OTAPresenter extends BaseActivityPresenter<BleOTAActivity> {
     private static final String TAG = "OTAPresenter";
 
     private static final int OTA_SUPPORT_LOWEST_VERSION = 0x0102;
-    private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
-    private static final String OTA_FIRMWARE_LINK = "http://47.88.12.183:8080";
+    private static final String OTA_UPGRADE_LINK = "http://47.88.12.183:9000/OTAInfoModels/GetOTAInfo?deviceid=";
+    private static final String OTA_FIRMWARE_LINK = "http://47.88.12.183:9000";
 
     private boolean mReadRemoteVersion;
     private boolean mProcessing;

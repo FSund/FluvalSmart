@@ -103,7 +103,7 @@
     <string name="retrieve">Récupérer</string>
     <string name="retrieve_password">Récupérer le mot de passe</string>
     <string name="retrieve_wrong_key">Le code de récupération est incorrect.</string>
-    <string name="retrieve_copy_msg">Information de l’appareil copiée. Coller l’information dans un courriel et l’envoyer à FluvalSmartApp1@gmail.com pour obtenir le code de récupération.</string>
+    <string name="retrieve_copy_msg">Information de l’appareil copiée. Coller l’information dans un courriel et l’envoyer à FluvalSmart@FluvalAquatics.com pour obtenir le code de récupération.</string>
     <string name="title_add_time">Ajouter un intervalle de temps</string>
     <string name="tip_timepoints_max">Maximum d’intervalles de temps : 10.</string>
     <string name="tip_timepoints_min">Minimum d’intervalles de temps : 4.</string>
@@ -181,7 +181,7 @@
     <string name="retry">Essayer de nouveau</string>
     <string name="title_network_unavailable">Réseau non disponible</string>
     <string name="uptodate">À jour</string>
-    <string name="tip_retrieve_password">"Sélectionner « Copier »  afin de copier le code d’identification de la rampe d’éclairage. Ensuite, coller le code dans un courriel et l’envoyer à FluvalSmartApp1@gmail.com. Un code de récupération vous sera envoyé dans les 48 heures. Entrer le code de récupération et sélectionner le bouton « Récupérer » pour obtenir le mot de passe.  "</string>
+    <string name="tip_retrieve_password">"Sélectionner « Copier »  afin de copier le code d’identification de la rampe d’éclairage. Ensuite, coller le code dans un courriel et l’envoyer à FluvalSmart@FluvalAquatics.com. Un code de récupération vous sera envoyé dans les 48 heures. Entrer le code de récupération et sélectionner le bouton « Récupérer » pour obtenir le mot de passe.  "</string>
     <string name="faq_path">FAQ-fr.html</string>
     <string name="troubleshooting_path">Troubleshooting-fr.html</string>
     <string name="forgot_password">Mot de passe oublié</string>
@@ -195,4 +195,15 @@
     <string name="remove_password_success">Mot de passe supprimé avec succès.</string>
     <string name="password_not_zero">Le mot de passe ne peut pas être 000000.</string>
     <string name="instruction_video">Vidéos utiles</string>
+    <string name="fluval_url">https://www.fluvalaquatics.com</string>
+    <string name="email">Courriel</string>
+    <string name="website">Site Web</string>
+    <string name="sort">Trier</string>
+    <string name="sort_by_type">Trier par type</string>
+    <string name="sort_by_name">Trier par nom</string>
+    <string name="sort_manual">Trier manuellement</string>
+    <string name="drag_to_sort">Maintenir et faire glisser pour trier</string>
+    <string name="title_important">Important!</string>
+    <string name="msg_first_use">Si vous avez besoin d’aide pour connecter votre appareil d’éclairage, veuillez contacter notre équipe de soutien à FluvalSmart@FluvalAquatics.com. Ne retournez pas l’appareil chez le détaillant avant de nous avoir préalablement contactés pour de l’assistance.</string>
+    <string name="contactus">Nous contacter</string>
 </resources>

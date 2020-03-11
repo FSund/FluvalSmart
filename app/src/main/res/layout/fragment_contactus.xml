@@ -38,7 +38,7 @@
             android:layout_margin="8dp"
             android:gravity="center_vertical"
             android:textColor="@color/colorTextPrimary"
-            android:text="@string/fluval"/>
+            android:text="@string/website"/>
     </LinearLayout>
 
     <LinearLayout
@@ -114,10 +114,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/contactus_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
         android:padding="8dp">
 
         <ImageView
@@ -131,9 +133,8 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:gravity="center_vertical"
-            android:autoLink="email"
-            android:textColorLink="@color/colorWhite"
-            android:text="@string/fluval_email"/>
+            android:textColor="@color/colorTextPrimary"
+            android:text="@string/email"/>
     </LinearLayout>
 
 </LinearLayout>

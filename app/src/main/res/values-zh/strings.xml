@@ -103,7 +103,7 @@
     <string name="retrieve">找回</string>
     <string name="retrieve_password">找回密码</string>
     <string name="retrieve_wrong_key">找回密钥错误.</string>
-    <string name="retrieve_copy_msg">设备信息已经复制,请粘贴在 FluvalSmartApp1@gmail.com 邮件中来获取设备的找回密钥.</string>
+    <string name="retrieve_copy_msg">设备信息已经复制,请粘贴在 FluvalSmart@FluvalAquatics.com 邮件中来获取设备的找回密钥.</string>
     <string name="retrieve_psw_is">"设备密码是: "</string>
     <string name="title_add_time">添加时间</string>
     <string name="tip_timepoints_max">最多10个时间点.</string>
@@ -182,7 +182,7 @@
     <string name="uptodate">已经最新</string>
     <string name="title_network_unavailable">网络无连接</string>
     <string name="tip_poweroff">灯已关闭, 请先打开.</string>
-    <string name="tip_retrieve_password">"选择\"复制\"按钮复制设备信息, 然后粘贴设备信息到邮件发送给 FluvalSmartApp1@gmail.com. 一个找回密钥将会在48小时内发送到您的邮箱. 输入找回密钥并选择\"找回\"按钮来获取设备密码. "</string>
+    <string name="tip_retrieve_password">"选择\"复制\"按钮复制设备信息, 然后粘贴设备信息到邮件发送给 FluvalSmart@FluvalAquatics.com. 一个找回密钥将会在48小时内发送到您的邮箱. 输入找回密钥并选择\"找回\"按钮来获取设备密码. "</string>
     <string name="faq_path">FAQ-zh.html</string>
     <string name="troubleshooting_path">Troubleshooting-zh.html</string>
     <string name="troubleshooting">故障排除</string>
@@ -196,4 +196,14 @@
     <string name="set_password_success">设置密码成功.</string>
     <string name="password_not_zero">密码不能为000000.</string>
     <string name="contactus">联系我们</string>
+    <string name="drag_to_sort">长按拖动排序</string>
+    <string name="fluval_url">https://www.fluvalaquatics.com</string>
+    <string name="sort">排序</string>
+    <string name="sort_by_name">按名称排序</string>
+    <string name="sort_by_type">按类型排序</string>
+    <string name="sort_manual">手动排序</string>
+    <string name="website">网站</string>
+    <string name="email">邮箱</string>
+    <string name="title_important">重要!</string>
+    <string name="msg_first_use">如果需要帮助连接您的灯具, 请联系我们的支持团队: FluvalSmart@FluvalAquatics.com. 请不要在未联系支持团队之前, 就返还灯具到您购买的零售商处.</string>
 </resources>

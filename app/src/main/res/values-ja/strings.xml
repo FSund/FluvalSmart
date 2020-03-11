@@ -102,7 +102,7 @@
     <string name="forgot_password">パスワードをお忘れですか？</string>
     <string name="retrieve_password">パスワードの再設定</string>
     <string name="retrieve_wrong_key">パスワードの再設定コードが間違っています。</string>
-    <string name="retrieve_copy_msg">デバイス情報はコピーされました。情報をペーストし、FluvalSmartApp1@gmail.com にパスワード再発行コードを申請してください。</string>
+    <string name="retrieve_copy_msg">デバイス情報はコピーされました。情報をペーストし、FluvalSmart@FluvalAquatics.com にパスワード再発行コードを申請してください。</string>
     <string name="retrieve_psw_is">デバイスパスワード：</string>
     <string name="title_add_time">時間設定</string>
     <string name="tip_timepoints_max">時間設定は 10 回までです</string>
@@ -205,5 +205,16 @@
     <string name="ota_msg_check_version">アップデートを確認ください</string>
     <string name="faq_path">FAQ-ja.html</string>
     <string name="troubleshooting_path">Troubleshooting-ja.html</string>
-    <string name="user_manual_url">https://www.fluvalaquatics.com/fluvalsmart/links/FluvalSmart%20App%20Manual_EN_Jul3_19_SP.pdf</string>
+    <string name="user_manual_url">https://www.gex-fp.co.jp/fish/brand/fluval/manual.pdf</string>
+    <string name="fluval_url">https://www.gex-fp.co.jp/support</string>
+    <string name="contactus">連絡先</string>
+    <string name="sort">ソート</string>
+    <string name="sort_by_name">名前でソート</string>
+    <string name="sort_by_type">タイプでソート</string>
+    <string name="sort_manual">マニュアルソート</string>
+    <string name="drag_to_sort">ドラッグしてソート</string>
+    <string name="website">ウェブサイト</string>
+    <string name="email">メール</string>
+    <string name="title_important">重要!</string>
+    <string name="msg_first_use">ライトとアプリの接続が出来ない場合は https://www.gex-fp.co.jp/support まで問い合わせをお願いします. まず弊社カスタマーサービスに問い合わせを頂き、その後必要に応じて小売店様への連絡を行ってください. </string>
 </resources>
