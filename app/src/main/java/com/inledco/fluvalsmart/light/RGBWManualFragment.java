@@ -301,6 +301,9 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
     @SuppressLint ("RestrictedApi")
     @Override
     public void onClick(View view) {
+        if (mLightManual == null) {
+            return;
+        }
         short[] values;
         byte chn;
         int id = view.getId();

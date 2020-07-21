@@ -69,8 +69,8 @@ import java.util.List;
 import okhttp3.Call;
 
 public class LightActivity extends BaseActivity implements DataInvalidFragment.OnRetryClickListener {
-    private final String OTA_UPGRADE_LINK = "http://47.88.12.183:8080/OTAInfoModels/GetOTAInfo?deviceid=";
-    private final String POST_DEVINFO_LINK = "http://47.88.12.183:8080/api/DeviceInfo/ExistInfo";
+    private final String OTA_UPGRADE_LINK = "http://47.88.12.183:9000/OTAInfoModels/GetOTAInfo?deviceid=";
+    private final String POST_DEVINFO_LINK = "http://47.88.12.183:9000/api/DeviceInfo/ExistInfo";
 
     private Toolbar light_toolbar;
     private ProgressDialog mProgressDialog;

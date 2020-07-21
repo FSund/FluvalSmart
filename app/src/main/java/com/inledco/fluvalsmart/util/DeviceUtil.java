@@ -82,6 +82,12 @@ public class DeviceUtil
     public static final short LIGHT_ID_VE350A = 0x0178;
     public static final short LIGHT_ID_VE350B = 0x0179;
 
+    public static final short LIGHT_ID_OAK168 = 0x0180;
+    public static final short LIGHT_ID_OAK252 = 0x0181;
+    public static final short LIGHT_ID_AQ166 = 0x0182;
+    public static final short LIGHT_ID_AQ272 = 0x0183;
+    public static final short LIGHT_ID_AQ332 = 0x0184;
+
     public static final String LIGHT_TYPE_RGBW = "RGBW Strip II";
     public static final String LIGHT_TYPE_STRIP_III = "Hagen Strip III";
     public static final String LIGHT_TYPE_EGG = "Egg Light";
@@ -100,6 +106,11 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_VE190 = "Venezia 190";
     public static final String LIGHT_TYPE_VE350A = "Venezia 350A";
     public static final String LIGHT_TYPE_VE350B = "Venezia 350B";
+    public static final String LIGHT_TYPE_OAK168 = "Aqusky Aqua 679mm";
+    public static final String LIGHT_TYPE_OAK252 = "Aqusky Aqua 1025mm";
+    public static final String LIGHT_TYPE_AQ166 = "Plant Aqua 529mm";
+    public static final String LIGHT_TYPE_AQ272 = "Plant Aqua 875mm";
+    public static final String LIGHT_TYPE_AQ332 = "Plant Aqua 1075mm";
 
     private static final byte[] PRO_MARINE_PRESET_DEEP_SEA_GLO = new byte[]{ 10,
                                                                              6, 0, 0, 0, 0, 0, 0,
@@ -193,110 +204,121 @@ public class DeviceUtil
     private static final Map< Short, String > mDeviceMap = new HashMap<>();
     private static final Map< Short, Integer > mIconMap = new HashMap<>();
 
-    static
-    {
+    static {
         /* Test */
-        mDeviceMap.put( LIGHT_ID_RGBW, LIGHT_TYPE_RGBW );
-        mDeviceMap.put( LIGHT_ID_STRIP_III, LIGHT_TYPE_STRIP_III );
-        mDeviceMap.put( LIGHT_ID_EGG, LIGHT_TYPE_EGG );
+        mDeviceMap.put(LIGHT_ID_RGBW, LIGHT_TYPE_RGBW);
+        mDeviceMap.put(LIGHT_ID_STRIP_III, LIGHT_TYPE_STRIP_III);
+        mDeviceMap.put(LIGHT_ID_EGG, LIGHT_TYPE_EGG);
         /* Marine & Ref */
-        mDeviceMap.put( LIGHT_ID_MARINE_500, LIGHT_TYPE_MARINE + " 500mm" );
-        mDeviceMap.put( LIGHT_ID_MARINE_800, LIGHT_TYPE_MARINE + " 800mm" );
-        mDeviceMap.put( LIGHT_ID_MARINE_1100, LIGHT_TYPE_MARINE + " 1100mm" );
-        mDeviceMap.put( LIGHT_ID_MARINE_1000, LIGHT_TYPE_MARINE + " 1000mm" );
-        mDeviceMap.put( LIGHT_ID_MARINE_380, LIGHT_TYPE_MARINE + " 380mm" );
-        mDeviceMap.put( LIGHT_ID_MARINE_750, LIGHT_TYPE_MARINE + " 750mm" );
+        mDeviceMap.put(LIGHT_ID_MARINE_500, LIGHT_TYPE_MARINE + " 500mm");
+        mDeviceMap.put(LIGHT_ID_MARINE_800, LIGHT_TYPE_MARINE + " 800mm");
+        mDeviceMap.put(LIGHT_ID_MARINE_1100, LIGHT_TYPE_MARINE + " 1100mm");
+        mDeviceMap.put(LIGHT_ID_MARINE_1000, LIGHT_TYPE_MARINE + " 1000mm");
+        mDeviceMap.put(LIGHT_ID_MARINE_380, LIGHT_TYPE_MARINE + " 380mm");
+        mDeviceMap.put(LIGHT_ID_MARINE_750, LIGHT_TYPE_MARINE + " 750mm");
         /* Plant & Fresh */
-        mDeviceMap.put( LIGHT_ID_FRESH_500, LIGHT_TYPE_FRESH + " 500mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_800, LIGHT_TYPE_FRESH + " 800mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_1100, LIGHT_TYPE_FRESH + " 1100mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_1000, LIGHT_TYPE_FRESH + " 1000mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_380, LIGHT_TYPE_FRESH + " 380mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_600, LIGHT_TYPE_FRESH + " 600mm" );
-        mDeviceMap.put( LIGHT_ID_FRESH_900, LIGHT_TYPE_FRESH + " 900mm" );
+        mDeviceMap.put(LIGHT_ID_FRESH_500, LIGHT_TYPE_FRESH + " 500mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_800, LIGHT_TYPE_FRESH + " 800mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_1100, LIGHT_TYPE_FRESH + " 1100mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_1000, LIGHT_TYPE_FRESH + " 1000mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_380, LIGHT_TYPE_FRESH + " 380mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_600, LIGHT_TYPE_FRESH + " 600mm");
+        mDeviceMap.put(LIGHT_ID_FRESH_900, LIGHT_TYPE_FRESH + " 900mm");
         /* Aquasky */
-        mDeviceMap.put( LIGHT_ID_AQUASKY_600, LIGHT_TYPE_AQUASKY + " 600mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_900, LIGHT_TYPE_AQUASKY + " 900mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_1200, LIGHT_TYPE_AQUASKY + " 1200mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_380, LIGHT_TYPE_AQUASKY + " 380mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_530, LIGHT_TYPE_AQUASKY + " 530mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_835, LIGHT_TYPE_AQUASKY + " 835mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_990, LIGHT_TYPE_AQUASKY + " 990mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_750, LIGHT_TYPE_AQUASKY + " 750mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_1150, LIGHT_TYPE_AQUASKY + " 1150mm" );
-        mDeviceMap.put( LIGHT_ID_AQUASKY_910, LIGHT_TYPE_AQUASKY + " 910mm" );
+        mDeviceMap.put(LIGHT_ID_AQUASKY_600, LIGHT_TYPE_AQUASKY + " 600mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_900, LIGHT_TYPE_AQUASKY + " 900mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_1200, LIGHT_TYPE_AQUASKY + " 1200mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_380, LIGHT_TYPE_AQUASKY + " 380mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_530, LIGHT_TYPE_AQUASKY + " 530mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_835, LIGHT_TYPE_AQUASKY + " 835mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_990, LIGHT_TYPE_AQUASKY + " 990mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_750, LIGHT_TYPE_AQUASKY + " 750mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_1150, LIGHT_TYPE_AQUASKY + " 1150mm");
+        mDeviceMap.put(LIGHT_ID_AQUASKY_910, LIGHT_TYPE_AQUASKY + " 910mm");
         /* Nano */
-        mDeviceMap.put( LIGHT_ID_NANO_MARINE, LIGHT_TYPE_NANO_MARINE );
-        mDeviceMap.put( LIGHT_ID_NANO_FRESH, LIGHT_TYPE_NANO_FRESH );
+        mDeviceMap.put(LIGHT_ID_NANO_MARINE, LIGHT_TYPE_NANO_MARINE);
+        mDeviceMap.put(LIGHT_ID_NANO_FRESH, LIGHT_TYPE_NANO_FRESH);
         /* Strip III Blue */
-        mDeviceMap.put( LIGHT_ID_BLUE_500, LIGHT_TYPE_BLUE + " 500mm" );
-        mDeviceMap.put( LIGHT_ID_BLUE_800, LIGHT_TYPE_BLUE + " 800mm" );
-        mDeviceMap.put( LIGHT_ID_BLUE_1100, LIGHT_TYPE_BLUE + " 1100mm" );
-        mDeviceMap.put( LIGHT_ID_BLUE_1000, LIGHT_TYPE_BLUE + " 1000mm" );
+        mDeviceMap.put(LIGHT_ID_BLUE_500, LIGHT_TYPE_BLUE + " 500mm");
+        mDeviceMap.put(LIGHT_ID_BLUE_800, LIGHT_TYPE_BLUE + " 800mm");
+        mDeviceMap.put(LIGHT_ID_BLUE_1100, LIGHT_TYPE_BLUE + " 1100mm");
+        mDeviceMap.put(LIGHT_ID_BLUE_1000, LIGHT_TYPE_BLUE + " 1000mm");
         /* Roma Series */
-        mDeviceMap.put( LIGHT_ID_ROMA90, LIGHT_TYPE_ROMA90 );
-        mDeviceMap.put( LIGHT_ID_ROMA125, LIGHT_TYPE_ROMA125 );
-        mDeviceMap.put( LIGHT_ID_ROMA200, LIGHT_TYPE_ROMA200 );
-        mDeviceMap.put( LIGHT_ID_ROMA240, LIGHT_TYPE_ROMA240 );
-        mDeviceMap.put( LIGHT_ID_VI180, LIGHT_TYPE_VI180 );
-        mDeviceMap.put( LIGHT_ID_VI260, LIGHT_TYPE_VI260 );
-        mDeviceMap.put( LIGHT_ID_VE190, LIGHT_TYPE_VE190 );
-        mDeviceMap.put( LIGHT_ID_VE350A, LIGHT_TYPE_VE350A );
-        mDeviceMap.put( LIGHT_ID_VE350B, LIGHT_TYPE_VE350B );
+        mDeviceMap.put(LIGHT_ID_ROMA90, LIGHT_TYPE_ROMA90);
+        mDeviceMap.put(LIGHT_ID_ROMA125, LIGHT_TYPE_ROMA125);
+        mDeviceMap.put(LIGHT_ID_ROMA200, LIGHT_TYPE_ROMA200);
+        mDeviceMap.put(LIGHT_ID_ROMA240, LIGHT_TYPE_ROMA240);
+        mDeviceMap.put(LIGHT_ID_VI180, LIGHT_TYPE_VI180);
+        mDeviceMap.put(LIGHT_ID_VI260, LIGHT_TYPE_VI260);
+        mDeviceMap.put(LIGHT_ID_VE190, LIGHT_TYPE_VE190);
+        mDeviceMap.put(LIGHT_ID_VE350A, LIGHT_TYPE_VE350A);
+        mDeviceMap.put(LIGHT_ID_VE350B, LIGHT_TYPE_VE350B);
+
+        mDeviceMap.put(LIGHT_ID_OAK168, LIGHT_TYPE_OAK168);
+        mDeviceMap.put(LIGHT_ID_OAK252, LIGHT_TYPE_OAK252);
+        mDeviceMap.put(LIGHT_ID_AQ166, LIGHT_TYPE_AQ166);
+        mDeviceMap.put(LIGHT_ID_AQ272, LIGHT_TYPE_AQ272);
+        mDeviceMap.put(LIGHT_ID_AQ332, LIGHT_TYPE_AQ332);
 
         /* Test */
-        mIconMap.put( LIGHT_ID_RGBW, R.mipmap.ic_light_rgbw_ii );
-        mIconMap.put( LIGHT_ID_STRIP_III, R.mipmap.ic_light_strip_iii );
-        mIconMap.put( LIGHT_ID_EGG, R.mipmap.ic_light_egg );
+        mIconMap.put(LIGHT_ID_RGBW, R.mipmap.ic_light_rgbw_ii);
+        mIconMap.put(LIGHT_ID_STRIP_III, R.mipmap.ic_light_strip_iii);
+        mIconMap.put(LIGHT_ID_EGG, R.mipmap.ic_light_egg);
         /* Marine & Ref */
-        mIconMap.put( LIGHT_ID_MARINE_500, R.mipmap.ic_light_marine );
-        mIconMap.put( LIGHT_ID_MARINE_800, R.mipmap.ic_light_marine );
-        mIconMap.put( LIGHT_ID_MARINE_1100, R.mipmap.ic_light_marine );
-        mIconMap.put( LIGHT_ID_MARINE_1000, R.mipmap.ic_light_marine );
-        mIconMap.put( LIGHT_ID_MARINE_380, R.mipmap.ic_light_marine );
-        mIconMap.put( LIGHT_ID_MARINE_750, R.mipmap.ic_light_marine );
+        mIconMap.put(LIGHT_ID_MARINE_500, R.mipmap.ic_light_marine);
+        mIconMap.put(LIGHT_ID_MARINE_800, R.mipmap.ic_light_marine);
+        mIconMap.put(LIGHT_ID_MARINE_1100, R.mipmap.ic_light_marine);
+        mIconMap.put(LIGHT_ID_MARINE_1000, R.mipmap.ic_light_marine);
+        mIconMap.put(LIGHT_ID_MARINE_380, R.mipmap.ic_light_marine);
+        mIconMap.put(LIGHT_ID_MARINE_750, R.mipmap.ic_light_marine);
         /* Plant & Fresh */
-        mIconMap.put( LIGHT_ID_FRESH_500, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_800, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_1100, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_1000, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_380, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_600, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_FRESH_900, R.mipmap.ic_light_fresh );
+        mIconMap.put(LIGHT_ID_FRESH_500, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_800, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_1100, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_1000, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_380, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_600, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_FRESH_900, R.mipmap.ic_light_fresh);
         /* Aquasky */
-        mIconMap.put( LIGHT_ID_AQUASKY_600, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_900, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_1200, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_380, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_530, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_835, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_990, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_750, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_1150, R.mipmap.ic_light_aquasky );
-        mIconMap.put( LIGHT_ID_AQUASKY_910, R.mipmap.ic_light_aquasky );
+        mIconMap.put(LIGHT_ID_AQUASKY_600, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_900, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_1200, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_380, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_530, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_835, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_990, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_750, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_1150, R.mipmap.ic_light_aquasky);
+        mIconMap.put(LIGHT_ID_AQUASKY_910, R.mipmap.ic_light_aquasky);
         /* Nano */
-        mIconMap.put( LIGHT_ID_NANO_MARINE, R.mipmap.ic_light_nano_marine );
-        mIconMap.put( LIGHT_ID_NANO_FRESH, R.mipmap.ic_light_nano_fresh );
+        mIconMap.put(LIGHT_ID_NANO_MARINE, R.mipmap.ic_light_nano_marine);
+        mIconMap.put(LIGHT_ID_NANO_FRESH, R.mipmap.ic_light_nano_fresh);
         /* Plant & Fresh */
-        mIconMap.put( LIGHT_ID_BLUE_500, R.mipmap.ic_light_blue );
-        mIconMap.put( LIGHT_ID_BLUE_800, R.mipmap.ic_light_blue );
-        mIconMap.put( LIGHT_ID_BLUE_1100, R.mipmap.ic_light_blue );
-        mIconMap.put( LIGHT_ID_BLUE_1000, R.mipmap.ic_light_blue );
+        mIconMap.put(LIGHT_ID_BLUE_500, R.mipmap.ic_light_blue);
+        mIconMap.put(LIGHT_ID_BLUE_800, R.mipmap.ic_light_blue);
+        mIconMap.put(LIGHT_ID_BLUE_1100, R.mipmap.ic_light_blue);
+        mIconMap.put(LIGHT_ID_BLUE_1000, R.mipmap.ic_light_blue);
         /* Roma Series */
-        mIconMap.put( LIGHT_ID_ROMA90, R.mipmap.ic_roma );
-        mIconMap.put( LIGHT_ID_ROMA125, R.mipmap.ic_roma );
-        mIconMap.put( LIGHT_ID_ROMA200, R.mipmap.ic_roma );
-        mIconMap.put( LIGHT_ID_ROMA240, R.mipmap.ic_roma );
-        mIconMap.put( LIGHT_ID_VI180, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_VI260, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_VE190, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_VE350A, R.mipmap.ic_light_fresh );
-        mIconMap.put( LIGHT_ID_VE350B, R.mipmap.ic_light_fresh );
+        mIconMap.put(LIGHT_ID_ROMA90, R.mipmap.ic_roma);
+        mIconMap.put(LIGHT_ID_ROMA125, R.mipmap.ic_roma);
+        mIconMap.put(LIGHT_ID_ROMA200, R.mipmap.ic_roma);
+        mIconMap.put(LIGHT_ID_ROMA240, R.mipmap.ic_roma);
+        mIconMap.put(LIGHT_ID_VI180, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_VI260, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_VE190, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_VE350A, R.mipmap.ic_light_fresh);
+        mIconMap.put(LIGHT_ID_VE350B, R.mipmap.ic_light_fresh);
+
+        mIconMap.put(LIGHT_ID_OAK168, R.mipmap.ic_light_oak);
+        mIconMap.put(LIGHT_ID_OAK252, R.mipmap.ic_light_oak);
+        mIconMap.put(LIGHT_ID_AQ166, R.mipmap.ic_light_aq);
+        mIconMap.put(LIGHT_ID_AQ272, R.mipmap.ic_light_aq);
+        mIconMap.put(LIGHT_ID_AQ332, R.mipmap.ic_light_aq);
     }
 
-    public static boolean isCorrectDevType( short id )
+    public static boolean isCorrectDevType(short id)
     {
-        return mDeviceMap.containsKey( id );
+        return mDeviceMap.containsKey(id);
     }
 
     /**
@@ -305,11 +327,11 @@ public class DeviceUtil
      * @param devid
      * @return
      */
-    public static String getDeviceType( short devid )
+    public static String getDeviceType(short devid)
     {
-        if ( mDeviceMap.containsKey( devid ) )
+        if (mDeviceMap.containsKey(devid))
         {
-            return mDeviceMap.get( devid );
+            return mDeviceMap.get(devid);
         }
         return "Unkown device";
     }
@@ -373,43 +395,50 @@ public class DeviceUtil
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
                 return "venezia";
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
+                return "oak";
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
+                return "aq";
         }
         return "unkown";
     }
 
-    public static int getDeviceIcon( short devid )
+    public static int getDeviceIcon(short devid)
     {
         int resid = R.drawable.ic_bluetooth_white_48dp;
-        if ( mIconMap == null )
+        if (mIconMap == null)
         {
             return resid;
         }
-        if ( mIconMap.containsKey( devid ) )
+        if (mIconMap.containsKey(devid))
         {
-            return mIconMap.get( devid );
+            return mIconMap.get(devid);
         }
         return resid;
     }
 
-    public static Channel[] getLightChannel( Context context, short devid )
+    public static Channel[] getLightChannel(Context context, short devid)
     {
         Channel[] channels = null;
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
-                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_white ) };
+                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_red), CustomColor.COLOR_RED_A700, R.drawable.ic_red),
+                                          new Channel(context.getString(R.string.chn_name_green), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green),
+                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
+                                          new Channel(context.getString(R.string.chn_name_white), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_white) };
                 break;
 
             case LIGHT_ID_EGG:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ),
-                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite ) };
+                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_red), CustomColor.COLOR_RED_A700, R.drawable.ic_red),
+                                          new Channel(context.getString(R.string.chn_name_green), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green),
+                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
+                                          new Channel(context.getString(R.string.chn_name_coldwhite), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite),
+                                          new Channel(context.getString(R.string.chn_name_Warmwhite), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite) };
                 break;
 
             case LIGHT_ID_MARINE_500:
@@ -419,11 +448,11 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_380:
             case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
-                                          new Channel( context.getString( R.string.chn_name_cyan ), CustomColor.COLOR_CYAN_A700, R.drawable.ic_cyan ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
-                                          new Channel( context.getString( R.string.chn_name_purple ), CustomColor.COLOR_PURPLE_A700, R.drawable.ic_purple ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ) };
+                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_pink), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink),
+                                          new Channel(context.getString(R.string.chn_name_cyan), CustomColor.COLOR_CYAN_A700, R.drawable.ic_cyan),
+                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
+                                          new Channel(context.getString(R.string.chn_name_purple), CustomColor.COLOR_PURPLE_A700, R.drawable.ic_purple),
+                                          new Channel(context.getString(R.string.chn_name_coldwhite), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite) };
                 break;
 
             case LIGHT_ID_FRESH_500:
@@ -439,11 +468,14 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_pink ), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
-                                          new Channel( context.getString( R.string.chn_name_coldwhite ), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite ),
-                                          new Channel( context.getString( R.string.chn_name_purewhite ), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_purewhite ),
-                                          new Channel( context.getString( R.string.chn_name_Warmwhite ), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite ) };
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
+                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_pink), CustomColor.COLOR_PINK_A700, R.drawable.ic_pink),
+                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
+                                          new Channel(context.getString(R.string.chn_name_coldwhite), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite),
+                                          new Channel(context.getString(R.string.chn_name_purewhite), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_purewhite),
+                                          new Channel(context.getString(R.string.chn_name_Warmwhite), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite) };
                 break;
 
             case LIGHT_ID_AQUASKY_600:
@@ -460,28 +492,30 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-                channels = new Channel[]{ new Channel( context.getString( R.string.chn_name_red ), CustomColor.COLOR_RED_A700, R.drawable.ic_red ),
-                                          new Channel( context.getString( R.string.chn_name_green ), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green ),
-                                          new Channel( context.getString( R.string.chn_name_blue ), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue ),
-                                          new Channel( context.getString( R.string.chn_name_white ), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_white ) };
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
+                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_red), CustomColor.COLOR_RED_A700, R.drawable.ic_red),
+                                          new Channel(context.getString(R.string.chn_name_green), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green),
+                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
+                                          new Channel(context.getString(R.string.chn_name_white), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_white) };
                 break;
             case LIGHT_ID_BLUE_500:
             case LIGHT_ID_BLUE_800:
             case LIGHT_ID_BLUE_1100:
             case LIGHT_ID_BLUE_1000:
-                channels = new Channel[]{ new Channel( "400nm", CustomColor.COLOR_400nm, R.drawable.ic_400nm ),
-                                          new Channel( "420nm", CustomColor.COLOR_420nm, R.drawable.ic_420nm ),
-                                          new Channel( "440nm", CustomColor.COLOR_440nm, R.drawable.ic_440nm ),
-                                          new Channel( "460nm", CustomColor.COLOR_460nm, R.drawable.ic_460nm ),};
+                channels = new Channel[]{ new Channel("400nm", CustomColor.COLOR_400nm, R.drawable.ic_400nm),
+                                          new Channel("420nm", CustomColor.COLOR_420nm, R.drawable.ic_420nm),
+                                          new Channel("440nm", CustomColor.COLOR_440nm, R.drawable.ic_440nm),
+                                          new Channel("460nm", CustomColor.COLOR_460nm, R.drawable.ic_460nm),};
                 break;
         }
         return channels;
     }
 
-    public static int[] getThumb( short devid )
+    public static int[] getThumb(short devid)
     {
         int[] thumbs = null;
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -520,6 +554,9 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
                 thumbs = new int[]{ R.drawable.shape_thumb_pink,
                                     R.drawable.shape_thumb_blue,
                                     R.drawable.shape_thumb_coldwhite,
@@ -540,6 +577,8 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
                 thumbs = new int[]{ R.drawable.shape_thumb_red, R.drawable.shape_thumb_green, R.drawable.shape_thumb_blue, R.drawable.shape_thumb_purewhite };
                 break;
             case LIGHT_ID_BLUE_500:
@@ -552,10 +591,10 @@ public class DeviceUtil
         return thumbs;
     }
 
-    public static int[] getSeekbar( short devid )
+    public static int[] getSeekbar(short devid)
     {
         int[] seekBars = null;
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -597,6 +636,9 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
                 seekBars = new int[]{ R.drawable.custom_seekbar_pink,
                                       R.drawable.custom_seekbar_blue,
                                       R.drawable.custom_seekbar_coldwhite,
@@ -617,6 +659,8 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
                 seekBars = new int[]{ R.drawable.custom_seekbar_red,
                                       R.drawable.custom_seekbar_green,
                                       R.drawable.custom_seekbar_blue,
@@ -632,13 +676,13 @@ public class DeviceUtil
         return seekBars;
     }
 
-    public static Map< String, LightAuto > getAutoPresetProfiles( Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff )
+    public static Map< String, LightAuto > getAutoPresetProfiles(Context context, short devid, boolean hasAutoDynamic, boolean hasTurnoff)
     {
         Map< String, LightAuto > profiles = new LinkedHashMap<>();
         boolean turnoffEnable = hasTurnoff;
         byte turnoffHour = (byte) (hasTurnoff ? 0x16 : 0x00);
         byte turnoffMinute = 0x00;
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
@@ -647,24 +691,24 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_380:
             case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
-                profiles.put( context.getString( R.string.preset_deep_sea_glo ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                profiles.put(context.getString(R.string.preset_deep_sea_glo),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 16, 100, 100, 100, 0 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
-                profiles.put( context.getString( R.string.preset_sunny_reef ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                                             turnoffEnable, turnoffHour, turnoffMinute));
+                profiles.put(context.getString(R.string.preset_sunny_reef),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 100, 100, 100, 100, 100 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
-                profiles.put( context.getString( R.string.preset_color_boost ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                                             turnoffEnable, turnoffHour, turnoffMinute));
+                profiles.put(context.getString(R.string.preset_color_boost),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 68, 100, 100, 85, 90 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 0, 5, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute));
                 break;
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
@@ -679,24 +723,27 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
-                profiles.put( context.getString( R.string.preset_tropic_river ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
+                profiles.put(context.getString(R.string.preset_tropic_river),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 80, 0, 37, 100, 100 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
-                profiles.put( context.getString( R.string.preset_lake_malawi ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                                             turnoffEnable, turnoffHour, turnoffMinute));
+                profiles.put(context.getString(R.string.preset_lake_malawi),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 50, 0, 37, 100, 0 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
-                profiles.put( context.getString( R.string.preset_planted ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                                             turnoffEnable, turnoffHour, turnoffMinute));
+                profiles.put(context.getString(R.string.preset_planted),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 84, 20, 73, 100, 80 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 5, 0, 0, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute));
                 break;
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -714,49 +761,51 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-                profiles.put( context.getString( R.string.preset_color_boost ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
+                profiles.put(context.getString(R.string.preset_color_boost),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 68, 100, 100, 90 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 0, 5, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
-                profiles.put( context.getString( R.string.preset_plant_boost ),
-                              new LightAuto( new RampTime( (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00 ),
+                                             turnoffEnable, turnoffHour, turnoffMinute));
+                profiles.put(context.getString(R.string.preset_plant_boost),
+                              new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 100, 100, 100, 100 },
-                                             new RampTime( (byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00 ),
+                                             new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
                                              new byte[]{ 0, 0, 5, 0 },
-                                             turnoffEnable, turnoffHour, turnoffMinute ) );
+                                             turnoffEnable, turnoffHour, turnoffMinute));
                 break;
         }
-        if ( hasAutoDynamic )
+        if (hasAutoDynamic)
         {
-            for ( String key : profiles.keySet() )
+            for (String key : profiles.keySet())
             {
-                profiles.get( key )
-                        .setHasDynamic( true );
-                profiles.get( key )
-                        .setSun( false );
-                profiles.get( key )
-                        .setMon( false );
-                profiles.get( key )
-                        .setTue( false );
-                profiles.get( key )
-                        .setWed( false );
-                profiles.get( key )
-                        .setThu( false );
-                profiles.get( key )
-                        .setFri( false );
-                profiles.get( key )
-                        .setSat( false );
-                profiles.get( key )
-                        .setDynamicEnable( false );
-                profiles.get( key )
-                        .setDynamicPeriod( new RampTime( (byte) 0, (byte) 0, (byte) 0, (byte) 0 ) );
-                profiles.get( key )
-                        .setDynamicMode( (byte) 0 );
+                profiles.get(key)
+                        .setHasDynamic(true);
+                profiles.get(key)
+                        .setSun(false);
+                profiles.get(key)
+                        .setMon(false);
+                profiles.get(key)
+                        .setTue(false);
+                profiles.get(key)
+                        .setWed(false);
+                profiles.get(key)
+                        .setThu(false);
+                profiles.get(key)
+                        .setFri(false);
+                profiles.get(key)
+                        .setSat(false);
+                profiles.get(key)
+                        .setDynamicEnable(false);
+                profiles.get(key)
+                        .setDynamicPeriod(new RampTime((byte) 0, (byte) 0, (byte) 0, (byte) 0));
+                profiles.get(key)
+                        .setDynamicMode((byte) 0);
             }
         }
-        if ( !hasTurnoff )
+        if (!hasTurnoff)
         {
             for (String key : profiles.keySet())
             {
@@ -766,11 +815,11 @@ public class DeviceUtil
         return profiles;
     }
 
-    public static Map< String, LightPro > getProPresetProfiles( Context context, short devid, boolean hasAutoDynamic )
+    public static Map< String, LightPro > getProPresetProfiles(Context context, short devid, boolean hasAutoDynamic)
     {
-        int chn = DeviceUtil.getChannelCount( devid );
+        int chn = DeviceUtil.getChannelCount(devid);
         Map< String, LightPro > profiles = new LinkedHashMap<>();
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
@@ -779,12 +828,12 @@ public class DeviceUtil
             case LIGHT_ID_MARINE_380:
             case LIGHT_ID_MARINE_750:
             case LIGHT_ID_NANO_MARINE:
-                profiles.put( context.getString( R.string.preset_deep_sea_glo ),
-                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_DEEP_SEA_GLO, chn ) );
-                profiles.put( context.getString( R.string.preset_sunny_reef ),
-                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_SUNNY_REEF, chn ) );
-                profiles.put( context.getString( R.string.preset_color_boost ),
-                              new LightPro.Builder().creatFromArray( PRO_MARINE_PRESET_COLOR_BOOST, chn ));
+                profiles.put(context.getString(R.string.preset_deep_sea_glo),
+                              new LightPro.Builder().creatFromArray(PRO_MARINE_PRESET_DEEP_SEA_GLO, chn));
+                profiles.put(context.getString(R.string.preset_sunny_reef),
+                              new LightPro.Builder().creatFromArray(PRO_MARINE_PRESET_SUNNY_REEF, chn));
+                profiles.put(context.getString(R.string.preset_color_boost),
+                              new LightPro.Builder().creatFromArray(PRO_MARINE_PRESET_COLOR_BOOST, chn));
                 break;
             case LIGHT_ID_FRESH_500:
             case LIGHT_ID_FRESH_800:
@@ -799,12 +848,15 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
-                profiles.put( context.getString( R.string.preset_tropic_river ),
-                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_TROPIC_RIVER, chn ) );
-                profiles.put( context.getString( R.string.preset_lake_malawi ),
-                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_LAKE_MALAWI, chn ) );
-                profiles.put( context.getString( R.string.preset_planted ),
-                              new LightPro.Builder().creatFromArray( PRO_FRESH_PRESET_PLANTED, chn ) );
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
+                profiles.put(context.getString(R.string.preset_tropic_river),
+                              new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_TROPIC_RIVER, chn));
+                profiles.put(context.getString(R.string.preset_lake_malawi),
+                              new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_LAKE_MALAWI, chn));
+                profiles.put(context.getString(R.string.preset_planted),
+                              new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_PLANTED, chn));
                 break;
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -822,49 +874,51 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
-                profiles.put( context.getString( R.string.preset_color_boost ),
-                              new LightPro.Builder().creatFromArray( PRO_AQUASKY_PRESET_COLOR_BOOST, chn ) );
-                profiles.put( context.getString( R.string.preset_plant_boost ),
-                              new LightPro.Builder().creatFromArray( PRO_AQUASKY_PRESET_PLANT_BOOST, chn ) );
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
+                profiles.put(context.getString(R.string.preset_color_boost),
+                              new LightPro.Builder().creatFromArray(PRO_AQUASKY_PRESET_COLOR_BOOST, chn));
+                profiles.put(context.getString(R.string.preset_plant_boost),
+                              new LightPro.Builder().creatFromArray(PRO_AQUASKY_PRESET_PLANT_BOOST, chn));
                 break;
         }
-        if ( hasAutoDynamic )
+        if (hasAutoDynamic)
         {
-            for ( String key : profiles.keySet() )
+            for (String key : profiles.keySet())
             {
-                if ( profiles.get( key ) != null ) {
-                    profiles.get( key )
-                            .setHasDynamic( true );
-                    profiles.get( key )
-                            .setSun( false );
-                    profiles.get( key )
-                            .setMon( false );
-                    profiles.get( key )
-                            .setTue( false );
-                    profiles.get( key )
-                            .setWed( false );
-                    profiles.get( key )
-                            .setThu( false );
-                    profiles.get( key )
-                            .setFri( false );
-                    profiles.get( key )
-                            .setSat( false );
-                    profiles.get( key )
-                            .setDynamicEnable( false );
-                    profiles.get( key )
-                            .setDynamicPeriod( new RampTime( (byte) 0, (byte) 0, (byte) 0, (byte) 0 ) );
-                    profiles.get( key )
-                            .setDynamicMode( (byte) 0 );
+                if (profiles.get(key) != null) {
+                    profiles.get(key)
+                            .setHasDynamic(true);
+                    profiles.get(key)
+                            .setSun(false);
+                    profiles.get(key)
+                            .setMon(false);
+                    profiles.get(key)
+                            .setTue(false);
+                    profiles.get(key)
+                            .setWed(false);
+                    profiles.get(key)
+                            .setThu(false);
+                    profiles.get(key)
+                            .setFri(false);
+                    profiles.get(key)
+                            .setSat(false);
+                    profiles.get(key)
+                            .setDynamicEnable(false);
+                    profiles.get(key)
+                            .setDynamicPeriod(new RampTime((byte) 0, (byte) 0, (byte) 0, (byte) 0));
+                    profiles.get(key)
+                            .setDynamicMode((byte) 0);
                 }
             }
         }
         return profiles;
     }
 
-    public static int getChannelCount( short devid )
+    public static int getChannelCount(short devid)
     {
         int chns = 0;
-        switch ( devid )
+        switch (devid)
         {
             case LIGHT_ID_RGBW:
             case LIGHT_ID_STRIP_III:
@@ -886,6 +940,8 @@ public class DeviceUtil
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
             case LIGHT_ID_ROMA240:
+            case LIGHT_ID_OAK168:
+            case LIGHT_ID_OAK252:
                 chns = 4;
                 break;
             case LIGHT_ID_EGG:
@@ -909,16 +965,19 @@ public class DeviceUtil
             case LIGHT_ID_VE190:
             case LIGHT_ID_VE350A:
             case LIGHT_ID_VE350B:
+            case LIGHT_ID_AQ166:
+            case LIGHT_ID_AQ272:
+            case LIGHT_ID_AQ332:
                 chns = 5;
                 break;
         }
         return chns;
     }
 
-    public static int getDynamicRes( int index )
+    public static int getDynamicRes(int index)
     {
         int res = 0;
-        switch ( index )
+        switch (index)
         {
             case 1:
                 res = R.mipmap.ic_thunder1;

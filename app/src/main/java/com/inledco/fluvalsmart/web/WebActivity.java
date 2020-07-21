@@ -1,16 +1,17 @@
 package com.inledco.fluvalsmart.web;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,6 +22,9 @@ import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
 
 public class WebActivity extends BaseActivity {
+
+    private final String GOOGLE_DOC_URL = "https://docs.google.com/gview?embedded=true&url=";
+
     private boolean mAllowOpenInBrowser;
     private String mUrl;
     private Toolbar web_toolbar;
@@ -31,7 +35,7 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web);
+        setContentView(R.layout.activity_webpage);
 
         initView();
         initData();
@@ -109,6 +113,7 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        web_show.stopLoading();
         if (web_show.canGoBack()) {
             web_show.goBack();
             return;
@@ -160,16 +165,19 @@ public class WebActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    String newurl = request.getUrl().toString();
+                    if (TextUtils.isEmpty(newurl) == false && newurl.endsWith(".pdf")) {
+                        web.loadUrl(GOOGLE_DOC_URL + newurl);
+                    }
+                }
+                return super.shouldOverrideUrlLoading(view, request);
+            }
         });
         web.loadUrl(url);
-    }
-
-    private void fullscreen() {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     public class MyWebChromeClient extends WebChromeClient {
@@ -177,7 +185,6 @@ public class WebActivity extends BaseActivity {
         public void onShowCustomView(View view, CustomViewCallback callback) {
             super.onShowCustomView(view, callback);
 
-            fullscreen();
             web_toolbar.setVisibility(View.GONE);
             web_show.setVisibility(View.GONE);
             web_fs_container.setVisibility(View.VISIBLE);
@@ -188,7 +195,6 @@ public class WebActivity extends BaseActivity {
         public void onHideCustomView() {
             super.onHideCustomView();
 
-            fullscreen();
             web_toolbar.setVisibility(View.VISIBLE);
             web_show.setVisibility(View.VISIBLE);
             web_fs_container.setVisibility(View.GONE);

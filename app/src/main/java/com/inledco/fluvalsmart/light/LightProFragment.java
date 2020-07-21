@@ -586,6 +586,9 @@ public class LightProFragment extends BaseFragment {
     }
 
     private short[] getBrights(final int ct) {
+        if (mLightPro == null) {
+            return null;
+        }
         final int chns = DeviceUtil.getChannelCount(devid);
         final int count = mLightPro.getPointCount();
         if (chns <= 0 || chns > 6 || count < LightPro.POINT_COUNT_MIN || count > LightPro.POINT_COUNT_MAX) {

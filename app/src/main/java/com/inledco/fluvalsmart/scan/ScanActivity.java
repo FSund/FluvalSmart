@@ -153,7 +153,9 @@ public class ScanActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mReceiver);
-        scan_tb_scan.setChecked(false);
+        if (scan_tb_scan != null) {
+            scan_tb_scan.setChecked(false);
+        }
         stopScan();
         BleManager.getInstance().removeBleListener(mBleListener);
     }

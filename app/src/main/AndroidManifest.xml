@@ -34,7 +34,7 @@
         <activity
             android:name=".scan.ScanActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="unspecified">
         </activity>
         <activity
             android:name=".light.LightActivity"
@@ -44,7 +44,7 @@
         <activity
             android:name=".web.WebActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
