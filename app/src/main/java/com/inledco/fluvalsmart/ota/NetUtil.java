@@ -6,14 +6,14 @@ import android.net.NetworkInfo;
 
 public class NetUtil
 {
-    public static boolean isNetworkAvailable( Context context)
+    public static boolean isNetworkAvailable(Context context)
     {
-        if ( context == null )
+        if (context == null)
         {
             return false;
         }
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService( Context.CONNECTIVITY_SERVICE );
-        if ( manager == null )
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager == null)
         {
             return false;
         }

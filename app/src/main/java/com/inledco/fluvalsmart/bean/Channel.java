@@ -13,7 +13,7 @@ public class Channel
     private @DrawableRes int icon;
     private short value;
 
-    public Channel( String name, int color, @DrawableRes int icon )
+    public Channel(String name, int color, @DrawableRes int icon)
     {
         this.name = name;
         this.color = color;
@@ -21,7 +21,7 @@ public class Channel
         this.value = 0;
     }
 
-    public Channel( String name, int color, short value )
+    public Channel(String name, int color, short value)
     {
         this.name = name;
         this.color = color;
@@ -33,7 +33,7 @@ public class Channel
         return name;
     }
 
-    public void setName ( String name )
+    public void setName (String name)
     {
         this.name = name;
     }
@@ -43,7 +43,7 @@ public class Channel
         return color;
     }
 
-    public void setColor ( int color )
+    public void setColor (int color)
     {
         this.color = color;
     }
@@ -53,7 +53,7 @@ public class Channel
         return icon;
     }
 
-    public void setIcon( @DrawableRes int icon )
+    public void setIcon(@DrawableRes int icon)
     {
         this.icon = icon;
     }
@@ -63,7 +63,7 @@ public class Channel
         return value;
     }
 
-    public void setValue ( short value )
+    public void setValue (short value)
     {
         this.value = value;
     }

@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,10 +28,10 @@ public class DeviceUtil
 {
     //灯具类别--0x**** 前两位表示设备类型,如灯,插座,第三位表示设备子类型,如marine,fresh,第四位表示该设备的不同规格 如长度500,800,1100
 
-    /* Test */
-    public static final short LIGHT_ID_RGBW = 0x0105;
-    public static final short LIGHT_ID_STRIP_III = 0x0111;
-    public static final short LIGHT_ID_EGG = 0x0115;
+//    /* Test */
+//    public static final short LIGHT_ID_RGBW = 0x0105;
+//    public static final short LIGHT_ID_STRIP_III = 0x0111;
+//    public static final short LIGHT_ID_EGG = 0x0115;
 
     /* Marine & Ref */
     public static final short LIGHT_ID_MARINE_500 = 0x0121;
@@ -66,10 +67,10 @@ public class DeviceUtil
     public static final short LIGHT_ID_NANO_FRESH = 0x0152;
 
     /* Strip III Blue */
-    public static final short LIGHT_ID_BLUE_500 = 0x0161;
-    public static final short LIGHT_ID_BLUE_800 = 0x0162;
-    public static final short LIGHT_ID_BLUE_1100 = 0x0163;
-    public static final short LIGHT_ID_BLUE_1000 = 0x0164;
+//    public static final short LIGHT_ID_BLUE_500 = 0x0161;
+//    public static final short LIGHT_ID_BLUE_800 = 0x0162;
+//    public static final short LIGHT_ID_BLUE_1100 = 0x0163;
+//    public static final short LIGHT_ID_BLUE_1000 = 0x0164;
 
     /* Roma Series */
     public static final short LIGHT_ID_ROMA90 = 0x0171;
@@ -106,8 +107,8 @@ public class DeviceUtil
     public static final String LIGHT_TYPE_VE190 = "Venezia 190";
     public static final String LIGHT_TYPE_VE350A = "Venezia 350A";
     public static final String LIGHT_TYPE_VE350B = "Venezia 350B";
-    public static final String LIGHT_TYPE_OAK168 = "Aqusky Aqua 679mm";
-    public static final String LIGHT_TYPE_OAK252 = "Aqusky Aqua 1025mm";
+    public static final String LIGHT_TYPE_OAK168 = "A-Sky Aqua 679mm";
+    public static final String LIGHT_TYPE_OAK252 = "A-Sky Aqua 1025mm";
     public static final String LIGHT_TYPE_AQ166 = "Plant Aqua 529mm";
     public static final String LIGHT_TYPE_AQ272 = "Plant Aqua 875mm";
     public static final String LIGHT_TYPE_AQ332 = "Plant Aqua 1075mm";
@@ -201,14 +202,15 @@ public class DeviceUtil
                                                                              18, 0, 0, 0, 5, 0,
                                                                              22, 0, 0, 0, 5, 0,
                                                                              22, 30, 0, 0, 0, 0};
-    private static final Map< Short, String > mDeviceMap = new HashMap<>();
-    private static final Map< Short, Integer > mIconMap = new HashMap<>();
+    private static final Map< Short, String > mDeviceMap;
+    private static final Map< Short, Integer > mIconMap;
+    private static final Set<Short> mRgbwSets;
 
     static {
-        /* Test */
-        mDeviceMap.put(LIGHT_ID_RGBW, LIGHT_TYPE_RGBW);
-        mDeviceMap.put(LIGHT_ID_STRIP_III, LIGHT_TYPE_STRIP_III);
-        mDeviceMap.put(LIGHT_ID_EGG, LIGHT_TYPE_EGG);
+        mDeviceMap = new HashMap<>();
+        mIconMap = new HashMap<>();
+        mRgbwSets = new HashSet<>();
+
         /* Marine & Ref */
         mDeviceMap.put(LIGHT_ID_MARINE_500, LIGHT_TYPE_MARINE + " 500mm");
         mDeviceMap.put(LIGHT_ID_MARINE_800, LIGHT_TYPE_MARINE + " 800mm");
@@ -238,11 +240,6 @@ public class DeviceUtil
         /* Nano */
         mDeviceMap.put(LIGHT_ID_NANO_MARINE, LIGHT_TYPE_NANO_MARINE);
         mDeviceMap.put(LIGHT_ID_NANO_FRESH, LIGHT_TYPE_NANO_FRESH);
-        /* Strip III Blue */
-        mDeviceMap.put(LIGHT_ID_BLUE_500, LIGHT_TYPE_BLUE + " 500mm");
-        mDeviceMap.put(LIGHT_ID_BLUE_800, LIGHT_TYPE_BLUE + " 800mm");
-        mDeviceMap.put(LIGHT_ID_BLUE_1100, LIGHT_TYPE_BLUE + " 1100mm");
-        mDeviceMap.put(LIGHT_ID_BLUE_1000, LIGHT_TYPE_BLUE + " 1000mm");
         /* Roma Series */
         mDeviceMap.put(LIGHT_ID_ROMA90, LIGHT_TYPE_ROMA90);
         mDeviceMap.put(LIGHT_ID_ROMA125, LIGHT_TYPE_ROMA125);
@@ -260,10 +257,6 @@ public class DeviceUtil
         mDeviceMap.put(LIGHT_ID_AQ272, LIGHT_TYPE_AQ272);
         mDeviceMap.put(LIGHT_ID_AQ332, LIGHT_TYPE_AQ332);
 
-        /* Test */
-        mIconMap.put(LIGHT_ID_RGBW, R.mipmap.ic_light_rgbw_ii);
-        mIconMap.put(LIGHT_ID_STRIP_III, R.mipmap.ic_light_strip_iii);
-        mIconMap.put(LIGHT_ID_EGG, R.mipmap.ic_light_egg);
         /* Marine & Ref */
         mIconMap.put(LIGHT_ID_MARINE_500, R.mipmap.ic_light_marine);
         mIconMap.put(LIGHT_ID_MARINE_800, R.mipmap.ic_light_marine);
@@ -293,11 +286,6 @@ public class DeviceUtil
         /* Nano */
         mIconMap.put(LIGHT_ID_NANO_MARINE, R.mipmap.ic_light_nano_marine);
         mIconMap.put(LIGHT_ID_NANO_FRESH, R.mipmap.ic_light_nano_fresh);
-        /* Plant & Fresh */
-        mIconMap.put(LIGHT_ID_BLUE_500, R.mipmap.ic_light_blue);
-        mIconMap.put(LIGHT_ID_BLUE_800, R.mipmap.ic_light_blue);
-        mIconMap.put(LIGHT_ID_BLUE_1100, R.mipmap.ic_light_blue);
-        mIconMap.put(LIGHT_ID_BLUE_1000, R.mipmap.ic_light_blue);
         /* Roma Series */
         mIconMap.put(LIGHT_ID_ROMA90, R.mipmap.ic_roma);
         mIconMap.put(LIGHT_ID_ROMA125, R.mipmap.ic_roma);
@@ -314,11 +302,32 @@ public class DeviceUtil
         mIconMap.put(LIGHT_ID_AQ166, R.mipmap.ic_light_aq);
         mIconMap.put(LIGHT_ID_AQ272, R.mipmap.ic_light_aq);
         mIconMap.put(LIGHT_ID_AQ332, R.mipmap.ic_light_aq);
+
+        mRgbwSets.add(LIGHT_ID_AQUASKY_600);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_900);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_1200);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_380);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_530);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_835);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_990);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_750);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_1150);
+        mRgbwSets.add(LIGHT_ID_AQUASKY_910);
+        mRgbwSets.add(LIGHT_ID_ROMA90);
+        mRgbwSets.add(LIGHT_ID_ROMA125);
+        mRgbwSets.add(LIGHT_ID_ROMA200);
+        mRgbwSets.add(LIGHT_ID_ROMA240);
+        mRgbwSets.add(LIGHT_ID_OAK168);
+        mRgbwSets.add(LIGHT_ID_OAK252);
     }
 
     public static boolean isCorrectDevType(short id)
     {
         return mDeviceMap.containsKey(id);
+    }
+
+    public static boolean isRgbw(short id) {
+        return mRgbwSets.contains(id);
     }
 
     /**
@@ -333,7 +342,7 @@ public class DeviceUtil
         {
             return mDeviceMap.get(devid);
         }
-        return "Unkown device";
+        return "Unknown device";
     }
 
     public static Set<Short> getAllDeviceIDS() {
@@ -342,12 +351,6 @@ public class DeviceUtil
 
     public static String getDeviceMainType(short devid) {
         switch (devid) {
-            case LIGHT_ID_RGBW:
-                return "rgbw";
-            case LIGHT_ID_STRIP_III:
-                return "stripiii";
-            case LIGHT_ID_EGG:
-                return "egg";
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
@@ -363,11 +366,6 @@ public class DeviceUtil
             case LIGHT_ID_FRESH_600:
             case LIGHT_ID_FRESH_900:
                 return "fresh";
-            case LIGHT_ID_BLUE_500:
-            case LIGHT_ID_BLUE_800:
-            case LIGHT_ID_BLUE_1100:
-            case LIGHT_ID_BLUE_1000:
-                return "blue";
             case LIGHT_ID_NANO_MARINE:
                 return "nano_marine";
             case LIGHT_ID_NANO_FRESH:
@@ -403,7 +401,7 @@ public class DeviceUtil
             case LIGHT_ID_AQ332:
                 return "aq";
         }
-        return "unkown";
+        return "unknown";
     }
 
     public static int getDeviceIcon(short devid)
@@ -425,22 +423,6 @@ public class DeviceUtil
         Channel[] channels = null;
         switch (devid)
         {
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
-                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_red), CustomColor.COLOR_RED_A700, R.drawable.ic_red),
-                                          new Channel(context.getString(R.string.chn_name_green), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green),
-                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
-                                          new Channel(context.getString(R.string.chn_name_white), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_white) };
-                break;
-
-            case LIGHT_ID_EGG:
-                channels = new Channel[]{ new Channel(context.getString(R.string.chn_name_red), CustomColor.COLOR_RED_A700, R.drawable.ic_red),
-                                          new Channel(context.getString(R.string.chn_name_green), CustomColor.COLOR_GREEN_A700, R.drawable.ic_green),
-                                          new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
-                                          new Channel(context.getString(R.string.chn_name_coldwhite), CustomColor.COLOR_WHITE_COLD, R.drawable.ic_coldwhite),
-                                          new Channel(context.getString(R.string.chn_name_Warmwhite), CustomColor.COLOR_WHITE_WARM, R.drawable.ic_warmwhite) };
-                break;
-
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
@@ -499,15 +481,6 @@ public class DeviceUtil
                                           new Channel(context.getString(R.string.chn_name_blue), CustomColor.COLOR_BLUE_A700, R.drawable.ic_blue),
                                           new Channel(context.getString(R.string.chn_name_white), CustomColor.COLOR_WHITE_PURE, R.drawable.ic_white) };
                 break;
-            case LIGHT_ID_BLUE_500:
-            case LIGHT_ID_BLUE_800:
-            case LIGHT_ID_BLUE_1100:
-            case LIGHT_ID_BLUE_1000:
-                channels = new Channel[]{ new Channel("400nm", CustomColor.COLOR_400nm, R.drawable.ic_400nm),
-                                          new Channel("420nm", CustomColor.COLOR_420nm, R.drawable.ic_420nm),
-                                          new Channel("440nm", CustomColor.COLOR_440nm, R.drawable.ic_440nm),
-                                          new Channel("460nm", CustomColor.COLOR_460nm, R.drawable.ic_460nm),};
-                break;
         }
         return channels;
     }
@@ -517,17 +490,6 @@ public class DeviceUtil
         int[] thumbs = null;
         switch (devid)
         {
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
-                thumbs = new int[]{ R.drawable.shape_thumb_red, R.drawable.shape_thumb_green, R.drawable.shape_thumb_blue, R.drawable.shape_thumb_coldwhite };
-                break;
-            case LIGHT_ID_EGG:
-                thumbs = new int[]{ R.drawable.shape_thumb_red,
-                                    R.drawable.shape_thumb_green,
-                                    R.drawable.shape_thumb_blue,
-                                    R.drawable.shape_thumb_coldwhite,
-                                    R.drawable.shape_thumb_warmwhite };
-                break;
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
@@ -581,12 +543,6 @@ public class DeviceUtil
             case LIGHT_ID_OAK252:
                 thumbs = new int[]{ R.drawable.shape_thumb_red, R.drawable.shape_thumb_green, R.drawable.shape_thumb_blue, R.drawable.shape_thumb_purewhite };
                 break;
-            case LIGHT_ID_BLUE_500:
-            case LIGHT_ID_BLUE_800:
-            case LIGHT_ID_BLUE_1100:
-            case LIGHT_ID_BLUE_1000:
-                thumbs = new int[]{ R.drawable.shape_thumb_400nm, R.drawable.shape_thumb_420nm, R.drawable.shape_thumb_440nm, R.drawable.shape_thumb_460nm };
-                break;
         }
         return thumbs;
     }
@@ -596,20 +552,6 @@ public class DeviceUtil
         int[] seekBars = null;
         switch (devid)
         {
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
-                seekBars = new int[]{ R.drawable.custom_seekbar_red,
-                                      R.drawable.custom_seekbar_green,
-                                      R.drawable.custom_seekbar_blue,
-                                      R.drawable.custom_seekbar_coldwhite };
-                break;
-            case LIGHT_ID_EGG:
-                seekBars = new int[]{ R.drawable.custom_seekbar_red,
-                                      R.drawable.custom_seekbar_green,
-                                      R.drawable.custom_seekbar_blue,
-                                      R.drawable.custom_seekbar_coldwhite,
-                                      R.drawable.custom_seekbar_warmwhite };
-                break;
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:
@@ -666,12 +608,6 @@ public class DeviceUtil
                                       R.drawable.custom_seekbar_blue,
                                       R.drawable.custom_seekbar_purewhite };
                 break;
-            case LIGHT_ID_BLUE_500:
-            case LIGHT_ID_BLUE_800:
-            case LIGHT_ID_BLUE_1100:
-            case LIGHT_ID_BLUE_1000:
-                seekBars = new int[]{ R.drawable.custom_seekbar_400nm, R.drawable.custom_seekbar_420nm, R.drawable.custom_seekbar_440nm, R.drawable.custom_seekbar_460nm };
-                break;
         }
         return seekBars;
     }
@@ -726,7 +662,7 @@ public class DeviceUtil
             case LIGHT_ID_AQ166:
             case LIGHT_ID_AQ272:
             case LIGHT_ID_AQ332:
-                profiles.put(context.getString(R.string.preset_tropic_river),
+                profiles.put(context.getString(R.string.preset_tropical_river),
                               new LightAuto(new RampTime((byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00),
                                              new byte[]{ 80, 0, 37, 100, 100 },
                                              new RampTime((byte) 0x11, (byte) 0x00, (byte) 0x12, (byte) 0x00),
@@ -745,8 +681,6 @@ public class DeviceUtil
                                              new byte[]{ 0, 5, 0, 0, 0 },
                                              turnoffEnable, turnoffHour, turnoffMinute));
                 break;
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
             case LIGHT_ID_AQUASKY_600:
             case LIGHT_ID_AQUASKY_900:
             case LIGHT_ID_AQUASKY_1200:
@@ -851,15 +785,13 @@ public class DeviceUtil
             case LIGHT_ID_AQ166:
             case LIGHT_ID_AQ272:
             case LIGHT_ID_AQ332:
-                profiles.put(context.getString(R.string.preset_tropic_river),
+                profiles.put(context.getString(R.string.preset_tropical_river),
                               new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_TROPIC_RIVER, chn));
                 profiles.put(context.getString(R.string.preset_lake_malawi),
                               new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_LAKE_MALAWI, chn));
                 profiles.put(context.getString(R.string.preset_planted),
                               new LightPro.Builder().creatFromArray(PRO_FRESH_PRESET_PLANTED, chn));
                 break;
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
             case LIGHT_ID_AQUASKY_600:
             case LIGHT_ID_AQUASKY_900:
             case LIGHT_ID_AQUASKY_1200:
@@ -920,8 +852,6 @@ public class DeviceUtil
         int chns = 0;
         switch (devid)
         {
-            case LIGHT_ID_RGBW:
-            case LIGHT_ID_STRIP_III:
             case LIGHT_ID_AQUASKY_600:
             case LIGHT_ID_AQUASKY_900:
             case LIGHT_ID_AQUASKY_1200:
@@ -932,10 +862,6 @@ public class DeviceUtil
             case LIGHT_ID_AQUASKY_750:
             case LIGHT_ID_AQUASKY_1150:
             case LIGHT_ID_AQUASKY_910:
-            case LIGHT_ID_BLUE_500:
-            case LIGHT_ID_BLUE_800:
-            case LIGHT_ID_BLUE_1100:
-            case LIGHT_ID_BLUE_1000:
             case LIGHT_ID_ROMA90:
             case LIGHT_ID_ROMA125:
             case LIGHT_ID_ROMA200:
@@ -944,7 +870,6 @@ public class DeviceUtil
             case LIGHT_ID_OAK252:
                 chns = 4;
                 break;
-            case LIGHT_ID_EGG:
             case LIGHT_ID_MARINE_500:
             case LIGHT_ID_MARINE_800:
             case LIGHT_ID_MARINE_1100:

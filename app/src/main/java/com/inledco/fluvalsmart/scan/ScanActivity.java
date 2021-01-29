@@ -397,7 +397,7 @@ public class ScanActivity extends BaseActivity {
 
     private void decodeMfrData(String mac, String s) {
         byte[] mfr = DataUtil.hexToByteArray(s.replace(" ", ""));
-        //        LogUtil.d( TAG, "onReadMfr: " + mac + "\t" + s );
+        //        LogUtil.d(TAG, "onReadMfr: " + mac + "\t" + s);
         short devid;
         if (mfr == null || mfr.length < 2) {
             devid = 0;

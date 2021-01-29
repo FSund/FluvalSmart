@@ -10,15 +10,16 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/itemtouchhelperextension" />
-            <option value="$PROJECT_DIR$/okhttpmanager" />
-            <option value="$PROJECT_DIR$/swiperecyclerview" />
-            <option value="$PROJECT_DIR$/tuner168blemanager" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart/app" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart/itemtouchhelperextension" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart/okhttpmanager" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart/swiperecyclerview" />
+            <option value="$USER_HOME$/SynologyDrive/Android/FluvalSmart/tuner168blemanager" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

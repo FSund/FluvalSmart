@@ -17,8 +17,8 @@ public class LightManual implements Serializable
     private byte[] mCustomP3Values;
     private byte[] mCustomP4Values;
 
-    public LightManual ( boolean on, byte dynamic, short[] chnValues, byte[] customP1Values, byte[] customP2Values, byte[] customP3Values,
-                         byte[] customP4Values )
+    public LightManual (boolean on, byte dynamic, short[] chnValues, byte[] customP1Values, byte[] customP2Values, byte[] customP3Values,
+                         byte[] customP4Values)
     {
         mOn = on;
         mDynamic = dynamic;
@@ -34,7 +34,7 @@ public class LightManual implements Serializable
         return mOn;
     }
 
-    public void setOn ( boolean on )
+    public void setOn (boolean on)
     {
         mOn = on;
     }
@@ -44,7 +44,7 @@ public class LightManual implements Serializable
         return mDynamic;
     }
 
-    public void setDynamic ( byte dynamic )
+    public void setDynamic (byte dynamic)
     {
         mDynamic = dynamic;
     }
@@ -54,7 +54,7 @@ public class LightManual implements Serializable
         return mChnValues;
     }
 
-    public void setChnValues ( short[] chnValues )
+    public void setChnValues (short[] chnValues)
     {
         mChnValues = chnValues;
     }
@@ -64,7 +64,7 @@ public class LightManual implements Serializable
         return mCustomP1Values;
     }
 
-    public void setCustomP1Values ( byte[] customP1Values )
+    public void setCustomP1Values (byte[] customP1Values)
     {
         mCustomP1Values = customP1Values;
     }
@@ -74,7 +74,7 @@ public class LightManual implements Serializable
         return mCustomP2Values;
     }
 
-    public void setCustomP2Values ( byte[] customP2Values )
+    public void setCustomP2Values (byte[] customP2Values)
     {
         mCustomP2Values = customP2Values;
     }
@@ -84,7 +84,7 @@ public class LightManual implements Serializable
         return mCustomP3Values;
     }
 
-    public void setCustomP3Values ( byte[] customP3Values )
+    public void setCustomP3Values (byte[] customP3Values)
     {
         mCustomP3Values = customP3Values;
     }
@@ -94,7 +94,7 @@ public class LightManual implements Serializable
         return mCustomP4Values;
     }
 
-    public void setCustomP4Values ( byte[] customP4Values )
+    public void setCustomP4Values (byte[] customP4Values)
     {
         mCustomP4Values = customP4Values;
     }

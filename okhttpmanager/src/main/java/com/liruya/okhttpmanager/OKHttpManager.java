@@ -29,7 +29,7 @@ public class OKHttpManager {
 
     /**
      * @param url
-     * @param headers new Headers.Builder().add( key, value );
+     * @param headers new Headers.Builder().add(key, value);
      * @param callback
      */
     public boolean get(String url, Headers headers, HttpCallback callback) {
@@ -55,8 +55,8 @@ public class OKHttpManager {
      * post request
      *
      * @param url post address
-     * @param headers new Headers.Builder().add( key, value );
-     * @param body new  FormBody.Builder().add( key, value );
+     * @param headers new Headers.Builder().add(key, value);
+     * @param body new  FormBody.Builder().add(key, value);
      * @param callback
      */
     public boolean post(String url, Headers headers, RequestBody body, HttpCallback callback) {
@@ -82,7 +82,7 @@ public class OKHttpManager {
 
     /**
      * @param url
-     * @param headers new Headers.Builder().add( key, value );
+     * @param headers new Headers.Builder().add(key, value);
      * @param json
      * @param callback
      */

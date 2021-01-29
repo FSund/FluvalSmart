@@ -19,7 +19,7 @@ public class LineChartHelper {
         YAxis axisRight = chart.getAxisRight();
         xAxis.setAxisMaximum(24 * 60);
         xAxis.setAxisMinimum(0);
-        xAxis.setLabelCount(13, true);
+        xAxis.setLabelCount(5, true);
         xAxis.setGranularity(1);
         xAxis.setGranularityEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -30,16 +30,10 @@ public class LineChartHelper {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return "" + (((int) value) % 1440) / 60;
+                DecimalFormat df = new DecimalFormat("00");
+                return df.format((((int) value)%1440)/60) + ":" + df.format(((int) value)%60);
             }
         });
-//        final String[] hours = new String[]{"00:00", "06:00", "12:00", "18:00", "00:00"};
-//        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                return hours[(int) (value / 360)];
-//            }
-//        };
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override

@@ -39,7 +39,7 @@ public class RemoteFirmware
     {
     }
 
-    public RemoteFirmware ( int major_version, int minor_version, String release_date, int size, String file_name, String file_link )
+    public RemoteFirmware (int major_version, int minor_version, String release_date, int size, String file_name, String file_link)
     {
         this.major_version = major_version;
         this.minor_version = minor_version;
@@ -49,7 +49,7 @@ public class RemoteFirmware
         this.file_link = file_link;
     }
 
-    public RemoteFirmware ( int major_version, int minor_version, String release_date, int size, String file_name )
+    public RemoteFirmware (int major_version, int minor_version, String release_date, int size, String file_name)
     {
         this.major_version = major_version;
         this.minor_version = minor_version;
@@ -63,7 +63,7 @@ public class RemoteFirmware
         return major_version;
     }
 
-    public void setMajor_version ( int major_version )
+    public void setMajor_version (int major_version)
     {
         this.major_version = major_version;
     }
@@ -73,7 +73,7 @@ public class RemoteFirmware
         return minor_version;
     }
 
-    public void setMinor_version ( int minor_version )
+    public void setMinor_version (int minor_version)
     {
         this.minor_version = minor_version;
     }
@@ -83,7 +83,7 @@ public class RemoteFirmware
         return release_date;
     }
 
-    public void setRelease_date ( String release_date )
+    public void setRelease_date (String release_date)
     {
         this.release_date = release_date;
     }
@@ -93,7 +93,7 @@ public class RemoteFirmware
         return file_size;
     }
 
-    public void setSize ( int size )
+    public void setSize (int size)
     {
         this.file_size = size;
     }
@@ -103,7 +103,7 @@ public class RemoteFirmware
         return file_name;
     }
 
-    public void setFile_name ( String file_name )
+    public void setFile_name (String file_name)
     {
         this.file_name = file_name;
     }
@@ -113,7 +113,7 @@ public class RemoteFirmware
         return file_link;
     }
 
-    public void setFile_link ( String file_link )
+    public void setFile_link (String file_link)
     {
         this.file_link = file_link;
     }
@@ -121,8 +121,8 @@ public class RemoteFirmware
     @Override
     public String toString ()
     {
-        DecimalFormat df = new DecimalFormat( "00" );
-        return "FirmwareVersion: " + major_version + "." + df.format( minor_version )
+        DecimalFormat df = new DecimalFormat("00");
+        return "FirmwareVersion: " + major_version + "." + df.format(minor_version)
                + "\r\nReleaseDate: " + release_date
                + "\r\nFileSize: " + file_size
                + "\r\nFileName: " + file_name

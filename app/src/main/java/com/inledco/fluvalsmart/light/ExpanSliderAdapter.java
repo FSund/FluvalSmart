@@ -27,7 +27,7 @@ public class ExpanSliderAdapter extends BaseAdapter
     private ArrayList< Channel > mChannels;
     private ItemChangeListener mItemChangeListener;
 
-    public ExpanSliderAdapter( Context context, short id, ArrayList< Channel > channels, @NonNull ItemChangeListener listener )
+    public ExpanSliderAdapter(Context context, short id, ArrayList< Channel > channels, @NonNull ItemChangeListener listener)
     {
         mContext = context;
         devid = id;
@@ -42,82 +42,82 @@ public class ExpanSliderAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem( int position )
+    public Object getItem(int position)
     {
-        return mChannels == null ? null : mChannels.get( position );
+        return mChannels == null ? null : mChannels.get(position);
     }
 
     @Override
-    public long getItemId( int position )
+    public long getItemId(int position)
     {
         return position;
     }
 
     @Override
-    public View getView( final int position, View convertView, ViewGroup parent )
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         ViewHolder holder;
-        if ( convertView == null )
+        if (convertView == null)
         {
-            convertView = LayoutInflater.from( mContext )
-                                        .inflate( R.layout.item_daynight_expan_slider, parent, false );
+            convertView = LayoutInflater.from(mContext)
+                                        .inflate(R.layout.item_daynight_expan_slider, parent, false);
             holder = new ViewHolder();
-            holder.tv_name = convertView.findViewById( R.id.item_expan_chn_name );
-            holder.slider = convertView.findViewById( R.id.item_expan_chn_slider );
-            holder.tv_percent = convertView.findViewById( R.id.item_expan_chn_percent );
-            convertView.setTag( holder );
+            holder.tv_name = convertView.findViewById(R.id.item_expan_chn_name);
+            holder.slider = convertView.findViewById(R.id.item_expan_chn_slider);
+            holder.tv_percent = convertView.findViewById(R.id.item_expan_chn_percent);
+            convertView.setTag(holder);
         }
         else
         {
             holder = (ViewHolder) convertView.getTag();
         }
-        final Channel channel = mChannels.get( position );
+        final Channel channel = mChannels.get(position);
         final TextView percent = holder.tv_percent;
-        holder.tv_name.setText( channel.getName() );
-        int[] thumbs = DeviceUtil.getThumb( devid );
-        int[] seekBars = DeviceUtil.getSeekbar( devid );
-        if ( seekBars != null && position < seekBars.length )
+        holder.tv_name.setText(channel.getName());
+        int[] thumbs = DeviceUtil.getThumb(devid);
+        int[] seekBars = DeviceUtil.getSeekbar(devid);
+        if (seekBars != null && position < seekBars.length)
         {
             Drawable progressDrawable = mContext.getResources()
-                                                .getDrawable( seekBars[position] );
-            holder.slider.setProgressDrawable( progressDrawable );
+                                                .getDrawable(seekBars[position]);
+            holder.slider.setProgressDrawable(progressDrawable);
         }
-        if ( thumbs != null && position < thumbs.length )
+        if (thumbs != null && position < thumbs.length)
         {
             Drawable thumb = mContext.getResources()
-                                     .getDrawable( thumbs[position] );
-            holder.slider.setThumb( thumb );
+                                     .getDrawable(thumbs[position]);
+            holder.slider.setThumb(thumb);
         }
-        holder.slider.setProgress( channel.getValue() );
-        percent.setText( channel.getValue() + "%" );
-        holder.slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener()
+        holder.slider.setProgress(channel.getValue());
+        percent.setText(channel.getValue() + "%");
+        holder.slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
-            public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser )
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                if ( fromUser )
+                if (fromUser)
                 {
-                    channel.setValue( (short) progress );
-                    percent.setText( progress + "%" );
-                    if ( mItemChangeListener != null )
+                    channel.setValue((short) progress);
+                    percent.setText(progress + "%");
+                    if (mItemChangeListener != null)
                     {
-                        mItemChangeListener.onItemChanged( position, progress );
+                        mItemChangeListener.onItemChanged(position, progress);
                     }
                 }
             }
 
             @Override
-            public void onStartTrackingTouch( SeekBar seekBar )
+            public void onStartTrackingTouch(SeekBar seekBar)
             {
 
             }
 
             @Override
-            public void onStopTrackingTouch( SeekBar seekBar )
+            public void onStopTrackingTouch(SeekBar seekBar)
             {
 
             }
-        } );
+        });
         return convertView;
     }
 
@@ -130,6 +130,6 @@ public class ExpanSliderAdapter extends BaseAdapter
 
     public interface ItemChangeListener
     {
-        void onItemChanged( int position, int newValue );
+        void onItemChanged(int position, int newValue);
     }
 }

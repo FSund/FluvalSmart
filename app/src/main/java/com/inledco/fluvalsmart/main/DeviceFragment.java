@@ -138,7 +138,7 @@ public class DeviceFragment extends BaseFragment {
                         showRemoveDeviceDialog(pos);
                         break;
                     //                    case R.id.item_device_action_reset_psw:
-                    ////                        showResetPasswordDialog( mDevices.get( pos ).getDevicePrefer().getDeviceMac() );
+                    ////                        showResetPasswordDialog(mDevices.get(pos).getDevicePrefer().getDeviceMac());
                     //                        showRetrievePasswordDialog(mDevices.get(pos));
                     //                        break;
                     case R.id.item_device_action_upgrade:
@@ -159,7 +159,7 @@ public class DeviceFragment extends BaseFragment {
     }
 
     private void showRemoveDeviceDialog(final int position) {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         builder.setTitle(R.string.remove_device);
         builder.setNegativeButton(R.string.cancel, null);
@@ -179,7 +179,7 @@ public class DeviceFragment extends BaseFragment {
         });
         builder.show();
         //        AlertDialog dialog = builder.create();
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
@@ -287,7 +287,7 @@ public class DeviceFragment extends BaseFragment {
     }
 
     private void showSortDialog() {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme, true);
         builder.setTitle(R.string.sort);
         String[] items = new String[] {getString(R.string.sort_by_type), getString(R.string.sort_by_name), getString(R.string.sort_manual)};
@@ -309,26 +309,26 @@ public class DeviceFragment extends BaseFragment {
         });
         builder.show();
         //        AlertDialog dialog = builder.create();
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
     //    private void showRetrievePasswordDialog(final BaseDevice device) {
     //        final String address = device.getDevicePrefer().getDeviceMac();
-    ////        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
-    //        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme );
-    //        View view = LayoutInflater.from( getContext() ).inflate( R.layout.dialog_retrieve_password, null, false );
-    //        builder.setTitle( R.string.retrieve_password );
+    ////        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
+    //        CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
+    //        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_retrieve_password, null, false);
+    //        builder.setTitle(R.string.retrieve_password);
     //        builder.setView(view);
     //        final AlertDialog dialog = builder.show();
     //        final ImageButton ib_copy = view.findViewById(R.id.dialog_retrieve_copy);
-    //        final EditText retrieve_key = view.findViewById( R.id.dialog_retrieve_key);
+    //        final EditText retrieve_key = view.findViewById(R.id.dialog_retrieve_key);
     //        final TextView retrieve_msg = view.findViewById(R.id.dialog_retrieve_msg);
-    //        Button btn_cancel = view.findViewById( R.id.dialog_retrieve_cancel );
-    //        Button btn_retrieve = view.findViewById( R.id.dialog_retrieve_retrieve);
-    //        final CountDownTimer tmr = new CountDownTimer( 4000, 4000 ) {
+    //        Button btn_cancel = view.findViewById(R.id.dialog_retrieve_cancel);
+    //        Button btn_retrieve = view.findViewById(R.id.dialog_retrieve_retrieve);
+    //        final CountDownTimer tmr = new CountDownTimer(4000, 4000) {
     //            @Override
-    //            public void onTick ( long millisUntilFinished )
+    //            public void onTick (long millisUntilFinished)
     //            {
     //
     //            }
@@ -336,52 +336,52 @@ public class DeviceFragment extends BaseFragment {
     //            @Override
     //            public void onFinish ()
     //            {
-    //                BleManager.getInstance().disconnectDevice( address );
+    //                BleManager.getInstance().disconnectDevice(address);
     //                retrieve_msg.setText(R.string.timeout);
     //            }
     //        };
     //        final BleCommunicateListener mListener = new BleCommunicateListener() {
     //            @Override
-    //            public void onDataValid ( final String mac )
+    //            public void onDataValid (final String mac)
     //            {
-    //                if ( mac.equals( address ) )
+    //                if (mac.equals(address))
     //                {
-    //                    BleManager.getInstance().readPassword( mac );
+    //                    BleManager.getInstance().readPassword(mac);
     //                }
     //            }
     //
     //            @Override
-    //            public void onDataInvalid ( String mac )
+    //            public void onDataInvalid (String mac)
     //            {
     //
     //            }
     //
     //            @Override
-    //            public void onReadMfr ( String mac, String s )
+    //            public void onReadMfr (String mac, String s)
     //            {
     //
     //            }
     //
     //            @Override
-    //            public void onReadPassword ( String mac, final int psw )
+    //            public void onReadPassword (String mac, final int psw)
     //            {
-    //                if ( mac.equals( address ) )
+    //                if (mac.equals(address))
     //                {
     //                    tmr.cancel();
-    //                    getActivity().runOnUiThread( new Runnable() {
+    //                    getActivity().runOnUiThread(new Runnable() {
     //                        @Override
     //                        public void run ()
     //                        {
     //                            DecimalFormat df = new DecimalFormat("000000");
     //                            retrieve_msg.setText(getString(R.string.retrieve_psw_is) + df.format(psw));
     //                        }
-    //                    } );
-    //                    BleManager.getInstance().disconnectDevice( mac );
+    //                    });
+    //                    BleManager.getInstance().disconnectDevice(mac);
     //                }
     //            }
     //
     //            @Override
-    //            public void onDataReceived ( String mac, ArrayList< Byte > list )
+    //            public void onDataReceived (String mac, ArrayList< Byte > list)
     //            {
     //
     //            }
@@ -410,7 +410,7 @@ public class DeviceFragment extends BaseFragment {
     //                    retrieve_msg.setText("");
     //                } else {
     //                    if (key.equals(Md5Util.encrypt(address).toLowerCase())) {
-    //                        BleManager.getInstance().connectDevice( address );
+    //                        BleManager.getInstance().connectDevice(address);
     //                        tmr.start();
     //                        retrieve_msg.setText("");
     //                    } else {
@@ -419,19 +419,19 @@ public class DeviceFragment extends BaseFragment {
     //                }
     //            }
     //        });
-    //        dialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+    //        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
     //            @Override
-    //            public void onDismiss ( DialogInterface dialog )
+    //            public void onDismiss (DialogInterface dialog)
     //            {
-    //                BleManager.getInstance().disconnectDevice( address );
-    //                BleManager.getInstance().removeBleCommunicateListener( mListener );
+    //                BleManager.getInstance().disconnectDevice(address);
+    //                BleManager.getInstance().removeBleCommunicateListener(mListener);
     //            }
-    //        } );
+    //        });
     //
-    ////        dialog.setCanceledOnTouchOutside( false );
-    ////        dialog.setView( view );
+    ////        dialog.setCanceledOnTouchOutside(false);
+    ////        dialog.setView(view);
     ////        dialog.show();
-    //        BleManager.getInstance().addBleCommunicateListener( mListener );
+    //        BleManager.getInstance().addBleCommunicateListener(mListener);
     //    }
     //
     //    private String getDeviceInfo(BaseDevice device) {

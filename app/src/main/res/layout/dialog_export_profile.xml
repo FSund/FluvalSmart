@@ -7,13 +7,18 @@
               android:padding="8dp">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/export_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        style="@style/DialogTheme"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:hintEnabled="true"
         app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/export_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,29 +29,4 @@
             android:hint="@string/profile_name"
             android:maxLength="18"/>
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.v7.widget.ButtonBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|right"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/export_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            style="@style/DialogButtonTheme"
-            android:text="@string/cancel"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/export_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            style="@style/DialogButtonTheme"
-            android:text="@string/save"
-            android:textAllCaps="false"/>
-    </android.support.v7.widget.ButtonBarLayout>
 </LinearLayout>

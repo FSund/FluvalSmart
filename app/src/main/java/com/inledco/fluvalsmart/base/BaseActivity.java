@@ -18,17 +18,17 @@ public abstract class BaseActivity extends AppCompatActivity
     protected final String TAG = this.getClass().getSimpleName();
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState )
+    protected void onCreate (Bundle savedInstanceState)
     {
-        super.onCreate( savedInstanceState );
+        super.onCreate(savedInstanceState);
 
-        Setting.changeAppLanguage( BaseActivity.this );
+        Setting.changeAppLanguage(BaseActivity.this);
     }
 
     @Override
-    public void onConfigurationChanged ( Configuration newConfig )
+    public void onConfigurationChanged (Configuration newConfig)
     {
-        super.onConfigurationChanged( newConfig );
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override

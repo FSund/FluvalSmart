@@ -9,8 +9,8 @@ import android.view.View;
 
 public abstract class SwipeItemViewHolder extends RecyclerView.ViewHolder implements Extension
 {
-    public SwipeItemViewHolder ( View itemView )
+    public SwipeItemViewHolder (View itemView)
     {
-        super( itemView );
+        super(itemView);
     }
 }

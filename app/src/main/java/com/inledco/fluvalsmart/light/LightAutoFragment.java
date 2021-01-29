@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CheckableImageButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -24,11 +26,12 @@ import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -174,8 +177,7 @@ public class LightAutoFragment extends BaseFragment {
                                             .get(LightViewModel.class);
         mLight = mLightViewModel.getData();
         if (mLight != null) {
-            devid = mLight.getDevicePrefer()
-                          .getDevId();
+            devid = mLight.getDevicePrefer().getDevId();
             mAddress = mLight.getDevicePrefer().getDeviceMac();
             mLightAuto = mLight.getLightAuto();
             refreshData();
@@ -340,12 +342,12 @@ public class LightAutoFragment extends BaseFragment {
                     }
                     entry.add(new Entry(1440, b0));
                 }
-                //                    entry.add( new Entry( 0, mLightAuto.getNightBright()[i] & 0xFF ) );
-                //                    entry.add( new Entry( ( sunrise_starthour & 0xFF ) * 60 + ( sunrise_startminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
-                //                    entry.add( new Entry( ( sunrise_endhour & 0xFF ) * 60 + ( sunrise_endminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
-                //                    entry.add( new Entry( ( sunset_starthour & 0xFF ) * 60 + ( sunset_startminute & 0xFF ), mLightAuto.getDayBright()[i] & 0xFF ) );
-                //                    entry.add( new Entry( ( sunset_endhour & 0xFF ) * 60 + ( sunset_endminute & 0xFF ), mLightAuto.getNightBright()[i] & 0xFF ) );
-                //                    entry.add( new Entry( 24 * 60, mLightAuto.getNightBright()[i] & 0xFF ) );
+                //                    entry.add(new Entry(0, mLightAuto.getNightBright()[i] & 0xFF));
+                //                    entry.add(new Entry((sunrise_starthour & 0xFF) * 60 + (sunrise_startminute & 0xFF), mLightAuto.getNightBright()[i] & 0xFF));
+                //                    entry.add(new Entry((sunrise_endhour & 0xFF) * 60 + (sunrise_endminute & 0xFF), mLightAuto.getDayBright()[i] & 0xFF));
+                //                    entry.add(new Entry((sunset_starthour & 0xFF) * 60 + (sunset_startminute & 0xFF), mLightAuto.getDayBright()[i] & 0xFF));
+                //                    entry.add(new Entry((sunset_endhour & 0xFF) * 60 + (sunset_endminute & 0xFF), mLightAuto.getNightBright()[i] & 0xFF));
+                //                    entry.add(new Entry(24 * 60, mLightAuto.getNightBright()[i] & 0xFF));
                 LineDataSet lineDataSet = new LineDataSet(entry, channels[i].getName());
                 lineDataSet.setColor(channels[i].getColor());
                 lineDataSet.setCircleRadius(4.0f);
@@ -375,13 +377,13 @@ public class LightAutoFragment extends BaseFragment {
         auto_night_brt.setText(spbn, TextView.BufferType.SPANNABLE);
         //        String txtd = "";
         //        String txtn = "";
-        //        for ( int i = 0; i < channels.length; i++ )
+        //        for (int i = 0; i < channels.length; i++)
         //        {
         //            txtd = txtd + channels[i].getName() + ": " + mLightAuto.getDayBright()[i] + "%\n";
         //            txtn = txtn + channels[i].getName() + ": " + mLightAuto.getNightBright()[i] + "%\n";
         //        }
-        //        auto_midday_brt.setText( txtd.substring( 0, txtd.lastIndexOf( "\n" ) ) );
-        //        auto_night_brt.setText( txtn.substring( 0, txtn.lastIndexOf( "\n" ) ) );
+        //        auto_midday_brt.setText(txtd.substring(0, txtd.lastIndexOf("\n")));
+        //        auto_night_brt.setText(txtn.substring(0, txtn.lastIndexOf("\n")));
         if (mLightAuto.isHasTurnoff()) {
             light_auto_turnoff_show.setVisibility(View.VISIBLE);
             if (mLightAuto.isTurnoffEnable()) {
@@ -686,27 +688,29 @@ public class LightAutoFragment extends BaseFragment {
     }
 
     private void showImportDialog() {
+        final String prof = LightPrefUtil.getAutoProfileName(getContext(), mLight.getDevicePrefer().getDevId(), mLight.getLightAuto());
         final Map<String, LightAuto> presetProfiles = DeviceUtil.getAutoPresetProfiles(getContext(), devid, mLightAuto.isHasDynamic(), mLightAuto.isHasTurnoff());
         final int presetCount = (presetProfiles == null ? 0 : presetProfiles.size());
         final Map<String, LightAuto> localProfiles = LightPrefUtil.getLocalAutoProfiles(getContext(), devid, mLightAuto.isHasDynamic(), mLightAuto.isHasTurnoff());
-        final int size = localProfiles.size();
-        final String[] keys = new String[size];
-        final int[] index = {0};
-        int idx = 0;
-        for (String s : localProfiles.keySet()) {
-            keys[idx] = s;
-            idx++;
-        }
-        localProfiles.keySet().toArray(keys);
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         final Button[] buttons = new Button[3];
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         builder.setTitle(R.string.export_profile);
-        if (keys.length == 0) {
+        if (localProfiles == null || localProfiles.size() == 0) {
             builder.setMessage(R.string.msg_no_profile);
-        }
-        else {
-            builder.setSingleChoiceItems(keys, 0, new DialogInterface.OnClickListener() {
+        } else {
+            final String[] keys = new String[localProfiles.size()];
+            localProfiles.keySet().toArray(keys);
+            int idx = 0;
+            for (int i = 0; i < keys.length; i++) {
+                if (TextUtils.equals(prof, keys[i])) {
+                    idx = i;
+                    break;
+                }
+            }
+            final int[] index = {idx};
+            builder.setSingleChoiceItems(keys, idx, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     index[0] = i;
@@ -747,24 +751,39 @@ public class LightAutoFragment extends BaseFragment {
         builder.setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.show();
         buttons[0] = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        buttons[1] = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        buttons[2] = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         buttons[0].setEnabled(false);
         buttons[0].setTextColor(getResources().getColor(R.color.colorGray));
+        buttons[1].setTextColor(getResources().getColor(R.color.colorRed));
+        buttons[2].setTextColor(getResources().getColor(R.color.colorGreen));
         //        AlertDialog dialog = builder.create();
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
     private void showExportDialog() {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.dialog_export_profile, null);
+        final TextInputLayout til = view.findViewById(R.id.export_til);
+        final TextInputEditText name = view.findViewById(R.id.export_name);
         builder.setTitle(R.string.save_profile);
         builder.setView(view);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.save, null);
         final AlertDialog dialog = builder.show();
-        final EditText name = view.findViewById(R.id.export_name);
-        Button btn_cancel = view.findViewById(R.id.export_cancel);
-        Button btn_ok = view.findViewById(R.id.export_ok);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        name.requestFocus();
+        try {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(name, InputMethodManager.SHOW_FORCED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final Button btn_ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         final boolean[] flag = new boolean[]{false};
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -792,34 +811,24 @@ public class LightAutoFragment extends BaseFragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(name.getText()
-                                          .toString()))
-                {
-                    name.setError(getContext().getString(R.string.error_input_empty));
-                }
-                else {
+                if (TextUtils.isEmpty(name.getText().toString())) {
+                    til.setError(getContext().getString(R.string.error_input_empty));
+                } else {
                     LightPrefUtil.saveAutoProfile(getContext(),
                                                   mLightAuto,
                                                   devid,
-                                                  name.getText()
-                                                         .toString());
+                                                  name.getText().toString());
                     dialog.dismiss();
                     Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT)
                          .show();
                 }
             }
         });
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 

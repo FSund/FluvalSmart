@@ -77,7 +77,7 @@ public class UserFragment extends BaseFragment {
         //        DisplayMetrics dm = resources.getDisplayMetrics();
         //        Configuration config = resources.getConfiguration();
         // 应用用户选择语言
-        //        config.setLocale( Locale.getDefault() );
+        //        config.setLocale(Locale.getDefault());
         //        resources.updateConfiguration(config, dm);
     }
 
@@ -177,7 +177,7 @@ public class UserFragment extends BaseFragment {
         builder.setPositiveButton(R.string.dialog_ok, null);
         builder.show();
         //        AlertDialog dialog = builder.create();
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 }

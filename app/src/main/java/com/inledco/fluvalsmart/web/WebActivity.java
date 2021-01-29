@@ -3,6 +3,7 @@ package com.inledco.fluvalsmart.web;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,6 +21,9 @@ import android.widget.ProgressBar;
 
 import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.base.BaseActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebActivity extends BaseActivity {
 
@@ -129,13 +133,14 @@ public class WebActivity extends BaseActivity {
         webSettings.setSupportZoom(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         webSettings.setDisplayZoomControls(true);
         webSettings.setDefaultTextEncodingName("utf-8");
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
+
         web.setWebChromeClient(new MyWebChromeClient() {
             /**
              * 获取到链接标题
@@ -168,7 +173,7 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     String newurl = request.getUrl().toString();
                     if (TextUtils.isEmpty(newurl) == false && newurl.endsWith(".pdf")) {
                         web.loadUrl(GOOGLE_DOC_URL + newurl);
@@ -177,7 +182,10 @@ public class WebActivity extends BaseActivity {
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });
-        web.loadUrl(url);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept-Encoding", "gzip,deflate,br");
+        web.loadUrl(url, headers);
     }
 
     public class MyWebChromeClient extends WebChromeClient {

@@ -67,7 +67,7 @@ public class CommUtil
     public static byte getCRC(byte[] array, int len)
     {
         byte crc = 0x00;
-        for ( int i = 0; i < len; i++ )
+        for (int i = 0; i < len; i++)
         {
             crc ^= array[i];
         }
@@ -83,9 +83,9 @@ public class CommUtil
     public static byte getCRC(List<Byte> bytes, int len)
     {
         byte crc = 0x00;
-        for ( int i = 0; i < len; i++ )
+        for (int i = 0; i < len; i++)
         {
-            crc ^= bytes.get( i );
+            crc ^= bytes.get(i);
         }
         return crc;
     }
@@ -105,23 +105,23 @@ public class CommUtil
      */
     public static void turnOffLed(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_SWITCH, LED_OFF, FRM_HDR^CMD_SWITCH^LED_OFF} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_SWITCH, LED_OFF, FRM_HDR^CMD_SWITCH^LED_OFF});
     }
 
 
     public static void setModeAuto(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_AUTO, FRM_HDR ^ CMD_MODE ^ MODE_AUTO} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_AUTO, FRM_HDR ^ CMD_MODE ^ MODE_AUTO});
     }
 
     public static void setModeManual(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_MANUAL, FRM_HDR ^ CMD_MODE ^ MODE_MANUAL} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_MANUAL, FRM_HDR ^ CMD_MODE ^ MODE_MANUAL});
     }
 
     public static void setModePro(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_PRO, FRM_HDR ^ CMD_MODE ^ MODE_PRO} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{ FRM_HDR, CMD_MODE, MODE_PRO, FRM_HDR ^ CMD_MODE ^ MODE_PRO});
     }
 
     /**
@@ -135,13 +135,13 @@ public class CommUtil
         byte[] txs = new byte[3+value.length*2];
         txs[0] = FRM_HDR;
         txs[1] = CMD_CTRL;
-        for ( int i = 0; i < value.length; i++ )
+        for (int i = 0; i < value.length; i++)
         {
-            txs[2+2*i] = (byte) ( value[i] >> 8 );
-            txs[3+2*i] = (byte) ( value[i] & 0xFF );
+            txs[2+2*i] = (byte) (value[i] >> 8);
+            txs[3+2*i] = (byte) (value[i] & 0xFF);
         }
-        txs[txs.length-1] = getCRC( txs, txs.length-1);
-        BleManager.getInstance().sendBytes( mac, txs );
+        txs[txs.length-1] = getCRC(txs, txs.length-1);
+        BleManager.getInstance().sendBytes(mac, txs);
     }
 
     /**
@@ -149,24 +149,24 @@ public class CommUtil
      * @param mac
      * @param value
      */
-    public static void preview( String mac, short[] value )
+    public static void preview(String mac, short[] value)
     {
         //FRM_HDR CMD_CTRL chn max_8 xor
         byte[] txs = new byte[3+value.length*2];
         txs[0] = FRM_HDR;
         txs[1] = CMD_PREVIEW;
-        for ( int i = 0; i < value.length; i++ )
+        for (int i = 0; i < value.length; i++)
         {
-            txs[2+2*i] = (byte) ( value[i] >> 8 );
-            txs[3+2*i] = (byte) ( value[i] & 0xFF );
+            txs[2+2*i] = (byte) (value[i] >> 8);
+            txs[3+2*i] = (byte) (value[i] & 0xFF);
         }
-        txs[txs.length-1] = getCRC( txs, txs.length-1);
-        BleManager.getInstance().sendBytes( mac, txs );
+        txs[txs.length-1] = getCRC(txs, txs.length-1);
+        BleManager.getInstance().sendBytes(mac, txs);
     }
 
     public static void stopPreview(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_STOP_PREVIEW, FRM_HDR^CMD_STOP_PREVIEW} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_STOP_PREVIEW, FRM_HDR^CMD_STOP_PREVIEW});
     }
 
     /**
@@ -176,7 +176,7 @@ public class CommUtil
      */
     public static void setLed(String mac, byte[] bytes)
     {
-        BleManager.getInstance().sendBytes( mac, bytes );
+        BleManager.getInstance().sendBytes(mac, bytes);
     }
 
     /**
@@ -185,159 +185,159 @@ public class CommUtil
      */
     public static void readDevice(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_READ, FRM_HDR^CMD_READ} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_READ, FRM_HDR^CMD_READ});
     }
 
-    public static void setLedCustom( String mac, byte idx )
+    public static void setLedCustom(String mac, byte idx)
     {
-        byte[] txs = new byte[]{ FRM_HDR, CMD_CUSTOM, idx, (byte) ( FRM_HDR ^ CMD_CUSTOM ^ idx) };
-        BleManager.getInstance().sendBytes( mac, txs );
+        byte[] txs = new byte[]{ FRM_HDR, CMD_CUSTOM, idx, (byte) (FRM_HDR ^ CMD_CUSTOM ^ idx) };
+        BleManager.getInstance().sendBytes(mac, txs);
     }
 
-    public static void increaseBright( String mac, byte chn, byte delta )
+    public static void increaseBright(String mac, byte chn, byte delta)
     {
-        byte[] txs = new byte[]{ FRM_HDR, CMD_CHN_INC, chn, delta, (byte) ( FRM_HDR ^ CMD_CHN_INC ^ chn ^ delta) };
-        BleManager.getInstance().sendBytes( mac, txs );
+        byte[] txs = new byte[]{ FRM_HDR, CMD_CHN_INC, chn, delta, (byte) (FRM_HDR ^ CMD_CHN_INC ^ chn ^ delta) };
+        BleManager.getInstance().sendBytes(mac, txs);
     }
 
-    public static void decreaseBright( String mac, byte chn, byte delta )
+    public static void decreaseBright(String mac, byte chn, byte delta)
     {
-        byte[] txs = new byte[]{ FRM_HDR, CMD_CHN_DEC, chn, delta, (byte) ( FRM_HDR ^ CMD_CHN_DEC ^ chn ^ delta) };
-        BleManager.getInstance().sendBytes( mac, txs );
+        byte[] txs = new byte[]{ FRM_HDR, CMD_CHN_DEC, chn, delta, (byte) (FRM_HDR ^ CMD_CHN_DEC ^ chn ^ delta) };
+        BleManager.getInstance().sendBytes(mac, txs);
     }
 
-    public static Object decodeLight ( List<Byte> bytes, short devid )
+    public static Object decodeLight (List<Byte> bytes, short devid)
     {
-        if ( bytes == null || bytes.size() == 0 )
+        if (bytes == null || bytes.size() == 0)
         {
             return null;
         }
         LightManual lightManual;
         LightAuto lightAuto;
         LightPro lightPro;
-        int chns = DeviceUtil.getChannelCount( devid );
+        int chns = DeviceUtil.getChannelCount(devid);
         int len = bytes.size();
-        if ( bytes.get( 0 ) == FRM_HDR && bytes.get( 1 ) == CMD_READ && getCRC( bytes, len ) == 0x00 )
+        if (bytes.get(0) == FRM_HDR && bytes.get(1) == CMD_READ && getCRC(bytes, len) == 0x00)
         {
-            byte mode = bytes.get( 2 );
-            if ( mode == MODE_AUTO )
+            byte mode = bytes.get(2);
+            if (mode == MODE_AUTO)
             {
                 //frm_hdr cmd auto [sh sm eh sm] [chns] [sh sm eh em] [chns] xor
-                if ( len == 2*chns+12 )                     //no night turnoff, no dynamic period
+                if (len == 2*chns+12)                     //no night turnoff, no dynamic period
                 {
-                    RampTime sunrise = new RampTime( bytes.get( 3 ), bytes.get( 4 ),
-                                                     bytes.get( 5 ), bytes.get( 6 ));
-                    RampTime sunset = new RampTime( bytes.get( 7+chns ), bytes.get( 8+chns ),
-                                                     bytes.get( 9+chns ), bytes.get( 10+chns ));
+                    RampTime sunrise = new RampTime(bytes.get(3), bytes.get(4),
+                                                     bytes.get(5), bytes.get(6));
+                    RampTime sunset = new RampTime(bytes.get(7+chns), bytes.get(8+chns),
+                                                     bytes.get(9+chns), bytes.get(10+chns));
                     byte[] dbrt = new byte[chns];
                     byte[] nbrt = new byte[chns];
-                    for ( int i = 0; i < chns; i++ )
+                    for (int i = 0; i < chns; i++)
                     {
-                        dbrt[i] = bytes.get( 7+i );
-                        nbrt[i] = bytes.get( 11+chns+i );
+                        dbrt[i] = bytes.get(7+i);
+                        nbrt[i] = bytes.get(11+chns+i);
                     }
-                    lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt );
+                    lightAuto = new LightAuto(sunrise, dbrt, sunset, nbrt);
                     return lightAuto;
                 }
                 else if(len == 2*chns+15)                   //night turnoff, no dynamic period
                 {
-                    RampTime sunrise = new RampTime( bytes.get( 3 ), bytes.get( 4 ),
-                                                     bytes.get( 5 ), bytes.get( 6 ));
-                    RampTime sunset = new RampTime( bytes.get( 7+chns ), bytes.get( 8+chns ),
-                                                    bytes.get( 9+chns ), bytes.get( 10+chns ));
+                    RampTime sunrise = new RampTime(bytes.get(3), bytes.get(4),
+                                                     bytes.get(5), bytes.get(6));
+                    RampTime sunset = new RampTime(bytes.get(7+chns), bytes.get(8+chns),
+                                                    bytes.get(9+chns), bytes.get(10+chns));
                     byte[] dbrt = new byte[chns];
                     byte[] nbrt = new byte[chns];
-                    for ( int i = 0; i < chns; i++ )
+                    for (int i = 0; i < chns; i++)
                     {
-                        dbrt[i] = bytes.get( 7+i );
-                        nbrt[i] = bytes.get( 11+chns+i );
+                        dbrt[i] = bytes.get(7+i);
+                        nbrt[i] = bytes.get(11+chns+i);
                     }
                     boolean turnoff_enable = (bytes.get(11 + 2 * chns) != 0);
-                    byte hour = bytes.get( 12+2*chns );
-                    byte minute = bytes.get( 13+2*chns );
-                    lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute );
+                    byte hour = bytes.get(12+2*chns);
+                    byte minute = bytes.get(13+2*chns);
+                    lightAuto = new LightAuto(sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute);
                     return lightAuto;
                 }
-                else if ( len == 2*chns+18 )                //dynamic period, no night turnoff
+                else if (len == 2*chns+18)                //dynamic period, no night turnoff
                 {
-                    RampTime sunrise = new RampTime( bytes.get( 3 ), bytes.get( 4 ),
-                                                     bytes.get( 5 ), bytes.get( 6 ));
-                    RampTime sunset = new RampTime( bytes.get( 7+chns ), bytes.get( 8+chns ),
-                                                    bytes.get( 9+chns ), bytes.get( 10+chns ));
+                    RampTime sunrise = new RampTime(bytes.get(3), bytes.get(4),
+                                                     bytes.get(5), bytes.get(6));
+                    RampTime sunset = new RampTime(bytes.get(7+chns), bytes.get(8+chns),
+                                                    bytes.get(9+chns), bytes.get(10+chns));
                     byte[] dbrt = new byte[chns];
                     byte[] nbrt = new byte[chns];
-                    for ( int i = 0; i < chns; i++ )
+                    for (int i = 0; i < chns; i++)
                     {
-                        dbrt[i] = bytes.get( 7+i );
-                        nbrt[i] = bytes.get( 11+chns+i );
+                        dbrt[i] = bytes.get(7+i);
+                        nbrt[i] = bytes.get(11+chns+i);
                     }
-                    byte week = bytes.get( 11 + chns*2 );
-                    RampTime dynamicPeriod = new RampTime( bytes.get( 12+chns*2 ), bytes.get( 13+chns*2 ),
-                                                           bytes.get( 14+chns*2 ), bytes.get( 15+chns*2 ));
-                    byte md = bytes.get( 16+chns*2 );
-                    lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt, week, dynamicPeriod, md );
+                    byte week = bytes.get(11 + chns*2);
+                    RampTime dynamicPeriod = new RampTime(bytes.get(12+chns*2), bytes.get(13+chns*2),
+                                                           bytes.get(14+chns*2), bytes.get(15+chns*2));
+                    byte md = bytes.get(16+chns*2);
+                    lightAuto = new LightAuto(sunrise, dbrt, sunset, nbrt, week, dynamicPeriod, md);
                     return lightAuto;
                 }
-                else if ( len == 2*chns+21 )                //night turnoff, dynamic period
+                else if (len == 2*chns+21)                //night turnoff, dynamic period
                 {
-                    RampTime sunrise = new RampTime( bytes.get( 3 ), bytes.get( 4 ),
-                                                     bytes.get( 5 ), bytes.get( 6 ));
-                    RampTime sunset = new RampTime( bytes.get( 7+chns ), bytes.get( 8+chns ),
-                                                    bytes.get( 9+chns ), bytes.get( 10+chns ));
+                    RampTime sunrise = new RampTime(bytes.get(3), bytes.get(4),
+                                                     bytes.get(5), bytes.get(6));
+                    RampTime sunset = new RampTime(bytes.get(7+chns), bytes.get(8+chns),
+                                                    bytes.get(9+chns), bytes.get(10+chns));
                     byte[] dbrt = new byte[chns];
                     byte[] nbrt = new byte[chns];
-                    for ( int i = 0; i < chns; i++ )
+                    for (int i = 0; i < chns; i++)
                     {
-                        dbrt[i] = bytes.get( 7+i );
-                        nbrt[i] = bytes.get( 11+chns+i );
+                        dbrt[i] = bytes.get(7+i);
+                        nbrt[i] = bytes.get(11+chns+i);
                     }
                     boolean turnoff_enable = (bytes.get(11 + 2 * chns) != 0);
-                    byte hour = bytes.get( 12+2*chns );
-                    byte minute = bytes.get( 13+2*chns );
-                    byte week = bytes.get( 14 + chns*2 );
-                    RampTime dynamicPeriod = new RampTime( bytes.get( 15+chns*2 ), bytes.get( 16+chns*2 ),
-                                                           bytes.get( 17+chns*2 ), bytes.get( 18+chns*2 ));
-                    byte md = bytes.get( 19+chns*2 );
-                    lightAuto = new LightAuto( sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute, week, dynamicPeriod, md );
+                    byte hour = bytes.get(12+2*chns);
+                    byte minute = bytes.get(13+2*chns);
+                    byte week = bytes.get(14 + chns*2);
+                    RampTime dynamicPeriod = new RampTime(bytes.get(15+chns*2), bytes.get(16+chns*2),
+                                                           bytes.get(17+chns*2), bytes.get(18+chns*2));
+                    byte md = bytes.get(19+chns*2);
+                    lightAuto = new LightAuto(sunrise, dbrt, sunset, nbrt, turnoff_enable, hour, minute, week, dynamicPeriod, md);
                     return lightAuto;
                 }
             }
-            else if ( mode == MODE_PRO )
+            else if (mode == MODE_PRO)
             {
-                int count = bytes.get( 3 );
-                if ( len == count*(2+chns)+5 || len == count*(2+chns)+11 )
+                int count = bytes.get(3);
+                if (len == count*(2+chns)+5 || len == count*(2+chns)+11)
                 {
                     byte[] array = new byte[len-4];
-                    for ( int i = 0; i < array.length; i++ )
+                    for (int i = 0; i < array.length; i++)
                     {
-                        array[i] = bytes.get( i+3 );
+                        array[i] = bytes.get(i+3);
                     }
-                    lightPro = new LightPro.Builder().creatFromArray( array, chns );
+                    lightPro = new LightPro.Builder().creatFromArray(array, chns);
                     PointComparator comparator = new PointComparator();
-                    Arrays.sort( lightPro.getPoints(), 0, lightPro.getPointCount(), comparator );
+                    Arrays.sort(lightPro.getPoints(), 0, lightPro.getPointCount(), comparator);
                     return lightPro;
                 }
             }
-            else if ( mode == MODE_MANUAL )
+            else if (mode == MODE_MANUAL)
             {
-                if ( len == 6*chns+6 )
+                if (len == 6*chns+6)
                 {
-                    boolean on = ( (bytes.get( 3 ) & 0x01) != 0x00 );
-                    byte dyn = bytes.get( 4 );
+                    boolean on = ((bytes.get(3) & 0x01) != 0x00);
+                    byte dyn = bytes.get(4);
                     short[] chnValues = new short[chns];
                     byte[] p1Values = new byte[chns];
                     byte[] p2Values = new byte[chns];
                     byte[] p3Values = new byte[chns];
                     byte[] p4Values = new byte[chns];
-                    for ( int i = 0; i < chns; i++ )
+                    for (int i = 0; i < chns; i++)
                     {
-                        chnValues[i] = (short) ( ( ( bytes.get( 6 + 2 * i ) & 0xFF) << 8) | ( bytes.get( 5 + 2 * i ) & 0xFF ) );
-                        p1Values[i] = bytes.get( 5+2*chns+i );
-                        p2Values[i] = bytes.get( 5+3*chns+i );
-                        p3Values[i] = bytes.get( 5+4*chns+i );
-                        p4Values[i] = bytes.get( 5+5*chns+i );
+                        chnValues[i] = (short) (((bytes.get(6 + 2 * i) & 0xFF) << 8) | (bytes.get(5 + 2 * i) & 0xFF));
+                        p1Values[i] = bytes.get(5+2*chns+i);
+                        p2Values[i] = bytes.get(5+3*chns+i);
+                        p3Values[i] = bytes.get(5+4*chns+i);
+                        p4Values[i] = bytes.get(5+5*chns+i);
                     }
-                    lightManual = new LightManual( on, dyn, chnValues, p1Values, p2Values, p3Values, p4Values );
+                    lightManual = new LightManual(on, dyn, chnValues, p1Values, p2Values, p3Values, p4Values);
                     return lightManual;
                 }
             }
@@ -345,26 +345,26 @@ public class CommUtil
         return null;
     }
 
-    public static void sendKey( String mac, byte key )
+    public static void sendKey(String mac, byte key)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{ FRM_HDR, CMD_DYN, key, (byte) ( FRM_HDR ^ CMD_DYN ^ key) } );
+        BleManager.getInstance().sendBytes(mac, new byte[]{ FRM_HDR, CMD_DYN, key, (byte) (FRM_HDR ^ CMD_DYN ^ key) });
     }
 
     public static void findDevice(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_FIND, FRM_HDR^CMD_FIND} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_FIND, FRM_HDR^CMD_FIND});
     }
 
     public static void syncDeviceTime(String mac)
     {
         Calendar calendar = Calendar.getInstance();
-        byte year = (byte) (calendar.get( Calendar.YEAR ) - 2000);
-        byte month = (byte) calendar.get( Calendar.MONTH );
-        byte day = (byte) calendar.get( Calendar.DAY_OF_MONTH );
-        byte wk = (byte) (calendar.get( Calendar.DAY_OF_WEEK ) - 1);
-        byte hour = (byte) calendar.get( Calendar.HOUR_OF_DAY );
-        byte minute = (byte) calendar.get( Calendar.MINUTE );
-        byte second = (byte) calendar.get( Calendar.SECOND );
+        byte year = (byte) (calendar.get(Calendar.YEAR) - 2000);
+        byte month = (byte) calendar.get(Calendar.MONTH);
+        byte day = (byte) calendar.get(Calendar.DAY_OF_MONTH);
+        byte wk = (byte) (calendar.get(Calendar.DAY_OF_WEEK) - 1);
+        byte hour = (byte) calendar.get(Calendar.HOUR_OF_DAY);
+        byte minute = (byte) calendar.get(Calendar.MINUTE);
+        byte second = (byte) calendar.get(Calendar.SECOND);
         byte[] ct = new byte[]{ FRM_HDR,
                                 CMD_SYNCTIME,
                                 year,
@@ -374,34 +374,34 @@ public class CommUtil
                                 hour,
                                 minute,
                                 second,
-                                (byte) ( FRM_HDR ^ CMD_SYNCTIME ^ year ^ month ^ day ^ wk ^ hour ^ minute ^ second) };
-        BleManager.getInstance().sendBytes( mac, ct );
+                                (byte) (FRM_HDR ^ CMD_SYNCTIME ^ year ^ month ^ day ^ wk ^ hour ^ minute ^ second) };
+        BleManager.getInstance().sendBytes(mac, ct);
     }
 
     public static void readDeviceTime(String mac)
     {
-        BleManager.getInstance().sendBytes( mac, new byte[]{FRM_HDR, CMD_READTIME, FRM_HDR^CMD_READTIME} );
+        BleManager.getInstance().sendBytes(mac, new byte[]{FRM_HDR, CMD_READTIME, FRM_HDR^CMD_READTIME});
     }
 
-    public static void setLedAuto (String mac, LightAuto lightAuto )
+    public static void setLedAuto (String mac, LightAuto lightAuto)
     {
-        if ( TextUtils.isEmpty( mac ) || lightAuto == null )
+        if (TextUtils.isEmpty(mac) || lightAuto == null)
         {
             return;
         }
         int dlen = lightAuto.getDayBright().length;
         int nlen = lightAuto.getNightBright().length;
         int len = 11 + dlen + nlen;
-        if ( !lightAuto.isHasDynamic() )
+        if (!lightAuto.isHasDynamic())
         {
-            if ( lightAuto.isHasTurnoff() )
+            if (lightAuto.isHasTurnoff())
             {
                 len += 3;
             }
         }
         else
         {
-            if ( !lightAuto.isHasTurnoff() )
+            if (!lightAuto.isHasTurnoff())
             {
                 len += 6;
             }
@@ -423,20 +423,20 @@ public class CommUtil
         datas[7+dlen] = sunset.getStartMinute();
         datas[8+dlen] = sunset.getEndHour();
         datas[9+dlen] = sunset.getEndMinute();
-        for ( int i = 0; i < dlen; i++ )
+        for (int i = 0; i < dlen; i++)
         {
             datas[6+i] = lightAuto.getDayBright()[i];
         }
-        for ( int i = 0; i < nlen; i++ )
+        for (int i = 0; i < nlen; i++)
         {
             datas[10+dlen+i] = lightAuto.getNightBright()[i];
         }
-        Log.e(TAG, "setLedAuto: " + lightAuto.isHasDynamic() );
-        if ( !lightAuto.isHasDynamic() )
+        Log.e(TAG, "setLedAuto: " + lightAuto.isHasDynamic());
+        if (!lightAuto.isHasDynamic())
         {
-            if ( lightAuto.isHasTurnoff() )
+            if (lightAuto.isHasTurnoff())
             {
-                datas[10+dlen+nlen] = (byte) ( lightAuto.isTurnoffEnable() ? 0x01 : 0x00);
+                datas[10+dlen+nlen] = (byte) (lightAuto.isTurnoffEnable() ? 0x01 : 0x00);
                 datas[11+dlen+nlen] = lightAuto.getTurnoffHour();
                 datas[12+dlen+nlen] = lightAuto.getTurnoffMinute();
 //                len += 3;
@@ -444,7 +444,7 @@ public class CommUtil
         }
         else
         {
-            if ( !lightAuto.isHasTurnoff() )
+            if (!lightAuto.isHasTurnoff())
             {
                 datas[10 + dlen + nlen] = lightAuto.getWeek();
                 datas[11 + dlen + nlen] = lightAuto.getDynamicPeriod()
@@ -456,24 +456,24 @@ public class CommUtil
                 datas[14 + dlen + nlen] = lightAuto.getDynamicPeriod()
                                                    .getEndMinute();
                 datas[15 + dlen + nlen] = lightAuto.getDynamicMode();
-                Log.e(TAG, "setLedAuto: " + datas[15+dlen+nlen] );
+                Log.e(TAG, "setLedAuto: " + datas[15+dlen+nlen]);
 //                len += 6;
             }
             else
             {
-                datas[10+dlen+nlen] = (byte) ( lightAuto.isTurnoffEnable() ? 0x01 : 0x00);
+                datas[10+dlen+nlen] = (byte) (lightAuto.isTurnoffEnable() ? 0x01 : 0x00);
                 datas[11+dlen+nlen] = lightAuto.getTurnoffHour();
                 datas[12+dlen+nlen] = lightAuto.getTurnoffMinute();
 //                len += 3;
             }
         }
-        datas[len-1] = getCRC( datas, len-1 );
-        BleManager.getInstance().sendBytes( mac, datas );
+        datas[len-1] = getCRC(datas, len-1);
+        BleManager.getInstance().sendBytes(mac, datas);
     }
 
-    public static void setLedPro( String mac, LightPro lightPro)
+    public static void setLedPro(String mac, LightPro lightPro)
     {
-        if ( TextUtils.isEmpty( mac ) || lightPro == null )
+        if (TextUtils.isEmpty(mac) || lightPro == null)
         {
             return;
         }
@@ -482,38 +482,38 @@ public class CommUtil
         byte[] datas = new byte[len+3];
         datas[0] = FRM_HDR;
         datas[1] = CMD_PRO;
-        System.arraycopy( array, 0, datas, 2, len );
-        datas[datas.length-1] = getCRC( datas, datas.length-1 );
-        BleManager.getInstance().sendBytes( mac, datas );
+        System.arraycopy(array, 0, datas, 2, len);
+        datas[datas.length-1] = getCRC(datas, datas.length-1);
+        BleManager.getInstance().sendBytes(mac, datas);
     }
 
-    public static void setLedPro( String mac, List<TimerBrightPoint> points )
+    public static void setLedPro(String mac, List<TimerBrightPoint> points)
     {
-        if ( TextUtils.isEmpty( mac ) || points == null || points.size() < LightPro.POINT_COUNT_MIN || points.size() > LightPro.POINT_COUNT_MAX )
+        if (TextUtils.isEmpty(mac) || points == null || points.size() < LightPro.POINT_COUNT_MIN || points.size() > LightPro.POINT_COUNT_MAX)
         {
             return;
         }
-        int chns = points.get( 0 ).getBrights().length;
+        int chns = points.get(0).getBrights().length;
         int len = points.size()*(chns+2)+4;
         byte[] array = new byte[len];
         array[0] = FRM_HDR;
         array[1] = CMD_PRO;
         array[2] = (byte) points.size();
-        for ( int i = 0; i < points.size(); i++ )
+        for (int i = 0; i < points.size(); i++)
         {
-            if ( points.get( i ).getBrights().length != chns )
+            if (points.get(i).getBrights().length != chns)
             {
                 return;
             }
-            array[3+i*(chns+2)] = (byte) points.get( i ).getHour();
-            array[4+i*(chns+2)] = (byte) points.get( i ).getMinute();
-            for ( int j = 0; j < chns; j++ )
+            array[3+i*(chns+2)] = (byte) points.get(i).getHour();
+            array[4+i*(chns+2)] = (byte) points.get(i).getMinute();
+            for (int j = 0; j < chns; j++)
             {
-                array[5+i*(chns+2)+j] = points.get( i ).getBrights()[j];
+                array[5+i*(chns+2)+j] = points.get(i).getBrights()[j];
             }
         }
-        array[len-1] = getCRC( array, len-1 );
-        BleManager.getInstance().sendBytes( mac, array );
+        array[len-1] = getCRC(array, len-1);
+        BleManager.getInstance().sendBytes(mac, array);
     }
 
     public static void setLedDynamicPeriod(String mac, byte week, RampTime period, byte mode)
@@ -527,7 +527,7 @@ public class CommUtil
         datas[5] = period.getEndHour();
         datas[6] = period.getEndMinute();
         datas[7] = mode;
-        datas[8] = getCRC( datas, 8 );
-        BleManager.getInstance().sendBytes( mac, datas );
+        datas[8] = getCRC(datas, 8);
+        BleManager.getInstance().sendBytes(mac, datas);
     }
 }

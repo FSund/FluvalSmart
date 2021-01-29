@@ -13,14 +13,14 @@ public class TimerBrightPoint implements Serializable
     {
     }
 
-    public TimerBrightPoint( int hour, int minute, int chn )
+    public TimerBrightPoint(int hour, int minute, int chn)
     {
         mHour = hour;
         mMinute = minute;
         mBrights = new byte[chn];
     }
 
-    public TimerBrightPoint( int hour, int minute, byte[] brights )
+    public TimerBrightPoint(int hour, int minute, byte[] brights)
     {
         mHour = hour;
         mMinute = minute;
@@ -32,7 +32,7 @@ public class TimerBrightPoint implements Serializable
         return mHour;
     }
 
-    public void setHour( int hour )
+    public void setHour(int hour)
     {
         mHour = hour;
     }
@@ -42,7 +42,7 @@ public class TimerBrightPoint implements Serializable
         return mMinute;
     }
 
-    public void setMinute( int minute )
+    public void setMinute(int minute)
     {
         mMinute = minute;
     }
@@ -52,7 +52,7 @@ public class TimerBrightPoint implements Serializable
         return mBrights;
     }
 
-    public void setBrights( byte[] brights )
+    public void setBrights(byte[] brights)
     {
         mBrights = brights;
     }
@@ -67,7 +67,7 @@ public class TimerBrightPoint implements Serializable
         byte[] array = new byte[mBrights.length+2];
         array[0] = (byte) mHour;
         array[1] = (byte) mMinute;
-        System.arraycopy( mBrights, 0, array, 2, mBrights.length );
+        System.arraycopy(mBrights, 0, array, 2, mBrights.length);
         return array;
     }
 }

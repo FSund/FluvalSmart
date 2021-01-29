@@ -40,7 +40,7 @@ public class Frame
     {
     }
 
-    private Frame ( int data_length, int address, int type, List< Byte > data_list )
+    private Frame (int data_length, int address, int type, List< Byte > data_list)
     {
         this.data_length = data_length;
         this.address = address;
@@ -53,7 +53,7 @@ public class Frame
         return data_length;
     }
 
-    public void setData_length ( int data_length )
+    public void setData_length (int data_length)
     {
         this.data_length = data_length;
     }
@@ -63,7 +63,7 @@ public class Frame
         return address;
     }
 
-    public void setAddress ( int address )
+    public void setAddress (int address)
     {
         this.address = address;
     }
@@ -73,7 +73,7 @@ public class Frame
         return type;
     }
 
-    public void setType ( int type )
+    public void setType (int type)
     {
         this.type = type;
     }
@@ -83,7 +83,7 @@ public class Frame
         return data_list;
     }
 
-    public void setData_list ( List< Byte > data_list )
+    public void setData_list (List< Byte > data_list)
     {
         this.data_list = data_list;
     }
@@ -113,57 +113,57 @@ public class Frame
          */
         public Frame createFromString(String str)
         {
-            if ( str.startsWith( ":" ) )
+            if (str.startsWith(":"))
             {
                 String s;
-                if ( str.endsWith( "\r\n" ) )
+                if (str.endsWith("\r\n"))
                 {
-                    s = str.substring( 1, str.length() - 2 );
+                    s = str.substring(1, str.length() - 2);
                 }
                 else
                 {
-                    s = str.substring( 1 );
+                    s = str.substring(1);
                 }
-                if ( s.length() < 10 || ((s.length()&0x01) != 0x00) )
+                if (s.length() < 10 || ((s.length()&0x01) != 0x00))
                 {
                     return null;
                 }
                 try
                 {
-                    int length = Integer.parseInt( s.substring( 0, 2 ), 16 );
-                    if ( s.length() != length * 2 + 10 )
+                    int length = Integer.parseInt(s.substring(0, 2), 16);
+                    if (s.length() != length * 2 + 10)
                     {
                         return null;
                     }
-                    int adrH = Integer.parseInt( s.substring( 2, 4 ), 16 );
-                    int adrL = Integer.parseInt( s.substring( 4, 6 ), 16 );
-                    if ( (adrL&0x01) != 0x00 )
+                    int adrH = Integer.parseInt(s.substring(2, 4), 16);
+                    int adrL = Integer.parseInt(s.substring(4, 6), 16);
+                    if ((adrL&0x01) != 0x00)
                     {
                         return null;
                     }
-                    int type = Integer.parseInt( s.substring( 6, 8 ), 16 );
-                    if ( type != 0x00 && type != 0x01 && type != 0x02 && type != 0x04 )
+                    int type = Integer.parseInt(s.substring(6, 8), 16);
+                    if (type != 0x00 && type != 0x01 && type != 0x02 && type != 0x04)
                     {
                         return null;
                     }
                     int sum = length + adrH + adrL + type;
                     ArrayList<Byte> bytes = new ArrayList<>();
-                    for ( int i = 0; i < length; i++ )
+                    for (int i = 0; i < length; i++)
                     {
-                        int b = Integer.parseInt( s.substring( 8 + i * 2, 10 + i * 2 ), 16 );
+                        int b = Integer.parseInt(s.substring(8 + i * 2, 10 + i * 2), 16);
                         sum += b;
-                        bytes.add( (byte) ( b & 0xFF) );
+                        bytes.add((byte) (b & 0xFF));
                     }
-                    int checksum = Integer.parseInt(s.substring( s.length() - 2), 16);
+                    int checksum = Integer.parseInt(s.substring(s.length() - 2), 16);
                     sum += checksum;
-                    if ( (sum&0xFF) != 0x00 )
+                    if ((sum&0xFF) != 0x00)
                     {
                         return null;
                     }
-                    Frame frame = new Frame(length, ((adrH << 8) | adrL) >> 1, type, bytes );
+                    Frame frame = new Frame(length, ((adrH << 8) | adrL) >> 1, type, bytes);
                     return frame;
                 }
-                catch ( Exception e )
+                catch (Exception e)
                 {
                     return null;
                 }

@@ -223,7 +223,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     @Override
     public void showUpgradeConfirmDialog(String msg) {
 //        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
-        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle(R.string.ota_upgradable);
         builder.setMessage(msg);
         builder.setNegativeButton(R.string.ota_cancel, new DialogInterface.OnClickListener() {
@@ -268,7 +268,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
     @Override
     public void showRepowerDialog() {
 //        CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
-        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         final int[] count = new int[]{20};
         View view = LayoutInflater.from(this)
                                   .inflate(R.layout.dialog_repower, null, false);
@@ -284,7 +284,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
         window.setAttributes(lp);
 
         final Button btn = view.findViewById(R.id.dialog_repower_next);
-        btn.setText(getString(R.string.ota_wait_msg) + " ( 20 ) ");
+        btn.setText(getString(R.string.ota_wait_msg) + " (20) ");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,7 +297,7 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
             public void onTick(long millisUntilFinished) {
                 count[0]--;
                 if (count[0] > 0) {
-                    btn.setText(getString(R.string.ota_wait_msg) + " ( " + count[0] + " ) ");
+                    btn.setText(getString(R.string.ota_wait_msg) + " (" + count[0] + ") ");
                 }
             }
 
@@ -308,8 +308,8 @@ public class BleOTAActivity extends BaseActivity implements IOTAView {
             }
         };
 
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
         timer.start();
     }

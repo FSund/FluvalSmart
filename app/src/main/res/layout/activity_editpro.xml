@@ -6,6 +6,13 @@
               android:gravity="center"
               android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/editpro_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_clear"
+        app:title="@string/edit"/>
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/editpro_linechart"
         android:layout_width="match_parent"
@@ -24,17 +31,27 @@
         app:maximum="1439"
         app:interval="5"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/editpro_rv_show"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="4dp">
+
+        <ImageButton
+            android:id="@+id/editpro_ib_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/ripple_theme"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_prev"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/editpro_ib_add"
@@ -42,6 +59,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:background="@drawable/ripple_theme"
+            android:scaleType="center"
             app:srcCompat="@drawable/ic_time_add_white_32dp"/>
 
         <ImageButton
@@ -51,6 +69,7 @@
             android:padding="8dp"
             android:visibility="gone"
             android:background="@drawable/ripple_theme"
+            android:scaleType="center"
             app:srcCompat="@drawable/ic_delete_red_32dp"/>
 
         <Space
@@ -58,11 +77,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
+        <ImageButton
+            android:id="@+id/editpro_ib_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/ripple_theme"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_next"/>
+
         <Button
             android:id="@+id/editpro_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:visibility="gone"
             android:background="@drawable/shape_btn_corner_gray"
             android:textSize="@dimen/button_text_size"
             android:text="@string/cancel"/>
@@ -72,9 +101,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:visibility="gone"
             android:background="@drawable/shape_btn_corner_primary"
             android:textSize="@dimen/button_text_size"
             android:text="@string/save"/>
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/editpro_rv_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
 </LinearLayout>

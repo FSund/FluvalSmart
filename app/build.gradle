@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.inledco.fluvalsmart"
         minSdkVersion 18
@@ -68,7 +68,7 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -79,17 +79,17 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.github.gigamole.arcprogressstackview:library:1.0.3'
     implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     implementation project(':itemtouchhelperextension')
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'org.jetbrains:annotations-java5:15.0'
 //    implementation 'com.github.liruya:okhttpmanager:1.0.0'
     //    implementation 'com.github.liruya:tuner168blemanager:1.0.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 //    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation project(':tuner168blemanager')
     implementation project(path: ':okhttpmanager')
     implementation 'com.google.code.gson:gson:2.8.6'
+//    implementation 'com.google.android.material:material:1.2.1'
     implementation project(path: ':swiperecyclerview')
 }

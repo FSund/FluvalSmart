@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FluvalSmart.iml" filepath="$PROJECT_DIR$/FluvalSmart.iml" group="FluvalSmart" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="FluvalSmart/app" />
-      <module fileurl="file://$PROJECT_DIR$/itemtouchhelperextension/itemtouchhelperextension.iml" filepath="$PROJECT_DIR$/itemtouchhelperextension/itemtouchhelperextension.iml" group="FluvalSmart/itemtouchhelperextension" />
-      <module fileurl="file://$PROJECT_DIR$/okhttpmanager/okhttpmanager.iml" filepath="$PROJECT_DIR$/okhttpmanager/okhttpmanager.iml" group="FluvalSmart/okhttpmanager" />
-      <module fileurl="file://$PROJECT_DIR$/swiperecyclerview/swiperecyclerview.iml" filepath="$PROJECT_DIR$/swiperecyclerview/swiperecyclerview.iml" group="FluvalSmart/swiperecyclerview" />
-      <module fileurl="file://$PROJECT_DIR$/tuner168blemanager/tuner168blemanager.iml" filepath="$PROJECT_DIR$/tuner168blemanager/tuner168blemanager.iml" group="FluvalSmart/tuner168blemanager" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-398554704/Android.FluvalSmart.iml" filepath="$PROJECT_DIR$/.idea/modules/-398554704/Android.FluvalSmart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/765004098/FluvalSmart.app.iml" filepath="$PROJECT_DIR$/.idea/modules/765004098/FluvalSmart.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1193852484/FluvalSmart.itemtouchhelperextension.iml" filepath="$PROJECT_DIR$/.idea/modules/1193852484/FluvalSmart.itemtouchhelperextension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-239425366/FluvalSmart.okhttpmanager.iml" filepath="$PROJECT_DIR$/.idea/modules/-239425366/FluvalSmart.okhttpmanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/66133247/FluvalSmart.swiperecyclerview.iml" filepath="$PROJECT_DIR$/.idea/modules/66133247/FluvalSmart.swiperecyclerview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1674231190/FluvalSmart.tuner168blemanager.iml" filepath="$PROJECT_DIR$/.idea/modules/-1674231190/FluvalSmart.tuner168blemanager.iml" />
     </modules>
   </component>
 </project>

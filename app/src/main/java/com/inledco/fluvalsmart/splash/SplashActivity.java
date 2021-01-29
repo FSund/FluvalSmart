@@ -76,7 +76,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        //        Setting.initSetting( this );
+        //        Setting.initSetting(this);
         boolean hasSelect = Setting.hasSelectCountryLanguage(this);
         iv_logo.setVisibility(hasSelect ? View.GONE : View.VISIBLE);
         iv_logo_center.setVisibility(hasSelect ? View.VISIBLE : View.GONE);

@@ -31,7 +31,7 @@ public class SliderAdapter extends BaseAdapter
     private Channel[] mChannels;
     private static long msc;
 
-    public SliderAdapter ( Context context, String mac, short devid, Channel[] channels )
+    public SliderAdapter (Context context, String mac, short devid, Channel[] channels)
     {
         mContext = context;
         mAddress = mac;
@@ -40,7 +40,7 @@ public class SliderAdapter extends BaseAdapter
         msc = System.currentTimeMillis();
     }
 
-    public SliderAdapter ( Context context, String mac, short devid, boolean power, Channel[] channels )
+    public SliderAdapter (Context context, String mac, short devid, boolean power, Channel[] channels)
     {
         mContext = context;
         mAddress = mac;
@@ -61,67 +61,67 @@ public class SliderAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem ( int position )
+    public Object getItem (int position)
     {
         return mChannels[position];
     }
 
     @Override
-    public long getItemId ( int position )
+    public long getItemId (int position)
     {
         return position;
     }
 
     @Override
-    public View getView ( final int position, View convertView, ViewGroup parent )
+    public View getView (final int position, View convertView, ViewGroup parent)
     {
         ViewHolder holder = null;
-        if ( convertView == null )
+        if (convertView == null)
         {
-            convertView = LayoutInflater.from( mContext )
-                                        .inflate( R.layout.item_slider, parent, false );
+            convertView = LayoutInflater.from(mContext)
+                                        .inflate(R.layout.item_slider, parent, false);
             holder = new ViewHolder();
-            holder.tv_name = convertView.findViewById( R.id.slider_chn_name );
-            holder.slider = convertView.findViewById( R.id.item_chn_slider );
-            holder.tv_percent = convertView.findViewById( R.id.item_chn_percent );
-            convertView.setTag( holder );
+            holder.tv_name = convertView.findViewById(R.id.slider_chn_name);
+            holder.slider = convertView.findViewById(R.id.item_chn_slider);
+            holder.tv_percent = convertView.findViewById(R.id.item_chn_percent);
+            convertView.setTag(holder);
         }
         else
         {
             holder = (ViewHolder) convertView.getTag();
         }
         final Channel channel = mChannels[position];
-        holder.tv_name.setText( channel.getName() );
-        holder.slider.setProgress( channel.getValue() );
+        holder.tv_name.setText(channel.getName());
+        holder.slider.setProgress(channel.getValue());
         int[] thumbs = DeviceUtil.getThumb(mDevid);
         int[] seekBars = DeviceUtil.getSeekbar(mDevid);
-        if ( thumbs != null && position < thumbs.length )
+        if (thumbs != null && position < thumbs.length)
         {
             Drawable progressDrawable = mContext.getResources()
-                                                .getDrawable( seekBars[position] );
-            holder.slider.setProgressDrawable( progressDrawable );
+                                                .getDrawable(seekBars[position]);
+            holder.slider.setProgressDrawable(progressDrawable);
         }
-        if ( seekBars != null && position < seekBars.length )
+        if (seekBars != null && position < seekBars.length)
         {
             Drawable thumb = mContext.getResources()
-                                     .getDrawable( thumbs[position] );
-            holder.slider.setThumb( thumb );
+                                     .getDrawable(thumbs[position]);
+            holder.slider.setThumb(thumb);
         }
         final TextView percent = holder.tv_percent;
-        percent.setText( getPercent( channel.getValue() ) );
-        holder.slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener()
+        percent.setText(getPercent(channel.getValue()));
+        holder.slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
-            public void onProgressChanged ( SeekBar seekBar, int progress, boolean fromUser )
+            public void onProgressChanged (SeekBar seekBar, int progress, boolean fromUser)
             {
-                percent.setText( getPercent( (short) progress ) );
-                if ( fromUser )
+                percent.setText(getPercent((short) progress));
+                if (fromUser)
                 {
                     long t = System.currentTimeMillis();
-                    if ( t - msc > 32 )
+                    if (t - msc > 32)
                     {
                         short[] values = new short[getCount()];
-                        for ( int i = 0; i < values.length; i++ )
+                        for (int i = 0; i < values.length; i++)
                         {
                             values[i] = (short) 0xFFFF;
                         }
@@ -135,16 +135,16 @@ public class SliderAdapter extends BaseAdapter
             }
 
             @Override
-            public void onStartTrackingTouch ( SeekBar seekBar )
+            public void onStartTrackingTouch (SeekBar seekBar)
             {
 
             }
 
             @Override
-            public void onStopTrackingTouch ( final SeekBar seekBar )
+            public void onStopTrackingTouch (final SeekBar seekBar)
             {
-                percent.setText( getPercent( (short) seekBar.getProgress() ) );
-                channel.setValue( (short) seekBar.getProgress() );
+                percent.setText(getPercent((short) seekBar.getProgress()));
+                channel.setValue((short) seekBar.getProgress());
                 if (mPower) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -161,18 +161,18 @@ public class SliderAdapter extends BaseAdapter
                     showPoweroff();
                 }
             }
-        } );
+        });
         return convertView;
     }
 
-    private String getPercent ( short value )
+    private String getPercent (short value)
     {
-        if ( value > 1000 )
+        if (value > 1000)
         {
             return "100%";
         }
-        DecimalFormat df = new DecimalFormat( "##0" );
-        return df.format( value/10 ) + "%";
+        DecimalFormat df = new DecimalFormat("##0");
+        return df.format(value/10) + "%";
     }
 
     private void showPoweroff() {

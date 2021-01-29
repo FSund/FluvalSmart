@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -517,7 +519,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void readMfr() {
-        Log.e(TAG, "readMfr: " );
+        Log.e(TAG, "readMfr: ");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -528,7 +530,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void syncDeviceDatetime() {
-        Log.e(TAG, "syncDeviceDatetime: " );
+        Log.e(TAG, "syncDeviceDatetime: ");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -587,26 +589,10 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 mProgressDialog.dismiss();
                 if (light_mode_show.getVisibility() != View.VISIBLE || !light_ctv_manual.isChecked()) {
                     final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    if (mPrefer.getDevId() == DeviceUtil.LIGHT_ID_RGBW ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_600 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_900 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_1200 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_380 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_530 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_835 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_990 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_750 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_1150 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_AQUASKY_910 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA90 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA125 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA200 ||
-                        mPrefer.getDevId() == DeviceUtil.LIGHT_ID_ROMA240)
-                    {
+                    if (DeviceUtil.isRgbw(mPrefer.getDevId())){
                         ft.replace(R.id.light_fl_show, new RGBWManualFragment())
                           .commitAllowingStateLoss();
-                    }
-                    else {
+                    } else {
                         ft.replace(R.id.light_fl_show, new LightManualFragment())
                           .commitAllowingStateLoss();
                     }
@@ -693,20 +679,31 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     private void showRenameDialog(final DevicePrefer prefer) {
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         //        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
-        View view = LayoutInflater.from(this)
-                                  .inflate(R.layout.dialog_rename, null);
-        builder.setTitle(R.string.rename_device);
-        builder.setView(view);
-        final AlertDialog dialog = builder.show();
-        final Button btn_cancel = view.findViewById(R.id.rename_cancel);
-        final Button btn_rename = view.findViewById(R.id.rename_confirm);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_rename, null, false);
         final TextInputLayout til = view.findViewById(R.id.rename_til);
         final TextInputEditText newname = view.findViewById(R.id.rename_newname);
+        builder.setTitle(R.string.rename_device);
+        builder.setView(view);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.save, null);
+        final AlertDialog dialog = builder.show();
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        final Button btn_rename = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
         StringBuilder sb = new StringBuilder("BLE#0x").append(prefer.getDeviceMac());
         String mac = new String(sb);
         mac = mac.replace(":", "");
         final boolean[] flag = new boolean[]{false};
         newname.setText(prefer.getDeviceName());
+        newname.requestFocus();
+        try {
+            InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(newname, InputMethodManager.SHOW_FORCED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         newname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -734,12 +731,6 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
 
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
         final String finalMac = mac;
         btn_rename.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -762,13 +753,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         });
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
     private void showRetrievePasswordDialog(final int password) {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(LightActivity.this, R.style.DialogTheme);
         View view = LayoutInflater.from(LightActivity.this).inflate(R.layout.dialog_retrieve_password, null, false);
         builder.setTitle(R.string.retrieve_password);
@@ -810,8 +801,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         });
-        //        dialog.setCanceledOnTouchOutside( false );
-        //        dialog.setView( view );
+        //        dialog.setCanceledOnTouchOutside(false);
+        //        dialog.setView(view);
         //        dialog.show();
     }
 
@@ -819,7 +810,7 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
         if (mPasswordDialog != null && mPasswordDialog.isShowing()) {
             return;
         }
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null, false);
         final TextInputLayout psw_til = view.findViewById(R.id.psw_til);
@@ -907,27 +898,34 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
     }
 
     private void showModifyPasswordDialog() {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         View view = LayoutInflater.from(this)
                                   .inflate(R.layout.dialog_modify_password, null, false);
+        final TextInputLayout modify_til1 = view.findViewById(R.id.modify_psw_til1);
+        final TextInputLayout modify_til2 = view.findViewById(R.id.modify_psw_til2);
+        final TextInputEditText modify_new = view.findViewById(R.id.modify_psw_new);
+        final TextInputEditText modify_confirm = view.findViewById(R.id.modify_psw_confirm);
         builder.setTitle(getString(R.string.set_password));
         builder.setView(view);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setPositiveButton(R.string.dialog_ok, null);
         final AlertDialog dialog = builder.show();
-        final TextInputLayout modify_til1 = view.findViewById(R.id.modify_psw_til1);
-        final TextInputLayout modify_til2 = view.findViewById(R.id.modify_psw_til2);
-        final TextInputEditText modify_new = view.findViewById(R.id.modify_psw_new);
-        final TextInputEditText modify_confirm = view.findViewById(R.id.modify_psw_confirm);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        modify_new.requestFocus();
+        try {
+            InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(modify_new, InputMethodManager.SHOW_FORCED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Button btn_set = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btn_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String psw1 = modify_new.getText()
-                                        .toString();
-                String psw2 = modify_confirm.getText()
-                                            .toString();
+                String psw1 = modify_new.getText().toString();
+                String psw2 = modify_confirm.getText().toString();
                 if (psw1.length() != 6) {
                     modify_til1.setError(getString(R.string.error_psw_6_num));
                     return;
@@ -965,13 +963,13 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                 }
             }
         });
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
     private void showRemovePasswordDialog() {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(this, R.style.DialogTheme);
         builder.setTitle(getString(R.string.remove_password))
                .setNegativeButton(R.string.cancel, null)
@@ -982,8 +980,8 @@ public class LightActivity extends BaseActivity implements DataInvalidFragment.O
                     }
                 })
                .show();
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 

@@ -25,25 +25,25 @@ public class Light extends BaseDevice implements Serializable
 
     public Light(DevicePrefer devicePrefer, int mode, LightManual lightManual, LightAuto lightAuto)
     {
-        super( devicePrefer );
+        super(devicePrefer);
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
     }
 
-    public Light ( DevicePrefer devicePrefer, int mode, LightManual lightManual, LightAuto lightAuto, LightPro lightPro )
+    public Light (DevicePrefer devicePrefer, int mode, LightManual lightManual, LightAuto lightAuto, LightPro lightPro)
     {
-        super( devicePrefer );
+        super(devicePrefer);
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
         mLightPro = lightPro;
     }
 
-    public Light ( byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, DeviceTime deviceTime, int mode,
-                   LightManual lightManual, LightAuto lightAuto )
+    public Light (byte majorVersion, byte minorVersion, DevicePrefer devicePrefer, DeviceTime deviceTime, int mode,
+                   LightManual lightManual, LightAuto lightAuto)
     {
-        super( majorVersion, minorVersion, devicePrefer, deviceTime );
+        super(majorVersion, minorVersion, devicePrefer, deviceTime);
         mMode = mode;
         mLightManual = lightManual;
         mLightAuto = lightAuto;
@@ -54,7 +54,7 @@ public class Light extends BaseDevice implements Serializable
         return mMode;
     }
 
-    public void setMode( int mode )
+    public void setMode(int mode)
     {
         mMode = mode;
     }
@@ -64,7 +64,7 @@ public class Light extends BaseDevice implements Serializable
         return mLightPro;
     }
 
-    public void setLightPro( LightPro lightPro )
+    public void setLightPro(LightPro lightPro)
     {
         mLightPro = lightPro;
     }
@@ -74,7 +74,7 @@ public class Light extends BaseDevice implements Serializable
         return mLightManual;
     }
 
-    public void setLightManual ( LightManual lightManual )
+    public void setLightManual (LightManual lightManual)
     {
         mLightManual = lightManual;
     }
@@ -84,7 +84,7 @@ public class Light extends BaseDevice implements Serializable
         return mLightAuto;
     }
 
-    public void setLightAuto ( LightAuto lightAuto )
+    public void setLightAuto (LightAuto lightAuto)
     {
         mLightAuto = lightAuto;
     }

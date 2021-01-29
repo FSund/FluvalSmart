@@ -10,7 +10,9 @@
         android:id="@+id/rename_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         app:hintEnabled="true"
         app:hintTextAppearance="@style/TextHint"
         app:errorEnabled="true">
@@ -25,26 +27,4 @@
             android:hint="@string/new_device_name"
             android:inputType="textCapSentences"/>
     </android.support.design.widget.TextInputLayout>
-    <android.support.v7.widget.ButtonBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="right">
-        <Button
-            android:id="@+id/rename_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DialogButtonTheme"
-            android:textAllCaps="false"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/cancel"/>
-        <Button
-            android:id="@+id/rename_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DialogButtonTheme"
-            android:textAllCaps="false"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/save"/>
-    </android.support.v7.widget.ButtonBarLayout>
 </LinearLayout>

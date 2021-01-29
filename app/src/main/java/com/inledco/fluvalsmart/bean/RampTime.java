@@ -14,7 +14,7 @@ public class RampTime implements Serializable
     private byte endHour;
     private byte endMinute;
 
-    public RampTime ( byte startHour, byte startMinute, byte endHour, byte endMinute )
+    public RampTime (byte startHour, byte startMinute, byte endHour, byte endMinute)
     {
         this.startHour = startHour;
         this.startMinute = startMinute;
@@ -27,7 +27,7 @@ public class RampTime implements Serializable
         return startHour;
     }
 
-    public void setStartHour ( byte startHour )
+    public void setStartHour (byte startHour)
     {
         this.startHour = startHour;
     }
@@ -37,7 +37,7 @@ public class RampTime implements Serializable
         return startMinute;
     }
 
-    public void setStartMinute ( byte startMinute )
+    public void setStartMinute (byte startMinute)
     {
         this.startMinute = startMinute;
     }
@@ -47,7 +47,7 @@ public class RampTime implements Serializable
         return endHour;
     }
 
-    public void setEndHour ( byte endHour )
+    public void setEndHour (byte endHour)
     {
         this.endHour = endHour;
     }
@@ -57,7 +57,7 @@ public class RampTime implements Serializable
         return endMinute;
     }
 
-    public void setEndMinute ( byte endMinute )
+    public void setEndMinute (byte endMinute)
     {
         this.endMinute = endMinute;
     }
@@ -74,19 +74,19 @@ public class RampTime implements Serializable
 
     public boolean equal(RampTime rt)
     {
-        if ( rt == null )
+        if (rt == null)
         {
             return false;
         }
-        if ( startHour != rt.getStartHour() )
+        if (startHour != rt.getStartHour())
         {
             return false;
         }
-        if ( startMinute != rt.getStartMinute() )
+        if (startMinute != rt.getStartMinute())
         {
             return false;
         }
-        if ( endHour != rt.getEndHour() )
+        if (endHour != rt.getEndHour())
         {
             return false;
         }

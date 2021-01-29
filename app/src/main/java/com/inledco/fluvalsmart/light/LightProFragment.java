@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CheckableImageButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -26,11 +29,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -143,7 +147,7 @@ public class LightProFragment extends BaseFragment {
         pro_tb_preview = view.findViewById(R.id.pro_tb_preview);
         pro_btn_edit = view.findViewById(R.id.pro_btn_edit);
         pro_btn_overview = view.findViewById(R.id.pro_btn_overview);
-        //        pro_linearlayout = view.findViewById( R.id.pro_linearlayout );
+        //        pro_linearlayout = view.findViewById(R.id.pro_linearlayout);
         pro_seekbar = view.findViewById(R.id.pro_seekbar);
         pro_textview = view.findViewById(R.id.pro_textview);
 
@@ -217,7 +221,7 @@ public class LightProFragment extends BaseFragment {
                     pro_tv_dynamic.setVisibility(View.GONE);
                     pro_seekbar.setVisibility(View.VISIBLE);
                     pro_textview.setVisibility(View.VISIBLE);
-                    //                    pro_linearlayout.setVisibility( View.VISIBLE );
+                    //                    pro_linearlayout.setVisibility(View.VISIBLE);
                     mPreviewCount = -1;
                     mPreviewTimer = new Timer();
                     mPreviewTask = new TimerTask() {
@@ -259,7 +263,7 @@ public class LightProFragment extends BaseFragment {
                     pro_tv_dynamic.setVisibility(mLightPro.isHasDynamic() ? View.VISIBLE : View.GONE);
                     pro_seekbar.setVisibility(View.GONE);
                     pro_textview.setVisibility(View.GONE);
-                    //                    pro_linearlayout.setVisibility( View.GONE );
+                    //                    pro_linearlayout.setVisibility(View.GONE);
                     mPreviewCount = -1;
                     mPreviewTask.cancel();
                     mPreviewTimer.cancel();
@@ -449,10 +453,12 @@ public class LightProFragment extends BaseFragment {
     }
 
     private void showExportDialog() {
+        final String prof = LightPrefUtil.getProProfileName(getContext(), mLight.getDevicePrefer().getDevId(), mLight.getLightPro());
         final Map<String, LightPro> presetProfiles = DeviceUtil.getProPresetProfiles(getContext(), devid, mLightPro.isHasDynamic());
         final int presetCount = (presetProfiles == null ? 0 : presetProfiles.size());
         final Map<String, LightPro> localProfiles = LightPrefUtil.getLocalProProfiles(getContext(), devid, mLightPro.isHasDynamic());
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         final Button[] buttons = new Button[3];
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         builder.setTitle(R.string.export_profile);
@@ -461,12 +467,16 @@ public class LightProFragment extends BaseFragment {
         }
         else {
             final String[] keys = new String[localProfiles.size()];
+            localProfiles.keySet().toArray(keys);
             int idx = 0;
-            for (String s : localProfiles.keySet()) {
-                keys[idx++] = s;
+            for (int i = 0; i < keys.length; i++) {
+                if (TextUtils.equals(prof, keys[i])) {
+                    idx = i;
+                    break;
+                }
             }
-            final int[] index = {0};
-            builder.setSingleChoiceItems(keys, 0, new DialogInterface.OnClickListener() {
+            final int[] index = {idx};
+            builder.setSingleChoiceItems(keys, idx, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     index[0] = which;
@@ -486,7 +496,6 @@ public class LightProFragment extends BaseFragment {
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Log.e(TAG, "run: ");
                                 CommUtil.setLedDynamicPeriod(mAddress, lightPro.getWeek(), lightPro.getDynamicPeriod(), lightPro.getDynamicMode());
                                 mSaveTimer.startCheck();
                             }
@@ -507,24 +516,39 @@ public class LightProFragment extends BaseFragment {
         builder.setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.show();
         buttons[0] = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        buttons[1] = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        buttons[2] = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         buttons[0].setEnabled(false);
         buttons[0].setTextColor(getResources().getColor(R.color.colorGray));
+        buttons[1].setTextColor(getResources().getColor(R.color.colorRed));
+        buttons[2].setTextColor(getResources().getColor(R.color.colorGreen));
         //        AlertDialog dialog = builder.create();
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 
     private void showSaveDialog() {
-        //        AlertDialog.Builder builder = new AlertDialog.Builder( getContext(), R.style.DialogTheme );
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
         CustomDialogBuilder builder = new CustomDialogBuilder(getContext(), R.style.DialogTheme);
         View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.dialog_export_profile, null);
+        final TextInputLayout til = view.findViewById(R.id.export_til);
+        final TextInputEditText name = view.findViewById(R.id.export_name);
         builder.setTitle(R.string.save_profile);
         builder.setView(view);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.save, null);
         final AlertDialog dialog = builder.show();
-        final EditText name = view.findViewById(R.id.export_name);
-        Button btn_cancel = view.findViewById(R.id.export_cancel);
-        Button btn_ok = view.findViewById(R.id.export_ok);
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        name.requestFocus();
+        try {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(name, InputMethodManager.SHOW_FORCED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final Button btn_ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         final boolean[] flag = new boolean[]{false};
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -554,34 +578,24 @@ public class LightProFragment extends BaseFragment {
 
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(name.getText()
-                                          .toString()))
-                {
-                    name.setError(getContext().getString(R.string.error_input_empty));
-                }
-                else {
+                if (TextUtils.isEmpty(name.getText().toString())) {
+                    til.setError(getContext().getString(R.string.error_input_empty));
+                } else {
                     LightPrefUtil.saveProProfile(getContext(),
                                                  mLightPro,
                                                  devid,
-                                                 name.getText()
-                                                        .toString());
+                                                 name.getText().toString());
                     dialog.dismiss();
                     Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT)
                          .show();
                 }
             }
         });
-        //        dialog.setView( view );
-        //        dialog.setCanceledOnTouchOutside( false );
+        //        dialog.setView(view);
+        //        dialog.setCanceledOnTouchOutside(false);
         //        dialog.show();
     }
 

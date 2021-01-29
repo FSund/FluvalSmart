@@ -313,26 +313,26 @@ public class RGBWManualFragment extends BaseFragment implements View.OnClickList
         }
         switch (id) {
             case R.id.rgbw_preset1:
-                //                CommUtil.setLed( mAddress, new short[]{1000, 500, 0, 1000} );
+                //                CommUtil.setLed(mAddress, new short[]{1000, 500, 0, 1000});
                 CommUtil.setLed(mAddress, new short[]{1000, 250, 0, 0});
                 break;
             case R.id.rgbw_preset2:
-                //                CommUtil.setLed( mAddress, new short[]{0, 0, 1000, 1000} );
+                //                CommUtil.setLed(mAddress, new short[]{0, 0, 1000, 1000});
                 CommUtil.setLed(mAddress, new short[]{0, 0, 1000, 0});
                 break;
             case R.id.rgbw_preset3:
-                //                CommUtil.setLed( mAddress, new short[]{1000, 0, 1000, 1000} );
+                //                CommUtil.setLed(mAddress, new short[]{1000, 0, 1000, 1000});
                 CommUtil.setLed(mAddress, new short[]{1000, 0, 1000, 0});
                 break;
             case R.id.rgbw_preset4:
                 CommUtil.setLed(mAddress, new short[]{0, 0, 0, 1000});
                 break;
             case R.id.rgbw_preset5:
-                //                CommUtil.setLed( mAddress, new short[]{1000, 1000, 1000, 1000} );
+                //                CommUtil.setLed(mAddress, new short[]{1000, 1000, 1000, 1000});
                 CommUtil.setLed(mAddress, new short[]{1000, 750, 0, 0});
                 break;
             case R.id.rgbw_preset6:
-                //                CommUtil.setLed( mAddress, new short[]{1000, 0, 1000, 500} );
+                //                CommUtil.setLed(mAddress, new short[]{1000, 0, 1000, 500});
                 CommUtil.setLed(mAddress, new short[]{250, 0, 1000, 0});
                 break;
             case R.id.rgbw_onoff:

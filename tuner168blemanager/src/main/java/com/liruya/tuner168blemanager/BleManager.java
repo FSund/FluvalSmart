@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.ble.api.DataUtil;
+import com.ble.api.EncodeUtil;
 import com.ble.ble.BleCallBack;
 import com.ble.ble.BleService;
 import com.ble.ble.constants.BleRegConstants;
@@ -150,7 +151,7 @@ public class BleManager implements ServiceConnection {
 
         @Override
         public void onCharacteristicChanged(String s, byte[] bytes) {
-            Log.e(TAG, "onCharacteristicChanged: " + s);
+            Log.e(TAG, "onCharacteristicChanged: " + s + " " + DataUtil.byteArrayToHex(bytes));
             long t = System.currentTimeMillis();
             if (t - msc > DATA_FRAME_INTERVAL) {
                 mRcvBytes.clear();
@@ -170,6 +171,55 @@ public class BleManager implements ServiceConnection {
                 listener.onReadRssi(s, i);
             }
         }
+
+//        @Override
+//        public void onCharacteristicRead(String s, byte[] bytes, int i) {
+//            super.onCharacteristicRead(s, bytes, i);
+//            Log.e(TAG, "onCharacteristicRead: " + s + " " + Arrays.toString(bytes) + " " + i);
+//        }
+//
+//        @Override
+//        public void onCharacteristicRead(String s, BluetoothGattCharacteristic characteristic, int i) {
+//            super.onCharacteristicRead(s, characteristic, i);
+//            Log.e(TAG, "onCharacteristicRead: " + s + " " + Arrays.toString(characteristic.getValue()) + " " + i);
+//        }
+
+//        @Override
+//        public void onCharacteristicChanged(String s, BluetoothGattCharacteristic bluetoothGattCharacteristic) {
+//            super.onCharacteristicChanged(s, bluetoothGattCharacteristic);
+//        }
+
+        @Override
+        public void onCharacteristicWrite(String s, BluetoothGattCharacteristic characteristic, int i) {
+            super.onCharacteristicWrite(s, characteristic, i);
+            EncodeUtil encodeUtil = new EncodeUtil();
+            Log.e(TAG,
+                  "onCharacteristicWrite: " + s + " " + DataUtil.byteArrayToHex(characteristic.getValue()) + " " + i + " " + DataUtil.byteArrayToHex(encodeUtil.decodeMessage(characteristic.getValue())));
+        }
+
+//        @Override
+//        public void onDescriptorRead(String s, BluetoothGattDescriptor descriptor, int i) {
+//            super.onDescriptorRead(s, descriptor, i);
+//            Log.e(TAG, "onDescriptorRead: " + s + " " + Arrays.toString(descriptor.getValue()) + " " + i);
+//        }
+//
+//        @Override
+//        public void onDescriptorWrite(String s, BluetoothGattDescriptor descriptor, int i) {
+//            super.onDescriptorWrite(s, descriptor, i);
+//            Log.e(TAG, "onDescriptorWrite: " + s + " " + Arrays.toString(descriptor.getValue()) + " " + i);
+//        }
+//
+//        @Override
+//        public void onNotifyStateRead(UUID uuid, UUID uuid1, boolean b) {
+//            super.onNotifyStateRead(uuid, uuid1, b);
+//            Log.e(TAG, "onNotifyStateRead: " + uuid.toString() + " " + uuid1.toString() + " " + b);
+//        }
+//
+//        @Override
+//        public void onMtuChanged(String s, int i, int i1) {
+//            super.onMtuChanged(s, i, i1);
+//            Log.e(TAG, "onMtuChanged: " + s + " " + i + " " + i1);
+//        }
     };
 
     private BleManager() {
