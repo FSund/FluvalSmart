@@ -57,7 +57,7 @@
     <string name="msg_get_data_success">Laden von Gerätdaten erfolgreich.</string>
     <string name="msg_get_device_data">Verbindung erfolgreich; Ladung von Gerätdaten…</string>
     <string name="snackbar_bluetooth_denied">Das Öffnen von Bluetooth ist fehlgeschlagen. Versuchen Sie Bluetooth über die Einstellungen zu öffnen.</string>
-    <string name="snackbar_coarselocation_denied">Ein Bluetooth-Gerät in der Nähe darf nicht gescannt werden, wenn Sie den Servicestandort nicht zulassen.</string>
+    <string name="snackbar_finelocation_denied">Ein Bluetooth-Gerät in der Nähe darf nicht gescannt werden, wenn Sie den Servicestandort nicht zulassen.</string>
     <string name="weekday_sun">So</string>
     <string name="weekday_mon">Mo</string>
     <string name="weekday_tue">Di</string>

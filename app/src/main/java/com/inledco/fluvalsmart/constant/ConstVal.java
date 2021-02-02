@@ -12,7 +12,7 @@ public class ConstVal
     public static final String KEY_PASSWORD = "PASSWORD";
 
     public static final int BLUETOOTH_REQUEST_ENABLE_CODE = 1;
-    public static final int PERMISSON_REQUEST_COARSE_CODE = 2;
+    public static final int PERMISSON_REQUEST_FINE_CODE = 2;
     public static final int SCAN_CODE = 3;
     public static final int RENAME_CODE = 4;
 }

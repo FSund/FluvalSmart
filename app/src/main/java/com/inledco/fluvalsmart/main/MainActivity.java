@@ -86,13 +86,13 @@ public class MainActivity extends BaseActivity {
         if (permissions == null || grantResults == null || permissions.length < 1 || grantResults.length < 1) {
             return;
         }
-        if (requestCode == ConstVal.PERMISSON_REQUEST_COARSE_CODE && Manifest.permission.ACCESS_COARSE_LOCATION.equals(permissions[0])) {
+        if (requestCode == ConstVal.PERMISSON_REQUEST_FINE_CODE && Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[0])) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startScanActivity();
             }
             else {
                 if (mBleHelper.shouldShowRequestPermissionRationale()) {
-                    Toast.makeText(MainActivity.this, R.string.snackbar_coarselocation_denied, Toast.LENGTH_SHORT)
+                    Toast.makeText(MainActivity.this, R.string.snackbar_finelocation_denied, Toast.LENGTH_SHORT)
                          .show();
                 } else {
                     showPermissionDialog();

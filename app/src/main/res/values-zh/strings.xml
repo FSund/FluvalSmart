@@ -57,7 +57,7 @@
     <string name="msg_get_data_success">获取设备数据成功.</string>
     <string name="msg_get_device_data">连接成功,正在获取设备数据...</string>
     <string name="snackbar_bluetooth_denied">打开蓝牙失败,您可以在设置中打开蓝牙.</string>
-    <string name="snackbar_coarselocation_denied">禁止定位服务将无法扫描附近蓝牙设备.</string>
+    <string name="snackbar_finelocation_denied">禁止定位服务将无法扫描附近蓝牙设备.</string>
     <string name="light_auto_dynamic_disabled">动态效果关闭</string>
     <string name="weekday_sun">" 日 "</string>
     <string name="weekday_mon">" 一 "</string>

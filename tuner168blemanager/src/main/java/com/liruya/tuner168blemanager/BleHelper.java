@@ -72,7 +72,7 @@ public class BleHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
-        return ContextCompat.checkSelfPermission(mActivity.get(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(mActivity.get(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -80,7 +80,7 @@ public class BleHelper {
      * @param requestCode
      */
     public void requestLocationPermission(int requestCode) {
-        ActivityCompat.requestPermissions(mActivity.get(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode);
+        ActivityCompat.requestPermissions(mActivity.get(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, requestCode);
     }
 
     /**
@@ -93,7 +93,7 @@ public class BleHelper {
     }
 
     public boolean shouldShowRequestPermissionRationale() {
-        return ActivityCompat.shouldShowRequestPermissionRationale(mActivity.get(), Manifest.permission.ACCESS_COARSE_LOCATION);
+        return ActivityCompat.shouldShowRequestPermissionRationale(mActivity.get(), Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     /**

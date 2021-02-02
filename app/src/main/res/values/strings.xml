@@ -61,7 +61,7 @@
     <string name="exit_app_tips">Click again to exit application.</string>
     <string name="chn_name_cyan">Cyan</string>
     <string name="snackbar_bluetooth_denied">Open bluetooth failed, try to open bluetooth in settings mode.</string>
-    <string name="snackbar_coarselocation_denied">Not allow to scan nearby bluetooth device when you forbid location services.</string>
+    <string name="snackbar_finelocation_denied">Not allow to scan nearby bluetooth device when you forbid location services.</string>
 
     <string name="msg_get_data_failed">Failed to up-load device data, click to try again.</string>
     <string name="msg_connecting_device">Connecting device...</string>

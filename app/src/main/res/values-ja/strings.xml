@@ -60,7 +60,7 @@
     <string name="msg_get_data_success">アップロード成功</string>
     <string name="msg_get_device_data">接続成功、アップロード中...</string>
     <string name="snackbar_bluetooth_denied">Bluetooth接続失敗、セッティングモードにて再度Bluetooh接続を行ってください.</string>
-    <string name="snackbar_coarselocation_denied">位置情報サービスが切られている場合はBluetoothデバイススキャンができません。</string>
+    <string name="snackbar_finelocation_denied">位置情報サービスが切られている場合はBluetoothデバイススキャンができません。</string>
 
     <string name="item_action_upgrade">アップグレード</string>
     <string name="weekday_fri">Fri</string>

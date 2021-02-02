@@ -57,7 +57,7 @@
     <string name="msg_get_data_success">Téléchargement des données de l\'appareil réussie.</string>
     <string name="msg_get_device_data">Connexion réussie; téléchargement des données de l\'appareil en cours...</string>
     <string name="snackbar_bluetooth_denied">Échec de la connexion Bluetooth; essayer d\'activer la connexion Bluetooth dans les réglages.</string>
-    <string name="snackbar_coarselocation_denied">Impossible de rechercher les appareils utilisant la technologie Bluetooth à proximitési le service de localisation n\'est pas activé.</string>
+    <string name="snackbar_finelocation_denied">Impossible de rechercher les appareils utilisant la technologie Bluetooth à proximitési le service de localisation n\'est pas activé.</string>
     <string name="weekday_sun">Dim.</string>
     <string name="weekday_mon">Lun.</string>
     <string name="weekday_tue">Mar.</string>

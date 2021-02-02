@@ -56,7 +56,7 @@
     <string name="msg_get_data_success">Se ha obtenido la información del dispositivo correctamente.</string>
     <string name="msg_get_device_data">Conectado correctamente, obteniendo información del dispositivo...</string>
     <string name="snackbar_bluetooth_denied">Apertura del Bluetooth fallida, intente abrir el Bluetooth en ajustes.</string>
-    <string name="snackbar_coarselocation_denied">No se pueden buscar dispositivos de Bluetooth cercanos si tiene prohibido que se use el servicio de localización.</string>
+    <string name="snackbar_finelocation_denied">No se pueden buscar dispositivos de Bluetooth cercanos si tiene prohibido que se use el servicio de localización.</string>
     <string name="weekday_sun">Dom</string>
     <string name="weekday_mon">Lun</string>
     <string name="weekday_tue">Mar</string>

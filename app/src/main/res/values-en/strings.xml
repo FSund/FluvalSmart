@@ -50,7 +50,7 @@
     <string name="chn_name_purewhite">Pure White</string>
     <string name="exit_app_tips">Click again to exit application.</string>
     <string name="chn_name_cyan">Cyan</string>
-    <string name="snackbar_coarselocation_denied">Unable to scan nearby bluetooth device when location services are disabled.</string>
+    <string name="snackbar_finelocation_denied">Unable to scan nearby bluetooth device when location services are disabled.</string>
     <string name="snackbar_bluetooth_denied">Open Bluetooth failed, try to open bluetooth in settings mode.</string>
     <string name="item_action_upgrade">Upgrade</string>
     <string name="msg_connecting_device">Connecting device...</string>

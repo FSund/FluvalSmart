@@ -207,7 +207,7 @@ public class DeviceFragment extends BaseFragment {
                         if (mBleHelper.checkLocationPermission()) {
                             startScanActivity();
                         } else {
-                            mBleHelper.requestLocationPermission(ConstVal.PERMISSON_REQUEST_COARSE_CODE);
+                            mBleHelper.requestLocationPermission(ConstVal.PERMISSON_REQUEST_FINE_CODE);
                         }
                         break;
                     case R.id.menu_done:
@@ -224,7 +224,7 @@ public class DeviceFragment extends BaseFragment {
                 if (mBleHelper.checkLocationPermission()) {
                     startScanActivity();
                 } else {
-                    mBleHelper.requestLocationPermission(ConstVal.PERMISSON_REQUEST_COARSE_CODE);
+                    mBleHelper.requestLocationPermission(ConstVal.PERMISSON_REQUEST_FINE_CODE);
                 }
             }
         });
