@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "com.inledco.fluvalsmart"
         minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 20
-        versionName "1.1.6"
+        targetSdkVersion 29
+        versionCode 21
+        versionName "1.1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -91,5 +91,8 @@ dependencies {
     implementation project(path: ':okhttpmanager')
     implementation 'com.google.code.gson:gson:2.8.6'
 //    implementation 'com.google.android.material:material:1.2.1'
+
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
     implementation project(path: ':swiperecyclerview')
 }

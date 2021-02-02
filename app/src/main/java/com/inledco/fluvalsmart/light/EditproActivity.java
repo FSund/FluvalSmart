@@ -48,8 +48,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class EditproActivity extends BaseActivity
-{
+public class EditproActivity extends BaseActivity {
     private Toolbar editpro_toolbar;
     private LineChart editpro_linechart;
     private MultiPointSeekbar editpro_mps;
@@ -109,7 +108,7 @@ public class EditproActivity extends BaseActivity
     @Override
     protected void initView()
     {
-        editpro_toolbar = findViewById(R.id.editpro_toolbar);
+//        editpro_toolbar = findViewById(R.id.editpro_toolbar);
         editpro_linechart = findViewById(R.id.editpro_linechart);
         editpro_mps = findViewById(R.id.editpro_mps);
         editpro_ib_remove = findViewById(R.id.editpro_ib_remove);
@@ -120,7 +119,7 @@ public class EditproActivity extends BaseActivity
         editpro_btn_save = findViewById(R.id.editpro_btn_save);
         editpro_rv_show = findViewById(R.id.editpro_rv_show);
 
-        setSupportActionBar(editpro_toolbar);
+//        setSupportActionBar(editpro_toolbar);
         LineChartHelper.init(editpro_linechart);
 
         editpro_mps.setMaxLengthHint("88:88");
@@ -137,14 +136,16 @@ public class EditproActivity extends BaseActivity
     }
 
     @Override
-    protected void initEvent()
-    {
-        editpro_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    protected void initEvent() {
+        if (editpro_toolbar != null) {
+            editpro_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+
         editpro_mps.setListener(new MultiPointSeekbar.Listener() {
             @Override
             public void onPointCountChanged(int pointCount) {
@@ -167,14 +168,21 @@ public class EditproActivity extends BaseActivity
             }
 
             @Override
-            public void onStopPointTouch(int index) {
-                if (mPoints != null && index >= 0 && index < mPoints.size()) {
-                    int progress = editpro_mps.getProgressByIndex(index);
-                    mPoints.get(index).setHour(progress/60);
-                    mPoints.get(index).setHour(progress/60);
-                    mPoints.get(index).setMinute(progress%60);
-                    refreshChart();
+            public void onStopPointTouch(int oldIndex, int newIndex) {
+                if (mPoints == null || oldIndex < 0 || oldIndex > mPoints.size() || newIndex < 0 || newIndex > mPoints.size()) {
+                    return;
                 }
+                int progress = editpro_mps.getProgressByIndex(newIndex);
+                if (oldIndex != newIndex) {
+                    TimerBrightPoint tbp = mPoints.get(oldIndex);
+                    mPoints.remove(oldIndex);
+                    mPoints.add(newIndex, tbp);
+                    mAdapter.setSelectedPoint(newIndex);
+                } else {
+                    mPoints.get(oldIndex).setHour(progress/60);
+                    mPoints.get(oldIndex).setMinute(progress%60);
+                }
+                refreshChart();
             }
 
             @Override
@@ -676,28 +684,20 @@ public class EditproActivity extends BaseActivity
         return -1;
     }
 
-    class EditproAdapter extends RecyclerView.Adapter<EditproViewHolder>
-    {
+    class EditproAdapter extends RecyclerView.Adapter<EditproViewHolder> {
         private int mSelectedPoint = -1;
 
-        public void setSelectedPoint(int selectedPoint)
-        {
+        public void setSelectedPoint(int selectedPoint) {
             mSelectedPoint = selectedPoint;
             notifyDataSetChanged();
         }
 
-        public String getPercent(int percent)
-        {
-            if (percent >= 0 && percent < 10)
-            {
+        public String getPercent(int percent) {
+            if (percent >= 0 && percent < 10) {
                 return "  " + percent +"%";
-            }
-            else if (percent >= 10 && percent < 100)
-            {
+            } else if (percent >= 10 && percent < 100) {
                 return " " + percent + "%";
-            }
-            else if (percent == 100)
-            {
+            } else if (percent == 100) {
                 return "100%";
             }
             return "";
@@ -705,17 +705,14 @@ public class EditproActivity extends BaseActivity
 
         @NonNull
         @Override
-        public EditproViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-        {
+        public EditproViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             EditproViewHolder holder = new EditproViewHolder(LayoutInflater.from(EditproActivity.this).inflate(R.layout.item_point_bright, parent, false));
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final EditproViewHolder holder, final int pos)
-        {
-            if (mSelectedPoint >= 0 && mSelectedPoint < mPoints.size())
-            {
+        public void onBindViewHolder(@NonNull final EditproViewHolder holder, final int pos) {
+            if (mSelectedPoint >= 0 && mSelectedPoint < mPoints.size()) {
                 final int position = holder.getAdapterPosition();
                 holder.itemView.setVisibility(View.VISIBLE);
                 final TimerBrightPoint tbp = mPoints.get(mSelectedPoint);
@@ -723,13 +720,11 @@ public class EditproActivity extends BaseActivity
                 int[] seekBars = DeviceUtil.getSeekbar(devid);
                 Channel[] channels = DeviceUtil.getLightChannel(EditproActivity.this, devid);
                 holder.iv_icon.setImageResource(channels[position].getIcon());
-                if (seekBars != null && position < seekBars.length)
-                {
+                if (seekBars != null && position < seekBars.length) {
                     Drawable progressDrawable = getResources().getDrawable(seekBars[position]);
                     holder.seekbar.setProgressDrawable(progressDrawable);
                 }
-                if (thumbs != null && position < thumbs.length)
-                {
+                if (thumbs != null && position < thumbs.length) {
                     Drawable thumb = getResources().getDrawable(thumbs[position]);
                     holder.seekbar.setThumb(thumb);
                 }
@@ -737,35 +732,29 @@ public class EditproActivity extends BaseActivity
                 holder.tv_percent.setText(getPercent(tbp.getBrights()[position]));
                 holder.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-                    {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         mPoints.get(mSelectedPoint).getBrights()[position] = (byte) progress;
                         holder.tv_percent.setText(getPercent(progress));
                         refreshChart();
                     }
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar)
-                    {
+                    public void onStartTrackingTouch(SeekBar seekBar) {
 
                     }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar)
-                    {
+                    public void onStopTrackingTouch(SeekBar seekBar) {
 
                     }
                 });
-            }
-            else
-            {
+            } else {
                 holder.itemView.setVisibility(View.INVISIBLE);
             }
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
 //            return (mSelectedPoint >= 0 && mSelectedPoint < mPoints.size()) ? DeviceUtil.getChannelCount(devid) : 0;
             return DeviceUtil.getChannelCount(devid);
         }

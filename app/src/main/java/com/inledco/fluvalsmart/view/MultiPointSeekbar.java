@@ -20,6 +20,7 @@ import com.inledco.fluvalsmart.R;
 import com.inledco.fluvalsmart.util.SizeUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MultiPointSeekbar extends View
@@ -34,7 +35,7 @@ public class MultiPointSeekbar extends View
     private final int HINT_MODE_MOVING = 1;
     private final int HINT_MODE_SELECTED = 2;
 
-    private final int SELECTED_POINT_NONE = -1;
+    private final int POINT_NONE = -1;
 
     private float mDpUnitSize;
     private float mSpUnitSize;
@@ -71,7 +72,9 @@ public class MultiPointSeekbar extends View
 
     private float mTouchDownX;
 
-    private int mSelectedPoint = SELECTED_POINT_NONE;
+
+    private int mSelectedPoint = POINT_NONE;
+
     private boolean mDragEnabled;
     private boolean mDragging;
 
@@ -231,12 +234,10 @@ public class MultiPointSeekbar extends View
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        switch (event.getAction())
-        {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 int point = getTouchedPoint(x, y);
                 if (point >= 0 && point < mProgress.size()) {
@@ -324,19 +325,13 @@ public class MultiPointSeekbar extends View
 //                }
 //                break;
             case MotionEvent.ACTION_MOVE:
-                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size() && mDragEnabled)
-                {
-                    if (mDragging)
-                    {
-                        pointTouchEvent(event, mSelectedPoint);
-                    }
-                    else
-                    {
-                        if (Math.abs(mTouchDownX - event.getX()) >= mScaledTouchSlop)
-                        {
+                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size() && mDragEnabled) {
+                    if (mDragging) {
+                        pointTouchEvent(event);
+                    } else {
+                        if (Math.abs(mTouchDownX - event.getX()) >= mScaledTouchSlop) {
                             mDragging = true;
-                            if (mListener != null)
-                            {
+                            if (mListener != null) {
                                 mListener.onStartPointTouch(mSelectedPoint);
                             }
                         }
@@ -345,14 +340,15 @@ public class MultiPointSeekbar extends View
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size())
-                {
-                    if (mDragEnabled && mDragging)
-                    {
-                        if (mListener != null)
-                        {
-                            mProgress.set(mSelectedPoint, convertProgress(mProgress.get(mSelectedPoint)));
-                            mListener.onStopPointTouch(mSelectedPoint);
+                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size()) {
+                    if (mDragEnabled && mDragging) {
+                        int oldIndex = mSelectedPoint;
+                        int progress = convertProgress(mProgress.get(mSelectedPoint));
+                        mProgress.remove(mSelectedPoint);
+                        mSelectedPoint = addPoint(progress);
+                        if (mListener != null) {
+//                            mProgress.set(mSelectedPoint, convertProgress(mProgress.get(mSelectedPoint)));
+                            mListener.onStopPointTouch(oldIndex, mSelectedPoint);
                         }
                     }
                 }
@@ -360,38 +356,19 @@ public class MultiPointSeekbar extends View
                 mDragging = false;
                 break;
             case MotionEvent.ACTION_UP:
-                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size())
-                {
-                    if (mDragEnabled && mDragging)
-                    {
-                        pointTouchEvent(event, mSelectedPoint);
-                        if (mListener != null)
-                        {
-                            mProgress.set(mSelectedPoint, convertProgress(mProgress.get(mSelectedPoint)));
-                            mListener.onStopPointTouch(mSelectedPoint);
+                if (mSelectedPoint >= 0 && mSelectedPoint < mProgress.size()) {
+                    if (mDragEnabled && mDragging) {
+                        pointTouchEvent(event);
+                        int oldIndex = mSelectedPoint;
+                        int progress = convertProgress(mProgress.get(mSelectedPoint));
+                        mProgress.remove(mSelectedPoint);
+                        mSelectedPoint = addPoint(progress);
+                        if (mListener != null) {
+//                            mProgress.set(mSelectedPoint, convertProgress(mProgress.get(mSelectedPoint)));
+                            mListener.onStopPointTouch(oldIndex, mSelectedPoint);
                         }
                     }
                 }
-//                if (mDragEnabled)
-//                {
-//                    if (mDragging)
-//                    {
-//                        pointTouchEvent(event, mSelectedPoint);
-//                        if (mListener != null && mSelectedPoint >= 0 && mSelectedPoint < mProgress.size())
-//                        {
-//                            mListener.onStopPointTouch(mSelectedPoint);
-//                        }
-//                    }
-//                    else
-//                    {
-//                        if (mListener != null && mSelectedPoint >= 0 && mSelectedPoint < mProgress.size())
-//                        {
-//                            mListener.onStartPointTouch(mSelectedPoint);
-//                            pointTouchEvent(event, mSelectedPoint);
-//                            mListener.onStopPointTouch(mSelectedPoint);
-//                        }
-//                    }
-//                }
                 mDragEnabled = false;
                 mDragging = false;
                 break;
@@ -399,10 +376,15 @@ public class MultiPointSeekbar extends View
         return super.onTouchEvent(event);
     }
 
-    private void pointTouchEvent(MotionEvent event, int idx)
-    {
-        if (idx < 0 && idx >= mProgress.size())
-        {
+    private void moveSelectedProgress(int progress) {
+        if (progress < mMin || progress > mMax) {
+            throw new IllegalArgumentException(String.format("progress out of range [%d, %d]", mMin, mMax));
+        }
+
+    }
+
+    private void pointTouchEvent(MotionEvent event) {
+        if (mSelectedPoint < 0 && mSelectedPoint >= mProgress.size()) {
             return;
         }
         final int x = Math.round(event.getX());
@@ -413,38 +395,27 @@ public class MultiPointSeekbar extends View
         final int left = getPaddingLeft() + extra/2;
         final int right = getWidth() - getPaddingRight() - extra/2;
         float scale;
-        if (x <= left)
-        {
+        if (x <= left) {
             scale = 0.0f;
-        }
-        else if (x >= right)
-        {
+        } else if (x >= right) {
             scale = 1.0f;
-        }
-        else
-        {
+        } else {
             scale = (x - left)/lineWidth;
         }
         final int progress = Math.round(mMin + scale * (mMax - mMin));
-        if (progress == mProgress.get(idx))
-        {
+        if (progress == mProgress.get(mSelectedPoint)) {
             return;
         }
-        mProgress.set(idx, progress);
-        if (mUiThreadId == Thread.currentThread().getId())
-        {
-            doRefreshProgress(idx, progress, true);
-        }
-        else
-        {
-            if (mRefreshDataRunnable == null)
-            {
+        mProgress.set(mSelectedPoint, progress);
+        if (mUiThreadId == Thread.currentThread().getId()) {
+            doRefreshProgress(mSelectedPoint, progress, true);
+        } else {
+            if (mRefreshDataRunnable == null) {
                 mRefreshDataRunnable = new RefreshDataRunnable();
             }
-            final RefreshData rd = RefreshData.obtain(idx, progress, true);
+            final RefreshData rd = RefreshData.obtain(mSelectedPoint, progress, true);
             mRefreshDataList.add(rd);
-            if (mAttached && !mRefreshIsPosted)
-            {
+            if (mAttached && !mRefreshIsPosted) {
                 post(mRefreshDataRunnable);
                 mRefreshIsPosted = true;
             }
@@ -536,7 +507,7 @@ public class MultiPointSeekbar extends View
 
     private int getTouchedPoint(float x, float y)
     {
-        int point = SELECTED_POINT_NONE;
+        int point = POINT_NONE;
         final int space = 20;
         int width = getThumbWidth();
         int height = getThumbHeight();
@@ -800,7 +771,7 @@ public class MultiPointSeekbar extends View
 
     public synchronized int addPoint(int progress) {
         if (progress < mMin || progress > mMax || mProgress.size() >= POINT_COUNT_MAX) {
-            return -1;
+            return POINT_NONE;
         }
         int idx = 0;
         for (int i = 0; i < mProgress.size(); i++) {
@@ -815,14 +786,12 @@ public class MultiPointSeekbar extends View
         return idx;
     }
 
-    public synchronized void removePoint(int point)
-    {
-        if (point < 0 || point >= mProgress.size())
-        {
+    public synchronized void removePoint(int idx) {
+        if (idx < 0 || idx >= mProgress.size()) {
             return;
         }
-        mProgress.remove(point);
-        mSelectedPoint = SELECTED_POINT_NONE;
+        mProgress.remove(idx);
+        mSelectedPoint = POINT_NONE;
         invalidate();
     }
 
@@ -893,6 +862,7 @@ public class MultiPointSeekbar extends View
                 return;
             }
         }
+        Arrays.sort(progress);
         mProgress.clear();
         for (int val : progress) {
             mProgress.add(val);
@@ -900,7 +870,7 @@ public class MultiPointSeekbar extends View
         invalidate();
     }
 
-    public synchronized void setProgress(int idx, int progress) {
+    public synchronized int setProgress(int idx, int progress) {
         if (idx < 0 || idx >= mProgress.size()) {
             throw new IllegalArgumentException("idx out of range");
         }
@@ -908,12 +878,38 @@ public class MultiPointSeekbar extends View
             throw new IllegalArgumentException(String.format("progress out of range [%d:%d]", mMin, mMax));
         }
         if (mProgress.get(idx) != progress) {
-            mProgress.set(idx, progress);
+            int newidx = 0;
+            for (int i = 0; i < mProgress.size(); i++) {
+                if (progress < mProgress.get(i)) {
+                    newidx = i;
+                } else {
+                    newidx++;
+                }
+            }
+            int prev = mMin;
+            int next = mMax;
+            if (idx > 0) {
+                prev = mProgress.get(idx);
+            }
+            if (idx < mProgress.size() - 1) {
+                next = mProgress.get(mProgress.size()-1);
+            }
+            if (progress < prev) {
+
+            } else if (progress > next) {
+
+            } else {
+
+            }
+            if (progress >= prev && progress < next) {
+                mProgress.set(idx, progress);
+            }
             invalidate();
             if (mListener != null) {
                 mListener.onPointProgressChanged(idx, progress, false);
             }
         }
+        return idx;
     }
 
     public String getMaxLengthHint()
@@ -1025,7 +1021,7 @@ public class MultiPointSeekbar extends View
     }
 
     public void clearSelectedPoint() {
-        mSelectedPoint = SELECTED_POINT_NONE;
+        mSelectedPoint = POINT_NONE;
         invalidate();
     }
 
@@ -1077,7 +1073,7 @@ public class MultiPointSeekbar extends View
 
         void onStartPointTouch(int index);
 
-        void onStopPointTouch(int index);
+        void onStopPointTouch(int oldIndex, int newIndex);
 
         void onPointProgressChanged(int index, int progress, boolean fromUser);
     }

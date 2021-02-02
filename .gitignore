@@ -111,18 +111,3 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-将删除 .gitignore
-将删除 .idea/compiler.xml
-将删除 .idea/modules/-1674231190/
-将删除 .idea/modules/-239425366/
-将删除 .idea/modules/1193852484/
-将删除 .idea/modules/66133247/
-将删除 .idea/modules/765004098/
-将删除 .idea/modules/app/
-将删除 .idea/modules/itemtouchhelperextension/
-将删除 .idea/modules/okhttpmanager/
-将删除 .idea/modules/swiperecyclerview/
-将删除 .idea/modules/tuner168blemanager/
-将删除 okhttpmanager/libs/
-将删除 swiperecyclerview/libs/
-将删除 swiperecyclerview/src/main/res/drawable/

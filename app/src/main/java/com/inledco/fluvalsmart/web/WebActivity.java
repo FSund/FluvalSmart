@@ -2,6 +2,7 @@ package com.inledco.fluvalsmart.web;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ import java.util.Map;
 public class WebActivity extends BaseActivity {
 
     private final String GOOGLE_DOC_URL = "https://docs.google.com/gview?embedded=true&url=";
+
+    private final String ACCEPT_ENCODING = "Accept-Encoding";
+    private final String ACCEPT_ENCODING_VALUE = "gzip,deflate,br";
 
     private boolean mAllowOpenInBrowser;
     private String mUrl;
@@ -125,7 +129,7 @@ public class WebActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    private void showWebView(final WebView web, String url) {
+    private void showWebView(final WebView web, final String url) {
         WebSettings webSettings = web.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -157,38 +161,57 @@ public class WebActivity extends BaseActivity {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 web_loading.setProgress(newProgress);
-                if (newProgress >= 100) {
-                    web_loading.setVisibility(View.GONE);
-                } else {
-                    web_loading.setVisibility(View.VISIBLE);
-                }
             }
         });
 
         web.setWebViewClient(new WebViewClient() {
+            private String currentUrl;
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                currentUrl = url;
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
+                if (TextUtils.equals(currentUrl, url)) {
+                    currentUrl = null;
+                    web_loading.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     String newurl = request.getUrl().toString();
-                    if (TextUtils.isEmpty(newurl) == false && newurl.endsWith(".pdf")) {
-                        web.loadUrl(GOOGLE_DOC_URL + newurl);
+                    boolean reload = true;
+                    Map<String, String> requestHeaders = request.getRequestHeaders();
+                    if (requestHeaders == null) {
+                        requestHeaders = new HashMap<>();
+                        requestHeaders.put(ACCEPT_ENCODING, ACCEPT_ENCODING_VALUE);
+                    } else if (requestHeaders.containsKey(ACCEPT_ENCODING) && TextUtils.equals(ACCEPT_ENCODING_VALUE, requestHeaders.get(ACCEPT_ENCODING)) ) {
+                        reload = false;
+                    } else {
+                        requestHeaders.put(ACCEPT_ENCODING, ACCEPT_ENCODING_VALUE);
+                    }
+                    if (newurl.endsWith(".pdf")) {
+                        web.loadUrl(GOOGLE_DOC_URL + newurl, requestHeaders);
+                    } else if (reload) {
+                        web.loadUrl(newurl, requestHeaders);
                     }
                 }
+                web_loading.setProgress(0);
+                web_loading.setVisibility(View.VISIBLE);
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Accept-Encoding", "gzip,deflate,br");
+        final Map<String, String> headers = new HashMap<>();
+        headers.put(ACCEPT_ENCODING, ACCEPT_ENCODING_VALUE);
         web.loadUrl(url, headers);
     }
 
-    public class MyWebChromeClient extends WebChromeClient {
+    class MyWebChromeClient extends WebChromeClient {
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
             super.onShowCustomView(view, callback);
