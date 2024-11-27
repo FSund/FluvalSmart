@@ -1,5 +1,6 @@
 # FluvalSmart
-Hagen蓝牙控制鱼缸灯app
+
+Decompiled FluvalSmart app. Useful for reverse engineering or making a custom controller for FluvalSmart lights.
 
 ## Also see
 
